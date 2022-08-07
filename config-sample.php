@@ -52,4 +52,12 @@ class Config {
     const GOOGLE_CLIENT_ID      = '';
     const GOOGLE_CLIENT_SECRET  = '';
     const GOOGLE_API_KEY        = '';
+
+    // ------------------------------------------------------------------------
+    // STRIPE PAYMENT INTEGRATION
+    // ------------------------------------------------------------------------
+
+    const STRIPE_PAYMENT_FEATURE = FALSE; // Enter TRUE or FALSE
+    const STRIPE_API_KEY   = '';
+
 }

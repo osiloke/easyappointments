@@ -209,6 +209,7 @@ App.Utils.CalendarTableView = (function () {
                 $appointmentsModal.find('#appointment-id').val(appointment.id);
                 $appointmentsModal.find('#select-service').val(appointment.id_services).trigger('change');
                 $appointmentsModal.find('#select-provider').val(appointment.id_users_provider);
+                $appointmentsModal.find('#appointment-is-paid').prop('checked', appointment.is_paid);
 
                 // Set the start and end datetime of the appointment.
                 startMoment = moment(appointment.start_datetime);
@@ -994,6 +995,7 @@ App.Utils.CalendarTableView = (function () {
                 end: moment(appointment.end_datetime).toDate(),
                 allDay: false,
                 color: appointment.color,
+                borderColor: appointment.is_paid ? undefined : 'red',
                 data: appointment // Store appointment data for later use.
             });
         }
@@ -1466,6 +1468,18 @@ App.Utils.CalendarTableView = (function () {
                         'text': getEventNotes(info.event)
                     }),
                     $('<br/>'),
+
+                    vars('stripe_payment_feature') && info.event.extendedProps.data.service.payment_link
+                        ? $('<strong/>', {
+                            'text': lang('is_paid')
+                        })
+                        : undefined,
+                    vars('stripe_payment_feature') && info.event.extendedProps.data.service.payment_link
+                        ? App.Utils.CalendarEventPopover.getIsPaidIcon(info.event)
+                        : undefined,
+                    vars('stripe_payment_feature') && info.event.extendedProps.data.service.payment_link
+                        ? $('<br/>')
+                        : undefined,
 
                     $('<hr/>'),
 

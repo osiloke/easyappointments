@@ -458,12 +458,24 @@ $config['proxy_ips'] = '';
 | Rate Limiting
 |--------------------------------------------------------------------------
 |
-| Toggle the rate limiting feature in your application. Using rate limiting 
-| will control the number of requests a client can sent to the app. 
+| Toggle the rate limiting feature in your application. Using rate limiting
+| will control the number of requests a client can sent to the app.
 |
 */
 $config['rate_limiting'] = TRUE;
 
+
+/*
+|--------------------------------------------------------------------------
+| Stripe Payment Configuration
+|--------------------------------------------------------------------------
+|
+| Declare some of the global config values of the Stripe Payments
+|
+*/
+
+$config['stripe_payment_feature'] = Config::STRIPE_PAYMENT_FEATURE;
+$config['stripe_api_key'] = Config::STRIPE_API_KEY;
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

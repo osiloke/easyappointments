@@ -183,6 +183,15 @@
                                     <label for="appointment-notes" class="form-label"><?= lang('notes') ?></label>
                                     <textarea id="appointment-notes" class="form-control" rows="3"></textarea>
                                 </div>
+
+                                <?php if (config('stripe_payment_feature')): ?>
+                                <div class="mb-3 form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="appointment-is-paid">
+                                    <label class="form-check-label" for="appointment-is-paid">
+                                        <?= lang('is_paid') ?>
+                                    </label>
+                                </div>
+                                <?php endif ?>
                             </div>
                         </div>
                     </fieldset>

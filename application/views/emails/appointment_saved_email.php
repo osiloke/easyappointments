@@ -1,7 +1,7 @@
 <?php
 /**
  * Local variables.
- * 
+ *
  * @var string $company_name
  * @var string $email_title
  * @var string $email_message
@@ -16,6 +16,8 @@
  * @var string $customer_address
  * @var string $appointment_link
  * @var string $company_link
+ * @var string $payment_link
+ * @var boolean $is_paid
  */
 ?>
 
@@ -34,6 +36,16 @@
     <div id="content" style="padding: 10px 15px;">
         <h2><?= $email_title ?></h2>
         <p><?= $email_message ?></p>
+
+        <?php if (config('stripe_payment_feature') && $payment_link): ?>
+            <h2><?= lang('appointment_payment_title') ?></h2>
+            <?php if ($is_paid): ?>
+            <p><?= lang('appointment_paymentPaid_text') ?></p>
+            <?php else: ?>
+            <p><?= lang('appointment_payment_text') ?></p>
+            <a href="<?= $payment_link ?>" style="width: 600px;"><?= $payment_link ?></a>
+            <?php endif ?>
+        <?php endif ?>
 
         <h2><?= lang('appointment_details_title') ?></h2>
         <table id="appointment-details">

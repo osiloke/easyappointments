@@ -408,4 +408,13 @@ $lang['at_least_one_field'] = 'At least one field must be displayed in the booki
 $lang['status'] = 'Status';
 $lang['appointment_status_options'] = 'Appointment Status Options';
 $lang['appointment_status_options_info'] = 'Define a list of available appointment status options that can be used in the the calendar page (the first one will automatically become the default value).';
+$lang['service_payment_link'] = 'Payment link';
+$lang['service_payment_link_description'] = 'You can include the following variables: {$appointment_hash}, {$customer_email}. In order to confirm the payment use https://YOUR_SERVER/payment/confirm/{CHECKOUT_SESSION_ID} url as confirmation page in Stripe';
+$lang['appointment_payment_title'] = 'Payment details';
+$lang['appointment_payment_text'] = 'Click on the following link to proceed with payment';
+$lang['appointment_paymentPaid_text'] = 'Payment has been successfully completed';
+$lang['payment_intent'] = 'Stripe Payment Intent';
+$lang['service_paid_warning'] = 'It is not possible to change an already paid service. Please contact us at {$mail_link} for more information.';
+$lang['is_paid'] = 'Paid';
+$lang['open_payment_process'] = 'Proceed with payment';
 // End

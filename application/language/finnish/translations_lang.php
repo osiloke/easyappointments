@@ -408,4 +408,13 @@ $lang['at_least_one_field'] = 'Vähintään yksi kenttä on näytettävä varaus
 $lang['status'] = 'Tila';
 $lang['appointment_status_options'] = 'Varauksen tila-asetukset';
 $lang['appointment_status_options_info'] = 'Määritä lista saatavilla olevista varauksen tilannevaihtoehdoista joita voidaan käyttää kalenterisivulla (ensimmäinen on valittu oletuksena).';
+$lang['service_payment_link'] = 'Payment link';
+$lang['service_payment_link_description'] = 'You can include the following variables: {$appointment_hash}, {$customer_email}. In order to confirm the payment use https://YOUR_SERVER/payment/confirm/{CHECKOUT_SESSION_ID} url as confirmation page in Stripe';
+$lang['appointment_payment_title'] = 'Payment details';
+$lang['appointment_payment_text'] = 'Click on the following link to proceed with payment';
+$lang['appointment_paymentPaid_text'] = 'Payment has been successfully completed';
+$lang['payment_intent'] = 'Stripe Payment Intent';
+$lang['service_paid_warning'] = 'It is not possible to change an already paid service. Please contact us at {$mail_link} for more information.';
+$lang['is_paid'] = 'Paid';
+$lang['open_payment_process'] = 'Proceed with payment';
 // End
