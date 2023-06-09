@@ -28,26 +28,17 @@ ENV GOOGLE_CLIENT_ID=""
 ENV GOOGLE_CLIENT_SECRET=""
 ENV GOOGLE_API_KEY=""
 
+
 RUN apt-get update && apt-get install -y \
-    libjpeg-dev \
-    libpng-dev \
     libfreetype6-dev \
-    libxslt-dev \
-    unzip \
-    ssmtp \
+    libjpeg62-turbo-dev \
+    libpng-dev \
     nodejs \
     npm \
-    && rm -rf /var/lib/apt/lists/* \
-    && docker-php-ext-configure gd --with-jpeg --with-freetype \
-    && docker-php-ext-install -j$(nproc) \
-    gd \
-    gettext \
-    mysqli \
-    pdo_mysql \
-    xsl \
-    && docker-php-ext-enable \
-    xdebug \
-    && a2enmod rewrite
+    ssmtp \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) gd gettext mysqli pdo_mysql
+
 
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
