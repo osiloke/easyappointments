@@ -56,11 +56,13 @@ RUN npm install
 
 # Install Gulp globally
 RUN npm install -g gulp-cli
-RUN gulp build
 
 # Install PHP dependencies
 RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer --quiet && \
     composer install --no-dev --optimize-autoloader
+
+RUN gulp build
+
 # Copy entry point file
 COPY entrypoint.paas.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
