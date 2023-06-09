@@ -47,9 +47,9 @@ RUN pecl install xdebug \
 RUN a2enmod rewrite
 
 COPY . .
-
+RUN rm package-lock.json
 # Install Node.js dependencies
-RUN yarn install
+RUN npm install
 
 # Install PHP dependencies
 RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer --quiet && \
