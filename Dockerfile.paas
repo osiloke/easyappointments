@@ -28,27 +28,27 @@ ENV GOOGLE_CLIENT_ID=""
 ENV GOOGLE_CLIENT_SECRET=""
 ENV GOOGLE_API_KEY=""
 
-RUN apk update && apk upgrade && \
-    apk add --no-cache \
-    libjpeg-turbo-dev \
+RUN apt-get update && apt-get install -y \
+    libjpeg-dev \
     libpng-dev \
-    freetype-dev \
-    gettext-dev \
+    libfreetype6-dev \
     libxslt-dev \
     unzip \
     ssmtp \
-    $PHPIZE_DEPS \
     nodejs \
-    npm && \
-    docker-php-ext-install -j$(nproc) \
+    npm \
+    && rm -rf /var/lib/apt/lists/* \
+    && docker-php-ext-configure gd --with-jpeg --with-freetype \
+    && docker-php-ext-install -j$(nproc) \
     gd \
     gettext \
     mysqli \
     pdo_mysql \
-    xsl && \
-    docker-php-ext-enable \
-    xdebug && \
-    a2enmod rewrite
+    xsl \
+    && docker-php-ext-enable \
+    xdebug \
+    && a2enmod rewrite
+
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
