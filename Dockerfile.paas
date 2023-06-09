@@ -49,7 +49,7 @@ RUN a2enmod rewrite
 COPY . .
 
 # Install Node.js dependencies
-RUN npm install
+RUN yarn install
 
 # Install PHP dependencies
 RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer --quiet && \
