@@ -35,6 +35,8 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \ 
     ssmtp \
     git \
+    zip \
+    unzip \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) gd gettext mysqli pdo_mysql
 
@@ -51,6 +53,10 @@ COPY . .
 RUN rm package-lock.json
 # Install Node.js dependencies
 RUN npm install
+
+# Install Gulp globally
+RUN npm install -g gulp-cli
+RUN gulp build
 
 # Install PHP dependencies
 RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/bin/ --filename=composer --quiet && \
