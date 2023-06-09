@@ -28,22 +28,39 @@ ENV GOOGLE_CLIENT_ID=""
 ENV GOOGLE_CLIENT_SECRET=""
 ENV GOOGLE_API_KEY=""
 
-RUN apt-get update && apt-get install -y \
-    libfreetype6-dev \
-    libjpeg62-turbo-dev \
+RUN apk update && apk upgrade && \
+    apk add --no-cache \
+    libjpeg-turbo-dev \
     libpng-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd gettext mysqli pdo_mysql
-
-RUN apt-get install -y \ 
-    ssmtp
-
+    freetype-dev \
+    gettext-dev \
+    libxslt-dev \
+    unzip \
+    ssmtp \
+    $PHPIZE_DEPS \
+    nodejs \
+    npm && \
+    docker-php-ext-install -j$(nproc) \
+    gd \
+    gettext \
+    mysqli \
+    pdo_mysql \
+    xsl && \
+    docker-php-ext-enable \
+    xdebug && \
+    a2enmod rewrite
 RUN pecl install xdebug \
     && docker-php-ext-enable xdebug
 
 RUN a2enmod rewrite
 
 COPY . .
+
+# Run npm install and composer install
+RUN cd /var/www/html && \
+    npm install && \
+    composer install --no-dev --optimize-autoloader
+
 # Copy entry point file
 COPY entrypoint.paas.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
