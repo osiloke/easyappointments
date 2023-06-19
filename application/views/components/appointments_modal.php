@@ -15,7 +15,7 @@
  */
 ?>
 <div id="appointments-modal" class="modal fade">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h3 class="modal-title"><?= lang('edit_appointment_title') ?></h3>
@@ -43,6 +43,7 @@
                                         // Group services by category, only if there is at least one service
                                         // with a parent category.
                                         $has_category = FALSE;
+                                        
                                         foreach ($available_services as $service)
                                         {
                                             if ( ! empty($service['category_id']))
@@ -72,6 +73,7 @@
                                             // We need the uncategorized services at the end of the list, so we will use
                                             // another iteration only for the uncategorized services.
                                             $grouped_services['uncategorized'] = [];
+                                            
                                             foreach ($available_services as $service)
                                             {
                                                 if ($service['category_id'] == NULL)
@@ -83,7 +85,7 @@
                                             foreach ($grouped_services as $key => $group)
                                             {
                                                 $group_label = $key !== 'uncategorized'
-                                                    ? $group[0]['category_name']
+                                                    ? e($group[0]['category_name'])
                                                     : 'Uncategorized';
 
                                                 if (count($group) > 0)
@@ -93,7 +95,7 @@
                                                     foreach ($group as $service)
                                                     {
                                                         echo '<option value="' . $service['id'] . '">'
-                                                            . $service['name'] . '</option>';
+                                                            . e($service['name']) . '</option>';
                                                     }
 
                                                     echo '</optgroup>';
@@ -105,7 +107,7 @@
                                             foreach ($available_services as $service)
                                             {
                                                 echo '<option value="' . $service['id'] . '">'
-                                                    . $service['name'] . '</option>';
+                                                    . e($service['name']) . '</option>';
                                             }
                                         }
                                         ?>
@@ -137,8 +139,8 @@
                                     </label>
                                     <select id="appointment-status" class="form-control">
                                         <?php foreach ($appointment_status_options as $appointment_status_option): ?>
-                                            <option value="<?= $appointment_status_option ?>">
-                                                <?= $appointment_status_option ?>
+                                            <option value="<?= e($appointment_status_option) ?>">
+                                                <?= e($appointment_status_option) ?>
                                             </option>
                                         <?php endforeach ?>
                                     </select>
@@ -165,16 +167,20 @@
                                     <div
                                         class="border rounded d-flex justify-content-between align-items-center bg-light timezone-info">
                                         <div class="border-end w-50 p-1 text-center">
-                                            <?= lang('provider') ?>:
-                                            <span class="provider-timezone">
-                                                -
-                                            </span>
+                                            <small>
+                                                <?= lang('provider') ?>:
+                                                <span class="provider-timezone">
+                                                    -
+                                                </span>
+                                            </small>
                                         </div>
                                         <div class="w-50 p-1 text-center">
-                                            <?= lang('current_user') ?>:
-                                            <span>
-                                                <?= $timezones[session('timezone', 'UTC')] ?>
-                                            </span>
+                                            <small>
+                                                <?= lang('current_user') ?>:
+                                                <span>
+                                                    <?= $timezones[session('timezone', 'UTC')] ?>
+                                                </span>
+                                            </small>
                                         </div>
                                     </div>
                                 </div>
@@ -367,4 +373,4 @@
 
 <script src="<?= asset_url('assets/js/components/appointments_modal.js') ?>"></script>
 
-<?php section('scripts') ?>
+<?php end_section('scripts') ?>

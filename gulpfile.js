@@ -21,6 +21,7 @@ const plumber = require('gulp-plumber');
 const rename = require('gulp-rename');
 const sass = require('gulp-sass')(require('sass'));
 const zip = require('zip-dir');
+
 // const debug = require('gulp-debug');
 
 function archive(done) {
@@ -88,7 +89,7 @@ function scripts() {
         .src(['assets/js/**/*.js', '!assets/js/**/*.min.js'])
         .pipe(plumber())
         .pipe(changed('assets/js/**/*'))
-        .pipe(babel())
+        .pipe(babel({comments: false}))
         .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('assets/js'));
 }
@@ -133,12 +134,12 @@ function vendor(done) {
     ]).pipe(gulp.dest('assets/vendor/cookieconsent'));
 
     // fullcalendar
-    gulp.src(['node_modules/fullcalendar/main.min.js', 'node_modules/fullcalendar/main.min.css']).pipe(
+    gulp.src(['node_modules/fullcalendar/index.global.min.js']).pipe(
         gulp.dest('assets/vendor/fullcalendar')
     );
 
     // fullcalendar-moment
-    gulp.src(['node_modules/@fullcalendar/moment/main.global.min.js']).pipe(
+    gulp.src(['node_modules/@fullcalendar/moment/index.global.min.js']).pipe(
         gulp.dest('assets/vendor/fullcalendar-moment')
     );
 
@@ -148,26 +149,6 @@ function vendor(done) {
     // jquery-jeditable
     gulp.src(['node_modules/jquery-jeditable/dist/jquery.jeditable.min.js']).pipe(
         gulp.dest('assets/vendor/jquery-jeditable')
-    );
-
-    // jquery-ui-dist
-    gulp.src(['node_modules/jquery-ui-dist/jquery-ui.min.js', 'node_modules/jquery-ui-dist/jquery-ui.min.css']).pipe(
-        gulp.dest('assets/vendor/jquery-ui-dist')
-    );
-
-    gulp.src(['node_modules/jquery-ui-dist/images/ui-icons_ffffff_256x240.png']).pipe(
-        gulp.dest('assets/vendor/jquery-ui-dist/images')
-    );
-
-    // jquery-ui-timepicker-addon
-    gulp.src([
-        'node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.js',
-        'node_modules/jquery-ui-timepicker-addon/dist/jquery-ui-timepicker-addon.min.css'
-    ]).pipe(gulp.dest('assets/vendor/jquery-ui-timepicker-addon'));
-
-    // jquery-ui-touch-punch
-    gulp.src(['node_modules/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js']).pipe(
-        gulp.dest('assets/vendor/jquery-ui-touch-punch')
     );
 
     // moment
@@ -195,6 +176,16 @@ function vendor(done) {
     );
 
     gulp.src(['node_modules/trumbowyg/dist/ui/icons.svg']).pipe(gulp.dest('assets/vendor/trumbowyg/ui'));
+
+    // flatpickr
+    gulp.src(['node_modules/flatpickr/dist/flatpickr.min.js', 'node_modules/flatpickr/dist/flatpickr.min.css']).pipe(
+        gulp.dest('assets/vendor/flatpickr')
+    );
+
+    gulp.src(['node_modules/flatpickr/dist/themes/material_green.css'])
+        .pipe(css())
+        .pipe(rename({suffix: '.min'}))
+        .pipe(gulp.dest('assets/vendor/flatpickr'));
 
     done();
 }

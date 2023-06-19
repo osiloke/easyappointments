@@ -1,5 +1,5 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
-// English
+// Hebrew
 $lang['page_title'] = 'קבע פגישה עם';
 $lang['service_and_provider'] = 'בחירת שירות וספק';
 $lang['select_service'] = 'בחירת שירות';
@@ -408,13 +408,30 @@ $lang['at_least_one_field'] = 'At least one field must be displayed in the booki
 $lang['status'] = 'Status';
 $lang['appointment_status_options'] = 'Appointment Status Options';
 $lang['appointment_status_options_info'] = 'Define a list of available appointment status options that can be used in the the calendar page (the first one will automatically become the default value).';
-$lang['service_payment_link'] = 'Payment link';
-$lang['service_payment_link_description'] = 'You can include the following variables: {$appointment_hash}, {$customer_email}. In order to confirm the payment use https://YOUR_SERVER/payment/confirm/{CHECKOUT_SESSION_ID} url as confirmation page in Stripe';
-$lang['appointment_payment_title'] = 'Payment details';
-$lang['appointment_payment_text'] = 'Click on the following link to proceed with payment';
-$lang['appointment_paymentPaid_text'] = 'Payment has been successfully completed';
-$lang['payment_intent'] = 'Stripe Payment Intent';
-$lang['service_paid_warning'] = 'It is not possible to change an already paid service. Please contact us at {$mail_link} for more information.';
-$lang['is_paid'] = 'Paid';
-$lang['open_payment_process'] = 'Proceed with payment';
+$lang['sunday_short'] = 'Sun';
+$lang['monday_short'] = 'Mon';
+$lang['tuesday_short'] = 'Tue';
+$lang['wednesday_short'] = 'Wed';
+$lang['thursday_short'] = 'Thu';
+$lang['friday_short'] = 'Fri';
+$lang['saturday_short'] = 'Sat';
+$lang['january_short'] = 'Jan';
+$lang['february_short'] = 'Feb';
+$lang['march_short'] = 'Mar';
+$lang['april_short'] = 'Apr';
+$lang['may_short'] = 'May';
+$lang['june_short'] = 'Jun';
+$lang['july_short'] = 'Jul';
+$lang['august_short'] = 'Aug';
+$lang['september_short'] = 'Sep';
+$lang['october_short'] = 'Oct';
+$lang['november_short'] = 'Nov';
+$lang['december_short'] = 'Dec';
+$lang['am'] = 'am';
+$lang['pm'] = 'pm';
+$lang['to'] = 'to';
+$lang['click_to_toggle'] = 'Click To Toggle';
+$lang['week_short'] = 'Wk';
+$lang['scroll_to_increment'] = 'Scroll To Increment';
+$lang['year'] = 'Year';
 // End

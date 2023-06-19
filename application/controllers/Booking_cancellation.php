@@ -95,7 +95,7 @@ class Booking_cancellation extends EA_Controller {
 
             $this->synchronization->sync_appointment_deleted($appointment, $provider);
 
-            $this->notifications->notify_appointment_deleted($appointment, $service, $provider, $customer, $settings);
+            $this->notifications->notify_appointment_deleted($appointment, $service, $provider, $customer, $settings, $cancellation_reason);
 
             $this->webhooks_client->trigger(WEBHOOK_APPOINTMENT_DELETE, $appointment);
 
@@ -108,6 +108,8 @@ class Booking_cancellation extends EA_Controller {
         html_vars([
             'page_title' => lang('appointment_cancelled_title'),
             'company_color' => setting('company_color'),
+            'google_analytics_code' => setting('google_analytics_code'),
+            'matomo_analytics_url' => setting('matomo_analytics_url'),
         ]);
 
         $this->load->view('pages/booking_cancellation');

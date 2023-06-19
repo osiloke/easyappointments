@@ -134,15 +134,15 @@ App.Pages.Providers = (function () {
             const buttons = [
                 {
                     text: lang('cancel'),
-                    click: () => {
-                        $('#message-box').dialog('close');
+                    click: (event, messageModal) => {
+                        messageModal.dispose();
                     }
                 },
                 {
                     text: lang('delete'),
-                    click: () => {
+                    click: (event, messageModal) => {
                         remove(providerId);
-                        $('#message-box').dialog('close');
+                        messageModal.dispose();
                     }
                 }
             ];
@@ -213,13 +213,6 @@ App.Pages.Providers = (function () {
             if (id) {
                 select(id, true);
             }
-        });
-
-        /**
-         * Event: Display Provider Details "Click"
-         */
-        $providers.on('shown.bs.tab', 'a[data-bs-toggle="tab"]', () => {
-            App.Layouts.Backend.placeFooterToBottom();
         });
 
         /**
@@ -354,7 +347,6 @@ App.Pages.Providers = (function () {
         $providers.find('.add-break, .add-working-plan-exception, #reset-working-plan').prop('disabled', true);
 
         workingPlanManager.timepickers(true);
-        $providers.find('#providers .working-plan input:text').timepicker('destroy');
         $providers.find('#providers .working-plan input:checkbox').prop('disabled', true);
         $('.breaks').find('.edit-break, .delete-break').prop('disabled', true);
         $('.working-plan-exceptions')
@@ -461,7 +453,6 @@ App.Pages.Providers = (function () {
             .find('.edit-working-plan-exception, .delete-working-plan-exception')
             .prop('disabled', true);
         $providers.find('.working-plan input:checkbox').prop('disabled', true);
-        App.Layouts.Backend.placeFooterToBottom();
     }
 
     /**

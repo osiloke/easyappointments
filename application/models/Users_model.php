@@ -22,7 +22,7 @@ class Users_model extends EA_Model {
     /**
      * @var array
      */
-    protected $casts = [
+    protected array $casts = [
         'id' => 'integer',
         'id_roles' => 'integer',
     ];
@@ -30,7 +30,7 @@ class Users_model extends EA_Model {
     /**
      * @var array
      */
-    protected $api_resource = [
+    protected array $api_resource = [
         'id' => 'id',
         'firstName' => 'first_name',
         'lastName' => 'last_name',
@@ -55,6 +55,7 @@ class Users_model extends EA_Model {
      * @return int Returns the user ID.
      *
      * @throws InvalidArgumentException
+     * @throws Exception
      */
     public function save(array $user): int
     {
@@ -109,7 +110,7 @@ class Users_model extends EA_Model {
      *
      * @return int Returns the user ID.
      *
-     * @throws RuntimeException
+     * @throws RuntimeException|Exception
      */
     protected function insert(array $user): int
     {
@@ -140,7 +141,7 @@ class Users_model extends EA_Model {
      *
      * @return int Returns the user ID.
      *
-     * @throws RuntimeException
+     * @throws RuntimeException|Exception
      */
     protected function update(array $user): int
     {
@@ -234,11 +235,11 @@ class Users_model extends EA_Model {
      * @param int $user_id User ID.
      * @param string $field Name of the value to be returned.
      *
-     * @return string Returns the selected user value from the database.
+     * @return mixed Returns the selected user value from the database.
      *
      * @throws InvalidArgumentException
      */
-    public function value(int $user_id, string $field): string
+    public function value(int $user_id, string $field): mixed
     {
         if (empty($field))
         {
@@ -274,7 +275,7 @@ class Users_model extends EA_Model {
     /**
      * Get all users that match the provided criteria.
      *
-     * @param array|string $where Where conditions
+     * @param array|string|null $where Where conditions
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
@@ -282,7 +283,7 @@ class Users_model extends EA_Model {
      * 
      * @return array Returns an array of users.
      */
-    public function get($where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
+    public function get(array|string $where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
     {
         if ($where !== NULL)
         {

@@ -22,7 +22,7 @@ class Customers_model extends EA_Model {
     /**
      * @var array
      */
-    protected $casts = [
+    protected array $casts = [
         'id' => 'integer',
         'id_roles' => 'integer',
     ];
@@ -30,7 +30,7 @@ class Customers_model extends EA_Model {
     /**
      * @var array
      */
-    protected $api_resource = [
+    protected array $api_resource = [
         'id' => 'id',
         'firstName' => 'first_name',
         'lastName' => 'last_name',
@@ -133,7 +133,7 @@ class Customers_model extends EA_Model {
                 ->select()
                 ->from('users')
                 ->join('roles', 'roles.id = users.id_roles', 'inner')
-                ->where('users.delete_datetime', NULL)
+                ->where('users.delete_datetime')
                 ->where('roles.slug', DB_SLUG_CUSTOMER)
                 ->where('users.email', $customer['email'])
                 ->where('users.id !=', $customer_id)
@@ -245,11 +245,11 @@ class Customers_model extends EA_Model {
      * @param int $customer_id Customer ID.
      * @param string $field Name of the value to be returned.
      *
-     * @return string Returns the selected customer value from the database.
+     * @return mixed Returns the selected customer value from the database.
      *
      * @throws InvalidArgumentException
      */
-    public function value(int $customer_id, string $field): string
+    public function value(int $customer_id, string $field): mixed
     {
         if (empty($field))
         {
@@ -285,7 +285,7 @@ class Customers_model extends EA_Model {
     /**
      * Get all customers that match the provided criteria.
      *
-     * @param array|string $where Where conditions.
+     * @param array|string|null $where Where conditions.
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
@@ -293,7 +293,7 @@ class Customers_model extends EA_Model {
      *
      * @return array Returns an array of customers.
      */
-    public function get($where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
+    public function get(array|string $where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
     {
         $role_id = $this->get_customer_role_id();
 
@@ -361,7 +361,7 @@ class Customers_model extends EA_Model {
             ->from('users')
             ->join('roles', 'roles.id = users.id_roles', 'inner')
             ->where('users.email', $customer['email'])
-            ->where('users.delete_datetime', NULL)
+            ->where('users.delete_datetime')
             ->where('roles.slug', DB_SLUG_CUSTOMER)
             ->get()
             ->num_rows();
@@ -391,7 +391,7 @@ class Customers_model extends EA_Model {
             ->from('users')
             ->join('roles', 'roles.id = users.id_roles', 'inner')
             ->where('users.email', $customer['email'])
-            ->where('users.delete_datetime', NULL)
+            ->where('users.delete_datetime')
             ->where('roles.slug', DB_SLUG_CUSTOMER)
             ->get()
             ->row_array();
@@ -444,6 +444,7 @@ class Customers_model extends EA_Model {
             ->group_start()
             ->like('first_name', $keyword)
             ->or_like('last_name', $keyword)
+            ->or_like('CONCAT_WS(" ", first_name, last_name)', $keyword)
             ->or_like('email', $keyword)
             ->or_like('phone_number', $keyword)
             ->or_like('mobile_number', $keyword)

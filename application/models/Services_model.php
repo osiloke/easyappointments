@@ -22,7 +22,7 @@ class Services_model extends EA_Model {
     /**
      * @var array
      */
-    protected $casts = [
+    protected array $casts = [
         'id' => 'integer',
         'price' => 'float',
         'attendants_number' => 'integer',
@@ -33,7 +33,7 @@ class Services_model extends EA_Model {
     /**
      * @var array
      */
-    protected $api_resource = [
+    protected array $api_resource = [
         'id' => 'id',
         'name' => 'name',
         'duration' => 'duration',
@@ -242,11 +242,11 @@ class Services_model extends EA_Model {
      * @param int $service_id Service ID.
      * @param string $field Name of the value to be returned.
      *
-     * @return string Returns the selected service value from the database.
+     * @return mixed Returns the selected service value from the database.
      *
      * @throws InvalidArgumentException
      */
-    public function value(int $service_id, string $field): string
+    public function value(int $service_id, string $field): mixed
     {
         if (empty($field))
         {
@@ -282,7 +282,7 @@ class Services_model extends EA_Model {
     /**
      * Get all services that match the provided criteria.
      *
-     * @param array|string $where Where conditions
+     * @param array|string|null $where Where conditions
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
@@ -290,7 +290,7 @@ class Services_model extends EA_Model {
      *
      * @return array Returns an array of services.
      */
-    public function get($where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
+    public function get(array|string $where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
     {
         if ($where !== NULL)
         {
@@ -418,20 +418,16 @@ class Services_model extends EA_Model {
 
         foreach ($resources as $resource)
         {
-            switch ($resource)
+            $service['category'] = match ($resource)
             {
-                case 'category':
-                    $service['category'] = $this
-                        ->db
-                        ->get_where('categories', [
-                            'id' => $service['id_categories'] ?? $service['categoryId'] ?? NULL
-                        ])
-                        ->row_array();
-                    break;
-
-                default:
-                    throw new InvalidArgumentException('The requested appointment relation is not supported: ' . $resource);
-            }
+                'category' => $this
+                    ->db
+                    ->get_where('categories', [
+                        'id' => $service['id_categories'] ?? $service['categoryId'] ?? NULL
+                    ])
+                    ->row_array(),
+                default => throw new InvalidArgumentException('The requested appointment relation is not supported: ' . $resource),
+            };
         }
     }
 

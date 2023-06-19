@@ -22,7 +22,7 @@ class Secretaries_model extends EA_Model {
     /**
      * @var array
      */
-    protected $casts = [
+    protected array $casts = [
         'id' => 'integer',
         'id_roles' => 'integer',
     ];
@@ -30,7 +30,7 @@ class Secretaries_model extends EA_Model {
     /**
      * @var array
      */
-    protected $api_resource = [
+    protected array $api_resource = [
         'id' => 'id',
         'firstName' => 'first_name',
         'lastName' => 'last_name',
@@ -55,6 +55,7 @@ class Secretaries_model extends EA_Model {
      * @return int Returns the secretary ID.
      *
      * @throws InvalidArgumentException
+     * @throws Exception
      */
     public function save(array $secretary): int
     {
@@ -166,6 +167,7 @@ class Secretaries_model extends EA_Model {
             ->where('roles.slug', DB_SLUG_SECRETARY)
             ->where('users.email', $secretary['email'])
             ->where('users.id !=', $secretary_id)
+            ->where('users.delete_datetime')
             ->get()
             ->num_rows();
 
@@ -190,7 +192,13 @@ class Secretaries_model extends EA_Model {
             $this->db->where('id_users !=', $secretary_id);
         }
 
-        return $this->db->get_where('user_settings', ['username' => $username])->num_rows() === 0;
+        return $this
+                ->db
+                ->from('users')
+                ->join('user_settings', 'user_settings.id_users = users.id', 'inner')
+                ->where(['username' => $username, 'delete_datetime' => NULL])
+                ->get()
+                ->num_rows() === 0;
     }
 
     /**
@@ -200,13 +208,13 @@ class Secretaries_model extends EA_Model {
      *
      * @return int Returns the secretary ID.
      *
-     * @throws RuntimeException
+     * @throws RuntimeException|Exception
      */
     protected function insert(array $secretary): int
     {
         $secretary['create_datetime'] = date('Y-m-d H:i:s');
         $secretary['update_datetime'] = date('Y-m-d H:i:s');
-        
+
         $secretary['id_roles'] = $this->get_secretary_role_id();
 
         $provider_ids = $secretary['providers'] ?? [];
@@ -240,12 +248,12 @@ class Secretaries_model extends EA_Model {
      *
      * @return int Returns the secretary ID.
      *
-     * @throws RuntimeException
+     * @throws RuntimeException|Exception
      */
     protected function update(array $secretary): int
     {
         $secretary['update_datetime'] = date('Y-m-d H:i:s');
-        
+
         $provider_ids = $secretary['providers'] ?? [];
 
         $settings = $secretary['settings'];
@@ -321,7 +329,7 @@ class Secretaries_model extends EA_Model {
         {
             throw new InvalidArgumentException('The provided secretary ID was not found in the database: ' . $secretary_id);
         }
-        
+
         $secretary['settings'] = $this->db->get_where('user_settings', ['id_users' => $secretary_id])->row_array();
 
         unset(
@@ -348,11 +356,11 @@ class Secretaries_model extends EA_Model {
      * @param int $secretary_id Secretary ID.
      * @param string $field Name of the value to be returned.
      *
-     * @return string Returns the selected secretary value from the database.
+     * @return mixed Returns the selected secretary value from the database.
      *
      * @throws InvalidArgumentException
      */
-    public function value(int $secretary_id, string $field): string
+    public function value(int $secretary_id, string $field): mixed
     {
         if (empty($field))
         {
@@ -386,15 +394,15 @@ class Secretaries_model extends EA_Model {
     /**
      * Get all secretaries that match the provided criteria.
      *
-     * @param array|string $where Where conditions
+     * @param array|string|null $where Where conditions
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
      * @param bool $with_trashed
-     * 
+     *
      * @return array Returns an array of secretaries.
      */
-    public function get($where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
+    public function get(array|string $where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
     {
         $role_id = $this->get_secretary_role_id();
 
@@ -489,9 +497,9 @@ class Secretaries_model extends EA_Model {
      *
      * @param int $secretary_id Secretary ID.
      * @param string $name Setting name.
-     * @param mixed $value Setting value.
+     * @param mixed|null $value Setting value.
      */
-    public function set_setting(int $secretary_id, string $name, $value = NULL)
+    public function set_setting(int $secretary_id, string $name, mixed $value = NULL)
     {
         if ( ! $this->db->update('user_settings', [$name => $value], ['id_users' => $secretary_id]))
         {
@@ -511,7 +519,7 @@ class Secretaries_model extends EA_Model {
     {
         $settings = $this->db->get_where('user_settings', ['id_users' => $secretary_id])->row_array();
 
-        if (empty($settings[$name]))
+        if ( ! array_key_exists($name, $settings))
         {
             throw new RuntimeException('The requested setting value was not found: ' . $secretary_id);
         }
@@ -561,7 +569,7 @@ class Secretaries_model extends EA_Model {
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
      * @param bool $with_trashed
-     * 
+     *
      * @return array Returns an array of secretaries.
      */
     public function search(string $keyword, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
@@ -572,7 +580,7 @@ class Secretaries_model extends EA_Model {
         {
             $this->db->where('delete_datetime IS NULL');
         }
-        
+
         $secretaries = $this
             ->db
             ->select()
@@ -581,6 +589,7 @@ class Secretaries_model extends EA_Model {
             ->group_start()
             ->like('first_name', $keyword)
             ->or_like('last_name', $keyword)
+            ->or_like('CONCAT_WS(" ", first_name, last_name)', $keyword)
             ->or_like('email', $keyword)
             ->or_like('phone_number', $keyword)
             ->or_like('mobile_number', $keyword)
@@ -636,22 +645,18 @@ class Secretaries_model extends EA_Model {
 
         foreach ($resources as $resource)
         {
-            switch ($resource)
+            $secretary['providers'] = match ($resource)
             {
-                case 'providers':
-                    $secretary['providers'] = $this
-                        ->db
-                        ->select('users.*')
-                        ->from('users')
-                        ->join('secretaries_providers', 'secretaries_providers.id_users_provider = users.id', 'inner')
-                        ->where('id_users_secretary', $secretary['id'])
-                        ->get()
-                        ->result_array();
-                    break;
-
-                default:
-                    throw new InvalidArgumentException('The requested secretary relation is not supported: ' . $resource);
-            }
+                'providers' => $this
+                    ->db
+                    ->select('users.*')
+                    ->from('users')
+                    ->join('secretaries_providers', 'secretaries_providers.id_users_provider = users.id', 'inner')
+                    ->where('id_users_secretary', $secretary['id'])
+                    ->get()
+                    ->result_array(),
+                default => throw new InvalidArgumentException('The requested secretary relation is not supported: ' . $resource),
+            };
         }
     }
 
@@ -791,5 +796,20 @@ class Secretaries_model extends EA_Model {
         }
 
         $secretary = $decoded_resource;
+    }
+
+    /**
+     * Quickly check if a provider is assigned to a provider.
+     * 
+     * @param int $secretary_id
+     * @param int $provider_id
+     * 
+     * @return bool
+     */
+    public function is_provider_supported(int $secretary_id, int $provider_id): bool
+    {
+        $secretary = $this->find($secretary_id);
+
+        return in_array($provider_id, $secretary['providers']);
     }
 }

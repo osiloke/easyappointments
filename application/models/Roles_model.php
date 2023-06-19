@@ -22,7 +22,7 @@ class Roles_model extends EA_Model {
     /**
      * @var array
      */
-    protected $casts = [
+    protected array $casts = [
         'id' => 'integer',
         'is_admin' => 'boolean',
         'appointments' => 'integer',
@@ -183,11 +183,11 @@ class Roles_model extends EA_Model {
      * @param int $role_id Role ID.
      * @param string $field Name of the value to be returned.
      *
-     * @return string Returns the selected role value from the database.
+     * @return mixed Returns the selected role value from the database.
      *
      * @throws InvalidArgumentException
      */
-    public function value(int $role_id, string $field): string
+    public function value(int $role_id, string $field): mixed
     {
         if (empty($field))
         {
@@ -223,7 +223,7 @@ class Roles_model extends EA_Model {
     /**
      * Get all roles that match the provided criteria.
      *
-     * @param array|string $where Where conditions
+     * @param array|string|null $where Where conditions
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
@@ -231,7 +231,7 @@ class Roles_model extends EA_Model {
      *
      * @return array Returns an array of roles.
      */
-    public function get($where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
+    public function get(array|string $where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
     {
         if ($where !== NULL)
         {

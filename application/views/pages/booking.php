@@ -50,7 +50,7 @@
     'display_privacy_policy' => vars('display_privacy_policy'),
 ]) ?>
 
-<?php section('content') ?>
+<?php end_section('content') ?>
 
 <?php section('scripts') ?>
 
@@ -59,8 +59,9 @@
 <script src="<?= asset_url('assets/js/utils/message.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/string.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/validation.js') ?>"></script>
+<script src="<?= asset_url('assets/js/utils/ui.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/url.js') ?>"></script>
 <script src="<?= asset_url('assets/js/http/booking_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/pages/booking.js') ?>"></script>
 
-<?php section('scripts') ?>
+<?php end_section('scripts') ?>

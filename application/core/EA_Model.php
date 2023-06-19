@@ -43,7 +43,7 @@ class EA_Model extends CI_Model {
     /**
      * @var array
      */
-    protected $casts = [];
+    protected array $casts = [];
 
     /**
      * EA_Model constructor.
@@ -183,6 +183,33 @@ class EA_Model extends CI_Model {
             foreach ($record as &$record_item)
             {
                 $record_item = array_fields($record_item, $fields);
+            }
+        }
+    }
+
+    /**
+     * Ensure a field exists in an array by using its value or NULL.
+     *
+     * @param array $record Record data (single or multiple records).
+     * @param array $fields Requested field names.
+     */
+    public function optional(array &$record, array $fields)
+    {
+        if (is_assoc($record))
+        {
+            foreach ($fields as $field => $default)
+            {
+                $record[$field] = $record[$field] ?? $default;
+            }
+        }
+        else
+        {
+            foreach ($record as &$record_item)
+            {
+                foreach ($fields as $field => $default)
+                {
+                    $record_item[$field] = $record_item[$field] ?? $default;
+                }
             }
         }
     }

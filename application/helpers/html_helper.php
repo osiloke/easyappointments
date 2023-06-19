@@ -11,6 +11,25 @@
  * @since       v1.4.0
  * ---------------------------------------------------------------------------- */
 
+if ( ! function_exists('e'))
+{
+    /**
+     * HTML escape function for templates.
+     *
+     * Use this helper function to easily escape all the outputted HTML markup.
+     *
+     * Example:
+     *
+     * <?= e($string) ?>
+     *
+     * @param mixed $string Provide anything that can be converted to a string.
+     */
+    function e(mixed $string): string
+    {
+        return htmlspecialchars((string)$string, ENT_QUOTES, 'UTF-8');
+    }
+}
+
 if ( ! function_exists('component'))
 {
     /**
@@ -29,9 +48,9 @@ if ( ! function_exists('component'))
      * @param array $vars Additional parameters for the component.
      * @param bool $return Whether to return the HTML or echo it directly.
      *
-     * @return string Return the HTML if the $return argument is TRUE or NULL.
+     * @return string|object Return the HTML if the $return argument is TRUE or NULL.
      */
-    function component(string $component, array $vars = [], bool $return = FALSE)
+    function component(string $component, array $vars = [], bool $return = FALSE): string|object
     {
         /** @var EA_Controller $CI */
         $CI = get_instance();
@@ -47,7 +66,7 @@ if ( ! function_exists('extend'))
      *
      * @param $layout
      */
-    function extend($layout)
+    function extend($layout): void
     {
         config([
             'layout' => [
@@ -80,7 +99,7 @@ if ( ! function_exists('section'))
      *
      * @param string $name
      */
-    function section(string $name)
+    function section(string $name): void
     {
         $layout = config('layout');
 
@@ -108,6 +127,42 @@ if ( ! function_exists('section'))
     }
 }
 
+if ( ! function_exists('end_section'))
+{
+    /**
+     * Use this function in view files to mark the end of a layout section.
+     *
+     * Sections will only be used if the view file extends a layout and will be ignored otherwise.
+     *
+     * Example:
+     *
+     * <?php section('content') ?>
+     *
+     *   <!-- Section Starts -->
+     *
+     *   <p>This is the content of the section.</p>
+     *
+     *   <!-- Section Ends -->
+     *
+     * <?php end_section('content') ?>
+     *
+     * @param string $name
+     */
+    function end_section(string $name): void
+    {
+        $layout = config('layout');
+
+        if (array_key_exists($name, $layout['tmp']))
+        {
+            $layout['sections'][$name][] = ob_get_clean();
+
+            unset($layout['tmp'][$name]);
+
+            config(['layout' => $layout]);
+        }
+    }
+}
+
 if ( ! function_exists('slot'))
 {
     /**
@@ -115,7 +170,7 @@ if ( ! function_exists('slot'))
      *
      * @param string $name
      */
-    function slot(string $name)
+    function slot(string $name): void
     {
         $layout = config('layout');
 

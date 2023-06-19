@@ -1,11 +1,5 @@
 <?php extend('layouts/backend_layout') ?>
 
-<?php section('styles') ?>
-
-<link rel="stylesheet" type="text/css" href="<?= asset_url('/assets/vendor/fullcalendar/main.min.css') ?>">
-
-<?php section('styles') ?>
-
 <?php section('content') ?>
 
 <div class="container-fluid backend-page" id="calendar-page">
@@ -35,28 +29,27 @@
             <?php endif ?>
 
             <?php if (can('add', PRIV_APPOINTMENTS)): ?>
-                <div class="btn-group">
-                    <button class="btn btn-light" id="insert-appointment">
-                        <i class="fas fa-plus-square me-2"></i>
-                        <?= lang('appointment') ?>
+                <div class="dropdown d-sm-inline-block">
+                    <button class="btn btn-light" type="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-plus-square"></i>
                     </button>
-
-                    <button class="btn btn-light dropdown-toggle" id="insert-dropdown" data-bs-toggle="dropdown">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#" id="insert-unavailability">
-                            <i class="fas fa-plus-square me-2"></i>
-                            <?= lang('unavailability') ?>
-                        </a>
-                        <a class="dropdown-item" href="#" id="insert-working-plan-exception"
-                            <?= session('role_slug') !== DB_SLUG_ADMIN ? 'hidden' : '' ?>>
-                            <i class="fas fa-plus-square me-2"></i>
-                            <?= lang('working_plan_exception') ?>
-                        </a>
-                    </div>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="#" id="insert-appointment">
+                                <?= lang('appointment') ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" id="insert-unavailability">
+                                <?= lang('unavailability') ?>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="#" id="insert-working-plan-exception" <?= session('role_slug') !== DB_SLUG_ADMIN ? 'hidden' : '' ?>>
+                                <?= lang('working_plan_exception') ?>
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             <?php endif ?>
 
@@ -66,14 +59,14 @@
             </button>
 
             <?php if (vars('calendar_view') === 'default'): ?>
-                <a class="btn btn-light" href="<?= site_url('calendar?view=table') ?>"
+                <a class="btn btn-light mb-0" href="<?= site_url('calendar?view=table') ?>"
                    data-tippy-content="<?= lang('table') ?>">
                     <i class="fas fa-table"></i>
                 </a>
             <?php endif ?>
 
             <?php if (vars('calendar_view') === 'table'): ?>
-                <a class="btn btn-light" href="<?= site_url('calendar?view=default') ?>"
+                <a class="btn btn-light mb-0" href="<?= site_url('calendar?view=default') ?>"
                    data-tippy-content="<?= lang('default') ?>">
                     <i class="fas fa-calendar-alt"></i>
                 </a>
@@ -116,14 +109,13 @@
 
 <?php component('working_plan_exceptions_modal') ?>
 
-<?php section('content') ?>
+<?php end_section('content') ?>
 
 <?php section('scripts') ?>
 
-<script src="<?= asset_url('assets/vendor/fullcalendar/main.min.js') ?>"></script>
-<script src="<?= asset_url('assets/vendor/fullcalendar-moment/main.global.min.js') ?>"></script>
+<script src="<?= asset_url('assets/vendor/fullcalendar/index.global.min.js') ?>"></script>
+<script src="<?= asset_url('assets/vendor/fullcalendar-moment/index.global.min.js') ?>"></script>
 <script src="<?= asset_url('assets/vendor/jquery-jeditable/jquery.jeditable.min.js') ?>"></script>
-<script src="<?= asset_url('assets/vendor/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/date.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/message.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/validation.js') ?>"></script>
@@ -138,5 +130,5 @@
 <script src="<?= asset_url('assets/js/http/customers_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/pages/calendar.js') ?>"></script>
 
-<?php section('scripts') ?>
+<?php end_section('scripts') ?>
 

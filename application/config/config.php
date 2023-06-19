@@ -86,6 +86,7 @@ $languages = [
     'bu' => 'bulgarian',
     'ca' => 'catalan',
     'zh' => 'chinese',
+    'hr' => 'croatian',
     'cs' => 'czech',
     'da' => 'danish',
     'nl' => 'dutch',
@@ -135,6 +136,7 @@ $config['available_languages'] = [
     'bulgarian',
     'catalan',
     'chinese',
+    'croatian',
     'czech',
     'danish',
     'dutch',
@@ -160,6 +162,7 @@ $config['available_languages'] = [
     'serbian',
     'slovak',
     'spanish',
+    'swedish',
     'turkish'
 ];
 
@@ -359,17 +362,6 @@ $config['cookie_prefix'] = '';
 $config['cookie_domain'] = '';
 $config['cookie_path'] = '/';
 $config['cookie_secure'] = strpos($config['base_url'], 'https') !== FALSE;
-
-/*
-|--------------------------------------------------------------------------
-| Global XSS Filtering
-|--------------------------------------------------------------------------
-|
-| Determines whether the XSS filter is always active when GET, POST or
-| COOKIE data is encountered
-|
-*/
-$config['global_xss_filtering'] = TRUE;
 
 /*
 |--------------------------------------------------------------------------

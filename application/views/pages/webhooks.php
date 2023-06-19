@@ -51,6 +51,11 @@
                         <?= lang('cancel') ?>
                     </button>
                 </div>
+
+                <a href="<?= site_url('integrations') ?>" class="btn btn-outline-primary ms-2">
+                    <i class="fas fa-chevron-left me-2"></i>
+                    <?= lang('back') ?>
+                </a>
             </div>
 
             <h4 class="text-black-50 mb-3 fw-light">
@@ -136,7 +141,7 @@
     </div>
 </div>
 
-<?php section('content') ?>
+<?php end_section('content') ?>
 
 <?php section('scripts') ?>
 
@@ -146,4 +151,4 @@
 <script src="<?= asset_url('assets/js/http/webhooks_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/pages/webhooks.js') ?>"></script>
 
-<?php section('scripts') ?>
+<?php end_section('scripts') ?>

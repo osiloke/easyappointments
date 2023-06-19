@@ -22,9 +22,9 @@ require_once __DIR__ . '/../core/EA_Migration.php';
  */
 class Instance {
     /**
-     * @var EA_Controller
+     * @var EA_Controller|CI_Controller
      */
-    protected $CI;
+    protected EA_Controller|CI_Controller $CI;
 
     /**
      * Installation constructor.
@@ -47,7 +47,7 @@ class Instance {
      *
      * @param string $type Provide "fresh" to revert previous migrations and start from the beginning or "up"/"down" to step.
      */
-    public function migrate(string $type = '')
+    public function migrate(string $type = ''): void
     {
         $current_version = $this->CI->migration->current_version();
 
@@ -84,17 +84,25 @@ class Instance {
 
     /**
      * Seed the database with test data.
+     *
+     * @return string Return's the administrator user password.
+     * 
+     * @throws Exception
      */
-    public function seed()
+    public function seed(): string
     {
         // Settings
+        
         setting([
             'company_name' => 'Company Name',
             'company_email' => 'info@example.org',
             'company_link' => 'https://example.org',
         ]);
 
+        $password = random_string();
+
         // Admin
+
         $this->CI->admins_model->save([
             'first_name' => 'John',
             'last_name' => 'Doe',
@@ -102,13 +110,14 @@ class Instance {
             'phone_number' => '+10000000000',
             'settings' => [
                 'username' => 'administrator',
-                'password' => 'administrator',
+                'password' => $password,
                 'notifications' => TRUE,
                 'calendar_view' => CALENDAR_VIEW_DEFAULT
             ],
         ]);
 
         // Service
+
         $service_id = $this->CI->services_model->save([
             'name' => 'Service',
             'duration' => '30',
@@ -119,6 +128,7 @@ class Instance {
         ]);
 
         // Provider
+
         $this->CI->providers_model->save([
             'first_name' => 'Jane',
             'last_name' => 'Doe',
@@ -129,7 +139,7 @@ class Instance {
             ],
             'settings' => [
                 'username' => 'janedoe',
-                'password' => 'janedoe',
+                'password' => random_string(),
                 'working_plan' => setting('company_working_plan'),
                 'notifications' => TRUE,
                 'google_sync' => FALSE,
@@ -140,12 +150,15 @@ class Instance {
         ]);
 
         // Customer
+
         $this->CI->customers_model->save([
             'first_name' => 'James',
             'last_name' => 'Doe',
             'email' => 'james@example.org',
             'phone_number' => '+10000000000',
         ]);
+
+        return $password;
     }
 
     /**
@@ -155,7 +168,7 @@ class Instance {
      *
      * @throws Exception
      */
-    public function backup(string $path = NULL)
+    public function backup(string $path = NULL): void
     {
         $path = $path ?? APPPATH . '/../storage/backups';
 

@@ -44,8 +44,6 @@ class Booking extends EA_Controller {
         $this->load->library('notifications');
         $this->load->library('availability');
         $this->load->library('webhooks_client');
-
-        $this->load->driver('cache', ['adapter' => 'file']);
     }
 
     /**
@@ -227,6 +225,7 @@ class Booking extends EA_Controller {
             'first_weekday' => $first_weekday,
             'display_cookie_notice' => $display_cookie_notice,
             'display_any_provider' => setting('display_any_provider'),
+            'future_booking_limit' => setting('future_booking_limit'),
             'appointment_data' => $appointment,
             'provider_data' => $provider,
             'customer_data' => $customer,
@@ -290,7 +289,7 @@ class Booking extends EA_Controller {
      *
      * @param string $appointment_hash
      */
-    public function reschedule($appointment_hash)
+    public function reschedule(string $appointment_hash)
     {
         html_vars(['appointment_hash' => $appointment_hash]);
 
@@ -315,7 +314,7 @@ class Booking extends EA_Controller {
 
             if (empty($provider_id))
             {
-                json_response([]);
+                json_response();
 
                 return;
             }
@@ -401,7 +400,7 @@ class Booking extends EA_Controller {
                     // Check if the provider is available for the requested date.
                     $available_hours = $this->availability->get_available_hours($date, $service, $provider);
 
-                    if (count($available_hours) > $max_hours_count && (empty($hour) || in_array($hour, $available_hours, FALSE)))
+                    if (count($available_hours) > $max_hours_count && (empty($hour) || in_array($hour, $available_hours)))
                     {
                         $provider_id = $provider['id'];
 
@@ -426,7 +425,7 @@ class Booking extends EA_Controller {
             $captcha = request('captcha');
             $appointment = $post_data['appointment'];
             $customer = $post_data['customer'];
-            $manage_mode = ! empty($post_data['id']);
+            $manage_mode = filter_var($post_data['manage_mode'], FILTER_VALIDATE_BOOLEAN);
 
             if ( ! array_key_exists('address', $customer))
             {
@@ -547,6 +546,7 @@ class Booking extends EA_Controller {
             $appointment['status'] = $appointment_status_options[0] ?? NULL;
 
             $this->appointments_model->only($appointment, [
+                'id',
                 'start_datetime',
                 'end_datetime',
                 'location',
@@ -570,7 +570,7 @@ class Booking extends EA_Controller {
                 'time_format' => setting('time_format')
             ];
 
-            $this->synchronization->sync_appointment_saved($appointment, $service, $provider, $customer, $settings, $manage_mode);
+            $this->synchronization->sync_appointment_saved($appointment, $service, $provider, $customer, $settings);
 
             $this->notifications->notify_appointment_saved($appointment, $service, $provider, $customer, $settings, $manage_mode);
 
@@ -599,7 +599,7 @@ class Booking extends EA_Controller {
      * Use this method just before the customer confirms the appointment registration. If the selected date was reserved
      * in the meanwhile, the customer must be prompted to select another time.
      *
-     * @return int Returns the ID of the provider that is available for the appointment.
+     * @return int|null Returns the ID of the provider that is available for the appointment.
      *
      * @throws Exception
      */

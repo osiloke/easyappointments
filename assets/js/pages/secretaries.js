@@ -157,15 +157,15 @@ App.Pages.Secretaries = (function () {
             const buttons = [
                 {
                     text: lang('cancel'),
-                    click: () => {
-                        $('#message-box').dialog('close');
+                    click: (event, messageModal) => {
+                        messageModal.dispose();
                     }
                 },
                 {
                     text: lang('delete'),
-                    click: () => {
+                    click: (event, messageModal) => {
                         remove(secretaryId);
-                        $('#message-box').dialog('close');
+                        messageModal.dispose();
                     }
                 }
             ];
@@ -297,7 +297,7 @@ App.Pages.Secretaries = (function () {
             if ($password.val().length < vars('min_password_length') && $password.val() !== '') {
                 $('#password, #password-confirm').addClass('is-invalid');
                 throw new Error(
-                    'Password must be at least ' + BackendSecretaries.MIN_PASSWORD_LENGTH + ' characters long.'
+                    'Password must be at least ' + vars('min_password_length')+ ' characters long.'
                 );
             }
 

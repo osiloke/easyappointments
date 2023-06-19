@@ -355,11 +355,10 @@
     </div>
 </div>
 
-<?php section('content') ?>
+<?php end_section('content') ?>
 
 <?php section('scripts') ?>
 
-<script src="<?= asset_url('assets/vendor/jquery-ui-timepicker-addon/jquery-ui-timepicker-addon.min.js') ?>"></script>
 <script src="<?= asset_url('assets/vendor/jquery-jeditable/jquery.jeditable.min.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/date.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/message.js') ?>"></script>
@@ -372,7 +371,7 @@
 <script src="<?= asset_url('assets/js/http/providers_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/pages/providers.js') ?>"></script>
 
-<?php section('scripts') ?>
+<?php end_section('scripts') ?>
 
 
 

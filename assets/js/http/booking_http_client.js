@@ -22,6 +22,9 @@ App.Http.Booking = (function () {
     const $availableHours = $('#available-hours');
     const $captchaHint = $('#captcha-hint');
     const $captchaTitle = $('.captcha-title');
+    
+    const moment = window.moment;
+    
     let unavailableDatesBackup;
     let selectedDateStringBackup;
     let processingUnavailableDates = false;
@@ -247,7 +250,7 @@ App.Http.Booking = (function () {
             service_id: serviceId,
             selected_date: encodeURIComponent(selectedDateString),
             csrf_token: vars('csrf_token'),
-            manage_mode: App.Pages.Booking.manageMode,
+            manage_mode: Number(App.Pages.Booking.manageMode),
             appointment_id: appointmentId
         };
 
@@ -280,8 +283,9 @@ App.Http.Booking = (function () {
         if (setDate && !vars('manage_mode')) {
             for (let i = 1; i <= numberOfDays; i++) {
                 const currentDate = new Date(selectedDate.getFullYear(), selectedDate.getMonth(), i);
+                
                 if (unavailableDates.indexOf(moment(currentDate).format('YYYY-MM-DD')) === -1) {
-                    $('#select-date').datepicker('setDate', currentDate);
+                    $('#select-date')[0]._flatpickr.setDate(currentDate);
                     getAvailableHours(moment(currentDate).format('YYYY-MM-DD'));
                     break;
                 }
@@ -294,12 +298,7 @@ App.Http.Booking = (function () {
         }
 
         // Grey out unavailable dates.
-        $('#select-date .ui-datepicker-calendar td:not(.ui-datepicker-other-month)').each((index, td) => {
-            selectedDateMoment.set({date: index + 1});
-            if (unavailableDates.indexOf(selectedDateMoment.format('YYYY-MM-DD')) !== -1) {
-                $(td).addClass('ui-datepicker-unselectable ui-state-disabled');
-            }
-        });
+        $('#select-date')[0]._flatpickr.set('disable', unavailableDates.map(unavailableDate => new Date(unavailableDate)));
 
         processingUnavailableDates = false;
     }

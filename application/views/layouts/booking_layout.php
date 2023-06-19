@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="theme-color" content="#35A768">
 
     <?php slot('meta') ?>
@@ -13,8 +13,9 @@
     <link rel="icon" type="image/x-icon" href="<?= asset_url('assets/img/favicon.ico') ?>">
     <link rel="icon" sizes="192x192" href="<?= asset_url('assets/img/logo.png') ?>">
     
-    <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/jquery-ui-dist/jquery-ui.min.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/cookieconsent/cookieconsent.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/flatpickr/flatpickr.min.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/flatpickr/material_green.min.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/themes/' . vars('theme')  . '.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/general.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/layouts/booking_layout.css') ?>">
@@ -52,7 +53,6 @@
 <?php endif ?>
 
 <script src="<?= asset_url('assets/vendor/jquery/jquery.min.js') ?>"></script>
-<script src="<?= asset_url('assets/vendor/jquery-ui-dist/jquery-ui.min.js') ?>"></script>
 <script src="<?= asset_url('assets/vendor/cookieconsent/cookieconsent.min.js') ?>"></script>
 <script src="<?= asset_url('assets/vendor/@popperjs-core/popper.min.js') ?>"></script>
 <script src="<?= asset_url('assets/vendor/bootstrap/bootstrap.min.js') ?>"></script>
@@ -61,6 +61,7 @@
 <script src="<?= asset_url('assets/vendor/@fortawesome-fontawesome-free/fontawesome.min.js') ?>"></script>
 <script src="<?= asset_url('assets/vendor/@fortawesome-fontawesome-free/solid.min.js') ?>"></script>
 <script src="<?= asset_url('assets/vendor/tippy.js/tippy-bundle.umd.min.js') ?>"></script>
+<script src="<?= asset_url('assets/vendor/flatpickr/flatpickr.min.js') ?>"></script>
 
 <script src="<?= asset_url('assets/js/app.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/date.js') ?>"></script>

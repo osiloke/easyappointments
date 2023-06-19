@@ -20,7 +20,7 @@ class Appointments_model extends EA_Model {
     /**
      * @var array
      */
-    protected $casts = [
+    protected array $casts = [
         'id' => 'integer',
         'is_unavailability' => 'boolean',
         'id_users_provider' => 'integer',
@@ -32,7 +32,7 @@ class Appointments_model extends EA_Model {
     /**
      * @var array
      */
-    protected $api_resource = [
+    protected array $api_resource = [
         'id' => 'id',
         'book' => 'book_datetime',
         'start' => 'start_datetime',
@@ -42,7 +42,9 @@ class Appointments_model extends EA_Model {
         'status' => 'status',
         'notes' => 'notes',
         'hash' => 'hash',
+        'serviceId' => 'id_services',
         'providerId' => 'id_users_provider',
+        'customerId' => 'id_users_customer',
         'googleCalendarId' => 'id_google_calendar',
         'isPaid' => 'is_paid',
         'paymentIntent' => 'payment_intent',
@@ -267,11 +269,11 @@ class Appointments_model extends EA_Model {
      * @param int $appointment_id Appointment ID.
      * @param string $field Name of the value to be returned.
      *
-     * @return string Returns the selected appointment value from the database.
+     * @return mixed Returns the selected appointment value from the database.
      *
      * @throws InvalidArgumentException
      */
-    public function value(int $appointment_id, string $field): string
+    public function value(int $appointment_id, string $field): mixed
     {
         if (empty($field))
         {
@@ -307,7 +309,7 @@ class Appointments_model extends EA_Model {
     /**
      * Get all appointments that match the provided criteria.
      *
-     * @param array|string $where Where conditions.
+     * @param array|string|null $where Where conditions.
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
@@ -315,7 +317,7 @@ class Appointments_model extends EA_Model {
      *
      * @return array Returns an array of appointments.
      */
-    public function get($where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
+    public function get(array|string $where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
     {
         if ($where !== NULL)
         {
@@ -565,6 +567,8 @@ class Appointments_model extends EA_Model {
             'start' => $appointment['start_datetime'],
             'end' => $appointment['end_datetime'],
             'hash' => $appointment['hash'],
+            'color' => $appointment['color'],
+            'status' => $appointment['status'],
             'location' => $appointment['location'],
             'notes' => $appointment['notes'],
             'customerId' => $appointment['id_users_customer'] !== NULL ? (int)$appointment['id_users_customer'] : NULL,

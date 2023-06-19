@@ -1,12 +1,10 @@
 # Docker
 
-Run the development containers of Easy!Appointments with Docker and Docker Compose utility. Docker allows you to compose 
-your application from micro-services, without worrying about inconsistencies between development and production 
-environments and without locking into any platform or language. 
+Run the development containers of Easy!Appointments with Docker and Docker Compose utility. Docker allows you to compose your application in microservices, so that you can easily get started with the local development.
 
-Enter the `docker` directory and run `docker-compose up` to start the environment. 
+Simply clone the project and run `docker compose up` to start the environment.
 
-You will need modify the root `config.php` so that it matches the following example: 
+You will need modify the root `config.php` so that it matches the following example:
 
 ```php 
 class Config {
@@ -22,10 +20,10 @@ class Config {
     // DATABASE SETTINGS
     // ------------------------------------------------------------------------
     
-    const DB_HOST       = 'easyappointments-database:3306';
+    const DB_HOST       = 'mysql';
     const DB_NAME       = 'easyappointments';
-    const DB_USERNAME   = 'root';
-    const DB_PASSWORD   = 'root';
+    const DB_USERNAME   = 'easyappointments';
+    const DB_PASSWORD   = 'secret';
 
     // ------------------------------------------------------------------------
     // GOOGLE CALENDAR SYNC
@@ -39,11 +37,13 @@ class Config {
 }
 ```
 
-In the host machine the server is accessible from `http://localhost:8000` and the database from `localhost:8001`.  
+In the host machine the server is accessible from `http://localhost:8000` and the database from `localhost:8001`.
 
-You can remove the docker containers with `docker rm easyappointments-server easyappointments-database`. 
+You can additionally access phpMyAdmin from `http://localhost:8002` (credentials are `root` / `secret`) and MailHog from `http://localhost:8003`.
 
-You can remove the server image with `docker rmi easyappointments-server:v1`.
+**Attention:** This configuration is mend to make development easier. It is not intended to server as a production environment!
+
+A production image of Easy!Appointments can be found at: https://github.com/alextselegidis/easyappointments-docker
 
 *This document applies to Easy!Appointments v1.4.3.*
 

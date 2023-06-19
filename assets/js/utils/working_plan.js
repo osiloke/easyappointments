@@ -95,7 +95,7 @@ App.Utils.WorkingPlan = (function () {
                                 'html': [
                                     $('<input/>', {
                                         'id': index + '-end',
-                                        'class': 'work-start form-control form-control-sm'
+                                        'class': 'work-end form-control form-control-sm'
                                     })
                                 ]
                             })
@@ -189,6 +189,7 @@ App.Utils.WorkingPlan = (function () {
             this.editableDayCell($('.breaks .break-day'));
             this.editableTimeCell($('.breaks').find('.break-start, .break-end'));
         }
+
         /**
          * Setup the dom elements of a given working plan exception.
          *
@@ -203,6 +204,7 @@ App.Utils.WorkingPlan = (function () {
                 );
             }
         }
+
         /**
          * Enable editable break day.
          *
@@ -228,6 +230,7 @@ App.Utils.WorkingPlan = (function () {
                     type: 'select',
                     data: weekDays,
                     event: 'edit',
+                    width: '100px',
                     height: '30px',
                     submit: '<button type="button" class="d-none submit-editable">Submit</button>',
                     cancel: '<button type="button" class="d-none cancel-editable">Cancel</button>',
@@ -245,6 +248,7 @@ App.Utils.WorkingPlan = (function () {
                 }
             );
         }
+
         /**
          * Enable editable break time.
          *
@@ -260,6 +264,7 @@ App.Utils.WorkingPlan = (function () {
                 },
                 {
                     event: 'edit',
+                    width: '100px',
                     height: '30px',
                     submit: $('<button/>', {
                         'type': 'button',
@@ -285,8 +290,9 @@ App.Utils.WorkingPlan = (function () {
                 }
             );
         }
+
         /**
-         * Render a working plan exception row. 
+         * Render a working plan exception row.
          *
          * This method makes editable the break time cells.
          *
@@ -341,6 +347,7 @@ App.Utils.WorkingPlan = (function () {
                 ]
             });
         }
+
         /**
          * Add the utility event listeners.
          */
@@ -349,11 +356,13 @@ App.Utils.WorkingPlan = (function () {
              * Event: Day Checkbox "Click"
              *
              * Enable or disable the time selection for each day.
+             * 
+             * @param {jQuery.Event} event
              */
-            $('.working-plan tbody').on('click', 'input:checkbox', function () {
-                const id = $(this).attr('id');
+            $('.working-plan tbody').on('click', 'input:checkbox', (event) => {
+                const id = $(event.currentTarget).attr('id');
 
-                if ($(this).prop('checked') === true) {
+                if ($(event.currentTarget).prop('checked') === true) {
                     $('#' + id + '-start')
                         .prop('disabled', false)
                         .val('9:00 AM');
@@ -378,7 +387,7 @@ App.Utils.WorkingPlan = (function () {
              */
             $('.add-break').on(
                 'click',
-                function () {
+                () => {
                     const timeFormat = vars('time_format') === 'regular' ? 'h:mm a' : 'HH:mm';
 
                     const $newBreak = $('<tr/>', {
@@ -446,17 +455,19 @@ App.Utils.WorkingPlan = (function () {
                     this.editableDayCell($newBreak.find('.break-day'));
                     this.editableTimeCell($newBreak.find('.break-start, .break-end'));
                     $newBreak.find('.edit-break').trigger('click');
-                }.bind(this)
+                }
             );
 
             /**
              * Event: Edit Break Button "Click"
              *
              * Enables the row editing for the "Breaks" table rows.
+             *
+             * @param {jQuery.Event} event
              */
-            $(document).on('click', '.edit-break', function () {
+            $(document).on('click', '.edit-break', (event) => {
                 // Reset previous editable table cells.
-                const $previousEdits = $(this).closest('table').find('.editable');
+                const $previousEdits = $(event.currentTarget).closest('table').find('.editable');
 
                 $previousEdits.each(function (index, editable) {
                     if (editable.reset) {
@@ -465,24 +476,18 @@ App.Utils.WorkingPlan = (function () {
                 });
 
                 // Make all cells in current row editable.
-                $(this).parent().parent().children().trigger('edit');
-                $(this)
-                    .parent()
-                    .parent()
-                    .find('.break-start input, .break-end input')
-                    .timepicker({
-                        timeFormat: vars('time_format') === 'regular' ? 'h:mm tt' : 'HH:mm',
-                        currentText: lang('now'),
-                        closeText: lang('close'),
-                        timeOnlyTitle: lang('select_time'),
-                        timeText: lang('time'),
-                        hourText: lang('hour'),
-                        minuteText: lang('minutes')
-                    });
-                $(this).parent().parent().find('.break-day select').focus();
+                const $tr = $(event.currentTarget).closest('tr');
+
+                $tr.children().trigger('edit');
+
+                App.Utils.UI.initializeTimepicker(
+                    $tr
+                        .find('.break-start input, .break-end input')
+                );
+
+                $tr.find('.break-day select').focus();
 
                 // Show save - cancel buttons.
-                const $tr = $(this).closest('tr');
                 $tr.find('.edit-break, .delete-break').addClass('d-none');
                 $tr.find('.save-break, .cancel-break').removeClass('d-none');
                 $tr.find('select,input:text').addClass('form-control form-control-sm');
@@ -492,9 +497,11 @@ App.Utils.WorkingPlan = (function () {
              * Event: Delete Break Button "Click"
              *
              * Removes the current line from the "Breaks" table.
+             *
+             * @param {jQuery.Event} event
              */
-            $(document).on('click', '.delete-break', function () {
-                $(this).parent().parent().remove();
+            $(document).on('click', '.delete-break', (event) => {
+                $(event.currentTarget).closest('tr').remove();
             });
 
             /**
@@ -507,7 +514,7 @@ App.Utils.WorkingPlan = (function () {
             $(document).on(
                 'click',
                 '.cancel-break',
-                function (event) {
+                (event) => {
                     const element = event.target;
                     const $modifiedRow = $(element).closest('tr');
                     this.enableCancel = true;
@@ -516,7 +523,7 @@ App.Utils.WorkingPlan = (function () {
 
                     $modifiedRow.find('.edit-break, .delete-break').removeClass('d-none');
                     $modifiedRow.find('.save-break, .cancel-break').addClass('d-none');
-                }.bind(this)
+                }
             );
 
             /**
@@ -529,7 +536,7 @@ App.Utils.WorkingPlan = (function () {
             $(document).on(
                 'click',
                 '.save-break',
-                function (event) {
+                (event) => {
                     // Break's start time must always be prior to break's end.
                     const element = event.target;
 
@@ -554,7 +561,7 @@ App.Utils.WorkingPlan = (function () {
 
                     $modifiedRow.find('.save-break, .cancel-break').addClass('d-none');
                     $modifiedRow.find('.edit-break, .delete-break').removeClass('d-none');
-                }.bind(this)
+                }
             );
 
             /**
@@ -565,12 +572,12 @@ App.Utils.WorkingPlan = (function () {
             $(document).on(
                 'click',
                 '.add-working-plan-exception',
-                function () {
+                () =>{
                     App.Components.WorkingPlanExceptionsModal.add().done(
-                        function (date, workingPlanException) {
+                        (date, workingPlanException) => {
                             let $tr = null;
 
-                            $('.working-plan-exceptions tbody tr').each(function (index, tr) {
+                            $('.working-plan-exceptions tbody tr').each((index, tr) => {
                                 if (date === $(tr).data('date')) {
                                     $tr = $(tr);
                                     return false;
@@ -584,9 +591,9 @@ App.Utils.WorkingPlan = (function () {
                             } else {
                                 $newTr.appendTo('.working-plan-exceptions tbody');
                             }
-                        }.bind(this)
+                        }
                     );
-                }.bind(this)
+                }
             );
 
             /**
@@ -599,28 +606,31 @@ App.Utils.WorkingPlan = (function () {
             $(document).on(
                 'click',
                 '.edit-working-plan-exception',
-                function (event) {
+                (event) => {
                     const $tr = $(event.target).closest('tr');
                     const date = $tr.data('date');
                     const workingPlanException = $tr.data('workingPlanException');
 
                     App.Components.WorkingPlanExceptionsModal.edit(date, workingPlanException).done(
-                        function (date, workingPlanException) {
+                        (date, workingPlanException) => {
                             $tr.replaceWith(this.renderWorkingPlanExceptionRow(date, workingPlanException));
-                        }.bind(this)
+                        }
                     );
-                }.bind(this)
+                }
             );
 
             /**
              * Event: Delete working plan exception Button "Click"
              *
              * Removes the current line from the "working plan exceptions" table.
+             *
+             * @param {jQuery.Event} event
              */
-            $(document).on('click', '.delete-working-plan-exception', function () {
-                $(this).closest('tr').remove();
+            $(document).on('click', '.delete-working-plan-exception', (event) => {
+                $(event.currentTarget).closest('tr').remove();
             });
         }
+
         /**
          * Get the working plan settings.
          *
@@ -632,7 +642,7 @@ App.Utils.WorkingPlan = (function () {
             const timeFormat = vars('time_format') === 'regular' ? 'h:mm a' : 'HH:mm';
 
             $('.working-plan input:checkbox').each(
-                function (index, checkbox) {
+                (index, checkbox) => {
                     const id = $(checkbox).attr('id');
                     if ($(checkbox).prop('checked') === true) {
                         workingPlan[id] = {
@@ -642,7 +652,7 @@ App.Utils.WorkingPlan = (function () {
                         };
 
                         $('.breaks tr').each(
-                            function (index, tr) {
+                            (index, tr) => {
                                 const day = this.convertDayToValue($(tr).find('.break-day').text());
 
                                 if (day === id) {
@@ -659,22 +669,23 @@ App.Utils.WorkingPlan = (function () {
                                         )
                                     });
                                 }
-                            }.bind(this)
+                            }
                         );
 
                         // Sort breaks increasingly by hour within day
-                        workingPlan[id].breaks.sort(function (break1, break2) {
+                        workingPlan[id].breaks.sort((break1, break2) => {
                             // We can do a direct string comparison since we have time based on 24 hours clock.
                             return break1.start.localeCompare(break2.start);
                         });
                     } else {
                         workingPlan[id] = null;
                     }
-                }.bind(this)
+                }
             );
 
             return workingPlan;
         }
+
         /**
          * Get the working plan exceptions settings.
          *
@@ -683,7 +694,7 @@ App.Utils.WorkingPlan = (function () {
         getWorkingPlanExceptions() {
             const workingPlanExceptions = {};
 
-            $('.working-plan-exceptions tbody tr').each(function (index, tr) {
+            $('.working-plan-exceptions tbody tr').each((index, tr) => {
                 const $tr = $(tr);
                 const date = $tr.data('date');
                 workingPlanExceptions[date] = $tr.data('workingPlanException');
@@ -691,6 +702,7 @@ App.Utils.WorkingPlan = (function () {
 
             return workingPlanExceptions;
         }
+
         /**
          * Enables or disables the timepicker functionality from the working plan input text fields.
          *
@@ -700,44 +712,31 @@ App.Utils.WorkingPlan = (function () {
             disabled = disabled || false;
 
             if (disabled === false) {
-                // Set timepickers where needed.
-                $('.working-plan input:text').timepicker({
-                    timeFormat: vars('time_format') === 'regular' ? 'h:mm tt' : 'HH:mm',
-                    currentText: lang('now'),
-                    closeText: lang('close'),
-                    timeOnlyTitle: lang('select_time'),
-                    timeText: lang('time'),
-                    hourText: lang('hour'),
-                    minuteText: lang('minutes'),
+                App.Utils.UI.initializeTimepicker(
+                    $('.working-plan input:text'),
+                    {
+                        onChange: (selectedDates, dateStr, instance) => {
+                            const startMoment = moment(selectedDates[0]);
 
-                    onSelect: function () {
-                        // Start time must be earlier than end time.
-                        const startMoment = moment($(this).parent().parent().find('.work-start').val(), 'HH:mm');
+                            const $workEnd = $(instance.input).closest('tr').find('.work-end');
 
-                        const endMoment = moment($(this).parent().parent().find('.work-end').val(), 'HH:mm');
+                            const endMoment = moment($workEnd[0]._flatpickr.selectedDates[0])
 
-                        if (startMoment > endMoment) {
-                            $(this)
-                                .parent()
-                                .parent()
-                                .find('.work-end')
-                                .val(
-                                    startMoment
-                                        .add(1, 'hour')
-                                        .format(vars('time_format') === 'regular' ? 'h:mm a' : 'HH:mm')
-                                        .toLowerCase()
-                                );
+                            if (startMoment > endMoment) {
+                                $workEnd[0]._flatpickr.setDate(startMoment.add(1, 'hour').toDate());
+                            }
                         }
                     }
-                });
-            } else {
-                $('.working-plan input').timepicker('destroy');
+                )
             }
         }
+
         /**
          * Reset the current plan back to the company's default working plan.
          */
-        reset() {}
+        reset() {
+        }
+
         /**
          * This is necessary for translated days.
          *
@@ -761,6 +760,7 @@ App.Utils.WorkingPlan = (function () {
                     return lang('saturday');
             }
         }
+
         /**
          * This is necessary for translated days.
          *

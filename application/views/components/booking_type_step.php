@@ -6,7 +6,7 @@
  */
 ?>
 
-<div id="wizard-frame-1" class="wizard-frame">
+<div id="wizard-frame-1" class="wizard-frame" style="visibility: hidden;">
     <div class="frame-container">
         <h2 class="frame-title"><?= lang('service_and_provider') ?></h2>
 
@@ -70,11 +70,11 @@
 
                                 if (count($group) > 0)
                                 {
-                                    echo '<optgroup label="' . $group_label . '">';
+                                    echo '<optgroup label="' . e($group_label) . '">';
                                     foreach ($group as $service)
                                     {
                                         echo '<option value="' . $service['id'] . '">'
-                                            . $service['name'] . '</option>';
+                                            . e($service['name']) . '</option>';
                                     }
                                     echo '</optgroup>';
                                 }
@@ -84,7 +84,7 @@
                         {
                             foreach ($available_services as $service)
                             {
-                                echo '<option value="' . $service['id'] . '">' . $service['name'] . '</option>';
+                                echo '<option value="' . $service['id'] . '">' . e($service['name']) . '</option>';
                             }
                         }
                         ?>

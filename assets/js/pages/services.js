@@ -178,15 +178,15 @@ App.Pages.Services = (function () {
             const buttons = [
                 {
                     text: lang('cancel'),
-                    click: () => {
-                        $('#message-box').dialog('close');
+                    click: (event, messageModal) => {
+                        messageModal.dispose();
                     }
                 },
                 {
                     text: lang('delete'),
-                    click: () => {
+                    click: (event, messageModal) => {
                         remove(serviceId);
-                        $('#message-box').dialog('close');
+                        messageModal.dispose();
                     }
                 }
             ];
@@ -300,7 +300,7 @@ App.Pages.Services = (function () {
         $attendantsNumber.val(service.attendants_number);
         $isPrivate.prop('checked', service.is_private);
         App.Components.ColorSelection.setColor($color, service.color);
-        $paymentLink.val( service.payment_link);
+        $paymentLink.val(service.payment_link);
 
         const categoryId = service.id_categories !== null ? service.id_categories : '';
         $category.val(categoryId);
