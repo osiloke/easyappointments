@@ -57,9 +57,7 @@ RUN apt-get update \
 # Install Gulp
 RUN npm install -g gulp-cli
 
-VOLUME /var/www/html/storage 
-
-RUN rm package-lock.json
+VOLUME /var/www/html/storage
 
 # Download and unzip if DOWNLOAD_URL is not empty
 RUN if [[ -n "$DOWNLOAD_URL" ]]; then \
