@@ -60,10 +60,7 @@ RUN npm install -g gulp-cli
 VOLUME /var/www/html/storage
 
 # Download and unzip if DOWNLOAD_URL is not empty
-RUN if [[ -n "$DOWNLOAD_URL" ]]; then \
-    curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip && \
-    unzip /tmp/html.zip -d /var/www/html; \
-    fi
+RUN test -n "$DOWNLOAD_URL" && curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip && unzip /tmp/html.zip -d /var/www/html
 
 # Copy entry point file
 COPY entrypoint.production.sh /usr/local/bin/entrypoint.sh
