@@ -57,7 +57,7 @@ RUN apt-get update \
 # Install Gulp
 RUN npm install -g gulp-cli
 
-VOLUME /var/www/html/storage
+VOLUME /var/www/html/assets
 
 # Download and unzip if DOWNLOAD_URL is not empty 
 RUN curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip 
