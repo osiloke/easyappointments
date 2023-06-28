@@ -55,6 +55,7 @@ RUN apt-get update \
 
 COPY . . 
 
+RUN rm package-lock.json
 # Copy entry point file
 COPY entrypoint.production.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
