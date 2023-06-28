@@ -15,24 +15,23 @@ if [[ -z "$SKIP_UNZIP" ]]; then
   unzip /tmp/html.zip -d /var/www/html
 fi
 
-chown -R www-data:www-data /var/www/html/storage && \
-chmod -R 777 /var/www/html/storage
+chown -R www-data:www-data /var/www/html/storage &&
+  chmod -R 777 /var/www/html/storage
 
 # Database Configuration
-if [[ -n "$DATABASE_URL" ]]; then
-    # Extract the database configuration from the DATABASE_URL environment variable
-    DB_URL="$DATABASE_URL"
-    DB_HOST=$(echo $DB_URL | awk -F[@//] '{print $4}')
-    DB_PORT=$(echo $DB_URL | awk -F[@//] '{print $3}' | awk -F[:] '{print $2}')
-    DB_USERNAME=$(echo $DB_URL | awk -F[@//] '{print $3}' | awk -F[:] '{print $1}')
-    DB_PASSWORD=$(echo $DB_URL | awk -F[@//] '{print $2}' | awk -F[:] '{print $2}')
-    DB_NAME=$(echo $DB_URL | awk -F[/] '{print $NF}')
+if [[ $database_url =~ mysql:\/\/([a-zA-Z0-9_]+):([a-zA-Z0-9_]+)@([^:]+):([0-9]+)\/(.+) ]]; then
+  DB_HOST="${BASH_REMATCH[3]}"
+  DB_NAME="${BASH_REMATCH[5]}"
+  DB_PASSWORD="${BASH_REMATCH[2]}"
+  DB_PORT="${BASH_REMATCH[4]}"
+  DB_USERNAME="${BASH_REMATCH[1]}"
 else
-    # Use the existing configuration
-    DB_HOST=$(get_env_value "DB_HOST" "easyappointments-database")
-    DB_NAME=$(get_env_value "DB_NAME" "easyappointments")
-    DB_USERNAME=$(get_env_value "DB_USERNAME" "root")
-    DB_PASSWORD=$(get_env_value "DB_PASSWORD" "root")
+  # Use the existing configuration
+  DB_HOST=$(get_env_value "DB_HOST" "easyappointments-database")
+  DB_NAME=$(get_env_value "DB_NAME" "easyappointments")
+  DB_PASSWORD=$(get_env_value "DB_PASSWORD" "root")
+  DB_PORT=$(get_env_value "DB_PORT" "3306")
+  DB_USERNAME=$(get_env_value "DB_USERNAME" "root")
 fi
 
 # Create the configuration file
@@ -75,11 +74,11 @@ class Config {
     // ------------------------------------------------------------------------
     // DATABASE SETTINGS
     // ------------------------------------------------------------------------
-
     const DB_HOST       = '$DB_HOST';
     const DB_NAME       = '$DB_NAME';
-    const DB_USERNAME   = '$DB_USERNAME';
     const DB_PASSWORD   = '$DB_PASSWORD';
+    const DB_PORT       = '$DB_PORT';
+    const DB_USERNAME   = '$DB_USERNAME';
 
     // ------------------------------------------------------------------------
     // GOOGLE CALENDAR SYNC
@@ -100,15 +99,15 @@ class Config {
 }
 
 /* End of file config.php */
-/* Location: ./config.php */" > /var/www/html/config.php
+/* Location: ./config.php */" >/var/www/html/config.php
 
 # Configure ssmtp with environment variables
-echo "mailhub=${SMTP_SERVER}:${SMTP_PORT}" > /etc/ssmtp/ssmtp.conf
-echo "UseTLS=${SMTP_USE_TLS}" >> /etc/ssmtp/ssmtp.conf
-echo "UseSTARTTLS=${SMTP_USE_STARTTLS}" >> /etc/ssmtp/ssmtp.conf
-echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf
-echo "AuthUser=${SMTP_USERNAME}" >> /etc/ssmtp/ssmtp.conf
-echo "AuthPass=${SMTP_PASSWORD}" >> /etc/ssmtp/ssmtp.conf
+echo "mailhub=${SMTP_SERVER}:${SMTP_PORT}" >/etc/ssmtp/ssmtp.conf
+echo "UseTLS=${SMTP_USE_TLS}" >>/etc/ssmtp/ssmtp.conf
+echo "UseSTARTTLS=${SMTP_USE_STARTTLS}" >>/etc/ssmtp/ssmtp.conf
+echo "FromLineOverride=YES" >>/etc/ssmtp/ssmtp.conf
+echo "AuthUser=${SMTP_USERNAME}" >>/etc/ssmtp/ssmtp.conf
+echo "AuthPass=${SMTP_PASSWORD}" >>/etc/ssmtp/ssmtp.conf
 
 echo "➜ Install Composer Dependencies"
 composer install
