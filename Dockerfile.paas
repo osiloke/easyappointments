@@ -30,7 +30,7 @@ ENV GOOGLE_API_KEY=""
 ENV STRIPE_PAYMENT_FEATURE="FALSE"
 
 ENV SKIP_UNZIP="FALSE"
-ENV DOWNLOAD_URL=""
+ENV DOWNLOAD_URL="https://firebasestorage.googleapis.com/v0/b/dostow-backup.appspot.com/o/apps%2Fpride%2Feasyappointments-0.0.0.zip?alt=media&token=212368a2-412b-4c19-8b5b-bf1bda7a368f"
 
 
 RUN apt-get update \
@@ -59,8 +59,7 @@ RUN npm install -g gulp-cli
 
 VOLUME /var/www/html/storage
 
-# Download and unzip if DOWNLOAD_URL is not empty
-RUN echo $DOWNLOAD_URL
+# Download and unzip if DOWNLOAD_URL is not empty 
 RUN curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip 
 RUN unzip /tmp/html.zip -d /var/www/html
 
