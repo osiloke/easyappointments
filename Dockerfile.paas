@@ -55,8 +55,8 @@ RUN apt-get update \
 
 COPY . . 
 
-ADD nginx.conf.sigil ./nginx.conf.sigil
-ADD nginx.conf.d/nextcloud.conf ./nginx.conf.d/nextcloud.conf
+ADD dokku/nginx.conf.sigil ./nginx.conf.sigil
+ADD dokku/nginx.conf.d/easyappointments.conf ./nginx.conf.d/easyappointments.conf
 # Copy entry point file
 COPY entrypoint.production.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
