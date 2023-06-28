@@ -10,6 +10,12 @@ get_env_value() {
   fi
 }
 
+if [[ -n "$DOWNLOAD_URL" ]]; then
+  # Run wget to fetch easyappointments-0.0.0.zip to /tmp/html.zip
+  wget -O /tmp/html.zip "$DOWNLOAD_URL"
+  unzip /tmp/html.zip -d /var/www/html
+fi
+
 chown -R www-data:www-data /var/www/html/storage &&
   chmod -R 777 /var/www/html/storage
 
