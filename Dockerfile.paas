@@ -61,7 +61,7 @@ VOLUME /var/www/html/storage
 
 # Download and unzip if DOWNLOAD_URL is not empty
 RUN if [[ -n "$DOWNLOAD_URL" ]]; then \
-    wget -O /tmp/html.zip "$DOWNLOAD_URL" && \
+    curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip && \
     unzip /tmp/html.zip -d /var/www/html; \
     fi
 
