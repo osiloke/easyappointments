@@ -18,6 +18,22 @@ fi
 chown -R www-data:www-data /var/www/html/storage && \
 chmod -R 777 /var/www/html/storage
 
+# Database Configuration
+if [[ -n "$DATABASE_URL" ]]; then
+    # Extract the database configuration from the DATABASE_URL environment variable
+    DB_URL="$DATABASE_URL"
+    DB_HOST=$(echo $DB_URL | awk -F[@//] '{print $4}')
+    DB_PORT=$(echo $DB_URL | awk -F[@//] '{print $3}' | awk -F[:] '{print $2}')
+    DB_USERNAME=$(echo $DB_URL | awk -F[@//] '{print $3}' | awk -F[:] '{print $1}')
+    DB_PASSWORD=$(echo $DB_URL | awk -F[@//] '{print $2}' | awk -F[:] '{print $2}')
+    DB_NAME=$(echo $DB_URL | awk -F[/] '{print $NF}')
+else
+    # Use the existing configuration
+    DB_HOST=$(get_env_value "DB_HOST" "easyappointments-database")
+    DB_NAME=$(get_env_value "DB_NAME" "easyappointments")
+    DB_USERNAME=$(get_env_value "DB_USERNAME" "root")
+    DB_PASSWORD=$(get_env_value "DB_PASSWORD" "root")
+fi
 
 # Create the configuration file
 echo "<?php
@@ -60,10 +76,10 @@ class Config {
     // DATABASE SETTINGS
     // ------------------------------------------------------------------------
 
-    const DB_HOST       = '"$(get_env_value "DB_HOST" "easyappointments-database")"';
-    const DB_NAME       = '"$(get_env_value "DB_NAME" "easyappointments")"';
-    const DB_USERNAME   = '"$(get_env_value "DB_USERNAME" "root")"';
-    const DB_PASSWORD   = '"$(get_env_value "DB_PASSWORD" "root")"';
+    const DB_HOST       = '$DB_HOST';
+    const DB_NAME       = '$DB_NAME';
+    const DB_USERNAME   = '$DB_USERNAME';
+    const DB_PASSWORD   = '$DB_PASSWORD';
 
     // ------------------------------------------------------------------------
     // GOOGLE CALENDAR SYNC
@@ -84,7 +100,7 @@ class Config {
 }
 
 /* End of file config.php */
-/* Location: ./config.php */" > /var/www/html/config.php 
+/* Location: ./config.php */" > /var/www/html/config.php
 
 # Configure ssmtp with environment variables
 echo "mailhub=${SMTP_SERVER}:${SMTP_PORT}" > /etc/ssmtp/ssmtp.conf
