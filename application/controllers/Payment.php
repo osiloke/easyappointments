@@ -11,6 +11,8 @@
  * @since       v1.0.0
  * ---------------------------------------------------------------------------- */
 
+use GuzzleHttp\Client;
+
 /**
  * Payment confirmation controller.
  *
@@ -19,7 +21,8 @@
  *
  * @package Controllers
  */
-class Payment extends EA_Controller {
+class Payment extends EA_Controller
+{
     /**
      * Booking constructor.
      */
@@ -51,8 +54,7 @@ class Payment extends EA_Controller {
      */
     public function index()
     {
-        if ( ! is_app_installed())
-        {
+        if (!is_app_installed()) {
             redirect('installation');
 
             return;
@@ -96,8 +98,7 @@ class Payment extends EA_Controller {
             $privacy_policy_content = setting('privacy_policy_content');
 
             $theme = request('theme', setting('theme', 'default'));
-            if (empty($theme) || ! file_exists(__DIR__ . '/../../assets/css/themes/' . $theme . '.min.css'))
-            {
+            if (empty($theme) || !file_exists(__DIR__ . '/../../assets/css/themes/' . $theme . '.min.css')) {
                 $theme = 'default';
             }
 
@@ -149,29 +150,45 @@ class Payment extends EA_Controller {
      *
      * @param string $checkout_session_id Stripe session id.
      */
-    public function confirm(string $checkout_session_id)
+    public function confirm(string $appointment_hash)
     {
-        try
-        {
-            $stripe_api_key = config('stripe_api_key');
+        $client = new Client([
+            'timeout' => 10.0,
+        ]);
+        try {
+            $res = $client->post('https://api.vazapay.com/v1/onepay/confirm', [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . config('stripe_api_key'),
+                ],
+                'json' => [
+                    'reason' => $appointment_hash,
+                ]
+            ]);
 
-            $stripe = new \Stripe\StripeClient($stripe_api_key);
+            $body = json_decode($res->getBody());
 
-            $session = $stripe->checkout->sessions->retrieve($checkout_session_id);
+            $status = $body->status;
 
-            $appointment_hash = $session->client_reference_id;
-            $payment_intent = $session->payment_intent;
+            $message = $body->message;
 
-            $appointment = $this->set_paid($appointment_hash, $payment_intent);
+            $payment_intent = $body->reference;
 
-            html_vars(['appointment' => $appointment]);
+            if ($status == 'success') {
+                $appointment = $this->set_paid($appointment_hash, $payment_intent);
 
-            $this->index();
-        }
-        catch (Throwable $e)
-        {
-            error_log( $e );
-            abort(500, 'Internal server error');
+                html_vars(['appointment' => $appointment]);
+
+                $this->index();
+            } else {
+                response($message);
+            }
+        } catch (Throwable $e) {
+            error_log($e);
+            log_message('error', 'Webhooks Client - The webhook (' . ($appointment_hash ?? NULL) . ') request received an unexpected exception: ' . $e->getMessage());
+            log_message('error', $e->getTraceAsString());
+
+            response($e->getMessage());
         }
     }
 
@@ -180,14 +197,12 @@ class Payment extends EA_Controller {
      */
     private function set_paid($appointment_hash, $payment_intent)
     {
-        try
-        {
+        try {
             $manage_mode = TRUE;
 
             $occurrences = $this->appointments_model->get(['hash' => $appointment_hash]);
 
-            if (empty($occurrences))
-            {
+            if (empty($occurrences)) {
                 abort(404, 'Not Found');
             }
 
@@ -234,11 +249,60 @@ class Payment extends EA_Controller {
             $this->webhooks_client->trigger(WEBHOOK_APPOINTMENT_SAVE, $appointment);
 
             return $appointment;
-        }
-        catch (Throwable $e)
-        {
-            error_log( $e );
+        } catch (Throwable $e) {
+            error_log($e);
             abort(500, 'Internal server error');
+        }
+    }
+
+    /**
+     * Link url for an appointment.
+     *
+     * @param string $appointment_hash
+     */
+    public function link(string $appointment_hash)
+    {
+        $client = new Client([
+            'timeout' => 10.0,
+        ]);
+        try {
+            $occurrences = $this->appointments_model->get(['hash' => $appointment_hash]);
+            if (empty($occurrences)) {
+                abort(404, 'Not Found');
+            }
+
+            $appointment = $occurrences[0];
+            if ($appointment["is_paid"] == 1) {
+                redirect(site_url('booking_confirmation/of/' . $appointment_hash));
+            } else {
+                $service = $this->services_model->find($appointment['id_services']);
+                $customer = $this->customers_model->find($appointment['id_users_customer']);
+                $redirectURL = site_url('payment/confirm' . '/' . $appointment_hash);
+
+                $res = $client->post('https://api.vazapay.com/v1/onepay/charge', [
+                    'headers' => [
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer ' . config('stripe_api_key'),
+                    ],
+                    'json' => [
+                        'amount' => $service["price"],
+                        'reason' => $appointment_hash,
+                        'currency' => $service["currency"],
+                        'email' => $customer["email"],
+                        'name' => $customer["first_name"],
+                        'redirectURL' => $redirectURL
+                    ]
+                ]);
+                $body = json_decode($res->getBody());
+                $url = $body->url;
+                redirect($url);
+            }
+        } catch (Throwable $e) {
+            log_message('error', 'Webhooks Client - The webhook (' . ($appointment_hash ?? NULL) . ') request received an unexpected exception: ' . $e->getMessage());
+            log_message('error', $e->getTraceAsString());
+
+            error_log($e);
+            response('failed');
         }
     }
 

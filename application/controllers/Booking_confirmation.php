@@ -18,7 +18,8 @@
  *
  * @package Controllers
  */
-class Booking_confirmation extends EA_Controller {
+class Booking_confirmation extends EA_Controller
+{
     /**
      * Booking_confirmation constructor.
      */
@@ -45,8 +46,7 @@ class Booking_confirmation extends EA_Controller {
 
         $occurrences = $this->appointments_model->get(['hash' => $appointment_hash]);
 
-        if (empty($occurrences))
-        {
+        if (empty($occurrences)) {
             redirect('appointments'); // The appointment does not exist.
 
             return;
@@ -64,7 +64,7 @@ class Booking_confirmation extends EA_Controller {
             '{$appointment_hash}' => $appointment['hash'],
             '{$customer_email}' => $customer['email'],
         );
-        $payment_link = strtr($service['payment_link'], $payment_link_vars);
+        $payment_link = site_url('payment/link' . '/' . $appointment_hash); //strtr($service['payment_link'], $payment_link_vars);
 
         html_vars([
             'page_title' => lang('success'),

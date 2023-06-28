@@ -10,8 +10,10 @@ get_env_value() {
   fi
 }
 
-
-unzip /tmp/html.zip -d /var/www/html
+# IF SKIP_UNZIP is not defined
+if [[ -z "$SKIP_UNZIP" ]]; then
+  unzip /tmp/html.zip -d /var/www/html
+fi
 
 chown -R www-data:www-data /var/www/html/storage && \
 chmod -R 777 /var/www/html/storage
@@ -67,24 +69,39 @@ class Config {
     // GOOGLE CALENDAR SYNC
     // ------------------------------------------------------------------------
 
-    const GOOGLE_SYNC_FEATURE   = $(get_env_value "GOOGLE_SYNC_FEATURE" "FALSE");
-    const GOOGLE_PRODUCT_NAME   = '"$(get_env_value "GOOGLE_PRODUCT_NAME" "")"';
-    const GOOGLE_CLIENT_ID      = '"$(get_env_value "GOOGLE_CLIENT_ID" "")"';
-    const GOOGLE_CLIENT_SECRET  = '"$(get_env_value "GOOGLE_CLIENT_SECRET" "")"';
-    const GOOGLE_API_KEY        = '"$(get_env_value "GOOGLE_API_KEY" "")"';
+    const GOOGLE_SYNC_FEATURE     = $(get_env_value "GOOGLE_SYNC_FEATURE" "FALSE");
+    const GOOGLE_PRODUCT_NAME     = '"$(get_env_value "GOOGLE_PRODUCT_NAME" "")"';
+    const GOOGLE_CLIENT_ID        = '"$(get_env_value "GOOGLE_CLIENT_ID" "")"';
+    const GOOGLE_CLIENT_SECRET    = '"$(get_env_value "GOOGLE_CLIENT_SECRET" "")"';
+    const GOOGLE_API_KEY          = '"$(get_env_value "GOOGLE_API_KEY" "")"';
+
+    // ------------------------------------------------------------------------
+    // STRIPE PAYMENT INTEGRATION
+    // ------------------------------------------------------------------------
+
+    const STRIPE_PAYMENT_FEATURE  = '"$(get_env_value "STRIPE_PAYMENT_FEATURE" "")"';
+    const STRIPE_API_KEY  = '"$(get_env_value "STRIPE_API_KEY" "")"';
 }
 
 /* End of file config.php */
 /* Location: ./config.php */" > /var/www/html/config.php 
 
 # Configure ssmtp with environment variables
-echo "mailhub=${SMTP_SERVER}:${SMTP_PORT}\n\
-UseTLS=${SMTP_USE_TLS}\n\
-UseSTARTTLS=${SMTP_USE_STARTTLS}\n\
-FromLineOverride=YES\n\
-AuthUser=${SMTP_USERNAME}\n\
-AuthPass=${SMTP_PASSWORD}" > /etc/ssmtp/ssmtp.conf
+echo "mailhub=${SMTP_SERVER}:${SMTP_PORT}" > /etc/ssmtp/ssmtp.conf
+echo "UseTLS=${SMTP_USE_TLS}" >> /etc/ssmtp/ssmtp.conf
+echo "UseSTARTTLS=${SMTP_USE_STARTTLS}" >> /etc/ssmtp/ssmtp.conf
+echo "FromLineOverride=YES" >> /etc/ssmtp/ssmtp.conf
+echo "AuthUser=${SMTP_USERNAME}" >> /etc/ssmtp/ssmtp.conf
+echo "AuthPass=${SMTP_PASSWORD}" >> /etc/ssmtp/ssmtp.conf
 
+echo "➜ Install Composer Dependencies"
+composer install
 
-# Start Apache web server
-apache2-foreground
+echo "➜ Install NPM Dependencies"
+npm install
+
+echo "➜ Build Project Assets"
+gulp build
+
+echo "➜ Listen To Incoming Requests"
+php-fpm
