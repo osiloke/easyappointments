@@ -72,6 +72,7 @@ class Config {
     // ------------------------------------------------------------------------
 
     const BASE_URL      = '"$(get_env_value "BASE_URL" "http://localhost:8000")"';
+    const INDEX_PAGE    = '';
     const LANGUAGE      = '"$(get_env_value "LANGUAGE" "english")"';
     const DEBUG_MODE    = $(get_env_value "DEBUG_MODE" "FALSE");
 
