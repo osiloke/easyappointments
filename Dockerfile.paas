@@ -60,6 +60,7 @@ RUN npm install -g gulp-cli
 VOLUME /var/www/html/storage
 
 # Download and unzip if DOWNLOAD_URL is not empty
+RUN echo $DOWNLOAD_URL
 RUN curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip 
 RUN unzip /tmp/html.zip -d /var/www/html
 
