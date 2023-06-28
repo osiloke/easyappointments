@@ -19,7 +19,7 @@ chown -R www-data:www-data /var/www/html/storage &&
   chmod -R 777 /var/www/html/storage
 
 # Database Configuration
-if [[ $database_url =~ mysql:\/\/([a-zA-Z0-9_]+):([a-zA-Z0-9_]+)@([^:]+):([0-9]+)\/(.+) ]]; then
+if [[ $database_url =~ mysql:\/\/([^:]+):([^@]+)@([^:]+):([0-9]+)\/(.+) ]]; then
   DB_HOST="${BASH_REMATCH[3]}"
   DB_NAME="${BASH_REMATCH[5]}"
   DB_PASSWORD="${BASH_REMATCH[2]}"
