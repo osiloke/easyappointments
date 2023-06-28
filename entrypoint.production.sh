@@ -10,11 +10,6 @@ get_env_value() {
   fi
 }
 
-# IF SKIP_UNZIP is not defined
-if [[ -z "$SKIP_UNZIP" ]]; then
-  unzip /tmp/html.zip -d /var/www/html
-fi
-
 chown -R www-data:www-data /var/www/html/storage &&
   chmod -R 777 /var/www/html/storage
 
@@ -111,15 +106,6 @@ echo "UseSTARTTLS=${SMTP_USE_STARTTLS}" >>/etc/ssmtp/ssmtp.conf
 echo "FromLineOverride=YES" >>/etc/ssmtp/ssmtp.conf
 echo "AuthUser=${SMTP_USERNAME}" >>/etc/ssmtp/ssmtp.conf
 echo "AuthPass=${SMTP_PASSWORD}" >>/etc/ssmtp/ssmtp.conf
-
-echo "➜ Install Composer Dependencies"
-composer install
-
-echo "➜ Install NPM Dependencies"
-npm install
-
-echo "➜ Build Project Assets"
-gulp build
 
 echo "➜ Listen To Incoming Requests"
 php-fpm

@@ -29,7 +29,8 @@ ENV GOOGLE_CLIENT_SECRET=""
 ENV GOOGLE_API_KEY=""
 ENV STRIPE_PAYMENT_FEATURE="FALSE"
 
-ENV SKIP_UNZIP="TRUE"
+ENV SKIP_UNZIP="FALSE"
+ENV DOWNLOAD_URL=""
 
 
 RUN apt-get update \
@@ -56,9 +57,16 @@ RUN apt-get update \
 # Install Gulp
 RUN npm install -g gulp-cli
 
-COPY . . 
+VOLUME /var/www/html/storage 
 
 RUN rm package-lock.json
+
+# Download and unzip if DOWNLOAD_URL is not empty
+RUN if [[ -n "$DOWNLOAD_URL" ]]; then \
+    wget -O /tmp/html.zip "$DOWNLOAD_URL" && \
+    unzip /tmp/html.zip -d /var/www/html; \
+    fi
+
 # Copy entry point file
 COPY entrypoint.production.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
