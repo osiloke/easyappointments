@@ -19,12 +19,15 @@ chown -R www-data:www-data /var/www/html/storage &&
   chmod -R 777 /var/www/html/storage
 
 # Database Configuration
-if [[ $database_url =~ mysql:\/\/([^:]+):([^@]+)@([^:]+):([0-9]+)\/(.+) ]]; then
-  DB_HOST="${BASH_REMATCH[3]}"
-  DB_NAME="${BASH_REMATCH[5]}"
-  DB_PASSWORD="${BASH_REMATCH[2]}"
-  DB_PORT="${BASH_REMATCH[4]}"
-  DB_USERNAME="${BASH_REMATCH[1]}"
+if [[ -n "$DATABASE_URL" ]]; then
+  # Extract the database configuration from the DATABASE_URL environment variable
+  DB_URL="$DATABASE_URL"
+  DB_HOST_PORT=$(echo "$DB_URL" | awk -F[@//] '{print $4}')
+  DB_HOST=$(echo "$DB_HOST_PORT" | awk -F[:] '{print $1}')
+  DB_PORT=$(echo "$DB_HOST_PORT" | awk -F[:] '{print $2}')
+  DB_USERNAME=$(echo "$DB_URL" | awk -F[@//] '{print $3}' | awk -F[:] '{print $1}')
+  DB_PASSWORD=$(echo "$DB_URL" | awk -F[@//] '{print $3}' | awk -F[:] '{print $2}')
+  DB_NAME=$(echo "$DB_URL" | awk -F[/] '{print $NF}')
 else
   # Use the existing configuration
   DB_HOST=$(get_env_value "DB_HOST" "easyappointments-database")
