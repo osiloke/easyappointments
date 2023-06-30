@@ -495,8 +495,8 @@ class Appointments_model extends EA_Model
                     $appointment['service'] = $this
                         ->db
                         ->get_where('services', [
-                            'id' => $appointment['id_services'] ?? $appointment['serviceId'] ?? NULL
-                        ])
+                                'id' => $appointment['id_services'] ?? $appointment['serviceId'] ?? NULL
+                            ])
                         ->row_array();
                     break;
 
@@ -504,8 +504,8 @@ class Appointments_model extends EA_Model
                     $appointment['provider'] = $this
                         ->db
                         ->get_where('users', [
-                            'id' => $appointment['id_users_provider'] ?? $appointment['providerId'] ?? NULL
-                        ])
+                                'id' => $appointment['id_users_provider'] ?? $appointment['providerId'] ?? NULL
+                            ])
                         ->row_array();
                     break;
 
@@ -513,8 +513,8 @@ class Appointments_model extends EA_Model
                     $appointment['customer'] = $this
                         ->db
                         ->get_where('users', [
-                            'id' => $appointment['id_users_customer'] ?? $appointment['customerId'] ?? NULL
-                        ])
+                                'id' => $appointment['id_users_customer'] ?? $appointment['customerId'] ?? NULL
+                            ])
                         ->row_array();
                     break;
 
