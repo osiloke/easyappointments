@@ -2,18 +2,6 @@
 /**
  * Local variables.
  *
- * @var string $company_name
- * @var string $appointment_service
- * @var string $appointment_provider
- * @var string $appointment_duration
- * @var string $appointment_timezone
- * @var string $customer_name
- * @var string $customer_email
- * @var string $customer_phone
- * @var string $customer_address
- * @var string $reason
- * @var string $company_link
- * @var string $payment_intent
  * @var array $appointment
  * @var array $service
  * @var array $provider
@@ -28,7 +16,7 @@
 
 <head>
     <title>
-        <?= lang('appointment_cancelled_title') ?> | pride
+        <?= lang('appointment_cancelled_title') ?> | Easy!Appointments
     </title>
 </head>
 
@@ -97,6 +85,15 @@
                     </td>
                 </tr>
 
+                <tr>
+                    <td class="label" style="padding: 3px;font-weight: bold;">
+                        <?= lang('description') ?>
+                    </td>
+                    <td style="padding: 3px;">
+                        <?= e($service['description']) ?>
+                    </td>
+                </tr>
+
                 <?php if (!empty($appointment['location'])): ?>
                     <tr>
                         <td class="label" style="padding: 3px;font-weight: bold;">
@@ -157,16 +154,6 @@
                         <?= e($customer['address']) ?>
                     </td>
                 </tr>
-                <?php if (config('stripe_payment_feature') && $payment_intent): ?>
-                    <tr>
-                        <td class="label" style="padding: 3px;font-weight: bold;">
-                            <?= lang('payment_intent') ?>
-                        </td>
-                        <td style="padding: 3px;">
-                            <?= $payment_intent ?>
-                        </td>
-                    </tr>
-                <?php endif ?>
             </table>
 
             <h2>
@@ -180,9 +167,9 @@
 
         <div id="footer" style="padding: 10px; text-align: center; margin-top: 10px;
                 border-top: 1px solid #EEE; background: #FAFAFA;">
-
-            <a href="https://pride.osiloke.com" style="text-decoration: none;">
-                pride
+            Powered by
+            <a href="https://easyappointments.org" style="text-decoration: none;">
+                Easy!Appointments
             </a>
             |
             <a href="<?= e($settings['company_link']) ?>" style="text-decoration: none;">

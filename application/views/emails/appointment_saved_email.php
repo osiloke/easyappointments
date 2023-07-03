@@ -2,22 +2,6 @@
 /**
  * Local variables.
  *
- * @var string $company_name
- * @var string $email_title
- * @var string $email_message
- * @var array $appointment_service
- * @var string $appointment_provider
- * @var string $appointment_start_date
- * @var string $appointment_end_date
- * @var string $appointment_timezone
- * @var string $customer_name
- * @var string $customer_email
- * @var string $customer_phone
- * @var string $customer_address
- * @var string $appointment_link
- * @var string $company_link
- * @var string $payment_link
- * @var boolean $is_paid
  * @var string $subject
  * @var string $message
  * @var array $appointment
@@ -34,7 +18,7 @@
 
 <head>
     <title>
-        <?= lang('appointment_details_title') ?> | pride
+        <?= lang('appointment_details_title') ?> | Easy!Appointments
     </title>
 </head>
 
@@ -60,25 +44,6 @@
                 <?= lang('appointment_details_title') ?>
             </h2>
 
-            <?php if (config('stripe_payment_feature') && $payment_link): ?>
-                <h2>
-                    <?= lang('appointment_payment_title') ?>
-                </h2>
-                <?php if ($is_paid): ?>
-                    <p>
-                        <?= lang('appointment_paymentPaid_text') ?>
-                    </p>
-                <?php else: ?>
-                    <p>
-                        <?= lang('appointment_payment_text') ?>
-                    </p>
-                    <a href="<?= $payment_link ?>" style="width: 600px;"><?= $payment_link ?></a>
-                <?php endif ?>
-            <?php endif ?>
-
-            <h2>
-                <?= lang('appointment_details_title') ?>
-            </h2>
             <table id="appointment-details">
                 <tr>
                     <td class="label" style="padding: 3px;font-weight: bold;">
@@ -119,6 +84,15 @@
                     </td>
                     <td style="padding: 3px;">
                         <?= format_timezone($timezone) ?>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="label" style="padding: 3px;font-weight: bold;">
+                        <?= lang('description') ?>
+                    </td>
+                    <td style="padding: 3px;">
+                        <?= e($service['description']) ?>
                     </td>
                 </tr>
 
@@ -195,9 +169,9 @@
 
         <div id="footer" style="padding: 10px; text-align: center; margin-top: 10px;
                 border-top: 1px solid #EEE; background: #FAFAFA;">
-
-            <a href="https://pride.osiloke.com" style="text-decoration: none;">
-                pride
+            Powered by
+            <a href="https://easyappointments.org" style="text-decoration: none;">
+                Easy!Appointments
             </a>
             |
             <a href="<?= e($settings['company_link']) ?>" style="text-decoration: none;">
