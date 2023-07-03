@@ -1,35 +1,35 @@
 <!doctype html>
-<html lang="en" class="bg-gray-100">
+<html lang="<?= config('language_code') ?>" class="bg-gray-100>
 
 <head>
     <meta charset=" utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <meta name="theme-color" content="#35A768">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+<meta name="theme-color" content="#35A768">
 
-    <?php slot('meta') ?>
+<?php slot('meta') ?>
 
-    <title>
-        <?= lang('page_title') . ' ' . vars('provider_data')['first_name'] . ' ' . vars('provider_data')['last_name'] ?>
-        |
-        Pride
-    </title>
+<title>
+    <?= lang('page_title') . ' ' . vars('provider_data')['first_name'] . ' ' . vars('provider_data')['last_name'] ?>
+    |
+    Pride
+</title>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="<?= asset_url('assets/img/apple-touch-icon.png') ?>">
-    <link rel="icon" type="image/png" sizes="32x32" href="<?= asset_url('assets/img/favicon-32x32.png') ?>">
-    <link rel="icon" type="image/png" sizes="16x16" href="<?= asset_url('assets/img/favicon-16x16.png') ?>">
-    <link rel="manifest" href="<?= asset_url('assets/img/site.webmanifest') ?>">
+<link rel="apple-touch-icon" sizes="180x180" href="<?= asset_url('assets/img/apple-touch-icon.png') ?>">
+<link rel="icon" type="image/png" sizes="32x32" href="<?= asset_url('assets/img/favicon-32x32.png') ?>">
+<link rel="icon" type="image/png" sizes="16x16" href="<?= asset_url('assets/img/favicon-16x16.png') ?>">
+<link rel="manifest" href="<?= asset_url('assets/img/site.webmanifest') ?>">
 
-    <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/cookieconsent/cookieconsent.min.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/flatpickr/flatpickr.min.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/flatpickr/material_green.min.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/themes/' . vars('theme') . '.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/general.css') ?>">
-    <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/layouts/booking_layout.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/cookieconsent/cookieconsent.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/flatpickr/flatpickr.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/flatpickr/material_green.min.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/themes/' . vars('theme') . '.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/general.css') ?>">
+<link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/layouts/booking_layout.css') ?>">
 
-    <?php component('company_color_style', ['company_color' => vars('company_color')]) ?>
+<?php component('company_color_style', ['company_color' => vars('company_color')]) ?>
 
-    <?php slot('styles') ?>
+<?php slot('styles') ?>
 </head>
 
 <body data-theme="lofi" class="bg-gray-100">
