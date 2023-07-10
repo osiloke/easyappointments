@@ -9,8 +9,7 @@
 <div id="frame-footer">
     <small>
         <span class="footer-powered-by">
-            Powered By
-            <a href="https://easyappointments.org" target="_blank">Easy!Appointments</a>
+            <a href="https://pride.osiloke.com" target="_blank">pride</a>
         </span>
 
         <span class="footer-options">
@@ -18,10 +17,10 @@
                 <i class="fas fa-language me-2"></i>
                 <?= ucfirst(config('language')) ?>
             </span>
-    
+
             <?php if ($display_login_button): ?>
                 <a class="backend-link badge bg-primary text-decoration-none px-2"
-                   href="<?= session('user_id') ? site_url('calendar') : site_url('login'); ?>">
+                    href="<?= session('user_id') ? site_url('calendar') : site_url('login'); ?>">
                     <i class="fas fa-sign-in-alt me-2"></i>
                     <?= session('user_id') ? lang('backend_section') : lang('login') ?>
                 </a>
