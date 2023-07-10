@@ -9,11 +9,12 @@
 <html lang="en" style="
     height: 100%;
 ">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <title>Error | Easy!Appointments</title>
+    <title>Error | pride</title>
     <style>
         #error-container {
             background: #ffffff;
@@ -57,6 +58,7 @@
         }
     </style>
 </head>
+
 <body style="
     height: 100%;
     padding: 0;
@@ -64,19 +66,20 @@
     display: flex;
     background: #f5f8fa;
 ">
-<div id="error-container">
-    <h1>
-        <?= $heading ?>
-    </h1>
+    <div id="error-container">
+        <h1>
+            <?= $heading ?>
+        </h1>
 
-    <?= $message ?>
+        <?= $message ?>
 
-    <p>
-        <small>
-            Powered by
-            <a href="https://easyappointments.org">Easy!Appointments</a>
-        </small>
-    </p>
-</div>
+        <p>
+            <small>
+
+                <a href="https://pride.osiloke.com">pride</a>
+            </small>
+        </p>
+    </div>
 </body>
+
 </html>
