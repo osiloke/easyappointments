@@ -13,7 +13,7 @@ get_env_value() {
 if [[ -n "$DOWNLOAD_URL" ]]; then
   # Run wget to fetch easyappointments-0.0.0.zip to /tmp/html.zip
   curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip
-  unzip /tmp/html.zip -o -d /var/www/html
+  unzip -o /tmp/html.zip -d /var/www/html
 fi
 
 chown -R www-data:www-data /var/www/html/storage &&
