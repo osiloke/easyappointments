@@ -10,7 +10,9 @@
 
 <div id="wizard-frame-4" class="wizard-frame" style="display:none;">
     <div class="frame-container">
-        <h2 class="frame-title"><?= lang('appointment_confirmation') ?></h2>
+        <h2 class="frame-title">
+            <?= lang('appointment_confirmation') ?>
+        </h2>
         <div class="row frame-content">
             <div id="appointment-details" class="col-12 col-md-6 text-center text-md-start"></div>
             <div id="customer-details" class="col-12 col-md-6 text-center text-md-end"></div>
@@ -25,7 +27,7 @@
                         </button>
                     </label>
                     <img class="captcha-image" src="<?= site_url('captcha') ?>" alt="CAPTCHA">
-                    <input id="captcha-text" class="captcha-text form-control" type="text" value=""/>
+                    <input id="captcha-text" class="captcha-text form-control" type="text" value="" />
                     <span id="captcha-hint" class="help-block" style="opacity:0">&nbsp;</span>
                 </div>
             </div>
@@ -33,38 +35,41 @@
     </div>
 
     <div class="d-flex fs-6 justify-content-around">
-    <?php if ($display_terms_and_conditions): ?>
-        <div class="form-check mb-3">
-            <input type="checkbox" class="required form-check-input" id="accept-to-terms-and-conditions">
-            <label class="form-check-label" for="accept-to-terms-and-conditions">
-                <?= strtr(lang('read_and_agree_to_terms_and_conditions'),
-                    [
-                        '{$link}' => '<a href="#" data-bs-toggle="modal" data-bs-target="#terms-and-conditions-modal">',
-                        '{/$link}' => '</a>'
-                    ])
-                ?>
-            </label>
-        </div>
-    <?php endif ?>
+        <?php if ($display_terms_and_conditions): ?>
+            <div class="form-check mb-3">
+                <input type="checkbox" class="required form-check-input" id="accept-to-terms-and-conditions">
+                <label class="form-check-label" for="accept-to-terms-and-conditions">
+                    <?= strtr(
+                        lang('read_and_agree_to_terms_and_conditions'),
+                        [
+                            '{$link}' => '<a href="#" data-bs-toggle="modal" data-bs-target="#terms-and-conditions-modal">',
+                            '{/$link}' => '</a>'
+                        ]
+                    )
+                        ?>
+                </label>
+            </div>
+        <?php endif ?>
 
-    <?php if ($display_privacy_policy): ?>
-        <div class="form-check mb-3">
-            <input type="checkbox" class="required form-check-input" id="accept-to-privacy-policy">
-            <label class="form-check-label" for="accept-to-privacy-policy">
-                <?= strtr(lang('read_and_agree_to_privacy_policy'),
-                    [
-                        '{$link}' => '<a href="#" data-bs-toggle="modal" data-bs-target="#privacy-policy-modal">',
-                        '{/$link}' => '</a>'
-                    ])
-                ?>
-            </label>
-        </div>
-    <?php endif ?>
+        <?php if ($display_privacy_policy): ?>
+            <div class="form-check mb-3">
+                <input type="checkbox" class="required form-check-input" id="accept-to-privacy-policy">
+                <label class="form-check-label" for="accept-to-privacy-policy">
+                    <?= strtr(
+                        lang('read_and_agree_to_privacy_policy'),
+                        [
+                            '{$link}' => '<a href="#" data-bs-toggle="modal" data-bs-target="#privacy-policy-modal">',
+                            '{/$link}' => '</a>'
+                        ]
+                    )
+                        ?>
+                </label>
+            </div>
+        <?php endif ?>
     </div>
 
-    <div class="command-buttons">
-        <button type="button" id="button-back-4" class="btn button-back btn-outline-secondary"
-                data-step_index="4">
+    <div class="flex flex-row justify-between my-2">
+        <button type="button" id="button-back-4" class="btn button-back btn-outline-secondary" data-step_index="4">
             <i class="fas fa-chevron-left me-2"></i>
             <?= lang('back') ?>
         </button>
@@ -73,8 +78,8 @@
                 <i class="fas fa-check-square me-2"></i>
                 <?= $manage_mode ? lang('update') : lang('confirm') ?>
             </button>
-            <input type="hidden" name="csrfToken"/>
-            <input type="hidden" name="post_data"/>
+            <input type="hidden" name="csrfToken" />
+            <input type="hidden" name="post_data" />
         </form>
     </div>
 </div>

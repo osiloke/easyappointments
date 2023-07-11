@@ -51,13 +51,13 @@ body {
     font-weight: lighter;
     color: #fff;
     margin: 20px 0;
-    
+
     #company-logo {
         display: block;
         margin: 14px auto;
         max-height: 56px;
     }
-    
+
     .display-selected-service,
     .display-selected-provider {
         color: #225d4d;
@@ -134,15 +134,15 @@ body {
 }
 
 #book-appointment-wizard .book-step {
-    display: inline-block;
-    height: 35px;
-    width: 35px;
-    float: left;
+    // display: inline-block;
+    // height: 35px;
+    // width: 35px;
+    // float: left;
     background: #225d4d;
-    padding: 8px;
-    margin-right: 12px;
-    margin-top: 6px;
-    border-radius: 0.25rem;
+    // padding: 8px;
+    // margin-right: 12px;
+    // margin-top: 6px;
+    // border-radius: 0.25rem;
     transition: all 0.3s linear;
 }
 
@@ -160,14 +160,14 @@ body {
 }
 
 #book-appointment-wizard .active-step {
-    display: inline-block;
-    height: 45px;
-    width: 45px;
-    float: left;
-    background: #fff;
-    padding: 7px;
-    margin-right: 13px;
-    margin-top: 0;
+    // display: inline-block;
+    // height: 45px;
+    // width: 45px;
+    // float: left;
+    // background: #fff;
+    // padding: 7px;
+    // margin-right: 13px;
+    // margin-top: 0;
 }
 
 #book-appointment-wizard .active-step strong {
@@ -204,7 +204,8 @@ body {
 }
 
 #book-appointment-wizard .span3 {
-    min-width: 270px; /* This is especially needed for ie8 */
+    min-width: 270px;
+    /* This is especially needed for ie8 */
 }
 
 #book-appointment-wizard #select-timezone {
@@ -406,6 +407,7 @@ body {
 }
 
 @media (min-width: 768px) {
+
     #message-frame,
     #success-frame {
         height: 100%;

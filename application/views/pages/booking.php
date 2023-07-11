@@ -19,7 +19,8 @@
 ]) ?>
 <!-- Pick An Appointment Date -->
 
-<?php component('booking_time_step', ['grouped_timezones' => vars('grouped_timezones')]) ?>
+<?php component('booking_time_step', ['grouped_timezones' => vars('grouped_timezones'),
+    'available_services' => vars('available_services'),]) ?>
 
 <!-- Enter Customer Information -->
 

@@ -10,7 +10,7 @@
     <?php slot('meta') ?>
 
     <title>
-        <?= lang('page_title') . ' ' . vars('company_name') ?> | pride
+        <?= lang('page_title') . ' ' . vars('company_name') ?> | Pride
     </title>
 
     <link rel="icon" type="image/x-icon" href="<?= asset_url('assets/img/favicon.ico') ?>">
@@ -28,10 +28,19 @@
     <?php slot('styles') ?>
 </head>
 
-<body>
-    <div id="main" class="container">
+<body class="bg-transparent">
+    <div id=" main" class="container max-w-screen">
+        <div class="px-3.5 bg-black justify-between items-center flex py-2 rounded-lg my-5">
+            <img class="w-12 my-2" src="<?= vars('company_logo') ?: base_url('assets/img/logo.png') ?>" alt="logo" />
+            <div class="h-5 justify-between items-center space-x-10 flex">
+                <div class="text-right text-neutral-50 text-sm font-normal leading-tight btn-ghost">About</div>
+                <div class="text-right text-neutral-50 text-sm font-normal leading-tight btn-ghost">FAQs</div>
+                <div class="text-right text-neutral-50 text-sm font-normal leading-tight btn-ghost">Contact Us</div>
+            </div>
+        </div>
         <div class="row wrapper">
-            <div id="book-appointment-wizard" class="col-12 col-lg-10 col-xl-8 col-xxl-7">
+
+            <div id="book-appointment-wizard" class="bg-transparent shadow-none">
 
                 <?php component('booking_header', ['company_name' => vars('company_name'), 'company_logo' => vars('company_logo')]) ?>
 
