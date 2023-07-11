@@ -109,7 +109,7 @@ class Config {
     // STRIPE PAYMENT INTEGRATION
     // ------------------------------------------------------------------------
 
-    const STRIPE_PAYMENT_FEATURE  = '"$(get_env_value "STRIPE_PAYMENT_FEATURE" "")"';
+    const STRIPE_PAYMENT_FEATURE  = $(get_env_value "STRIPE_PAYMENT_FEATURE" "");
     const STRIPE_API_KEY  = '"$(get_env_value "STRIPE_API_KEY" "")"';
 }
 
