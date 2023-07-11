@@ -38,6 +38,16 @@ else
   DB_USERNAME=$(get_env_value "DB_USERNAME" "root")
 fi
 
+if [[ $USE_SMTP == "Yes" ]]; then
+  # Configure ssmtp with environment variables
+  echo "mailhub=${SMTP_SERVER}:${SMTP_PORT}" >/etc/ssmtp/ssmtp.conf
+  echo "UseTLS=${SMTP_USE_TLS}" >>/etc/ssmtp/ssmtp.conf
+  echo "UseSTARTTLS=${SMTP_USE_STARTTLS}" >>/etc/ssmtp/ssmtp.conf
+  echo "FromLineOverride=YES" >>/etc/ssmtp/ssmtp.conf
+  echo "AuthUser=${SMTP_USERNAME}" >>/etc/ssmtp/ssmtp.conf
+  echo "AuthPass=${SMTP_PASSWORD}" >>/etc/ssmtp/ssmtp.conf
+fi
+
 # Create the configuration file
 echo "<?php
 /* ----------------------------------------------------------------------------
@@ -105,14 +115,5 @@ class Config {
 
 /* End of file config.php */
 /* Location: ./config.php */" >/var/www/html/config.php
-
-# Configure ssmtp with environment variables
-echo "mailhub=${SMTP_SERVER}:${SMTP_PORT}" >/etc/ssmtp/ssmtp.conf
-echo "UseTLS=${SMTP_USE_TLS}" >>/etc/ssmtp/ssmtp.conf
-echo "UseSTARTTLS=${SMTP_USE_STARTTLS}" >>/etc/ssmtp/ssmtp.conf
-echo "FromLineOverride=YES" >>/etc/ssmtp/ssmtp.conf
-echo "AuthUser=${SMTP_USERNAME}" >>/etc/ssmtp/ssmtp.conf
-echo "AuthPass=${SMTP_PASSWORD}" >>/etc/ssmtp/ssmtp.conf
-
 echo "➜ Listen To Incoming Requests"
 php-fpm
