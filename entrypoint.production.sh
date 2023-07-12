@@ -16,8 +16,8 @@ if [[ -n "$DOWNLOAD_URL" ]]; then
   unzip -o /tmp/html.zip -d /var/www/html
 fi
 
-chown -R www-data:www-data /var/www/html/storage &&
-  chmod -R 777 /var/www/html/storage
+chown -R www-data:www-data /var/www/html &&
+  chmod -R 755 /var/www/html
 
 # Database Configuration
 if [[ -n "$DATABASE_URL" ]]; then
