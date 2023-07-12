@@ -17,9 +17,9 @@
 
 $protocol =
     (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on')
-    || (isset($_SERVER['SERVER_PORT']) && (int)$_SERVER['SERVER_PORT'] === 443)
+    || (isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443)
     || (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')
-        ? 'https://' : 'http://';
+    ? 'https://' : 'http://';
 
 $domain = $_SERVER['HTTP_HOST'] ?? 'localhost';
 
@@ -37,7 +37,7 @@ $config['base_url'] = trim($protocol . $domain . $request_uri, '/');
 | variable so that it is blank.
 |
 */
-$config['index_page'] = 'index.php';
+$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -340,7 +340,7 @@ $config['encryption_key'] = base64_encode(APPPATH);
 |
 */
 $config['sess_driver'] = 'files';
-$config['sess_cookie_name'] = 'ea_session';
+$config['sess_cookie_name'] = 'pride_session';
 $config['sess_expiration'] = 7200;
 $config['sess_save_path'] = __DIR__ . '/../../storage/sessions';
 $config['sess_match_ip'] = FALSE;
