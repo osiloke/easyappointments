@@ -110,7 +110,7 @@ function styles() {
         .pipe(plumber())
         // .pipe(cached())
         .pipe(sass().on('error', sass.logError))
-        .pipe(postcss([tailwindcss(options.config.tailwindjs), autoprefixer()]))
+        .pipe(postcss([tailwindcss("./tailwind.config.js"), autoprefixer()]))
         .pipe(gulp.dest('assets/css'))
         .pipe(css())
         .pipe(rename({ suffix: '.min' }))
@@ -118,7 +118,7 @@ function styles() {
 }
 
 function watch(done) {
-    gulp.watch(`application/views/**/*.{html,php}`, gulp.parallel(styles));
+    // gulp.watch(`application/views/**/**/*.{html,php}`, gulp.parallel(styles));
     gulp.watch(['assets/js/**/*.js', '!assets/js/**/*.min.js'], gulp.parallel(scripts));
     gulp.watch(['assets/css/**/*.scss', '!assets/css/**/*.css'], gulp.parallel(styles));
     done();

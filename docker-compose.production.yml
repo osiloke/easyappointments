@@ -9,7 +9,7 @@ services:
         image: mysql:5.7
         container_name: easyappointments-database
         volumes:
-            - ./mysql:/var/lib/mysql
+            - mysql:/var/lib/mysql
         environment:
             - MYSQL_ROOT_PASSWORD=root
             - MYSQL_DATABASE=easyappointments
@@ -45,3 +45,5 @@ services:
 networks:
     internal:
         driver: bridge
+volumes:
+    mysql:

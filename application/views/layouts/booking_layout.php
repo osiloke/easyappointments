@@ -29,13 +29,13 @@
 </head>
 
 <body class="bg-transparent">
-    <div id=" main" class="container max-w-screen">
-        <div class="px-3.5 bg-black justify-between items-center flex py-2 rounded-lg my-5">
+    <div id="main" class="container">
+        <div id="nav">
             <img class="w-12 my-2" src="<?= vars('company_logo') ?: base_url('assets/img/logo.png') ?>" alt="logo" />
-            <div class="h-5 justify-between items-center space-x-10 flex">
-                <div class="text-right text-neutral-50 text-sm font-normal leading-tight btn-ghost">About</div>
-                <div class="text-right text-neutral-50 text-sm font-normal leading-tight btn-ghost">FAQs</div>
-                <div class="text-right text-neutral-50 text-sm font-normal leading-tight btn-ghost">Contact Us</div>
+            <div>
+                <div>About</div>
+                <div>FAQs</div>
+                <div>Contact Us</div>
             </div>
         </div>
         <div class="row wrapper">

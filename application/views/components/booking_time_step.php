@@ -11,16 +11,7 @@
     <div class="frame-container">
         <!-- <h2 class="frame-title"><?= lang('appointment_date_and_time') ?></h2> -->
         <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-10">
-            <div
-                class="bg-white rounded-lg shadow border border-neutral-50 flex flex-row h-36 w-full lg:w-4/12 items-center px-4 gap-4">
-                <div class="w-4 h-4 p-10 bg-white rounded-lg shadow border border-neutral-50"></div>
-                <div class="flex flex-col w-full">
-                    <span class="display-selected-provider text-neutral-600 text-xl font-bold leading-loose">
-                    </span>
-                    <span class="display-selected-service   text-neutral-600 text-base font-medium leading-normal">
-                    </span>
-                </div>
-            </div>
+            <?php component('provider_card', ['hide_service' => FALSE, 'company_name' => vars('company_name'), 'company_logo' => vars('company_logo')]) ?>
             <div class="flex flex-col lg:flex-row w-full lg:w-9/12 bg-white rounded-lg gap-10 px-5 shadow">
                 <div class="w-full lg:w-6/12">
                     <div id="select-date" class="p-0 py-0 w-full"></div>

@@ -8,6 +8,7 @@
  * @link        https://easyappointments.org
  * @since       v1.5.0
  * ---------------------------------------------------------------------------- */
+@import "../_tailwind";
 
 root {
     display: block;
@@ -30,17 +31,23 @@ body {
  ------------------------------------------------------------------------------ */
 
 #book-appointment-wizard {
-    background: #fff;
-    min-height: 480px;
-    padding: 0;
-    margin: auto;
+    &:not(.join) {
+        background: #fff;
+        min-height: 480px;
+        padding: 0;
+        margin: auto;
+    }
 }
 
-#book-appointment-wizard #header {
-    overflow: auto;
-    height: auto;
-    padding: 20px 15px;
-    background: #429a82;
+#book-appointment-wizard {
+    &:not(.join) {
+        #header {
+            overflow: auto;
+            height: auto;
+            padding: 20px 15px;
+            background: #429a82;
+        }
+    }
 }
 
 #book-appointment-wizard #company-name {
@@ -134,16 +141,18 @@ body {
 }
 
 #book-appointment-wizard .book-step {
-    // display: inline-block;
-    // height: 35px;
-    // width: 35px;
-    // float: left;
-    background: #225d4d;
-    // padding: 8px;
-    // margin-right: 12px;
-    // margin-top: 6px;
-    // border-radius: 0.25rem;
-    transition: all 0.3s linear;
+    &:not(.join-item) {
+        display: inline-block;
+        height: 35px;
+        width: 35px;
+        float: left;
+        background: #225d4d;
+        padding: 8px;
+        margin-right: 12px;
+        margin-top: 6px;
+        border-radius: 0.25rem;
+        transition: all 0.3s linear;
+    }
 }
 
 #book-appointment-wizard .book-step:last-child {
@@ -160,14 +169,16 @@ body {
 }
 
 #book-appointment-wizard .active-step {
-    // display: inline-block;
-    // height: 45px;
-    // width: 45px;
-    // float: left;
-    // background: #fff;
-    // padding: 7px;
-    // margin-right: 13px;
-    // margin-top: 0;
+    &:not(.join-item) {
+        display: inline-block;
+        height: 45px;
+        width: 45px;
+        float: left;
+        background: #fff;
+        padding: 7px;
+        margin-right: 13px;
+        margin-top: 0;
+    }
 }
 
 #book-appointment-wizard .active-step strong {
@@ -281,9 +292,11 @@ body {
     }
 
     #book-appointment-wizard {
-        border-radius: 0.25rem;
-        overflow: hidden;
-        box-shadow: rgba(45, 62, 80, 0.12) 0 1px 5px 0;
+        &:not(.join) {
+            border-radius: 0.25rem;
+            overflow: hidden;
+            box-shadow: rgba(45, 62, 80, 0.12) 0 1px 5px 0;
+        }
     }
 
     #book-appointment-wizard #company-name {
@@ -436,5 +449,73 @@ body {
         background: #f3f2e7;
         border-bottom: 1px solid #e4e1c9;
         text-align: left;
+    }
+}
+
+
+#book-appointment-wizard :first-child.join-item {
+    @apply bg-white border-r-0 border-l rounded-l-full
+}
+
+#book-appointment-wizard .join-item {
+    @apply transition-all border-gray-200 border-r border-t border-b;
+}
+
+#book-appointment-wizard> :last-child.join-item {
+    @apply bg-white border-l border-r rounded-r-full
+}
+
+#book-appointment-wizard .active-step.join-item {
+    @apply text-white bg-black;
+
+    >div svg {
+        @apply fill-white
+    }
+
+    >div {
+        @apply text-white bg-black;
+    }
+}
+
+#nav {
+    @apply px-3.5 bg-black justify-between items-center flex py-2 rounded-lg my-5;
+
+    >div {
+        @apply h-5 justify-between items-center space-x-10 flex;
+
+        &>div {
+            @apply text-right text-neutral-50 text-sm font-normal leading-tight btn-ghost;
+        }
+    }
+}
+
+#frame-container .grid {
+    @apply flex flex-col w-full justify-between space-x-0 gap-10;
+}
+
+#book-appointment-wizard .frame-container .frame-title {
+    @apply text-left;
+}
+
+.service-grid {
+    @apply grid grid-cols-2 gap-4;
+}
+
+select {
+    @apply select select-bordered;
+}
+
+input {
+    @apply input input-bordered;
+}
+
+#book-appointment-wizard #service-description {
+    @apply my-4 text-sm;
+}
+
+@media (min-width: 768px) {
+
+    .service-grid {
+        @apply grid grid-cols-3 gap-4;
     }
 }
