@@ -82,18 +82,15 @@ header('X-Frame-Options: SAMEORIGIN');
 |
 */
 
-if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS')
-{
+if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     header('Access-Control-Allow-Origin: *');
 
-    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD']))
-    {
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_METHOD'])) {
         // May also be using PUT, PATCH, HEAD etc
         header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
     }
 
-    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']))
-    {
+    if (isset($_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS'])) {
         header('Access-Control-Allow-Headers: ' . $_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']);
     }
 
@@ -157,5 +154,21 @@ $route['api/v1/availabilities']['get'] = 'api/v1/availabilities_api_v1/get';
 |
 */
 
+$route['about'] = 'about';
+$route['appointments'] = 'appointments';
+$route['accounts'] = 'accounts';
+$route['admins'] = 'admins';
+$route['backend'] = 'backend';
+$route['calendar'] = 'calendar';
+$route['customers'] = 'customers';
+$route['login'] = 'login';
+$route['logout'] = 'logout';
+$route['providers'] = 'providers';
+$route['recovery'] = 'recovery';
+$route['secretaries'] = 'secretaries';
+$route['services'] = 'categories';
+$route['settings'] = 'settings';
+$route['booking'] = 'booking';
+$route['(:any)'] = 'booking';
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */
