@@ -89,8 +89,8 @@ class Booking extends EA_Controller
         $provider_id = isset($_GET['provider']) ? $_GET['provider'] : '';
         $provider_name = strtolower(uri_string());
 
-        $available_services = $this->services_model->get_available_services(TRUE, $provider_id || '-1', $provider_name);
-        $available_providers = $this->providers_model->get_available_providers(TRUE, $provider_id || '-1', $provider_name);
+        $available_services = $this->services_model->get_available_services(TRUE, $provider_id ?? '', $provider_name);
+        $available_providers = $this->providers_model->get_available_providers(TRUE, $provider_id ?? '', $provider_name);
 
         if (sizeof($available_services) == 0 && sizeof($available_providers) == 0) {
             show_404();

@@ -655,8 +655,17 @@ class Providers_model extends EA_Model {
      *
      * @return array Returns an array of providers.
      */
-    public function get_available_providers(bool $without_private = FALSE): array
+    public function get_available_providers(bool $without_private = FALSE, $provider_id = '', $provider_name = ''): array
     {
+        if (strlen($provider_id) > 0) {
+            $this->db->where('users.id', $provider_id);
+        } else if (strlen($provider_name) > 0) {
+            $provider_from_username = $this->db->get_where('user_settings', ['username' => $provider_name])->first_row();
+            if ($provider_from_username == null){
+                return [];
+            }
+            $provider_id = $provider_from_username->id_users;
+        }  
         if ($without_private)
         {
             $this->db->where('users.is_private', FALSE);
