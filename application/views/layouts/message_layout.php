@@ -28,6 +28,7 @@
 
 <body>
     <div id="main" class="container">
+        <?php component('navbar', ['company_color' => vars('company_color')]) ?>
         <div class="row wrapper">
             <div id="message-frame" class="col-12 border my-auto frame-container">
 

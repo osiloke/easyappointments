@@ -453,23 +453,35 @@ body {
 }
 
 
-#book-appointment-wizard :first-child.join-item {
-    @apply bg-white border-r-0 border-l rounded-l-full
-}
-
 #book-appointment-wizard .join-item {
-    @apply transition-all border-gray-200 border-r border-t border-b;
+    @apply transition-all border-gray-200 border-r border-t border-b text-center;
+
+    >div {
+        @apply h-full;
+    }
 }
 
-#book-appointment-wizard> :last-child.join-item {
-    @apply bg-white border-l border-r rounded-r-full
+#book-appointment-wizard :first-child.join-item {
+    @apply bg-white border-r border-l rounded-l-full;
+}
+
+#book-appointment-wizard :last-child.join-item {
+    @apply border-r rounded-r-full;
+}
+
+.button-next {
+    @apply btn btn-primary rounded-full;
+}
+
+.button-back {
+    @apply rounded-full btn-neutral;
 }
 
 #book-appointment-wizard .active-step.join-item {
     @apply text-white bg-black;
 
     >div svg {
-        @apply fill-white
+        @apply fill-white;
     }
 
     >div {
@@ -498,24 +510,56 @@ body {
 }
 
 .service-grid {
-    @apply grid grid-cols-2 gap-4;
+    @apply grid grid-cols-1 gap-4;
 }
 
-select {
-    @apply select select-bordered;
-}
-
-input {
-    @apply input input-bordered;
-}
 
 #book-appointment-wizard #service-description {
     @apply my-4 text-sm;
 }
 
+@media (max-width: 768px) {
+
+    #book-appointment-wizard .join-item {
+        & div {
+            & svg {
+                @apply w-8 h-8 ml-5;
+            }
+
+            & div {
+                @apply invisible w-0 h-0;
+            }
+        }
+    }
+}
+
 @media (min-width: 768px) {
 
     .service-grid {
-        @apply grid grid-cols-3 gap-4;
+        @apply grid grid-cols-2 gap-4;
     }
+}
+
+.form-control select {
+    @apply select select-bordered border-gray-300;
+}
+
+[data-theme="lofi"] input {
+    @apply input bg-white rounded-lg shadow text-gray-400 text-base font-normal leading-normal;
+}
+
+[data-theme="lofi"] label {
+    @apply text-neutral-600 text-sm font-medium leading-tight;
+}
+
+[data-theme="lofi"] #book-appointment-wizard .frame-container .frame-title {
+    @apply mb-0 text-zinc-900 text-lg font-semibold leading-7 py-5;
+}
+
+[data-theme="lofi"] #message-frame a.btn {
+    @apply btn-secondary rounded-full;
+}
+
+[data-theme="lofi"] #book-appointment-wizard .wizard-frame .flatpickr-calendar {
+    margin: 0px;
 }

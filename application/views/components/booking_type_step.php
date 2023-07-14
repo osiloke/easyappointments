@@ -10,8 +10,10 @@
     <div class="frame-container">
 
         <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-10">
-            <?php component('provider_card', ["hide_service" => true]) ?>
-            <div class="w-full bg-white rounded-lg lg:w-6/12 py-4">
+            <div class="w-full lg:w-4/12">
+                <?php component('provider_card', ["hide_service" => true]) ?>
+            </div>
+            <div class="w-full bg-white rounded-lg lg:w-8/12 py-4">
                 <h2 class="frame-title">
                     <?= lang('choose service') ?>
                 </h2>
@@ -136,7 +138,7 @@
     <div class="command-buttons">
         <span>&nbsp;</span>
 
-        <button type="button" id="button-next-1" class="btn btn-primary rounded-full button-next" data-step_index="1">
+        <button type="button" id="button-next-1" class="btn btn-primary button-next" data-step_index="1">
             <?= lang('Proceed') ?>
             <i class="fas fa-chevron-right ms-2"></i>
         </button>

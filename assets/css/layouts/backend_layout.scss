@@ -170,7 +170,8 @@ body .modal.full-screen .modal-content {
 
 body .modal.full-screen .wrapper {
     min-height: 100%;
-    margin-bottom: -67px; /* modal-footer height */
+    margin-bottom: -67px;
+    /* modal-footer height */
 }
 
 body .modal.full-screen .modal-footer {
@@ -321,19 +322,19 @@ body legend {
     margin-bottom: 10px;
 }
 
-#calendar-page #calendar-actions > .btn-group {
+#calendar-page #calendar-actions>.btn-group {
     width: 100%;
 }
 
-#calendar-page #calendar-actions > .btn-group .btn {
+#calendar-page #calendar-actions>.btn-group .btn {
     width: auto;
 }
 
-#calendar-page #calendar-actions > .btn-group .btn:not(.dropdown-toggle) {
+#calendar-page #calendar-actions>.btn-group .btn:not(.dropdown-toggle) {
     text-align: right;
 }
 
-#calendar-page #calendar-actions > .btn-group .btn.dropdown-toggle {
+#calendar-page #calendar-actions>.btn-group .btn.dropdown-toggle {
     text-align: left;
 }
 
@@ -347,7 +348,7 @@ body legend {
 }
 
 #calendar .fc-header-toolbar {
-    display: block ;
+    display: block;
 }
 
 #calendar .fc-header-toolbar .fc-toolbar-chunk {
@@ -358,8 +359,8 @@ body legend {
 #calendar .fc-col-header-cell-cushion {
     text-decoration: none;
     text-transform: none;
-    cursor: default; 
-    color: var(--bs-body-color) !important; 
+    cursor: default;
+    color: var(--bs-body-color) !important;
 }
 
 #calendar .calendar-header .select2-container {
@@ -499,7 +500,8 @@ body legend {
 
 #appointment-notes,
 #customer-notes {
-    height: 37px; /* Align with location field */
+    height: 37px;
+    /* Align with location field */
 }
 
 body .form-horizontal .control-label {
@@ -548,7 +550,7 @@ body .form-horizontal .controls {
     overflow-x: auto;
 }
 
-#calendar .calendar-view > div {
+#calendar .calendar-view>div {
     width: 100%;
     min-width: 100% !important;
     overflow: auto;
@@ -608,19 +610,19 @@ body .form-horizontal .controls {
         margin-bottom: 0;
     }
 
-    #calendar-page #calendar-actions > .btn-group {
+    #calendar-page #calendar-actions>.btn-group {
         width: auto;
     }
 
-    #calendar-page #calendar-actions > .btn-group .btn {
+    #calendar-page #calendar-actions>.btn-group .btn {
         width: auto;
     }
 
-    #calendar-page #calendar-actions > .btn-group .btn:not(.dropdown-toggle) {
+    #calendar-page #calendar-actions>.btn-group .btn:not(.dropdown-toggle) {
         text-align: center;
     }
 
-    #calendar-page #calendar-actions > .btn-group .btn.dropdown-toggle {
+    #calendar-page #calendar-actions>.btn-group .btn.dropdown-toggle {
         text-align: center;
     }
 
@@ -832,7 +834,7 @@ body .form-horizontal .controls {
 
 #working-plan-exceptions-breaks {
     table-layout: fixed;
-    
+
     .form-control {
         width: 100% !important;
     }
@@ -1000,4 +1002,8 @@ body .form-horizontal .controls {
 
 .status-list-item {
     max-width: 400px;
+}
+
+#privacy-policy-modal .modal.show {
+    @apply opacity-100 z-[1000];
 }

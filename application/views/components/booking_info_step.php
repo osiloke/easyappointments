@@ -25,7 +25,9 @@
     <div class="frame-container">
 
         <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-10">
-            <?php component('provider_card', ['hide_service' => FALSE, 'company_name' => vars('company_name'), 'company_logo' => vars('company_logo')]) ?>
+            <div class="w-full lg:w-4/12">
+                <?php component('provider_card', ['hide_service' => FALSE, 'company_name' => vars('company_name'), 'company_logo' => vars('company_logo')]) ?>
+            </div>
             <div class="flex flex-col w-full lg:w-9/12 bg-white rounded-lg gap-10 px-5 py-10 shadow">
                 <h2 class="frame-title">
                     <?= lang('customer_information') ?>

@@ -4,8 +4,10 @@ const options = require("./config"); //options from config.js
 module.exports = {
     content: ["./application/views/**/**/*.{html,js,php}"],
     darkMode: "class",
-    theme: {
-        extend: {},
+    daisyui: {
+        themes: [
+            "lofi"
+        ],
     },
     plugins: [
         require("@tailwindcss/typography"),

@@ -7,16 +7,24 @@
  * @var string $price
  */
 ?>
-<div class="w-44 h-44 relative">
-    <div class="w-44 h-44 left-[2px] top-0 absolute bg-black rounded-lg shadow border border-neutral-50"></div>
-    <div class="w-44 h-28 p-2.5 left-0 top-[24.07px] absolute flex-col justify-start items-center gap-2.5 inline-flex">
-        <div class="w-36 text-center text-neutral-50 text-base font-bold leading-normal">
-            <?= $name ?>
-        </div>
-        <?= $description ?>
-        <div class="text-center text-neutral-50 text-xs font-light leading-none">
-            NGN
-            <?= $price ?>
+<div class="w-full form-control bg-neutral-100 rounded-lg shadow border border-neutral-50">
+    <div class="w-full label relative">
+        <input type="radio" name="radio-10"
+            class="radio radio-primary checked:radio-primary active:radio-primary absolute top-0" checked />
+        <div class="w-full min-h-[5rem] p-2.5 flex-col justify-start items-start gap-2.5 inline-flex pt-10">
+            <div class="w-8/12text-center text-base font-bold leading-normal">
+                <?= $name ?>
+            </div>
+            <div class="min-h-6">
+                <?= $description ?>
+            </div>
+            <div class="w-full h-4 justify-between items-end inline-flex">
+                <div class="text-gray-400 text-xs font-bold leading-none">
+                    NGN
+                    <?= $price ?>
+                </div>
+                <div class="text-right text-gray-400 text-xs font-normal leading-none">15 min</div>
+            </div>
         </div>
     </div>
 </div>

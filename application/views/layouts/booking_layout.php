@@ -28,16 +28,9 @@
     <?php slot('styles') ?>
 </head>
 
-<body class="bg-transparent">
+<body class="bg-transparent" data-theme="lofi">
     <div id="main" class="container">
-        <div id="nav">
-            <img class="w-12 my-2" src="<?= vars('company_logo') ?: base_url('assets/img/logo.png') ?>" alt="logo" />
-            <div>
-                <div>About</div>
-                <div>FAQs</div>
-                <div>Contact Us</div>
-            </div>
-        </div>
+        <?php component('navbar', ['company_color' => vars('company_color')]) ?>
         <div class="row wrapper">
 
             <div id="book-appointment-wizard" class="bg-transparent shadow-none">
