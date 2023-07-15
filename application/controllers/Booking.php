@@ -107,7 +107,6 @@ class Booking extends EA_Controller
                 'timezone'
             ]);
         }
-
         $date_format = setting('date_format');
         $time_format = setting('time_format');
         $first_weekday = setting('first_weekday');
@@ -211,7 +210,7 @@ class Booking extends EA_Controller
             $manage_mode = FALSE;
             $customer_token = FALSE;
             $appointment = NULL;
-            $provider = NULL;
+            $provider = $available_providers[0];
             $customer = NULL;
             $is_paid = 0;
         }

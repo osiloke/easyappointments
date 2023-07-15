@@ -26,6 +26,7 @@ services:
             - DEBUG_MODE=TRUE
             - SKIP_UNZIP=TRUE
             - GOOGLE_SYNC_FEATURE=TRUE
+            - STRIPE_API_KEY=b3657af6-bdaf-4b45-b645-e03a474d39c3
 
     nginx:
         image: 'nginx:1.23.3-alpine'

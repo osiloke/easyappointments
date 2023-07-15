@@ -10,15 +10,16 @@ get_env_value() {
   fi
 }
 
+echo "DOWNLOAD URL = $DOWNLOAD_URL"
 if [[ -n "$DOWNLOAD_URL" ]]; then
   # Run wget to fetch easyappointments-0.0.0.zip to /tmp/html.zip
   curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip
   unzip -o /tmp/html.zip -d /var/www/html
+
+  chown -R www-data:www-data /var/www/html &&
+    chmod -R 755 /var/www/html
+
 fi
-
-chown -R www-data:www-data /var/www/html &&
-  chmod -R 755 /var/www/html
-
 # Database Configuration
 if [[ -n "$DATABASE_URL" ]]; then
   # Extract the database configuration from the DATABASE_URL environment variable

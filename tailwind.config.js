@@ -6,12 +6,18 @@ module.exports = {
     darkMode: "class",
     daisyui: {
         themes: [
-            "lofi"
+            {
+                lofi: {
+                    ...require("daisyui/src/theming/themes")["[data-theme=lofi]"],
+                    ".modal": {}
+                }
+            }
         ],
     },
     plugins: [
         require("@tailwindcss/typography"),
         require("@tailwindcss/forms"),
         require('@tailwindcss/container-queries'),
-        require('daisyui')]
+        require('daisyui')
+    ]
 };
