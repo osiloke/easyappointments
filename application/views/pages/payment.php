@@ -2,12 +2,14 @@
 
 <?php section('content') ?>
 
-<div>
-    <img id="success-icon" class="mt-0 mb-5" src="<?= base_url('assets/img/success.png') ?>" alt="success"/>
+<div class="inline-flex justify-center items-center py-5">
+    <img id="success-icon" src="<?= base_url('assets/img/heroicons-mini/check-badge.svg') ?>" alt="success" />
 </div>
 
 <div class="mb-5">
-    <h4 class="mb-5"><?= lang('appointment_paymentPaid_text') ?></h4>
+    <h4 class="mb-5">
+        <?= lang('appointment_paymentPaid_text') ?>
+    </h4>
 
     <p>
         <?= lang('appointment_details_was_sent_to_you') ?>
