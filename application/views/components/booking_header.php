@@ -7,7 +7,7 @@
 ?>
 
 <div class="flex flex-col lg:flex-row justify-between item-center px-2.5 py-2 md:mx-4 mx-2 gap-2">
-    <div id="booking-name">
+    <div id="booking-name justify-center lg:justify-start">
         <span class="text-2xl md:text-3xl leading-10 font-bold">
             <?= lang('Booking Appointment') ?>
         </span>
@@ -30,7 +30,7 @@
             <strong class="text-primary">4</strong>
         </div>
     </div> -->
-    <div class="join text-neutral-600 ">
+    <div class="join text-neutral-600 justify-center lg:justify-start">
         <div id="step-1" class="join-item active-step">
             <div class="px-2.5 py-2 justify-center items-center gap-2 inline-flex">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">

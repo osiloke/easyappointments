@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="bg-gray-100">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset=" utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="theme-color" content="#35A768">
@@ -10,11 +10,15 @@
     <?php slot('meta') ?>
 
     <title>
-        <?= lang('page_title') . ' ' . vars('company_name') ?> | Pride
+        <?= lang('page_title') . ' ' . vars('provider_data')['first_name'] . ' ' . vars('provider_data')['last_name'] ?>
+        |
+        Pride
     </title>
 
-    <link rel="icon" type="image/x-icon" href="<?= asset_url('assets/img/favicon.ico') ?>">
-    <link rel="icon" sizes="192x192" href="<?= asset_url('assets/img/logo.png') ?>">
+    <link rel="apple-touch-icon" sizes="180x180" href="<?= asset_url('assets/img/apple-touch-icon.png') ?>">
+    <link rel="icon" type="image/png" sizes="32x32" href="<?= asset_url('assets/img/favicon-32x32.png') ?>">
+    <link rel="icon" type="image/png" sizes="16x16" href="<?= asset_url('assets/img/favicon-16x16.png') ?>">
+    <link rel="manifest" href="<?= asset_url('assets/img/site.webmanifest') ?>">
 
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/cookieconsent/cookieconsent.min.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/flatpickr/flatpickr.min.css') ?>">
@@ -28,7 +32,7 @@
     <?php slot('styles') ?>
 </head>
 
-<body class="bg-transparent" data-theme="lofi">
+<body data-theme="lofi" class="bg-gray-100">
     <div id="main" class="container">
         <?php component('navbar', ['company_color' => vars('company_color')]) ?>
         <div class="row wrapper">

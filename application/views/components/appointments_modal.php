@@ -18,7 +18,9 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title"><?= lang('edit_appointment_title') ?></h3>
+                <h3 class="modal-title">
+                    <?= lang('edit_appointment_title') ?>
+                </h3>
                 <button class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
@@ -27,7 +29,9 @@
 
                 <form>
                     <fieldset>
-                        <h5 class="text-black-50 mb-3 fw-light"><?= lang('appointment_details_title') ?></h5>
+                        <h5 class="text-black-50 mb-3 fw-light">
+                            <?= lang('appointment_details_title') ?>
+                        </h5>
 
                         <input id="appointment-id" type="hidden">
 
@@ -43,26 +47,20 @@
                                         // Group services by category, only if there is at least one service
                                         // with a parent category.
                                         $has_category = FALSE;
-                                        
-                                        foreach ($available_services as $service)
-                                        {
-                                            if ( ! empty($service['category_id']))
-                                            {
+
+                                        foreach ($available_services as $service) {
+                                            if (!empty($service['category_id'])) {
                                                 $has_category = TRUE;
                                                 break;
                                             }
                                         }
 
-                                        if ($has_category)
-                                        {
+                                        if ($has_category) {
                                             $grouped_services = [];
 
-                                            foreach ($available_services as $service)
-                                            {
-                                                if ( ! empty($service['category_id']))
-                                                {
-                                                    if ( ! isset($grouped_services[$service['category_name']]))
-                                                    {
+                                            foreach ($available_services as $service) {
+                                                if (!empty($service['category_id'])) {
+                                                    if (!isset($grouped_services[$service['category_name']])) {
                                                         $grouped_services[$service['category_name']] = [];
                                                     }
 
@@ -73,27 +71,22 @@
                                             // We need the uncategorized services at the end of the list, so we will use
                                             // another iteration only for the uncategorized services.
                                             $grouped_services['uncategorized'] = [];
-                                            
-                                            foreach ($available_services as $service)
-                                            {
-                                                if ($service['category_id'] == NULL)
-                                                {
+
+                                            foreach ($available_services as $service) {
+                                                if ($service['category_id'] == NULL) {
                                                     $grouped_services['uncategorized'][] = $service;
                                                 }
                                             }
 
-                                            foreach ($grouped_services as $key => $group)
-                                            {
+                                            foreach ($grouped_services as $key => $group) {
                                                 $group_label = $key !== 'uncategorized'
                                                     ? e($group[0]['category_name'])
                                                     : 'Uncategorized';
 
-                                                if (count($group) > 0)
-                                                {
+                                                if (count($group) > 0) {
                                                     echo '<optgroup label="' . $group_label . '">';
 
-                                                    foreach ($group as $service)
-                                                    {
+                                                    foreach ($group as $service) {
                                                         echo '<option value="' . $service['id'] . '">'
                                                             . e($service['name']) . '</option>';
                                                     }
@@ -101,11 +94,8 @@
                                                     echo '</optgroup>';
                                                 }
                                             }
-                                        }
-                                        else
-                                        {
-                                            foreach ($available_services as $service)
-                                            {
+                                        } else {
+                                            foreach ($available_services as $service) {
                                                 echo '<option value="' . $service['id'] . '">'
                                                     . e($service['name']) . '</option>';
                                             }
@@ -122,7 +112,7 @@
                                     <select id="select-provider" class="required form-control"></select>
                                 </div>
 
-                                <div class="mb-3">
+                                <div class="mb-3 hidden">
                                     <?php component('color_selection', ['attributes' => 'id="appointment-color"']) ?>
                                 </div>
 
@@ -149,13 +139,14 @@
 
                             <div class="col-12 col-sm-6">
                                 <div class="mb-3">
-                                    <label for="start-datetime"
-                                           class="form-label"><?= lang('start_date_time') ?></label>
+                                    <label for="start-datetime" class="form-label"><?= lang('start_date_time') ?></label>
                                     <input id="start-datetime" class="required form-control">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="end-datetime" class="form-label"><?= lang('end_date_time') ?></label>
+                                    <label for="end-datetime" class="form-label">
+                                        <?= lang('end_date_time') ?>
+                                    </label>
                                     <input id="end-datetime" class="required form-control">
                                 </div>
 
@@ -186,18 +177,11 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="appointment-notes" class="form-label"><?= lang('notes') ?></label>
+                                    <label for="appointment-notes" class="form-label">
+                                        <?= lang('notes') ?>
+                                    </label>
                                     <textarea id="appointment-notes" class="form-control" rows="3"></textarea>
                                 </div>
-
-                                <?php if (config('stripe_payment_feature')): ?>
-                                <div class="mb-3 form-check form-switch">
-                                    <input class="form-check-input" type="checkbox" id="appointment-is-paid">
-                                    <label class="form-check-label" for="appointment-is-paid">
-                                        <?= lang('is_paid') ?>
-                                    </label>
-                                </div>
-                                <?php endif ?>
                             </div>
                         </div>
                     </fieldset>
@@ -208,21 +192,20 @@
                         <h5 class="text-black-50 mb-3 fw-light">
                             <?= lang('customer_details_title') ?>
                             <button id="new-customer" class="btn btn-outline-secondary btn-sm" type="button"
-                                    data-tippy-content="<?= lang('clear_fields_add_existing_customer_hint') ?>">
+                                data-tippy-content="<?= lang('clear_fields_add_existing_customer_hint') ?>">
                                 <i class="fas fa-plus-square me-2"></i>
                                 <?= lang('new') ?>
                             </button>
                             <button id="select-customer" class="btn btn-outline-secondary btn-sm" type="button"
-                                    data-tippy-content="<?= lang('pick_existing_customer_hint') ?>">
+                                data-tippy-content="<?= lang('pick_existing_customer_hint') ?>">
                                 <i class="fas fa-hand-pointer me-2"></i>
                                 <span>
                                     <?= lang('select') ?>
                                 </span>
                             </button>
 
-                            <input id="filter-existing-customers"
-                                   placeholder="<?= lang('type_to_filter_customers') ?>"
-                                   style="display: none;" class="input-sm form-control">
+                            <input id="filter-existing-customers" placeholder="<?= lang('type_to_filter_customers') ?>"
+                                style="display: none;" class="input-sm form-control">
                         </h5>
 
                         <div id="existing-customers-list" style="display: none;"></div>
@@ -239,8 +222,8 @@
                                         <?php endif ?>
                                     </label>
                                     <input type="text" id="first-name"
-                                           class="<?= $require_first_name ? 'required' : '' ?> form-control"
-                                           maxlength="100"/>
+                                        class="<?= $require_first_name ? 'required' : '' ?> form-control"
+                                        maxlength="100" />
                                 </div>
 
                                 <div class="mb-3">
@@ -251,8 +234,8 @@
                                         <?php endif ?>
                                     </label>
                                     <input type="text" id="last-name"
-                                           class="<?= $require_last_name ? 'required' : '' ?> form-control"
-                                           maxlength="120"/>
+                                        class="<?= $require_last_name ? 'required' : '' ?> form-control"
+                                        maxlength="120" />
                                 </div>
 
                                 <div class="mb-3">
@@ -263,8 +246,7 @@
                                         <?php endif ?>
                                     </label>
                                     <input type="text" id="email"
-                                           class="<?= $require_email ? 'required' : '' ?> form-control"
-                                           maxlength="120"/>
+                                        class="<?= $require_email ? 'required' : '' ?> form-control" maxlength="120" />
                                 </div>
 
                                 <div class="mb-3">
@@ -275,7 +257,7 @@
                                         <?php endif ?>
                                     </label>
                                     <input type="text" id="phone-number" maxlength="60"
-                                           class="<?= $require_phone_number ? 'required' : '' ?> form-control"/>
+                                        class="<?= $require_phone_number ? 'required' : '' ?> form-control" />
                                 </div>
 
                                 <div class="mb-3">
@@ -301,8 +283,8 @@
                                         <?php endif ?>
                                     </label>
                                     <input type="text" id="address"
-                                           class="<?= $require_address ? 'required' : '' ?> form-control"
-                                           maxlength="120"/>
+                                        class="<?= $require_address ? 'required' : '' ?> form-control"
+                                        maxlength="120" />
                                 </div>
 
                                 <div class="mb-3">
@@ -313,8 +295,7 @@
                                         <?php endif ?>
                                     </label>
                                     <input type="text" id="city"
-                                           class="<?= $require_city ? 'required' : '' ?> form-control"
-                                           maxlength="120"/>
+                                        class="<?= $require_city ? 'required' : '' ?> form-control" maxlength="120" />
                                 </div>
 
                                 <div class="mb-3">
@@ -325,8 +306,8 @@
                                         <?php endif ?>
                                     </label>
                                     <input type="text" id="zip-code"
-                                           class="<?= $require_zip_code ? 'required' : '' ?> form-control"
-                                           maxlength="120"/>
+                                        class="<?= $require_zip_code ? 'required' : '' ?> form-control"
+                                        maxlength="120" />
                                 </div>
 
                                 <div class="mb-3">
@@ -348,7 +329,7 @@
                                         <?php endif ?>
                                     </label>
                                     <textarea id="customer-notes" rows="2"
-                                              class="<?= $require_zip_code ? 'required' : '' ?> form-control"></textarea>
+                                        class="<?= $require_zip_code ? 'required' : '' ?> form-control"></textarea>
                                 </div>
                             </div>
                         </div>
