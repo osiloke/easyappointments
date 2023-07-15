@@ -84,7 +84,7 @@ App.Pages.Booking = (function () {
 
         App.Utils.UI.initializeDatepicker($selectDate, {
             inline: true,
-            minDate: moment().subtract(1, 'day').set({ hours: 23, minutes: 59, seconds: 59 }).toDate(),
+            minDate: moment().subtract(1, 'day').set({hours: 23, minutes: 59, seconds: 59}).toDate(),
             maxDate: moment().add(vars('future_booking_limit'), 'days').toDate(),
             onChange: (selectedDates) => {
                 App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));
@@ -93,7 +93,13 @@ App.Pages.Booking = (function () {
 
             onMonthChange: (selectedDates, dateStr, instance) => {
                 setTimeout(() => {
-                    const displayedMonthMoment = moment(instance.currentYearElement.value + '-' + (Number(instance.monthsDropdownContainer.value) + 1) + '-01');
+                    const displayedMonthMoment = moment(
+                        instance.currentYearElement.value +
+                            '-' +
+                            (Number(instance.monthsDropdownContainer.value) + 1) +
+                            '-01',
+                        'YYYY-M-DD'
+                    );
 
                     App.Http.Booking.getUnavailableDates(
                         $selectProvider.val(),
@@ -105,7 +111,12 @@ App.Pages.Booking = (function () {
 
             onYearChange: (selectedDates, dateStr, instance) => {
                 setTimeout(() => {
-                    const displayedMonthMoment = moment(instance.currentYearElement.value + '-' + (Number(instance.monthsDropdownContainer.value) + 1) + '-01');
+                    const displayedMonthMoment = moment(
+                        instance.currentYearElement.value +
+                            '-' +
+                            (Number(instance.monthsDropdownContainer.value) + 1) +
+                            '-01'
+                    );
 
                     App.Http.Booking.getUnavailableDates(
                         $selectProvider.val(),
@@ -113,7 +124,7 @@ App.Pages.Booking = (function () {
                         displayedMonthMoment.format('YYYY-MM-DD')
                     );
                 }, 500);
-            },
+            }
         });
 
         $selectDate[0]._flatpickr.setDate(new Date());
@@ -130,10 +141,12 @@ App.Pages.Booking = (function () {
         // If the manage mode is true, the appointment data should be loaded by default.
         if (manageMode) {
             applyAppointmentData(vars('appointment_data'), vars('provider_data'), vars('customer_data'));
-            $('#wizard-frame-1').css({
-                'visibility': 'visible',
-                'display': 'none'
-            }).fadeIn();
+            $('#wizard-frame-1')
+                .css({
+                    'visibility': 'visible',
+                    'display': 'none'
+                })
+                .fadeIn();
         } else {
             // Check if a specific service was selected (via URL parameter).
             const selectedServiceId = App.Utils.Url.queryParam('service');
@@ -185,10 +198,12 @@ App.Pages.Booking = (function () {
                             .text(index + 1)
                     );
             } else {
-                $('#wizard-frame-1').css({
-                    'visibility': 'visible',
-                    'display': 'none'
-                }).fadeIn();
+                $('#wizard-frame-1')
+                    .css({
+                        'visibility': 'visible',
+                        'display': 'none'
+                    })
+                    .fadeIn();
             }
 
             prefillFromQueryParam('#first-name', 'first_name');
@@ -215,7 +230,7 @@ App.Pages.Booking = (function () {
      * Remove empty columns and center elements if needed.
      */
     function optimizeContactInfoDisplay() {
-        // If a column has only one control shown then move the control to the other column. 
+        // If a column has only one control shown then move the control to the other column.
 
         const $firstCol = $('#wizard-frame-3 .field-col:first');
         const $firstColControls = $firstCol.find('.form-control');
@@ -234,7 +249,7 @@ App.Pages.Booking = (function () {
             });
         }
 
-        // Hide columns that do not have any controls displayed. 
+        // Hide columns that do not have any controls displayed.
 
         const $fieldCols = $(document).find('#wizard-frame-3 .field-col');
 
@@ -665,29 +680,41 @@ App.Pages.Booking = (function () {
                 }),
                 $('<p/>', {
                     'html': [
-                        fullName ? $('<span/>', {
-                            'text': lang('customer') + ': ' + fullName
-                        }) : null,
+                        fullName
+                            ? $('<span/>', {
+                                  'text': lang('customer') + ': ' + fullName
+                              })
+                            : null,
                         fullName ? $('<br/>') : null,
-                        phoneNumber ? $('<span/>', {
-                            'text': lang('phone_number') + ': ' + phoneNumber
-                        }) : null,
+                        phoneNumber
+                            ? $('<span/>', {
+                                  'text': lang('phone_number') + ': ' + phoneNumber
+                              })
+                            : null,
                         phoneNumber ? $('<br/>') : null,
-                        email ? $('<span/>', {
-                            'text': lang('email') + ': ' + email
-                        }) : null,
+                        email
+                            ? $('<span/>', {
+                                  'text': lang('email') + ': ' + email
+                              })
+                            : null,
                         email ? $('<br/>') : null,
-                        address ? $('<span/>', {
-                            'text': lang('address') + ': ' + address
-                        }) : null,
+                        address
+                            ? $('<span/>', {
+                                  'text': lang('address') + ': ' + address
+                              })
+                            : null,
                         address ? $('<br/>') : null,
-                        city ? $('<span/>', {
-                            'text': lang('city') + ': ' + city,
-                        }) : null,
+                        city
+                            ? $('<span/>', {
+                                  'text': lang('city') + ': ' + city
+                              })
+                            : null,
                         city ? $('<br/>') : null,
-                        zipCode ? $('<span/>', {
-                            'text': lang('zip_code') + ': ' + zipCode
-                        }) : null,
+                        zipCode
+                            ? $('<span/>', {
+                                  'text': lang('zip_code') + ': ' + zipCode
+                              })
+                            : null,
                         zipCode ? $('<br/>') : null
                     ]
                 })
@@ -755,7 +782,7 @@ App.Pages.Booking = (function () {
         let endMoment;
 
         if (service.duration && startMoment) {
-            endMoment = startMoment.clone().add({ 'minutes': parseInt(service.duration) });
+            endMoment = startMoment.clone().add({'minutes': parseInt(service.duration)});
         } else {
             endMoment = moment();
         }
@@ -827,7 +854,7 @@ App.Pages.Booking = (function () {
         }
 
         $('<strong/>', {
-            'text': App.Utils.String.escapeHtml(service.name),
+            'text': App.Utils.String.escapeHtml(service.name)
         }).appendTo($serviceDescription);
 
         if (service.description) {

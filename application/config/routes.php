@@ -169,6 +169,15 @@ $route['secretaries'] = 'secretaries';
 $route['services'] = 'categories';
 $route['settings'] = 'settings';
 $route['booking'] = 'booking';
+$route['general_settings'] = 'general_settings';
+$route['booking_settings'] = 'booking_settings';
+$route['business_settings'] = 'business_settings';
+$route['legal_settings'] = 'legal_settings';
+$route['integrations'] = 'integrations';
+$route['webhooks'] = 'webhooks';
+$route['api_settings'] = 'api_settings';
+$route['google_analytics_settings'] = 'google_analytics_settings';
+$route['matomo_analytics_settings'] = 'matomo_analytics_settings';
 $route['(:any)'] = 'booking';
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

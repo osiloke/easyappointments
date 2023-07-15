@@ -87,7 +87,9 @@ App.Utils.CalendarDefaultView = (function () {
             let startMoment;
             let endMoment;
 
-            if (lastFocusedEventData.extendedProps.data.workingPlanException) {
+            const data = lastFocusedEventData.extendedProps.data;
+
+            if (data.hasOwnProperty('workingPlanException')) {
                 const date = lastFocusedEventData.extendedProps.data.date;
                 const workingPlanException = lastFocusedEventData.extendedProps.data.workingPlanException;
                 const provider = lastFocusedEventData.extendedProps.data.provider;
@@ -133,7 +135,6 @@ App.Utils.CalendarDefaultView = (function () {
                 $appointmentsModal.find('#appointment-id').val(appointment.id);
                 $appointmentsModal.find('#select-service').val(appointment.id_services).trigger('change');
                 $appointmentsModal.find('#select-provider').val(appointment.id_users_provider);
-                $appointmentsModal.find('#appointment-is-paid').prop('checked', appointment.is_paid);
 
                 // Set the start and end datetime of the appointment.
                 startMoment = moment(appointment.start_datetime);
@@ -286,7 +287,10 @@ App.Utils.CalendarDefaultView = (function () {
          */
         $selectFilterItem.on('change', () => {
             // If current value is service, then the sync buttons must be disabled.
-            if ($selectFilterItem.find('option:selected').attr('type') === FILTER_TYPE_SERVICE) {
+            if (
+                $selectFilterItem.find('option:selected').attr('type') === FILTER_TYPE_SERVICE ||
+                $selectFilterItem.val() === 'all'
+            ) {
                 $('#google-sync, #enable-sync, #insert-appointment, #insert-dropdown').prop('disabled', true);
                 fullCalendar.setOption('selectable', false);
                 fullCalendar.setOption('editable', false);
@@ -316,7 +320,9 @@ App.Utils.CalendarDefaultView = (function () {
                     $('#google-sync').prop('disabled', true);
                 }
 
-                $('#insert-working-plan-exception').toggle(providerId !== App.Utils.CalendarDefaultView.FILTER_TYPE_ALL);
+                $('#insert-working-plan-exception').toggle(
+                    providerId !== App.Utils.CalendarDefaultView.FILTER_TYPE_ALL
+                );
             }
 
             $reloadAppointments.trigger('click');
@@ -336,7 +342,7 @@ App.Utils.CalendarDefaultView = (function () {
     function getCalendarHeight() {
         const result =
             window.innerHeight - $footer.outerHeight() - $header.outerHeight() - $calendarToolbar.outerHeight() - 60; // 60 for fine tuning
-        return result > 800 ? result : 800; // Minimum height is 800px
+        return result > 780 ? result : 780; // Minimum height is 800px
     }
 
     /**
@@ -467,6 +473,10 @@ App.Utils.CalendarDefaultView = (function () {
             displayDelete =
                 $target.hasClass('fc-custom') && vars('privileges').appointments.delete === true ? 'me-2' : 'd-none';
 
+            const {date, workingPlanException, provider} = info.event.extendedProps.data;
+            const startTime = workingPlanException?.start;
+            const endTime = workingPlanException?.end;
+
             $html = $('<div/>', {
                 'html': [
                     $('<strong/>', {
@@ -474,11 +484,7 @@ App.Utils.CalendarDefaultView = (function () {
                         'text': lang('provider')
                     }),
                     $('<span/>', {
-                        'text': info.event.extendedProps.data
-                            ? info.event.extendedProps.data.provider.first_name +
-                            ' ' +
-                            info.event.extendedProps.data.provider.last_name
-                            : '-'
+                        'text': `${provider.first_name} ${provider.last_name}`
                     }),
                     $('<br/>'),
 
@@ -487,14 +493,14 @@ App.Utils.CalendarDefaultView = (function () {
                         'text': lang('start')
                     }),
                     $('<span/>', {
-                        'text': App.Utils.Date.format(
-                            info.event.extendedProps.data.date +
-                            ' ' +
-                            info.event.extendedProps.data.workingPlanException.start,
-                            vars('date_format'),
-                            vars('time_format'),
-                            true
-                        )
+                        'text': startTime
+                            ? App.Utils.Date.format(
+                                  `${date} ${startTime}`,
+                                  vars('date_format'),
+                                  vars('time_format'),
+                                  true
+                              )
+                            : '-'
                     }),
                     $('<br/>'),
 
@@ -503,14 +509,14 @@ App.Utils.CalendarDefaultView = (function () {
                         'text': lang('end')
                     }),
                     $('<span/>', {
-                        'text': App.Utils.Date.format(
-                            info.event.extendedProps.data.date +
-                            ' ' +
-                            info.event.extendedProps.data.workingPlanException.end,
-                            vars('date_format'),
-                            vars('time_format'),
-                            true
-                        )
+                        'text': endTime
+                            ? App.Utils.Date.format(
+                                  `${date} ${endTime}`,
+                                  vars('date_format'),
+                                  vars('time_format'),
+                                  true
+                              )
+                            : '-'
                     }),
                     $('<br/>'),
 
@@ -519,7 +525,7 @@ App.Utils.CalendarDefaultView = (function () {
                         'text': lang('timezone')
                     }),
                     $('<span/>', {
-                        'text': vars('timezones')[info.event.extendedProps.data.provider.timezone]
+                        'text': startTime ? vars('timezones')[provider.timezone] : '-'
                     }),
                     $('<br/>'),
 
@@ -623,7 +629,7 @@ App.Utils.CalendarDefaultView = (function () {
                         'text': lang('status')
                     }),
                     $('<span/>', {
-                        'text': info.event.extendedProps.data.status || '-',
+                        'text': info.event.extendedProps.data.status || '-'
                     }),
                     $('<br/>'),
 
@@ -690,18 +696,6 @@ App.Utils.CalendarDefaultView = (function () {
                         'text': getEventNotes(info.event)
                     }),
                     $('<br/>'),
-
-                    vars('stripe_payment_feature') && info.event.extendedProps.data.service.payment_link
-                     ? $('<strong/>', {
-                            'text': lang('is_paid')
-                        })
-                     : undefined,
-                    vars('stripe_payment_feature') && info.event.extendedProps.data.service.payment_link
-                     ? App.Utils.CalendarEventPopover.getIsPaidIcon(info.event)
-                     : undefined,
-                    vars('stripe_payment_feature') && info.event.extendedProps.data.service.payment_link
-                     ? $('<br/>')
-                     : undefined,
 
                     $('<hr/>'),
 
@@ -948,8 +942,6 @@ App.Utils.CalendarDefaultView = (function () {
                 .add({days: info.delta.days, millisecond: info.delta.milliseconds})
                 .format('YYYY-MM-DD HH:mm:ss');
 
-            appointment.is_paid = Number(appointment.is_paid)
-
             appointment.is_unavailability = Number(appointment.is_unavailability);
 
             info.event.extendedProps.data.start_datetime = appointment.start_datetime;
@@ -1038,8 +1030,7 @@ App.Utils.CalendarDefaultView = (function () {
             return;
         }
 
-        const isProviderDisplayed =
-            $selectFilterItem.find('option:selected').attr('type') === FILTER_TYPE_PROVIDER;
+        const isProviderDisplayed = $selectFilterItem.find('option:selected').attr('type') === FILTER_TYPE_PROVIDER;
 
         const buttons = [
             {
@@ -1072,8 +1063,7 @@ App.Utils.CalendarDefaultView = (function () {
 
                     if (isProviderDisplayed) {
                         const provider = vars('available_providers').find(
-                            (availableProvider) =>
-                                Number(availableProvider.id) === Number($selectFilterItem.val())
+                            (availableProvider) => Number(availableProvider.id) === Number($selectFilterItem.val())
                         );
 
                         if (provider) {
@@ -1103,8 +1093,7 @@ App.Utils.CalendarDefaultView = (function () {
                         $appointmentsModal.find('#select-provider').trigger('change');
                     } else {
                         service = vars('available_services').find(
-                            (availableService) =>
-                                Number(availableService.id) === Number($selectFilterItem.val())
+                            (availableService) => Number(availableService.id) === Number($selectFilterItem.val())
                         );
 
                         if (service) {
@@ -1195,9 +1184,7 @@ App.Utils.CalendarDefaultView = (function () {
 
                 // Add appointments to calendar.
                 response.appointments.forEach((appointment) => {
-                    const title = [
-                        appointment.service.name
-                    ];
+                    const title = [appointment.service.name];
 
                     const customerInfo = [];
 
@@ -1220,7 +1207,6 @@ App.Utils.CalendarDefaultView = (function () {
                         end: moment(appointment.end_datetime).toDate(),
                         allDay: false,
                         color: appointment.color,
-                        borderColor: appointment.is_paid ? undefined : 'red',
                         data: appointment // Store appointment data for later use.
                     };
 
@@ -1260,7 +1246,9 @@ App.Utils.CalendarDefaultView = (function () {
                     (availableProvider) => Number(availableProvider.id) === Number(recordId)
                 );
 
-                const workingPlan = JSON.parse(provider ? provider.settings.working_plan : vars('company_working_plan'));
+                const workingPlan = JSON.parse(
+                    provider ? provider.settings.working_plan : vars('company_working_plan')
+                );
                 const workingPlanExceptions = JSON.parse(provider ? provider.settings.working_plan_exceptions : '{}');
                 let unavailabilityEvent;
                 let breakStart;
@@ -1289,19 +1277,19 @@ App.Utils.CalendarDefaultView = (function () {
                     weekdayDate = calendarDate.format('YYYY-MM-DD');
 
                     // Add working plan exception event.
-                    if (workingPlanExceptions && workingPlanExceptions[weekdayDate]) {
+                    if (workingPlanExceptions && workingPlanExceptions.hasOwnProperty(weekdayDate)) {
                         sortedWorkingPlan[weekdayName] = workingPlanExceptions[weekdayDate];
 
-                        workingPlanExceptionStart =
-                            weekdayDate + ' ' + sortedWorkingPlan[weekdayName].start;
-                        workingPlanExceptionEnd = weekdayDate + ' ' + sortedWorkingPlan[weekdayName].end;
+                        const startTime = sortedWorkingPlan[weekdayName]?.start || '00:00';
+                        const endTime = sortedWorkingPlan[weekdayName]?.end || '00:00';
+
+                        workingPlanExceptionStart = `${weekdayDate} ${startTime}`;
+                        workingPlanExceptionEnd = `${weekdayDate} ${endTime}`;
 
                         workingPlanExceptionEvent = {
                             title: lang('working_plan_exception'),
                             start: moment(workingPlanExceptionStart, 'YYYY-MM-DD HH:mm', true).toDate(),
-                            end: moment(workingPlanExceptionEnd, 'YYYY-MM-DD HH:mm', true)
-                                .add(1, 'day')
-                                .toDate(),
+                            end: moment(workingPlanExceptionEnd, 'YYYY-MM-DD HH:mm', true).add(1, 'day').toDate(),
                             allDay: true,
                             color: '#879DB4',
                             editable: false,
@@ -1347,10 +1335,7 @@ App.Utils.CalendarDefaultView = (function () {
                             title: lang('not_working'),
                             start: calendarDate.clone().toDate(),
                             end: moment(
-                                calendarDate.format('YYYY-MM-DD') +
-                                ' ' +
-                                sortedWorkingPlan[weekdayName].start +
-                                ':00'
+                                calendarDate.format('YYYY-MM-DD') + ' ' + sortedWorkingPlan[weekdayName].start + ':00'
                             ).toDate(),
                             allDay: false,
                             color: '#BEBEBE',
@@ -1371,10 +1356,7 @@ App.Utils.CalendarDefaultView = (function () {
                         unavailabilityEvent = {
                             title: lang('not_working'),
                             start: moment(
-                                calendarDate.format('YYYY-MM-DD') +
-                                ' ' +
-                                sortedWorkingPlan[weekdayName].end +
-                                ':00'
+                                calendarDate.format('YYYY-MM-DD') + ' ' + sortedWorkingPlan[weekdayName].end + ':00'
                             ).toDate(),
                             end: calendarDate.clone().add(1, 'day').toDate(),
                             allDay: false,
@@ -1400,9 +1382,7 @@ App.Utils.CalendarDefaultView = (function () {
 
                         const unavailabilityEvent = {
                             title: lang('break'),
-                            start: moment(
-                                calendarDate.format('YYYY-MM-DD') + ' ' + breakPeriod.start
-                            ).toDate(),
+                            start: moment(calendarDate.format('YYYY-MM-DD') + ' ' + breakPeriod.start).toDate(),
                             end: moment(calendarDate.format('YYYY-MM-DD') + ' ' + breakPeriod.end).toDate(),
                             allDay: false,
                             color: '#BEBEBE',
@@ -1415,7 +1395,6 @@ App.Utils.CalendarDefaultView = (function () {
 
                     calendarDate.add(1, 'day');
                 }
-
             })
             .always(() => {
                 $('#loading').css('visibility', '');
@@ -1484,8 +1463,8 @@ App.Utils.CalendarDefaultView = (function () {
                     dayHeaderFormat: columnFormat
                 },
                 timeGridWeek: {
-                  dayHeaderFormat: columnFormat
-              }  
+                    dayHeaderFormat: columnFormat
+                }
             },
             selectable: true,
             selectMirror: true,
@@ -1559,16 +1538,19 @@ App.Utils.CalendarDefaultView = (function () {
                 .prop('selected', true);
         }
 
-        const localSelectFilterItemValue = window.localStorage.getItem('EasyAppointments.SelectFilterItem');
-
-        if (localSelectFilterItemValue && $selectFilterItem.find(`option[value="${localSelectFilterItemValue}"]`).length) {
-            $selectFilterItem.val(localSelectFilterItemValue);
-        }
-
         // Add the page event listeners.
         addEventListeners();
 
-        $reloadAppointments.trigger('click');
+        const localSelectFilterItemValue = window.localStorage.getItem('EasyAppointments.SelectFilterItem');
+
+        if (
+            localSelectFilterItemValue &&
+            $selectFilterItem.find(`option[value="${localSelectFilterItemValue}"]`).length
+        ) {
+            $selectFilterItem.val(localSelectFilterItemValue).trigger('change');
+        } else {
+            $reloadAppointments.trigger('click');
+        }
 
         // Display the edit dialog if an appointment hash is provided.
         if (vars('edit_appointment')) {
@@ -1580,7 +1562,6 @@ App.Utils.CalendarDefaultView = (function () {
             $appointmentsModal.find('#appointment-id').val(appointment.id);
             $appointmentsModal.find('#select-service').val(appointment.id_services).trigger('change');
             $appointmentsModal.find('#select-provider').val(appointment.id_users_provider);
-            $appointmentsModal.find('#appointment-is-paid').prop('checked', appointment.is_paid);
 
             // Set the start and end datetime of the appointment.
             const startDatetimeMoment = moment(appointment.start_datetime);
@@ -1630,8 +1611,6 @@ App.Utils.CalendarDefaultView = (function () {
                 fullCalendar.view.currentEnd
             );
         }, 60000);
-
-        $reloadAppointments.trigger('click');
     }
 
     return {

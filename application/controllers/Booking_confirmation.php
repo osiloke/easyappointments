@@ -18,8 +18,7 @@
  *
  * @package Controllers
  */
-class Booking_confirmation extends EA_Controller
-{
+class Booking_confirmation extends EA_Controller {
     /**
      * Booking_confirmation constructor.
      */
@@ -31,7 +30,7 @@ class Booking_confirmation extends EA_Controller
         $this->load->model('providers_model');
         $this->load->model('services_model');
         $this->load->model('customers_model');
-
+        
         $this->load->library('google_sync');
     }
 
@@ -46,7 +45,8 @@ class Booking_confirmation extends EA_Controller
 
         $occurrences = $this->appointments_model->get(['hash' => $appointment_hash]);
 
-        if (empty($occurrences)) {
+        if (empty($occurrences))
+        {
             redirect('appointments'); // The appointment does not exist.
 
             return;
