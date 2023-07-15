@@ -302,14 +302,16 @@ class Services_model extends EA_Model
     public function get_available_services(bool $without_private = FALSE, string $provider_id = '', $provider_name = ''): array
     {
         if (strlen($provider_id) > 0) {
-            $this->db->where('services_providers.id_users', intval($provider_id));
         } else if (strlen($provider_name) > 0) {
             $provider_from_username = $this->db->get_where('user_settings', ['username' => $provider_name])->first_row();
             if ($provider_from_username == null) {
                 return [];
             }
             $provider_id = $provider_from_username->id_users;
+        } else {
+            return [];
         }
+        $this->db->where('services_providers.id_users', intval($provider_id));
         if ($without_private) {
             $this->db->where('services.is_private', FALSE);
         }
