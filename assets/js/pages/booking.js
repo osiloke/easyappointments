@@ -84,7 +84,7 @@ App.Pages.Booking = (function () {
 
         App.Utils.UI.initializeDatepicker($selectDate, {
             inline: true,
-            minDate: moment().subtract(1, 'day').set({hours: 23, minutes: 59, seconds: 59}).toDate(),
+            minDate: moment().subtract(1, 'day').set({ hours: 23, minutes: 59, seconds: 59 }).toDate(),
             maxDate: moment().add(vars('future_booking_limit'), 'days').toDate(),
             onChange: (selectedDates) => {
                 App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));
@@ -755,7 +755,7 @@ App.Pages.Booking = (function () {
         let endMoment;
 
         if (service.duration && startMoment) {
-            endMoment = startMoment.clone().add({'minutes': parseInt(service.duration)});
+            endMoment = startMoment.clone().add({ 'minutes': parseInt(service.duration) });
         } else {
             endMoment = moment();
         }
