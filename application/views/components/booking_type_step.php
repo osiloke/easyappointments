@@ -21,16 +21,16 @@
                 <div class="row frame-content">
                     <div class="col">
                         <div class="mb-3">
-                            <label for="select-service">
+                            <!-- <label for="select-service">
                                 <strong>
                                     <?= lang('service') ?>
                                 </strong>
-                            </label>
+                            </label> -->
 
                             <?php if ($is_paid): ?>
                                 <select id="select-service" class="form-control w-7/12" disabled="true">
                                 <?php else: ?>
-                                    <select id="select-service" class="form-control w-full lg:w-8/12">
+                                    <select id="select-service" class="form-control w-full lg:w-6/12 hidden">
                                     <?php endif ?>
                                     <?php
                                     // Group services by category, only if there is at least one service with a parent category.
@@ -94,7 +94,7 @@
                                             : 'Uncategorized';
                                         if (count($group) > 0) {
                                             foreach ($group as $service) { ?>
-                                                <?php component('service_tile', ["name" => $service['name'], "description" => '', "price" => $service['price']]) ?>
+                                                <?php component('service_tile', ["id" => $service['id'], "name" => $service['name'], "description" => $service['description'], "price" => $service['price'], "duration" => $service['duration']]) ?>
                                             <?php }
                                             ;
                                         }

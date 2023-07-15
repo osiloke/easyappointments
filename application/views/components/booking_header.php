@@ -6,9 +6,10 @@
  */
 ?>
 
-<div class="flex flex-col lg:flex-row justify-between item-center px-2.5 py-2 md:mx-4 mx-2 gap-2">
+<div
+    class="flex flex-col lg:flex-row justify-between item-center px-2.5 py-2 md:mx-4 mx-2 gap-2 text-center lg:text-left">
     <div id="booking-name justify-center lg:justify-start">
-        <span class="text-2xl md:text-3xl leading-10 font-bold">
+        <span class="text-2xl md:text-3xl leading-10 font-bold mb-2">
             <?= lang('Booking Appointment') ?>
         </span>
     </div>

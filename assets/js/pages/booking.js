@@ -19,6 +19,7 @@
 App.Pages.Booking = (function () {
     const $cookieNoticeLink = $('.cc-link');
     const $selectDate = $('#select-date');
+    const $selectServiceTile = $('input[type=radio][name=select-service-tile]');
     const $selectService = $('#select-service');
     const $selectProvider = $('#select-provider');
     const $selectTimezone = $('#select-timezone');
@@ -306,7 +307,9 @@ App.Pages.Booking = (function () {
         $selectService.on('change', (event) => {
             const $target = $(event.target);
             const serviceId = $selectService.val();
-
+            $($selectServiceTile)
+                .filter('[value="' + serviceId + '"]')
+                .prop('checked', true);
             $selectProvider.empty();
 
             vars('available_providers').forEach((provider) => {
@@ -335,7 +338,17 @@ App.Pages.Booking = (function () {
 
             updateServiceDescription(serviceId);
         });
-
+        /**
+         * Event: Selected Service Tile "Changed"
+         *
+         * When the user clicks on a service tile radio intut, its available providers should
+         * become visible.
+         */
+        $selectServiceTile.on('change', (event) => {
+            const $target = $(event.target);
+            const serviceId = $target.val();
+            $selectService.val(serviceId).trigger('change');
+        });
         /**
          * Event: Next Step Button "Clicked"
          *
