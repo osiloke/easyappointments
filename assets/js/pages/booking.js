@@ -643,28 +643,34 @@ App.Pages.Booking = (function () {
                 $('<p/>', {
                     'html': [
                         $('<span/>', {
-                            'text': lang('service') + ': ' + $selectService.find('option:selected').text()
+                            'text': lang('service')
                         }),
-                        $('<br/>'),
                         $('<span/>', {
-                            'text': lang('provider') + ': ' + $selectProvider.find('option:selected').text()
+                            'text': $selectService.find('option:selected').text()
                         }),
-                        $('<br/>'),
                         $('<span/>', {
-                            'text':
-                                lang('start') +
-                                ': ' +
-                                selectedDate +
-                                ' ' +
-                                $availableHours.find('.selected-hour').text()
+                            'text': lang('provider')
                         }),
-                        $('<br/>'),
+                        $('<span/>', {
+                            'text': $selectProvider.find('option:selected').text()
+                        }),
+                        $('<span/>', {
+                            'text': lang('start')
+                        }),
+                        $('<span/>', {
+                            'text': selectedDate + ' ' + $availableHours.find('.selected-hour').text()
+                        }),
                         $('<span/>', {
                             'text': lang('timezone') + ': ' + $selectTimezone.find('option:selected').text()
                         }),
-                        $('<br/>'),
                         $('<span/>', {
-                            'text': lang('price') + ': ' + servicePrice + ' ' + serviceCurrency,
+                            'text': lang('price'),
+                            'prop': {
+                                'hidden': !servicePrice
+                            }
+                        }),
+                        $('<span/>', {
+                            'text': serviceCurrency + ' ' + servicePrice,
                             'prop': {
                                 'hidden': !servicePrice
                             }
@@ -695,40 +701,64 @@ App.Pages.Booking = (function () {
                     'html': [
                         fullName
                             ? $('<span/>', {
-                                  'text': lang('customer') + ': ' + fullName
+                                  'text': lang('customer')
                               })
                             : null,
-                        fullName ? $('<br/>') : null,
+                        fullName
+                            ? $('<span/>', {
+                                  'text': fullName
+                              })
+                            : null,
                         phoneNumber
                             ? $('<span/>', {
-                                  'text': lang('phone_number') + ': ' + phoneNumber
+                                  'text': lang('phone_number')
                               })
                             : null,
-                        phoneNumber ? $('<br/>') : null,
+                        phoneNumber
+                            ? $('<span/>', {
+                                  'text': phoneNumber
+                              })
+                            : null,
                         email
                             ? $('<span/>', {
-                                  'text': lang('email') + ': ' + email
+                                  'text': lang('email')
                               })
                             : null,
-                        email ? $('<br/>') : null,
+                        email
+                            ? $('<span/>', {
+                                  'text': email
+                              })
+                            : null,
                         address
                             ? $('<span/>', {
-                                  'text': lang('address') + ': ' + address
+                                  'text': lang('address')
                               })
                             : null,
-                        address ? $('<br/>') : null,
+                        address
+                            ? $('<span/>', {
+                                  'text': address
+                              })
+                            : null,
                         city
                             ? $('<span/>', {
-                                  'text': lang('city') + ': ' + city
+                                  'text': lang('city')
                               })
                             : null,
-                        city ? $('<br/>') : null,
+                        city
+                            ? $('<span/>', {
+                                  'text': city
+                              })
+                            : null,
                         zipCode
                             ? $('<span/>', {
-                                  'text': lang('zip_code') + ': ' + zipCode
+                                  'text': lang('zip_code')
                               })
                             : null,
-                        zipCode ? $('<br/>') : null
+                        zipCode
+                            ? $('<span/>', {
+                                  'text': zipCode
+                              })
+                            : null
                     ]
                 })
             ]

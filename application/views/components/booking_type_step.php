@@ -5,15 +5,14 @@
  * @var array $available_services
  */
 ?>
-
 <div id="wizard-frame-1" class="wizard-frame" style="visibility: hidden;">
     <div class="frame-container">
 
         <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-10">
-            <div class="w-full lg:w-4/12">
+            <div class="w-full lg:w-5/12">
                 <?php component('provider_card', ["hide_service" => true]) ?>
             </div>
-            <div class="flex flex-col w-full lg:w-9/12 bg-transparent p-0 lg:p-5">
+            <div id="step-content">
                 <h2 class="frame-title">
                     <?= lang('choose service') ?>
                 </h2>

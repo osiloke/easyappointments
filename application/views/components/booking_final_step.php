@@ -11,10 +11,10 @@
 <div id="wizard-frame-4" class="wizard-frame" style="display:none;">
     <div class="frame-container">
         <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-5">
-            <div class="w-full lg:w-4/12">
+            <div class="w-full lg:w-5/12">
                 <?php component('provider_card', ['hide_service' => FALSE, 'company_name' => vars('company_name'), 'company_logo' => vars('company_logo')]) ?>
             </div>
-            <div id="step-content" class="lg:w-9/12">
+            <div id="step-content">
                 <h2 class="frame-title">
                     <?= lang('appointment_confirmation') ?>
                 </h2>
@@ -73,15 +73,15 @@
             </div>
         </div>
     </div>
-    <div class="command-buttons flex flex-row justify-between my-2">
+    <div class="command-buttons">
         <button type="button" id="button-back-4" class="btn button-back btn-outline-secondary" data-step_index="4">
             <i class="fas fa-chevron-left me-2"></i>
             <?= lang('back') ?>
         </button>
         <form id="book-appointment-form" style="display:inline-block" method="post">
             <button id="book-appointment-submit" type="button" class="btn button-next btn-dark btn-primary">
-                <i class="fas fa-check-square me-2"></i>
                 <?= $manage_mode ? lang('update') : lang('Proceed') ?>
+                <i class="fas fa-chevron-right ms-2"></i>
             </button>
             <input type="hidden" name="csrfToken" />
             <input type="hidden" name="post_data" />

@@ -18,7 +18,8 @@
  *
  * @package Controllers
  */
-class Booking_confirmation extends EA_Controller {
+class Booking_confirmation extends EA_Controller
+{
     /**
      * Booking_confirmation constructor.
      */
@@ -30,7 +31,7 @@ class Booking_confirmation extends EA_Controller {
         $this->load->model('providers_model');
         $this->load->model('services_model');
         $this->load->model('customers_model');
-        
+
         $this->load->library('google_sync');
     }
 
@@ -45,8 +46,7 @@ class Booking_confirmation extends EA_Controller {
 
         $occurrences = $this->appointments_model->get(['hash' => $appointment_hash]);
 
-        if (empty($occurrences))
-        {
+        if (empty($occurrences)) {
             redirect('appointments'); // The appointment does not exist.
 
             return;
@@ -62,18 +62,20 @@ class Booking_confirmation extends EA_Controller {
 
         $payment_link_vars = array(
             '{$appointment_hash}' => $appointment['hash'],
-            '{$customer_email}' => $customer['email'],
+            '{$customer_email}'   => $customer['email'],
         );
         $payment_link = site_url('payment/link' . '/' . $appointment_hash); //strtr($service['payment_link'], $payment_link_vars);
 
         html_vars([
-            'page_title' => lang('success'),
-            'company_color' => setting('company_color'),
+            'page_title'            => lang('success'),
+            'company_color'         => setting('company_color'),
             'google_analytics_code' => setting('google_analytics_code'),
-            'matomo_analytics_url' => setting('matomo_analytics_url'),
-            'add_to_google_url' => $add_to_google_url,
-            'is_paid' => $appointment['is_paid'],
-            'payment_link' => $payment_link,
+            'matomo_analytics_url'  => setting('matomo_analytics_url'),
+            'add_to_google_url'     => $add_to_google_url,
+            'is_paid'               => $appointment['is_paid'],
+            'payment_link'          => $payment_link,
+            'service'               => $service,
+            'appointment'           => $appointment,
         ]);
 
         $this->load->view('pages/booking_confirmation');
