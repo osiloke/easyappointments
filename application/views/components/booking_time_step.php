@@ -13,11 +13,11 @@
             <div class="w-full lg:w-4/12">
                 <?php component('provider_card', ['hide_service' => FALSE, 'company_name' => vars('company_name'), 'company_logo' => vars('company_logo')]) ?>
             </div>
-            <div class="flex flex-col w-full lg:w-9/12 bg-white rounded-lg border border-neutral-50 shadow p-5">
-                <h2 class="frame-title">
+            <div id="step-content" class="lg:w-9/12">
+                <h2 class=" frame-title">
                     <?= lang('appointment_date_and_time') ?>
                 </h2>
-                <div class="flex flex-col lg:flex-row gap-5">
+                <div class="flex flex-col lg:flex-row gap-2 lg:gap-5">
                     <div class="w-full lg:w-6/12">
                         <div id="select-date" class="p-0 py-0"></div>
                     </div>
@@ -28,7 +28,7 @@
                                     <?= lang('timezone') ?>
                                 </label>
                                 <?php component('timezone_dropdown', [
-                                    'attributes' => 'id="select-timezone" class="form-control" value="UTC"',
+                                    'attributes'        => 'id="select-timezone" class="form-control" value="UTC"',
                                     'grouped_timezones' => $grouped_timezones
                                 ]) ?>
                             </div>
@@ -41,7 +41,7 @@
         </div>
     </div>
 
-    <div class="command-buttons flex flex-row justify-between my-2">
+    <div class="command-buttons">
         <button type="button" id="button-back-2" class="btn button-back btn-outline-secondary" data-step_index="2">
             <i class="fas fa-chevron-left me-2"></i>
             <?= lang('back') ?>

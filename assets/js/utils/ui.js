@@ -78,7 +78,7 @@ window.App.Utils.UI = (function () {
                     lang('thursday'),
                     lang('friday'),
                     lang('saturday')
-                ],
+                ]
             },
             months: {
                 shorthand: [
@@ -93,7 +93,7 @@ window.App.Utils.UI = (function () {
                     lang('september_short'),
                     lang('october_short'),
                     lang('november_short'),
-                    lang('december_short'),
+                    lang('december_short')
                 ],
                 longhand: [
                     lang('january'),
@@ -108,15 +108,14 @@ window.App.Utils.UI = (function () {
                     lang('october'),
                     lang('november'),
                     lang('december')
-                ],
+                ]
             },
             daysInMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
             firstDayOfWeek: firstWeekDayNumber,
             ordinal: function (nth) {
                 const s = nth % 100;
 
-                if (s > 3 && s < 21)
-                    return 'th';
+                if (s > 3 && s < 21) return 'th';
                 switch (s % 10) {
                     case 1:
                         return 'st';
@@ -137,10 +136,9 @@ window.App.Utils.UI = (function () {
             monthAriaLabel: lang('month'),
             hourAriaLabel: lang('hour'),
             minuteAriaLabel: lang('minute'),
-            time_24hr: false,
-        }
+            time_24hr: false
+        };
     }
-
 
     /**
      * Initialize the date time picker component.
@@ -230,6 +228,6 @@ window.App.Utils.UI = (function () {
         initializeDatepicker,
         initializeTimepicker,
         initializeDropdown,
-        initializeTextEditor,
+        initializeTextEditor
     };
 })();

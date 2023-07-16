@@ -14,7 +14,7 @@
             <div class="w-full lg:w-4/12">
                 <?php component('provider_card', ['hide_service' => FALSE, 'company_name' => vars('company_name'), 'company_logo' => vars('company_logo')]) ?>
             </div>
-            <div class="flex flex-col w-full lg:w-9/12 bg-white rounded-lg border border-neutral-50 shadow p-5">
+            <div id="step-content" class="lg:w-9/12">
                 <h2 class="frame-title">
                     <?= lang('appointment_confirmation') ?>
                 </h2>
@@ -45,7 +45,7 @@
                                 <?= strtr(
                                     lang('read_and_agree_to_terms_and_conditions'),
                                     [
-                                        '{$link}' => '<a href="#" data-bs-toggle="modal" data-bs-target="#terms-and-conditions-modal">',
+                                        '{$link}'  => '<a href="#" data-bs-toggle="modal" data-bs-target="#terms-and-conditions-modal">',
                                         '{/$link}' => '</a>'
                                     ]
                                 )
@@ -61,7 +61,7 @@
                                 <?= strtr(
                                     lang('read_and_agree_to_privacy_policy'),
                                     [
-                                        '{$link}' => '<a href="#" data-bs-toggle="modal" data-bs-target="#privacy-policy-modal">',
+                                        '{$link}'  => '<a href="#" data-bs-toggle="modal" data-bs-target="#privacy-policy-modal">',
                                         '{/$link}' => '</a>'
                                     ]
                                 )
@@ -81,7 +81,7 @@
         <form id="book-appointment-form" style="display:inline-block" method="post">
             <button id="book-appointment-submit" type="button" class="btn button-next btn-dark btn-primary">
                 <i class="fas fa-check-square me-2"></i>
-                <?= $manage_mode ? lang('update') : lang('Proceed to payment') ?>
+                <?= $manage_mode ? lang('update') : lang('Proceed') ?>
             </button>
             <input type="hidden" name="csrfToken" />
             <input type="hidden" name="post_data" />

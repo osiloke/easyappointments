@@ -13,7 +13,7 @@
             <div class="w-full lg:w-4/12">
                 <?php component('provider_card', ["hide_service" => true]) ?>
             </div>
-            <div class="flex flex-col w-full lg:w-9/12 bg-white rounded-lg border border-neutral-50 shadow p-5">
+            <div class="flex flex-col w-full lg:w-9/12 bg-transparent p-0 lg:p-5">
                 <h2 class="frame-title">
                     <?= lang('choose service') ?>
                 </h2>

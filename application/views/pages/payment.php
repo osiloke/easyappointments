@@ -6,7 +6,7 @@
     <img id="success-icon" src="<?= base_url('assets/img/heroicons-mini/check-badge.svg') ?>" alt="success" />
 </div>
 
-<div class="mb-5">
+<div class="mb-5 space-y-5">
     <h4 class="mb-5">
         <?= lang('appointment_paymentPaid_text') ?>
     </h4>
@@ -21,12 +21,13 @@
         </small>
     </p>
 
-    <a href="<?= site_url() ?>" class="btn btn-primary btn-large">
+    <a href="<?= site_url() ?>" class="btn btn-primary btn-large rounded-full">
         <i class="fas fa-calendar-alt me-2"></i>
         <?= lang('go_to_booking_page') ?>
     </a>
 
-    <a href="<?= vars('add_to_google_url') ?>" id="add-to-google-calendar" class="btn btn-primary" target="_blank">
+    <a href="<?= vars('add_to_google_url') ?>" id="add-to-google-calendar" class="btn btn-primary rounded-full"
+        target="_blank">
         <i class="fas fa-plus me-2"></i>
         <?= lang('add_to_google_calendar') ?>
     </a>
