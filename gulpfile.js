@@ -9,14 +9,13 @@
  * @since       v1.4.0
  * ---------------------------------------------------------------------------- */
 
-const options = require("./config"); //paths and other options from config.js
-const postcss = require("gulp-postcss"); //For Compiling tailwind utilities with tailwind config
-const concat = require("gulp-concat"); //For Concatinating js,css files
-const uglify = require("gulp-terser"); //To Minify JS files
-const imagemin = require("gulp-imagemin"); //To Optimize Images
-const mozjpeg = require("imagemin-mozjpeg"); // imagemin plugin
-const pngquant = require("imagemin-pngquant"); // imagemin plugin
-const purgecss = require("gulp-purgecss"); // Remove Unused CSS from Styles
+const postcss = require('gulp-postcss'); //For Compiling tailwind utilities with tailwind config
+const concat = require('gulp-concat'); //For Concatinating js,css files
+const uglify = require('gulp-terser'); //To Minify JS files
+const imagemin = require('gulp-imagemin'); //To Optimize Images
+const mozjpeg = require('imagemin-mozjpeg'); // imagemin plugin
+const pngquant = require('imagemin-pngquant'); // imagemin plugin
+const purgecss = require('gulp-purgecss'); // Remove Unused CSS from Styles
 const babel = require('gulp-babel');
 const changed = require('gulp-changed');
 const cached = require('gulp-cached');
@@ -77,7 +76,7 @@ function archive(done) {
     fs.removeSync('build/composer.lock');
     del.sync('**/.DS_Store');
 
-    zip('build', { saveTo: filename }, function (error) {
+    zip('build', {saveTo: filename}, function (error) {
         if (error) {
             console.log('Zip Error', error);
         }
@@ -97,24 +96,26 @@ function scripts() {
         .src(['assets/js/**/*.js', '!assets/js/**/*.min.js'])
         .pipe(plumber())
         .pipe(changed('assets/js/**/*'))
-        .pipe(babel({ comments: false }))
-        .pipe(rename({ suffix: '.min' }))
+        .pipe(babel({comments: false}))
+        .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('assets/js'));
 }
 
 function styles() {
-    const tailwindcss = require("tailwindcss");
-    const autoprefixer = require("autoprefixer");
-    return gulp
-        .src(['assets/css/**/*.scss', '!assets/css/**/*.min.css'])
-        .pipe(plumber())
-        // .pipe(cached())
-        .pipe(sass().on('error', sass.logError))
-        .pipe(postcss([tailwindcss("./tailwind.config.js"), autoprefixer()]))
-        .pipe(gulp.dest('assets/css'))
-        .pipe(css())
-        .pipe(rename({ suffix: '.min' }))
-        .pipe(gulp.dest('assets/css'));
+    const tailwindcss = require('tailwindcss');
+    const autoprefixer = require('autoprefixer');
+    return (
+        gulp
+            .src(['assets/css/**/*.scss', '!assets/css/**/*.min.css'])
+            .pipe(plumber())
+            // .pipe(cached())
+            .pipe(sass().on('error', sass.logError))
+            .pipe(postcss([tailwindcss('./tailwind.config.js'), autoprefixer()]))
+            .pipe(gulp.dest('assets/css'))
+            .pipe(css())
+            .pipe(rename({suffix: '.min'}))
+            .pipe(gulp.dest('assets/css'))
+    );
 }
 
 function watch(done) {
@@ -196,7 +197,7 @@ function vendor(done) {
 
     gulp.src(['node_modules/flatpickr/dist/themes/material_green.css'])
         .pipe(css())
-        .pipe(rename({ suffix: '.min' }))
+        .pipe(rename({suffix: '.min'}))
         .pipe(gulp.dest('assets/vendor/flatpickr'));
 
     done();
