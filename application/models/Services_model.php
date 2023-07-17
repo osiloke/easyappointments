@@ -24,30 +24,30 @@ class Services_model extends EA_Model
      * @var array
      */
     protected array $casts = [
-        'id' => 'integer',
-        'price' => 'float',
+        'id'                => 'integer',
+        'price'             => 'float',
         'attendants_number' => 'integer',
-        'is_private' => 'boolean',
-        'id_categories' => 'integer',
+        'is_private'        => 'boolean',
+        'id_categories'     => 'integer',
     ];
 
     /**
      * @var array
      */
     protected array $api_resource = [
-        'id' => 'id',
-        'name' => 'name',
-        'duration' => 'duration',
-        'price' => 'price',
-        'currency' => 'currency',
-        'description' => 'description',
-        'location' => 'location',
-        'color' => 'color',
+        'id'                 => 'id',
+        'name'               => 'name',
+        'duration'           => 'duration',
+        'price'              => 'price',
+        'currency'           => 'currency',
+        'description'        => 'description',
+        'location'           => 'location',
+        'color'              => 'color',
         'availabilitiesType' => 'availabilities_type',
-        'attendantsNumber' => 'attendants_number',
-        'isPrivate' => 'is_private',
-        'categoryId' => 'id_categories',
-        'paymentLink' => 'payment_link',
+        'attendantsNumber'   => 'attendants_number',
+        'isPrivate'          => 'is_private',
+        'categoryId'         => 'id_categories',
+        'paymentLink'        => 'payment_link',
     ];
 
     /**
@@ -301,17 +301,16 @@ class Services_model extends EA_Model
      */
     public function get_available_services(bool $without_private = FALSE, string $provider_id = '', $provider_name = ''): array
     {
-        if (strlen($provider_id) > 0) {
-        } else if (strlen($provider_name) > 0) {
+        if (strlen($provider_name) > 0) {
             $provider_from_username = $this->db->get_where('user_settings', ['username' => $provider_name])->first_row();
             if ($provider_from_username == null) {
                 return [];
             }
             $provider_id = $provider_from_username->id_users;
-        } else {
-            return [];
         }
-        $this->db->where('services_providers.id_users', intval($provider_id));
+        if (strlen($provider_id) > 0) {
+            $this->db->where('services_providers.id_users', intval($provider_id));
+        }
         if ($without_private) {
             $this->db->where('services.is_private', FALSE);
         }
@@ -418,17 +417,17 @@ class Services_model extends EA_Model
     public function api_encode(array &$service)
     {
         $encoded_resource = [
-            'id' => array_key_exists('id', $service) ? (int) $service['id'] : NULL,
-            'name' => $service['name'],
-            'duration' => (int) $service['duration'],
-            'price' => (float) $service['price'],
-            'currency' => $service['currency'],
-            'description' => $service['description'],
-            'location' => $service['location'],
+            'id'                 => array_key_exists('id', $service) ? (int) $service['id'] : NULL,
+            'name'               => $service['name'],
+            'duration'           => (int) $service['duration'],
+            'price'              => (float) $service['price'],
+            'currency'           => $service['currency'],
+            'description'        => $service['description'],
+            'location'           => $service['location'],
             'availabilitiesType' => $service['availabilities_type'],
-            'attendantsNumber' => (int) $service['attendants_number'],
-            'categoryId' => $service['id_categories'] !== NULL ? (int) $service['id_categories'] : NULL,
-            'paymentLink' => $service['payment_link'],
+            'attendantsNumber'   => (int) $service['attendants_number'],
+            'categoryId'         => $service['id_categories'] !== NULL ? (int) $service['id_categories'] : NULL,
+            'paymentLink'        => $service['payment_link'],
         ];
 
         $service = $encoded_resource;
