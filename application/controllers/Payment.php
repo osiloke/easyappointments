@@ -108,34 +108,34 @@ class Payment extends EA_Controller
             $customer = $this->customers_model->find($appointment['id_users_customer']);
 
             script_vars([
-                'date_format' => $date_format,
-                'time_format' => $time_format,
+                'date_format'           => $date_format,
+                'time_format'           => $time_format,
                 'display_cookie_notice' => $display_cookie_notice,
-                'display_any_provider' => setting('display_any_provider'),
+                'display_any_provider'  => setting('display_any_provider'),
             ]);
 
             html_vars([
-                'theme' => $theme,
-                'company_name' => $company_name,
-                'company_logo' => $company_logo,
-                'company_color' => $company_color === '#ffffff' ? '' : $company_color,
-                'date_format' => $date_format,
-                'time_format' => $time_format,
-                'display_first_name' => $display_first_name,
-                'display_last_name' => $display_last_name,
-                'display_email' => $display_email,
-                'display_phone_number' => $display_phone_number,
-                'display_address' => $display_address,
-                'display_city' => $display_city,
-                'display_zip_code' => $display_zip_code,
-                'display_notes' => $display_notes,
+                'theme'                 => $theme,
+                'company_name'          => $company_name,
+                'company_logo'          => $company_logo,
+                'company_color'         => $company_color === '#ffffff' ? '' : $company_color,
+                'date_format'           => $date_format,
+                'time_format'           => $time_format,
+                'display_first_name'    => $display_first_name,
+                'display_last_name'     => $display_last_name,
+                'display_email'         => $display_email,
+                'display_phone_number'  => $display_phone_number,
+                'display_address'       => $display_address,
+                'display_city'          => $display_city,
+                'display_zip_code'      => $display_zip_code,
+                'display_notes'         => $display_notes,
                 'google_analytics_code' => $google_analytics_code,
-                'matomo_analytics_url' => $matomo_analytics_url,
-                'timezones' => $timezones,
-                'grouped_timezones' => $grouped_timezones,
-                'appointment' => $appointment,
-                'provider' => $provider,
-                'customer' => $customer,
+                'matomo_analytics_url'  => $matomo_analytics_url,
+                'timezones'             => $timezones,
+                'grouped_timezones'     => $grouped_timezones,
+                'appointment'           => $appointment,
+                'provider'              => $provider,
+                'customer'              => $customer,
             ]);
 
             $this->load->view('pages/payment');
@@ -158,10 +158,10 @@ class Payment extends EA_Controller
         try {
             $res = $client->post('https://api.vazapay.com/v1/onepay/confirm', [
                 'headers' => [
-                    'Content-Type' => 'application/json',
+                    'Content-Type'  => 'application/json',
                     'Authorization' => 'Bearer ' . config('stripe_api_key'),
                 ],
-                'json' => [
+                'json'    => [
                     'reason' => $appointment_hash,
                 ]
             ]);
@@ -183,7 +183,8 @@ class Payment extends EA_Controller
             } else {
                 response($message);
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             error_log($e);
             log_message('error', 'Webhooks Client - The webhook (' . ($appointment_hash ?? NULL) . ') request received an unexpected exception: ' . $e->getMessage());
             log_message('error', $e->getTraceAsString());
@@ -213,8 +214,9 @@ class Payment extends EA_Controller
             $customer = $this->customers_model->find($appointment['id_users_customer']);
 
             $service = $this->services_model->find($appointment['id_services']);
-
-
+            $appointment_status_options_json = setting('appointment_status_options', '[]');
+            $appointment_status_options = json_decode($appointment_status_options_json, TRUE) ?? [];
+            $appointment['status'] = $appointment_status_options[0] ?? "Paid";
             $appointment['is_paid'] = 1;
             $appointment['payment_intent'] = $payment_intent;
             $this->appointments_model->only($appointment, [
@@ -229,27 +231,29 @@ class Payment extends EA_Controller
                 'id_users_customer',
                 'id_services',
                 'is_paid',
+                'status',
                 'payment_intent',
             ]);
             $appointment_id = $this->appointments_model->save($appointment);
             $appointment = $this->appointments_model->find($appointment_id);
 
             $settings = [
-                'company_name' => setting('company_name'),
-                'company_link' => setting('company_link'),
+                'company_name'  => setting('company_name'),
+                'company_link'  => setting('company_link'),
                 'company_email' => setting('company_email'),
-                'date_format' => setting('date_format'),
-                'time_format' => setting('time_format')
+                'date_format'   => setting('date_format'),
+                'time_format'   => setting('time_format')
             ];
 
-            $this->synchronization->sync_appointment_saved($appointment, $service, $provider, $customer, $settings, $manage_mode);
+            $this->synchronization->sync_appointment_saved($appointment, $service, $provider, $customer, $settings);
 
             $this->notifications->notify_appointment_saved($appointment, $service, $provider, $customer, $settings, $manage_mode);
 
             $this->webhooks_client->trigger(WEBHOOK_APPOINTMENT_SAVE, $appointment);
 
             return $appointment;
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             error_log($e);
             abort(500, 'Internal server error');
         }
@@ -281,15 +285,15 @@ class Payment extends EA_Controller
 
                 $res = $client->post('https://api.vazapay.com/v1/onepay/charge', [
                     'headers' => [
-                        'Content-Type' => 'application/json',
+                        'Content-Type'  => 'application/json',
                         'Authorization' => 'Bearer ' . config('stripe_api_key'),
                     ],
-                    'json' => [
-                        'amount' => $service["price"],
-                        'reason' => $appointment_hash,
-                        'currency' => $service["currency"],
-                        'email' => $customer["email"],
-                        'name' => $customer["first_name"],
+                    'json'    => [
+                        'amount'      => $service["price"],
+                        'reason'      => $appointment_hash,
+                        'currency'    => $service["currency"],
+                        'email'       => $customer["email"],
+                        'name'        => $customer["first_name"],
                         'redirectURL' => $redirectURL
                     ]
                 ]);
@@ -297,7 +301,8 @@ class Payment extends EA_Controller
                 $url = $body->url;
                 redirect($url);
             }
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             log_message('error', 'Webhooks Client - The webhook (' . ($appointment_hash ?? NULL) . ') request received an unexpected exception: ' . $e->getMessage());
             log_message('error', $e->getTraceAsString());
 

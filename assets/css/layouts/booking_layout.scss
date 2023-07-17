@@ -470,7 +470,7 @@ body {
 }
 #book-appointment-wizard .join-item {
     transition: all 0.3s linear;
-    @apply border-b border-l border-r border-t border-gray-200 bg-white text-center transition-all;
+    @apply border-b border-l border-r border-t border-gray-200 bg-white px-2.5 text-center transition-all;
 
     > div {
         @apply h-full;
