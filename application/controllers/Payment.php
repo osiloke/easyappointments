@@ -237,12 +237,16 @@ class Payment extends EA_Controller
             $appointment_id = $this->appointments_model->save($appointment);
             $appointment = $this->appointments_model->find($appointment_id);
 
+            $add_to_google_url = $this->google_sync->get_add_to_google_url($appointment['id']);
             $settings = [
-                'company_name'  => setting('company_name'),
-                'company_link'  => setting('company_link'),
-                'company_email' => setting('company_email'),
-                'date_format'   => setting('date_format'),
-                'time_format'   => setting('time_format')
+                'company_name'          => setting('company_name'),
+                'company_link'          => setting('company_link'),
+                'company_email'         => setting('company_email'),
+                'date_format'           => setting('date_format'),
+                'time_format'           => setting('time_format'),
+                'add_to_google_url'     => $add_to_google_url,
+                'google_analytics_code' => setting('google_analytics_code'),
+                'matomo_analytics_url'  => setting('matomo_analytics_url'),
             ];
 
             $this->synchronization->sync_appointment_saved($appointment, $service, $provider, $customer, $settings);
