@@ -156,6 +156,7 @@ $route['api/v1/availabilities']['get'] = 'api/v1/availabilities_api_v1/get';
 
 $route['about'] = 'about';
 $route['appointments'] = 'appointments';
+$route['account'] = 'account';
 $route['accounts'] = 'accounts';
 $route['admins'] = 'admins';
 $route['backend'] = 'backend';
