@@ -75,27 +75,14 @@ class Payment extends EA_Controller
             $time_format = setting('time_format');
 
             $display_first_name = setting('display_first_name');
-            $require_first_name = setting('require_first_name');
             $display_last_name = setting('display_last_name');
-            $require_last_name = setting('require_last_name');
             $display_email = setting('display_email');
-            $require_email = setting('require_email');
             $display_phone_number = setting('display_phone_number');
-            $require_phone_number = setting('require_phone_number');
             $display_address = setting('display_address');
-            $require_address = setting('require_address');
             $display_city = setting('display_city');
-            $require_city = setting('require_city');
             $display_zip_code = setting('display_zip_code');
-            $require_zip_code = setting('require_zip_code');
             $display_notes = setting('display_notes');
-            $require_notes = setting('require_notes');
             $display_cookie_notice = setting('display_cookie_notice');
-            $cookie_notice_content = setting('cookie_notice_content');
-            $display_terms_and_conditions = setting('display_terms_and_conditions');
-            $terms_and_conditions_content = setting('terms_and_conditions_content');
-            $display_privacy_policy = setting('display_privacy_policy');
-            $privacy_policy_content = setting('privacy_policy_content');
 
             $theme = request('theme', setting('theme', 'default'));
             if (empty($theme) || !file_exists(__DIR__ . '/../../assets/css/themes/' . $theme . '.min.css')) {
@@ -107,6 +94,7 @@ class Payment extends EA_Controller
             $provider = $this->providers_model->find($appointment['id_users_provider']);
             $customer = $this->customers_model->find($appointment['id_users_customer']);
 
+            $add_to_google_url = $this->google_sync->get_add_to_google_url($appointment['id']);
             script_vars([
                 'date_format'           => $date_format,
                 'time_format'           => $time_format,
@@ -115,6 +103,7 @@ class Payment extends EA_Controller
             ]);
 
             html_vars([
+                'add_to_google_url'     => $add_to_google_url,
                 'theme'                 => $theme,
                 'company_name'          => $company_name,
                 'company_logo'          => $company_logo,
@@ -176,8 +165,12 @@ class Payment extends EA_Controller
 
             if ($status == 'success') {
                 $appointment = $this->set_paid($appointment_hash, $payment_intent);
+                $add_to_google_url = $this->google_sync->get_add_to_google_url($appointment['id']);
 
-                html_vars(['appointment' => $appointment]);
+                html_vars([
+                    'appointment'       => $appointment,
+                    'add_to_google_url' => $add_to_google_url,
+                ]);
 
                 $this->index();
             } else {
