@@ -18,7 +18,8 @@
 
 <head>
     <title>
-        <?= lang('appointment_details_title') ?> | Easy!Appointments
+        <?= lang('appointment_details_title') ?> |
+        <?= e($settings['company_name']) ?>
     </title>
 </head>
 
@@ -169,11 +170,6 @@
 
         <div id="footer" style="padding: 10px; text-align: center; margin-top: 10px;
                 border-top: 1px solid #EEE; background: #FAFAFA;">
-            Powered by
-            <a href="https://easyappointments.org" style="text-decoration: none;">
-                Easy!Appointments
-            </a>
-            |
             <a href="<?= e($settings['company_link']) ?>" style="text-decoration: none;">
                 <?= e($settings['company_name']) ?>
             </a>
