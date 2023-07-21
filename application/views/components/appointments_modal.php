@@ -127,7 +127,7 @@
                                     <label for="appointment-status" class="form-label">
                                         <?= lang('status') ?>
                                     </label>
-                                    <select id="appointment-status" class="form-control">
+                                    <select id="appointment-status" class="form-control" disabled>
                                         <?php foreach ($appointment_status_options as $appointment_status_option): ?>
                                             <option value="<?= e($appointment_status_option) ?>">
                                                 <?= e($appointment_status_option) ?>
@@ -139,7 +139,9 @@
 
                             <div class="col-12 col-sm-6">
                                 <div class="mb-3">
-                                    <label for="start-datetime" class="form-label"><?= lang('start_date_time') ?></label>
+                                    <label for="start-datetime" class="form-label">
+                                        <?= lang('start_date_time') ?>
+                                    </label>
                                     <input id="start-datetime" class="required form-control">
                                 </div>
 
@@ -189,7 +191,7 @@
                     <br>
 
                     <fieldset>
-                        <h5 class="text-black-50 mb-3 fw-light">
+                        <h5 class="text-black-50 mb-3 fw-light hidden">
                             <?= lang('customer_details_title') ?>
                             <button id="new-customer" class="btn btn-outline-secondary btn-sm" type="button"
                                 data-tippy-content="<?= lang('clear_fields_add_existing_customer_hint') ?>">
@@ -197,7 +199,7 @@
                                 <?= lang('new') ?>
                             </button>
                             <button id="select-customer" class="btn btn-outline-secondary btn-sm" type="button"
-                                data-tippy-content="<?= lang('pick_existing_customer_hint') ?>">
+                                data-tippy-content="<?= lang('pick_existing_customer_hint') ?>" disabled>
                                 <i class="fas fa-hand-pointer me-2"></i>
                                 <span>
                                     <?= lang('select') ?>
@@ -205,12 +207,12 @@
                             </button>
 
                             <input id="filter-existing-customers" placeholder="<?= lang('type_to_filter_customers') ?>"
-                                style="display: none;" class="input-sm form-control">
+                                style="display: none;" class="input-sm form-control" disabled>
                         </h5>
 
                         <div id="existing-customers-list" style="display: none;"></div>
 
-                        <input id="customer-id" type="hidden">
+                        <input id="customer-id" type="hidden" disabled>
 
                         <div class="row">
                             <div class="col-12 col-sm-6">
@@ -316,7 +318,7 @@
                                         <span class="text-danger" hidden>*</span>
                                     </label>
                                     <?php component('timezone_dropdown', [
-                                        'attributes' => 'id="timezone" class="form-control required"',
+                                        'attributes'        => 'id="timezone" class="form-control required"',
                                         'grouped_timezones' => vars('grouped_timezones')
                                     ]) ?>
                                 </div>

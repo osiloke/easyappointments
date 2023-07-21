@@ -14,7 +14,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-    <title>404 Page Not Found | pride</title>
+    <title>404 Page Not Found
+    </title>
     <style>
         #error-container {
             background: #ffffff;
@@ -76,7 +77,7 @@
         <p>
             <small>
 
-                <a href="https://pride.osiloke.com">pride</a>
+                <a href="<?= site_url() ?>"><?= vars("company_name") ?></a>
             </small>
         </p>
     </div>

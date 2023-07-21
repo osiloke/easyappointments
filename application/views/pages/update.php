@@ -4,7 +4,9 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <title>Update | pride</title>
+    <title>Update |
+        <?= vars("company_name") ?>
+    </title>
 
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/themes/default.min.css') ?>">
     <link rel="icon" type="image/x-icon" href="<?= asset_url('assets/img/favicon.ico') ?>">
@@ -15,7 +17,9 @@
 <body>
     <header>
         <div class="container">
-            <h1 class="page-title">pride Update</h1>
+            <h1 class="page-title">
+                <?= vars("company_name") ?> Update
+            </h1>
         </div>
     </header>
 
@@ -30,7 +34,8 @@
                         </p>
                         <hr class="my-4">
                         <p>
-                            You can now use the latest pride version.
+                            You can now use the latest
+                            <?= vars("company_name") ?> version.
                         </p>
                         <a href="<?= site_url('login') ?>" class="btn btn-success btn-large">
                             <i class="fas fa-wrench me-2"></i>
@@ -67,7 +72,7 @@
     </div>
 
     <footer>
-        <a href="https://pride.osiloke.com">pride</a>
+        <a href="<?= site_url() ?>"><?= vars("company_name") ?></a>
     </footer>
 
     <script src="<?= asset_url('assets/vendor/@fortawesome-fontawesome-free/fontawesome.min.js') ?>"></script>

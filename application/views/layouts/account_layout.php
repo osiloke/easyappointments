@@ -7,11 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="theme-color" content="#35A768">
     <meta name="google" content="notranslate">
-    
+
     <?php slot('meta') ?>
 
     <title>
-        <?= vars('page_title') ?? lang('account') ?> | pride
+        <?= vars('page_title') ?? lang('account') ?> | <?= vars("company_name") ?>
     </title>
 
     <link rel="icon" type="image/x-icon" href="<?= asset_url('assets/img/favicon.ico') ?>">
@@ -33,7 +33,7 @@
         <div class="mt-4">
             <small>
 
-                <a href="https://pride.osiloke.com">pride</a>
+                <a href="<?= site_url() ?>"><?= vars("company_name") ?></a>
             </small>
         </div>
     </div>

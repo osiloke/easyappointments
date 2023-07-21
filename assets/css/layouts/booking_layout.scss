@@ -619,3 +619,19 @@ body {
 [data-theme='lofi'] .modal .modal-title {
     @apply text-white;
 }
+
+[data-theme='lofi'] .modal-header {
+    button.btn-close {
+        background-image: none;
+
+        &::before {
+            position: absolute;
+            top: 0.8rem;
+            right: 1rem;
+            content: 'X';
+        }
+    }
+}
+body .modal-header {
+    background: #646464 !important;
+}

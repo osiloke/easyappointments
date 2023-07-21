@@ -11,7 +11,8 @@
     <?php slot('meta') ?>
 
     <title>
-        <?= vars('page_title') ?> | pride
+        <?= vars('page_title') ?> |
+        <?= vars("company_name") ?>
     </title>
 
     <link rel="icon" type="image/x-icon" href="<?= asset_url('assets/img/favicon.ico') ?>">
@@ -38,7 +39,7 @@
                 <div class="mt-2">
                     <small>
 
-                        <a href="<?= site_url() ?>">pride</a>
+                        <a href="<?= site_url() ?>"><?= vars("company_name") ?></a>
                     </small>
                 </div>
 

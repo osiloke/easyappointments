@@ -11,7 +11,7 @@
     <?php slot('meta') ?>
 
     <title>
-        <?= vars('page_title') ?? lang('backend_section') ?> | pride
+        <?= vars('page_title') ?? lang('backend_section') ?>
     </title>
 
     <link rel="icon" type="image/x-icon" href="<?= asset_url('assets/img/favicon.ico') ?>">

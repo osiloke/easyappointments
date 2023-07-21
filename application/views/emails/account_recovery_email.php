@@ -11,7 +11,8 @@
 
 <head>
     <title>
-        <?= $subject ?> | pride
+        <?= $subject ?> |
+        <?= vars("company_name") ?>
     </title>
 </head>
 
@@ -36,8 +37,8 @@
         <div id="footer" style="padding: 10px; text-align: center; margin-top: 10px;
                 border-top: 1px solid #EEE; background: #FAFAFA;">
 
-            <a href="https://pride.osiloke.com" style="text-decoration: none;">
-                pride
+            <a href="<?= site_url("/login") ?>" style="text-decoration: none;">
+                <?= vars("company_name") ?>
             </a>
             |
             <a href="<?= $settings['company_link'] ?>" style="text-decoration: none;">

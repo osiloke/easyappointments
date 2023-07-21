@@ -4,7 +4,9 @@
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
-    <title>Installation | pride</title>
+    <title>Installation |
+        <?= vars("company_name") ?>
+    </title>
 
     <link rel="icon" type="image/x-icon" href="<?= asset_url('assets/img/favicon.ico') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/themes/default.min.css') ?>">
@@ -19,20 +21,26 @@
 
     <header>
         <div class="container">
-            <h1 class="page-title">pride Installation</h1>
+            <h1 class="page-title">
+                <?= vars("company_name") ?> Installation
+            </h1>
         </div>
     </header>
 
     <div class="content container">
         <div class="welcome">
-            <h3>Welcome to the pride installation page.</h3>
+            <h3>Welcome to the
+                <?= vars("company_name") ?> installation page.
+            </h3>
             <p>
-                This page will help you set the main settings of your pride installation. You will be able to
+                This page will help you set the main settings of your
+                <?= vars("company_name") ?> installation. You will be able to
                 edit these settings and many more in the backend session of your system. Remember to use the
                 <strong class="text-primary">
                     <?= site_url('user/login') ?>
                 </strong> URL to connect to the backend section
-                of pride.
+                of
+                <?= vars("company_name") ?>.
 
                 If you face any problems during the usage of pride you can always check the
                 <a href="https://pride.osiloke.com/docs.html">Documentation</a> and
@@ -118,8 +126,10 @@
 
         <div class="mb-2">
             <h3>License</h3>
-            pride is licensed under the <span class="badge bg-secondary">GPL-3.0 license</span>. By using the code
-            of pride in any way <br> you agree with the terms described in the following url:
+            <?= vars("company_name") ?> is licensed under the <span class="badge bg-secondary">GPL-3.0 license</span>.
+            By using the code
+            of
+            <?= vars("company_name") ?> in any way <br> you agree with the terms described in the following url:
             <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">https://www.gnu.org/licenses/gpl-3.0.en.html</a>
         </div>
 
@@ -127,12 +137,13 @@
 
         <button type="button" id="install" class="btn btn-primary">
             <i class="icon-white icon-ok me-2"></i>
-            Install pride
+            Install
+            <?= vars("company_name") ?>
         </button>
     </div>
 
     <footer>
-        <a href="https://pride.osiloke.com">pride</a>
+        <a href="<?= site_url() ?>"><?= vars("company_name") ?></a>
     </footer>
 
     <?php component('js_vars_script') ?>
