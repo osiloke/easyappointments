@@ -9,7 +9,7 @@
 <div id="frame-footer">
     <small>
         <span class="footer-powered-by">
-            <a href="https://pride.osiloke.com" target="_blank">pride</a>
+            <a href="<?= site_url() ?>" target="_blank">pride</a>
         </span>
 
         <span class="footer-options">

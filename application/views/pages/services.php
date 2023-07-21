@@ -10,7 +10,7 @@
                     <input type="text" class="key form-control">
 
                     <button class="filter btn btn-outline-secondary" type="submit"
-                            data-tippy-content="<?= lang('filter') ?>">
+                        data-tippy-content="<?= lang('filter') ?>">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
@@ -74,7 +74,7 @@
                     <span class="text-danger" hidden>*</span>
                 </label>
                 <input id="duration" class="form-control required" type="number" min="<?= EVENT_MINIMUM_DURATION ?>"
-                       disabled>
+                    disabled>
             </div>
 
             <div class="mb-3">
@@ -130,7 +130,7 @@
                 <input id="location" class="form-control" disabled>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-3 hidden">
                 <?php component('color_selection', ['attributes' => 'id="color"']) ?>
             </div>
 
@@ -157,13 +157,6 @@
             </div>
 
             <?php if (config('stripe_payment_feature')): ?>
-            <div class="mb-3">
-                <label class="form-label" for="location">
-                    <?= lang('service_payment_link') ?>
-                </label>
-                <input id="payment-link" class="form-control" disabled>
-                <small class="text-muted"><?= lang('service_payment_link_description') ?></small>
-            </div>
             <?php endif; ?>
 
             <div class="mb-3">

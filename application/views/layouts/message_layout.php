@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="<?= config('language_code') ?>">
+<html lang="<?= config('language_code') ?>" class="bg-gray-100">
 
 <head>
     <meta charset="utf-8">
@@ -27,7 +27,7 @@
     <?php slot('styles') ?>
 </head>
 
-<body>
+<body class="bg-gray-100">
     <div id="main" class="container">
         <?php component('navbar', ['company_color' => vars('company_color')]) ?>
         <div class="row wrapper">
@@ -38,7 +38,7 @@
                 <div class="mt-2">
                     <small>
 
-                        <a href="https://pride.osiloke.com">pride</a>
+                        <a href="<?= site_url() ?>">pride</a>
                     </small>
                 </div>
 

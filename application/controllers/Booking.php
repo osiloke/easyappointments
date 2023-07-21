@@ -87,6 +87,42 @@ class Booking extends EA_Controller
 
         $provider_id = isset($_GET['provider']) ? $_GET['provider'] : '';
         $provider_name = strtolower(uri_string());
+        $user_id = session('user_id');
+        if ($provider_name == 'booking') {
+            if (!empty($user_id)) {
+                return redirect(site_url('/?provider=' . $user_id));
+            } else {
+
+                html_vars([
+                    'show_message'          => TRUE,
+                    'page_title'            => lang('page_title') . ' ' . $company_name,
+                    'message_title'         => lang('booking_is_disabled'),
+                    'message_text'          => "provider does not exist",
+                    'message_icon'          => base_url('assets/img/error.png'),
+                    'google_analytics_code' => $google_analytics_code,
+                    'matomo_analytics_url'  => $matomo_analytics_url
+                ]);
+
+                $this->load->view('pages/booking_message');
+                return;
+            }
+        }
+
+        if (empty($provider_name) && empty($provider_id)) {
+            html_vars([
+                'show_message'          => TRUE,
+                'page_title'            => lang('page_title') . ' ' . $company_name,
+                'message_title'         => lang('booking_is_disabled'),
+                'message_text'          => "provider does not exist",
+                'message_icon'          => base_url('assets/img/error.png'),
+                'google_analytics_code' => $google_analytics_code,
+                'matomo_analytics_url'  => $matomo_analytics_url
+            ]);
+
+            $this->load->view('pages/booking_message');
+
+            return;
+        }
 
         $available_services = $this->services_model->get_available_services(TRUE, $provider_id ?? '', $provider_name);
         $available_providers = $this->providers_model->get_available_providers(TRUE, $provider_id ?? '', $provider_name);

@@ -1,4 +1,4 @@
-<?php defined('BASEPATH') OR exit('No direct script access allowed');
+<?php defined('BASEPATH') or exit('No direct script access allowed');
 // English
 $lang['page_title'] = 'Book Appointment With';
 $lang['service_and_provider'] = 'Service & Provider';
@@ -308,7 +308,7 @@ $lang['read_and_agree_to_privacy_policy'] = 'I have read and agree to the {$link
 $lang['delete_personal_information_hint'] = 'Remove all your appointments and personal information from the system.';
 $lang['delete_personal_information'] = 'Delete Personal Information';
 $lang['delete_personal_information_prompt'] = 'Are you sure that you want to delete your personal information? This action cannot be undone.';
-$lang['location'] = 'Location';
+$lang['location'] = 'Add Google Meet or Zoom Link';
 $lang['working_plan_exception'] = 'Working Plan Exception';
 $lang['working_plan_exceptions'] = 'Working Plan Exceptions';
 $lang['working_plan_exceptions_hint'] = 'Add a working plan exception day, outside the working plan.';

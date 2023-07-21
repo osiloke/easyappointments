@@ -602,3 +602,20 @@ body {
 [data-theme='lofi'] #available-hours .available-hour {
     @apply rounded-lg border border-neutral-100 shadow;
 }
+[data-theme='lofi'] .fade:not(.show) {
+    opacity: 0;
+    z-index: -1;
+}
+
+[data-theme='lofi'] .modal.fade.show {
+    z-index: 99999;
+    opacity: 100;
+}
+
+[data-theme='lofi'] .modal button {
+    @apply rounded-full;
+}
+
+[data-theme='lofi'] .modal .modal-title {
+    @apply text-white;
+}
