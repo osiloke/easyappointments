@@ -18,7 +18,8 @@
  *
  * @package Controllers
  */
-class Calendar extends EA_Controller {
+class Calendar extends EA_Controller
+{
     /**
      * Calendar constructor.
      */
@@ -52,14 +53,12 @@ class Calendar extends EA_Controller {
      */
     public function index(string $appointment_hash = '')
     {
-        session(['dest_url' => site_url('backend/index' . (! empty($appointment_hash) ? '/' . $appointment_hash : ''))]);
+        session(['dest_url' => site_url('backend/index' . (!empty($appointment_hash) ? '/' . $appointment_hash : ''))]);
 
         $user_id = session('user_id');
 
-        if (cannot('view', PRIV_APPOINTMENTS))
-        {
-            if ($user_id)
-            {
+        if (cannot('view', PRIV_APPOINTMENTS)) {
+            if ($user_id) {
                 abort(403, 'Forbidden');
             }
 
@@ -74,8 +73,7 @@ class Calendar extends EA_Controller {
 
         $secretary_providers = [];
 
-        if ($role_slug === DB_SLUG_SECRETARY)
-        {
+        if ($role_slug === DB_SLUG_SECRETARY) {
             $secretary = $this->secretaries_model->find(session('user_id'));
 
             $secretary_providers = $secretary['providers'];
@@ -83,12 +81,10 @@ class Calendar extends EA_Controller {
 
         $edit_appointment = NULL;
 
-        if ( ! empty($appointment_hash))
-        {
+        if (!empty($appointment_hash)) {
             $occurrences = $this->appointments_model->get(['hash' => $appointment_hash]);
 
-            if ($appointment_hash !== '' && ! empty($occurrences))
-            {
+            if ($appointment_hash !== '' && !empty($occurrences)) {
                 $edit_appointment = $occurrences[0];
 
                 $this->appointments_model->load($edit_appointment, ['customer']);
@@ -99,15 +95,13 @@ class Calendar extends EA_Controller {
 
         $available_providers = $this->providers_model->get_available_providers();
 
-        if ($role_slug === DB_SLUG_PROVIDER)
-        {
+        if ($role_slug === DB_SLUG_PROVIDER) {
             $available_providers = array_values(array_filter($available_providers, function ($available_provider) use ($user_id) {
-                return (int)$available_provider['id'] === (int)$user_id;
+                return (int) $available_provider['id'] === (int) $user_id;
             }));
         }
 
-        if ($role_slug === DB_SLUG_SECRETARY)
-        {
+        if ($role_slug === DB_SLUG_SECRETARY) {
             $available_providers = array_values(array_filter($available_providers, function ($available_provider) use ($secretary_providers) {
                 return in_array($available_provider['id'], $secretary_providers);
             }));
@@ -120,44 +114,44 @@ class Calendar extends EA_Controller {
         $appointment_status_options = setting('appointment_status_options');
 
         script_vars([
-            'user_id' => $user_id,
-            'role_slug' => $role_slug,
-            'date_format' => setting('date_format'),
-            'time_format' => setting('time_format'),
-            'first_weekday' => setting('first_weekday'),
-            'company_working_plan' => setting('company_working_plan'),
-            'timezones' => $this->timezones->to_array(),
-            'privileges' => $privileges,
-            'calendar_view' => $calendar_view,
-            'available_providers' => $available_providers,
-            'available_services' => $available_services,
-            'secretary_providers' => $secretary_providers,
-            'edit_appointment' => $edit_appointment,
-            'customers' => $this->customers_model->get(NULL, 50, NULL, 'update_datetime DESC'),
+            'user_id'                => $user_id,
+            'role_slug'              => $role_slug,
+            'date_format'            => setting('date_format'),
+            'time_format'            => setting('time_format'),
+            'first_weekday'          => setting('first_weekday'),
+            'company_working_plan'   => setting('company_working_plan'),
+            'timezones'              => $this->timezones->to_array(),
+            'privileges'             => $privileges,
+            'calendar_view'          => $calendar_view,
+            'available_providers'    => $available_providers,
+            'available_services'     => $available_services,
+            'secretary_providers'    => $secretary_providers,
+            'edit_appointment'       => $edit_appointment,
+            'customers'              => $this->customers_model->get(NULL, 50, NULL, 'update_datetime DESC'),
             'stripe_payment_feature' => config('stripe_payment_feature'),
         ]);
 
         html_vars([
-            'page_title' => lang('calendar'),
-            'active_menu' => PRIV_APPOINTMENTS,
-            'user_display_name' => $this->accounts->get_user_display_name($user_id),
-            'timezone' => session('timezone'),
-            'timezones' => $this->timezones->to_array(),
-            'grouped_timezones' => $this->timezones->to_grouped_array(),
-            'privileges' => $privileges,
-            'calendar_view' => $calendar_view,
-            'available_providers' => $available_providers,
-            'available_services' => $available_services,
-            'secretary_providers' => $secretary_providers,
+            'page_title'                 => lang('calendar'),
+            'active_menu'                => PRIV_APPOINTMENTS,
+            'user_display_name'          => $this->accounts->get_user_display_name($user_id),
+            'timezone'                   => session('timezone'),
+            'timezones'                  => $this->timezones->to_array(),
+            'grouped_timezones'          => $this->timezones->to_grouped_array(),
+            'privileges'                 => $privileges,
+            'calendar_view'              => $calendar_view,
+            'available_providers'        => $available_providers,
+            'available_services'         => $available_services,
+            'secretary_providers'        => $secretary_providers,
             'appointment_status_options' => json_decode($appointment_status_options, TRUE) ?? [],
-            'require_first_name' => setting('require_first_name'),
-            'require_last_name' => setting('require_last_name'),
-            'require_email' => setting('require_email'),
-            'require_phone_number' => setting('require_phone_number'),
-            'require_address' => setting('require_address'),
-            'require_city' => setting('require_city'),
-            'require_zip_code' => setting('require_zip_code'),
-            'require_notes' => setting('require_notes'),
+            'require_first_name'         => setting('require_first_name'),
+            'require_last_name'          => setting('require_last_name'),
+            'require_email'              => setting('require_email'),
+            'require_phone_number'       => setting('require_phone_number'),
+            'require_address'            => setting('require_address'),
+            'require_city'               => setting('require_city'),
+            'require_zip_code'           => setting('require_zip_code'),
+            'require_notes'              => setting('require_notes'),
         ]);
 
         $this->load->view('pages/calendar');
@@ -180,21 +174,18 @@ class Calendar extends EA_Controller {
      */
     public function save_appointment()
     {
-        try
-        {
+        try {
             // Save customer changes to the database.
             $customer_data = request('customer_data');
 
-            if ($customer_data)
-            {
+            if ($customer_data) {
                 $customer = $customer_data;
 
-                $required_permissions = ! empty($customer['id'])
+                $required_permissions = !empty($customer['id'])
                     ? can('add', PRIV_CUSTOMERS)
                     : can('edit', PRIV_CUSTOMERS);
 
-                if ( ! $required_permissions)
-                {
+                if (!$required_permissions) {
                     throw new RuntimeException('You do not have the required permissions for this task.');
                 }
 
@@ -218,30 +209,26 @@ class Calendar extends EA_Controller {
             // Save appointment changes to the database.
             $appointment_data = request('appointment_data');
 
-            $manage_mode = ! empty($appointment_data['id']);
+            $manage_mode = !empty($appointment_data['id']);
 
-            if ($appointment_data)
-            {
+            if ($appointment_data) {
                 $appointment = $appointment_data;
 
-                $required_permissions = ! empty($appointment['id'])
+                $required_permissions = !empty($appointment['id'])
                     ? can('add', PRIV_APPOINTMENTS)
                     : can('edit', PRIV_APPOINTMENTS);
 
-                if ( ! $required_permissions)
-                {
+                if (!$required_permissions) {
                     throw new RuntimeException('You do not have the required permissions for this task.');
                 }
 
                 // If the appointment does not contain the customer record id, then it means that is going to be
                 // inserted.
-                if ( ! isset($appointment['id_users_customer']))
-                {
+                if (!isset($appointment['id_users_customer'])) {
                     $appointment['id_users_customer'] = $customer['id'] ?? $customer_data['id'];
                 }
 
-                if ($manage_mode && ! empty($appointment['id']))
-                {
+                if ($manage_mode && !empty($appointment['id'])) {
                     $this->synchronization->remove_appointment_on_provider_change($appointment['id']);
                 }
 
@@ -264,8 +251,7 @@ class Calendar extends EA_Controller {
                 $appointment['id'] = $this->appointments_model->save($appointment);
             }
 
-            if (empty($appointment['id']))
-            {
+            if (empty($appointment['id'])) {
                 throw new RuntimeException('The appointment ID is not available.');
             }
 
@@ -275,11 +261,11 @@ class Calendar extends EA_Controller {
             $service = $this->services_model->find($appointment['id_services'], TRUE);
 
             $settings = [
-                'company_name' => setting('company_name'),
-                'company_link' => setting('company_link'),
+                'company_name'  => setting('company_name'),
+                'company_link'  => setting('company_link'),
                 'company_email' => setting('company_email'),
-                'date_format' => setting('date_format'),
-                'time_format' => setting('time_format')
+                'date_format'   => setting('date_format'),
+                'time_format'   => setting('time_format')
             ];
 
             $this->synchronization->sync_appointment_saved($appointment, $service, $provider, $customer, $settings);
@@ -292,8 +278,7 @@ class Calendar extends EA_Controller {
                 'success' => TRUE,
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -307,18 +292,15 @@ class Calendar extends EA_Controller {
      */
     public function delete_appointment()
     {
-        try
-        {
-            if (cannot('delete', 'appointments'))
-            {
+        try {
+            if (cannot('delete', 'appointments')) {
                 throw new RuntimeException('You do not have the required permissions for this task.');
             }
 
             $appointment_id = request('appointment_id');
-            $cancellation_reason = (string)request('cancellation_reason');
+            $cancellation_reason = (string) request('cancellation_reason');
 
-            if (empty($appointment_id))
-            {
+            if (empty($appointment_id)) {
                 throw new InvalidArgumentException('No appointment id provided.');
             }
 
@@ -329,11 +311,11 @@ class Calendar extends EA_Controller {
             $service = $this->services_model->find($appointment['id_services'], TRUE);
 
             $settings = [
-                'company_name' => setting('company_name'),
+                'company_name'  => setting('company_name'),
                 'company_email' => setting('company_email'),
-                'company_link' => setting('company_link'),
-                'date_format' => setting('date_format'),
-                'time_format' => setting('time_format')
+                'company_link'  => setting('company_link'),
+                'date_format'   => setting('date_format'),
+                'time_format'   => setting('time_format')
             ];
 
             // Delete appointment record from the database.
@@ -349,8 +331,7 @@ class Calendar extends EA_Controller {
                 'success' => TRUE,
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -360,17 +341,15 @@ class Calendar extends EA_Controller {
      */
     public function save_unavailability()
     {
-        try
-        {
+        try {
             // Check privileges
             $unavailability = request('unavailability');
 
-            $required_permissions = ( ! isset($unavailability['id']))
+            $required_permissions = (!isset($unavailability['id']))
                 ? can('add', PRIV_APPOINTMENTS)
                 : can('edit', PRIV_APPOINTMENTS);
 
-            if ( ! $required_permissions)
-            {
+            if (!$required_permissions) {
                 throw new RuntimeException('You do not have the required permissions for this task.');
             }
 
@@ -385,12 +364,11 @@ class Calendar extends EA_Controller {
             $this->webhooks_client->trigger(WEBHOOK_UNAVAILABILITY_SAVE, $unavailability);
 
             json_response([
-                'success' => TRUE,
+                'success'  => TRUE,
                 'warnings' => $warnings ?? []
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -400,10 +378,8 @@ class Calendar extends EA_Controller {
      */
     public function delete_unavailability()
     {
-        try
-        {
-            if (cannot('delete', PRIV_APPOINTMENTS))
-            {
+        try {
+            if (cannot('delete', PRIV_APPOINTMENTS)) {
                 throw new RuntimeException('You do not have the required permissions for this task.');
             }
 
@@ -423,8 +399,7 @@ class Calendar extends EA_Controller {
                 'success' => TRUE,
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -434,10 +409,8 @@ class Calendar extends EA_Controller {
      */
     public function save_working_plan_exception()
     {
-        try
-        {
-            if (cannot('edit', PRIV_USERS))
-            {
+        try {
+            if (cannot('edit', PRIV_USERS)) {
                 throw new RuntimeException('You do not have the required permissions for this task.');
             }
 
@@ -453,8 +426,7 @@ class Calendar extends EA_Controller {
                 'success' => TRUE,
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -464,12 +436,10 @@ class Calendar extends EA_Controller {
      */
     public function delete_working_plan_exception()
     {
-        try
-        {
+        try {
             $required_permissions = can('edit', PRIV_CUSTOMERS);
 
-            if ( ! $required_permissions)
-            {
+            if (!$required_permissions) {
                 throw new RuntimeException('You do not have the required permissions for this task.');
             }
 
@@ -483,8 +453,7 @@ class Calendar extends EA_Controller {
                 'success' => TRUE
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -496,12 +465,10 @@ class Calendar extends EA_Controller {
      */
     public function get_calendar_appointments_for_table_view()
     {
-        try
-        {
+        try {
             $required_permissions = can('view', PRIV_APPOINTMENTS);
 
-            if ( ! $required_permissions)
-            {
+            if (!$required_permissions) {
                 throw new RuntimeException('You do not have the required permissions for this task.');
             }
 
@@ -510,18 +477,18 @@ class Calendar extends EA_Controller {
             $end_date = request('end_date') . ' 23:59:59';
 
             $response = [
-                'appointments' => $this->appointments_model->get([
+                'appointments'     => $this->appointments_model->get([
+                    'status ='          => "Booked",
                     'start_datetime >=' => $start_date,
-                    'end_datetime <=' => $end_date
+                    'end_datetime <='   => $end_date
                 ]),
                 'unavailabilities' => $this->unavailabilities_model->get([
                     'start_datetime >=' => $start_date,
-                    'end_datetime <=' => $end_date
+                    'end_datetime <='   => $end_date
                 ])
             ];
 
-            foreach ($response['appointments'] as &$appointment)
-            {
+            foreach ($response['appointments'] as &$appointment) {
                 $appointment['provider'] = $this->providers_model->find($appointment['id_users_provider'], TRUE);
                 $appointment['service'] = $this->services_model->find($appointment['id_services'], TRUE);
                 $appointment['customer'] = $this->customers_model->find($appointment['id_users_customer'], TRUE);
@@ -534,22 +501,17 @@ class Calendar extends EA_Controller {
             $role_slug = session('role_slug');
 
             // If the current user is a provider he must only see his own appointments.
-            if ($role_slug === DB_SLUG_PROVIDER)
-            {
-                foreach ($response['appointments'] as $index => $appointment)
-                {
-                    if ((int)$appointment['id_users_provider'] !== (int)$user_id)
-                    {
+            if ($role_slug === DB_SLUG_PROVIDER) {
+                foreach ($response['appointments'] as $index => $appointment) {
+                    if ((int) $appointment['id_users_provider'] !== (int) $user_id) {
                         unset($response['appointments'][$index]);
                     }
                 }
 
                 $response['appointments'] = array_values($response['appointments']);
 
-                foreach ($response['unavailabilities'] as $index => $unavailability)
-                {
-                    if ((int)$unavailability['id_users_provider'] !== (int)$user_id)
-                    {
+                foreach ($response['unavailabilities'] as $index => $unavailability) {
+                    if ((int) $unavailability['id_users_provider'] !== (int) $user_id) {
                         unset($response['unavailabilities'][$index]);
                     }
                 }
@@ -558,24 +520,19 @@ class Calendar extends EA_Controller {
             }
 
             // If the current user is a secretary he must only see the appointments of his providers.
-            if ($role_slug === DB_SLUG_SECRETARY)
-            {
+            if ($role_slug === DB_SLUG_SECRETARY) {
                 $providers = $this->secretaries_model->find($user_id)['providers'];
 
-                foreach ($response['appointments'] as $index => $appointment)
-                {
-                    if ( ! in_array((int)$appointment['id_users_provider'], $providers))
-                    {
+                foreach ($response['appointments'] as $index => $appointment) {
+                    if (!in_array((int) $appointment['id_users_provider'], $providers)) {
                         unset($response['appointments'][$index]);
                     }
                 }
 
                 $response['appointments'] = array_values($response['appointments']);
 
-                foreach ($response['unavailabilities'] as $index => $unavailability)
-                {
-                    if ( ! in_array((int)$unavailability['id_users_provider'], $providers))
-                    {
+                foreach ($response['unavailabilities'] as $index => $unavailability) {
+                    if (!in_array((int) $unavailability['id_users_provider'], $providers)) {
                         unset($response['unavailabilities'][$index]);
                     }
                 }
@@ -585,8 +542,7 @@ class Calendar extends EA_Controller {
 
             json_response($response);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -599,10 +555,8 @@ class Calendar extends EA_Controller {
      */
     public function get_calendar_appointments()
     {
-        try
-        {
-            if (cannot('view', PRIV_APPOINTMENTS))
-            {
+        try {
+            if (cannot('view', PRIV_APPOINTMENTS)) {
                 throw new RuntimeException('You do not have the required permissions for this task.');
             }
 
@@ -610,10 +564,9 @@ class Calendar extends EA_Controller {
 
             $filter_type = request('filter_type');
 
-            if ( ! $filter_type && $record_id !== FILTER_TYPE_ALL)
-            {
+            if (!$filter_type && $record_id !== FILTER_TYPE_ALL) {
                 json_response([
-                    'appointments' => [],
+                    'appointments'     => [],
                     'unavailabilities' => []
                 ]);
 
@@ -622,16 +575,11 @@ class Calendar extends EA_Controller {
 
             $record_id = $this->db->escape($record_id);
 
-            if ($filter_type == FILTER_TYPE_PROVIDER)
-            {
+            if ($filter_type == FILTER_TYPE_PROVIDER) {
                 $where_id = 'id_users_provider';
-            }
-            elseif ($filter_type === FILTER_TYPE_SERVICE)
-            {
+            } elseif ($filter_type === FILTER_TYPE_SERVICE) {
                 $where_id = 'id_services';
-            }
-            else
-            {
+            } else {
                 $where_id = $record_id;
             }
 
@@ -640,6 +588,7 @@ class Calendar extends EA_Controller {
             $end_date = $this->db->escape(date('Y-m-d', strtotime(request('end_date') . ' +1 day')));
 
             $where_clause = $where_id . ' = ' . $record_id . '
+                AND (status = ' . ' "Booked"' . ') 
                 AND ((start_datetime > ' . $start_date . ' AND start_datetime < ' . $end_date . ') 
                 or (end_datetime > ' . $start_date . ' AND end_datetime < ' . $end_date . ') 
                 or (start_datetime <= ' . $start_date . ' AND end_datetime >= ' . $end_date . ')) 
@@ -648,8 +597,7 @@ class Calendar extends EA_Controller {
 
             $response['appointments'] = $this->appointments_model->get($where_clause);
 
-            foreach ($response['appointments'] as &$appointment)
-            {
+            foreach ($response['appointments'] as &$appointment) {
                 $appointment['provider'] = $this->providers_model->find($appointment['id_users_provider'], TRUE);
                 $appointment['service'] = $this->services_model->find($appointment['id_services'], TRUE);
                 $appointment['customer'] = $this->customers_model->find($appointment['id_users_customer'], TRUE);
@@ -658,9 +606,9 @@ class Calendar extends EA_Controller {
             // Get unavailability periods (only for provider).
             $response['unavailabilities'] = [];
 
-            if ($filter_type == FILTER_TYPE_PROVIDER)
-            {
+            if ($filter_type == FILTER_TYPE_PROVIDER) {
                 $where_clause = $where_id . ' = ' . $record_id . '
+                    AND (status = ' . ' "Booked"' . ') 
                     AND ((start_datetime > ' . $start_date . ' AND start_datetime < ' . $end_date . ') 
                     or (end_datetime > ' . $start_date . ' AND end_datetime < ' . $end_date . ') 
                     or (start_datetime <= ' . $start_date . ' AND end_datetime >= ' . $end_date . ')) 
@@ -670,8 +618,7 @@ class Calendar extends EA_Controller {
                 $response['unavailabilities'] = $this->unavailabilities_model->get($where_clause);
             }
 
-            foreach ($response['unavailabilities'] as &$unavailability)
-            {
+            foreach ($response['unavailabilities'] as &$unavailability) {
                 $unavailability['provider'] = $this->providers_model->find($unavailability['id_users_provider']);
             }
 
@@ -682,22 +629,17 @@ class Calendar extends EA_Controller {
             $role_slug = session('role_slug');
 
             // If the current user is a provider he must only see his own appointments.
-            if ($role_slug === DB_SLUG_PROVIDER)
-            {
-                foreach ($response['appointments'] as $index => $appointment)
-                {
-                    if ((int)$appointment['id_users_provider'] !== (int)$user_id)
-                    {
+            if ($role_slug === DB_SLUG_PROVIDER) {
+                foreach ($response['appointments'] as $index => $appointment) {
+                    if ((int) $appointment['id_users_provider'] !== (int) $user_id) {
                         unset($response['appointments'][$index]);
                     }
                 }
 
                 $response['appointments'] = array_values($response['appointments']);
 
-                foreach ($response['unavailabilities'] as $index => $unavailability)
-                {
-                    if ((int)$unavailability['id_users_provider'] !== (int)$user_id)
-                    {
+                foreach ($response['unavailabilities'] as $index => $unavailability) {
+                    if ((int) $unavailability['id_users_provider'] !== (int) $user_id) {
                         unset($response['unavailabilities'][$index]);
                     }
                 }
@@ -706,24 +648,19 @@ class Calendar extends EA_Controller {
             }
 
             // If the current user is a secretary he must only see the appointments of his providers.
-            if ($role_slug === DB_SLUG_SECRETARY)
-            {
+            if ($role_slug === DB_SLUG_SECRETARY) {
                 $providers = $this->secretaries_model->find($user_id)['providers'];
 
-                foreach ($response['appointments'] as $index => $appointment)
-                {
-                    if ( ! in_array((int)$appointment['id_users_provider'], $providers))
-                    {
+                foreach ($response['appointments'] as $index => $appointment) {
+                    if (!in_array((int) $appointment['id_users_provider'], $providers)) {
                         unset($response['appointments'][$index]);
                     }
                 }
 
                 $response['appointments'] = array_values($response['appointments']);
 
-                foreach ($response['unavailabilities'] as $index => $unavailability)
-                {
-                    if ( ! in_array((int)$unavailability['id_users_provider'], $providers))
-                    {
+                foreach ($response['unavailabilities'] as $index => $unavailability) {
+                    if (!in_array((int) $unavailability['id_users_provider'], $providers)) {
                         unset($response['unavailabilities'][$index]);
                     }
                 }
@@ -733,8 +670,7 @@ class Calendar extends EA_Controller {
 
             json_response($response);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
