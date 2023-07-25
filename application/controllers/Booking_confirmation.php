@@ -58,13 +58,28 @@ class Booking_confirmation extends EA_Controller
 
         $service = $this->services_model->find($appointment['id_services']);
 
+        $provider = $this->providers_model->find($appointment['id_users_provider']);
+
         $customer = $this->customers_model->find($appointment['id_users_customer']);
 
-        $payment_link_vars = array(
-            '{$appointment_hash}' => $appointment['hash'],
-            '{$customer_email}'   => $customer['email'],
-        );
-        $payment_link = site_url('payment/link' . '/' . $appointment_hash); //strtr($service['payment_link'], $payment_link_vars);
+        $timezone = $customer['timezone'];
+        $appointment_timezone = new DateTimeZone($provider['timezone']);
+
+        $appointment_start = new DateTime($appointment['start_datetime'], $appointment_timezone);
+
+        $appointment_end = new DateTime($appointment['end_datetime'], $appointment_timezone);
+
+        if ($timezone && $timezone !== $provider['timezone']) {
+            $custom_timezone = new DateTimeZone($timezone);
+
+            $appointment_start->setTimezone($custom_timezone);
+            $appointment['start_datetime'] = $appointment_start->format('Y-m-d H:i:s');
+
+            $appointment_end->setTimezone($custom_timezone);
+            $appointment['end_datetime'] = $appointment_end->format('Y-m-d H:i:s');
+        }
+
+        $payment_link = site_url('payment/link' . '/' . $appointment_hash);
 
         html_vars([
             'page_title'            => lang('success'),
@@ -76,6 +91,8 @@ class Booking_confirmation extends EA_Controller
             'payment_link'          => $payment_link,
             'service'               => $service,
             'appointment'           => $appointment,
+            'timezone'              => $timezone,
+            'is_redirect'           => isset($_GET['r'])
         ]);
 
         $this->load->view('pages/booking_confirmation');

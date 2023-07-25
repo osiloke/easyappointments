@@ -11,8 +11,7 @@
     <?php slot('meta') ?>
 
     <title>
-        <?= vars('page_title') ?> |
-        <?= vars("company_name") ?>
+        <?= vars('page_title') ?>
     </title>
 
     <link rel="icon" type="image/x-icon" href="<?= asset_url('assets/img/favicon.ico') ?>">
@@ -28,7 +27,7 @@
     <?php slot('styles') ?>
 </head>
 
-<body class="bg-gray-100">
+<body data-theme="lofi" class="bg-gray-100">
     <div id="main" class="container">
         <?php component('navbar', ['company_color' => vars('company_color')]) ?>
         <div class="row wrapper">

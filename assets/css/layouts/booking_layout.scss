@@ -635,3 +635,8 @@ body {
 body .modal-header {
     background: #646464 !important;
 }
+
+[data-theme='lofi'] #message-frame {
+    border: none !important;
+    @apply mx-auto w-full bg-transparent lg:max-w-7xl;
+}

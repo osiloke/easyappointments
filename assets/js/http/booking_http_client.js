@@ -211,8 +211,13 @@ App.Http.Booking = (function () {
 
                     return false;
                 }
-
-                window.location.href = App.Utils.Url.siteUrl('booking_confirmation/of/' + response.appointment_hash);
+                if (response.payment_required) {
+                    window.location.href = App.Utils.Url.siteUrl('payment/link/' + response.appointment_hash);
+                } else {
+                    window.location.href = App.Utils.Url.siteUrl(
+                        'booking_confirmation/of/' + response.appointment_hash
+                    );
+                }
             })
             .fail(() => {
                 $captchaTitle.find('button').trigger('click');
@@ -313,14 +318,21 @@ App.Http.Booking = (function () {
         }
 
         // Grey out unavailable dates.
-        $('#select-date')[0]._flatpickr.set('disable', unavailableDates.map(unavailableDate => new Date(unavailableDate)));
+        $('#select-date')[0]._flatpickr.set(
+            'disable',
+            unavailableDates.map((unavailableDate) => new Date(unavailableDate))
+        );
 
         const dateQueryParam = App.Utils.Url.queryParam('date');
 
         if (dateQueryParam) {
             const dateQueryParamMoment = moment(dateQueryParam);
 
-            if (dateQueryParamMoment.isValid() && !unavailableDates.includes(dateQueryParam) && dateQueryParamMoment.format('YYYY-MM') === selectedDateMoment.format('YYYY-MM')) {
+            if (
+                dateQueryParamMoment.isValid() &&
+                !unavailableDates.includes(dateQueryParam) &&
+                dateQueryParamMoment.format('YYYY-MM') === selectedDateMoment.format('YYYY-MM')
+            ) {
                 $('#select-date')[0]._flatpickr.setDate(dateQueryParamMoment.toDate());
             }
         }

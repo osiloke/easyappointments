@@ -19,7 +19,7 @@
 <body style="font: 13px arial, helvetica, tahoma;">
 
     <div class="email-container" style="width: 650px; border: 1px solid #eee; margin: 30px auto;">
-        <div id="header" style="background-color: #429a82; height: 45px; padding: 10px 15px;">
+        <div id="header" style="background-color: black; height: 45px; padding: 10px 15px;">
             <strong id="logo" style="color: white; font-size: 20px; margin-top: 10px; display: inline-block">
                 <?= e($settings['company_name']) ?>
             </strong>
@@ -35,7 +35,7 @@
         </div>
 
         <div id="footer" style="padding: 10px; text-align: center; margin-top: 10px;
-                border-top: 1px solid #EEE; background: #FAFAFA;">
+                border-top: 1px solid #EEE; background: #53B483;">
 
             <a href="<?= site_url("/login") ?>" style="text-decoration: none;">
                 <?= vars("company_name") ?>

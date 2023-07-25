@@ -18,7 +18,8 @@
  *
  * @package Libraries
  */
-class Email_messages {
+class Email_messages
+{
     /**
      * @var EA_Controller|CI_Controller
      */
@@ -41,6 +42,7 @@ class Email_messages {
         $this->CI->load->library('email');
         $this->CI->load->library('ics_file');
         $this->CI->load->library('timezones');
+        $this->CI->load->library('google_sync');
     }
 
     /**
@@ -72,16 +74,14 @@ class Email_messages {
         string $recipient_email,
         string $ics_stream,
         string $timezone = NULL
-    ): void
-    {
+    ): void {
         $appointment_timezone = new DateTimeZone($provider['timezone']);
 
         $appointment_start = new DateTime($appointment['start_datetime'], $appointment_timezone);
 
         $appointment_end = new DateTime($appointment['end_datetime'], $appointment_timezone);
 
-        if ($timezone && $timezone !== $provider['timezone'])
-        {
+        if ($timezone && $timezone !== $provider['timezone']) {
             $custom_timezone = new DateTimeZone($timezone);
 
             $appointment_start->setTimezone($custom_timezone);
@@ -93,35 +93,27 @@ class Email_messages {
 
         $payment_link_vars = array(
             '{$appointment_hash}' => $appointment['hash'],
-            '{$customer_email}' => $customer['email'],
+            '{$customer_email}'   => $customer['email'],
         );
         $payment_link = strtr($service['payment_link'], $payment_link_vars);
 
+        $add_to_google_url = $this->CI->google_sync->get_add_to_google_url($appointment['id']);
+
         $html = $this->CI->load->view('emails/appointment_saved_email', [
-            'email_title' => $subject,
-            'email_message' => $message,
-            'appointment_service' => $service['name'],
-            'appointment_provider' => $provider['first_name'] . ' ' . $provider['last_name'],
-            // 'appointment_start_date' => $appointment_start->format($date_format . ' ' . $time_format),
-            // 'appointment_end_date' => $appointment_end->format($date_format . ' ' . $time_format),
-            // 'appointment_timezone' => $timezones[empty($timezone) ? $provider['timezone'] : $timezone], 
-            'payment_link' => $payment_link,
-            'is_paid' => $appointment['is_paid'] == 1,
-            'company_link' => $settings['company_link'],
-            'company_name' => $settings['company_name'],
-            'customer_name' => $customer['first_name'] . ' ' . $customer['last_name'],
-            'customer_email' => $customer['email'],
-            'customer_phone' => $customer['phone_number'],
-            'customer_address' => $customer['address'],
-            'subject' => $subject,
-            'message' => $message,
-            'appointment' => $appointment,
-            'service' => $service,
-            'provider' => $provider,
-            'customer' => $customer,
-            'settings' => $settings,
-            'timezone' => $timezone,
-            'appointment_link' => $appointment_link,
+            'email_title'       => $subject,
+            'email_message'     => $message,
+            'is_paid'           => $appointment['is_paid'] == 1,
+            'company_name'      => $settings['company_name'],
+            'subject'           => $subject,
+            'message'           => $message,
+            'appointment'       => $appointment,
+            'service'           => $service,
+            'provider'          => $provider,
+            'customer'          => $customer,
+            'settings'          => $settings,
+            'timezone'          => $timezone,
+            'appointment_link'  => $appointment_link,
+            'add_to_google_url' => $add_to_google_url,
         ], TRUE);
 
         $this->CI->email->from($settings['company_email'], $settings['company_email']);
@@ -134,8 +126,7 @@ class Email_messages {
 
         $this->CI->email->attach($ics_stream, 'attachment', 'invitation.ics', 'text/vcalendar');
 
-        if ( ! $this->CI->email->send(FALSE))
-        {
+        if (!$this->CI->email->send(FALSE)) {
             throw new RuntimeException('Email was not sent: ' . $this->CI->email->print_debugger());
         }
     }
@@ -163,16 +154,14 @@ class Email_messages {
         string $recipient_email,
         string $reason = NULL,
         string $timezone = NULL
-    ): void
-    {
+    ): void {
         $appointment_timezone = new DateTimeZone($provider['timezone']);
 
         $appointment_start = new DateTime($appointment['start_datetime'], $appointment_timezone);
 
         $appointment_end = new DateTime($appointment['end_datetime'], $appointment_timezone);
 
-        if ($timezone && $timezone !== $provider['timezone'])
-        {
+        if ($timezone && $timezone !== $provider['timezone']) {
             $custom_timezone = new DateTimeZone($timezone);
 
             $appointment_start->setTimezone($custom_timezone);
@@ -183,13 +172,13 @@ class Email_messages {
         }
 
         $html = $this->CI->load->view('emails/appointment_deleted_email', [
-            'appointment' => $appointment,
-            'service' => $service,
-            'provider' => $provider,
-            'customer' => $customer,
-            'settings' => $settings,
-            'timezone' => $timezone,
-            'reason' => $reason,
+            'appointment'    => $appointment,
+            'service'        => $service,
+            'provider'       => $provider,
+            'customer'       => $customer,
+            'settings'       => $settings,
+            'timezone'       => $timezone,
+            'reason'         => $reason,
             'payment_intent' => $appointment['payment_intent'],
         ], TRUE);
 
@@ -201,8 +190,7 @@ class Email_messages {
 
         $this->CI->email->message($html);
 
-        if ( ! $this->CI->email->send(FALSE))
-        {
+        if (!$this->CI->email->send(FALSE)) {
             throw new RuntimeException('Email was not sent: ' . $this->CI->email->print_debugger());
         }
     }
@@ -218,11 +206,10 @@ class Email_messages {
         string $password,
         string $recipient_email,
         array $settings
-    ): void
-    {
+    ): void {
         $html = $this->CI->load->view('emails/account_recovery_email', [
-            'subject' => lang('new_account_password'),
-            'message' => str_replace('$password', '<strong>' . $password . '</strong>', lang('new_password_is')),
+            'subject'  => lang('new_account_password'),
+            'message'  => str_replace('$password', '<strong>' . $password . '</strong>', lang('new_password_is')),
             'settings' => $settings,
         ], TRUE);
 
@@ -234,8 +221,7 @@ class Email_messages {
 
         $this->CI->email->message($html);
 
-        if ( ! $this->CI->email->send(FALSE))
-        {
+        if (!$this->CI->email->send(FALSE)) {
             throw new RuntimeException('Email was not sent: ' . $this->CI->email->print_debugger());
         }
     }

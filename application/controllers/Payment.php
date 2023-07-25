@@ -103,6 +103,7 @@ class Payment extends EA_Controller
             ]);
 
             html_vars([
+                'page_title'            => lang('Booked'),
                 'add_to_google_url'     => $add_to_google_url,
                 'theme'                 => $theme,
                 'company_name'          => $company_name,
@@ -278,7 +279,7 @@ class Payment extends EA_Controller
             } else {
                 $service = $this->services_model->find($appointment['id_services']);
                 $customer = $this->customers_model->find($appointment['id_users_customer']);
-                $redirectURL = site_url('payment/confirm' . '/' . $appointment_hash);
+                $redirectURL = site_url('payment/confirm' . '/' . $appointment_hash . '?r=1');
 
                 $res = $client->post('https://api.vazapay.com/v1/onepay/charge', [
                     'headers' => [

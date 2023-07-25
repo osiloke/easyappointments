@@ -591,7 +591,8 @@ class Booking extends EA_Controller
 
             $response = [
                 'appointment_id'   => $appointment['id'],
-                'appointment_hash' => $appointment['hash']
+                'appointment_hash' => $appointment['hash'],
+                'payment_required' => $service["price"] > 0
             ];
 
             json_response($response);
