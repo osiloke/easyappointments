@@ -80,7 +80,7 @@
         </button>
         <form id="book-appointment-form" style="display:inline-block" method="post">
             <button id="book-appointment-submit" type="button" class="btn button-next btn-dark btn-primary">
-                <?= $manage_mode ? lang('update') : lang('Proceed') ?>
+                <?= $manage_mode ? lang('update') : lang('PROCEED TO PAYMENT') ?>
                 <i class="fas fa-chevron-right ms-2"></i>
             </button>
             <input type="hidden" name="csrfToken" />
