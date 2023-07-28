@@ -72,7 +72,7 @@ class Booking extends EA_Controller
 
             html_vars([
                 'show_message'          => TRUE,
-                'page_title'            => lang('page_title') . ' ' . $company_name,
+                'page_title'            => $company_name,
                 'message_title'         => lang('booking_is_disabled'),
                 'message_text'          => $disable_booking_message,
                 'message_icon'          => base_url('assets/img/error.png'),
@@ -95,7 +95,7 @@ class Booking extends EA_Controller
 
                 html_vars([
                     'show_message'          => TRUE,
-                    'page_title'            => lang('page_title') . ' ' . $company_name,
+                    'page_title'            => $company_name,
                     'message_title'         => lang('booking_is_disabled'),
                     'message_text'          => "provider does not exist",
                     'message_icon'          => base_url('assets/img/error.png'),
@@ -103,7 +103,7 @@ class Booking extends EA_Controller
                     'matomo_analytics_url'  => $matomo_analytics_url
                 ]);
 
-                $this->load->view('pages/booking_message');
+                $this->load->view('pages/landing');
                 return;
             }
         }
@@ -111,7 +111,7 @@ class Booking extends EA_Controller
         if (empty($provider_name) && empty($provider_id)) {
             html_vars([
                 'show_message'          => TRUE,
-                'page_title'            => lang('page_title') . ' ' . $company_name,
+                'page_title'            => $company_name,
                 'message_title'         => lang('booking_is_disabled'),
                 'message_text'          => "provider does not exist",
                 'message_icon'          => base_url('assets/img/error.png'),
@@ -119,7 +119,7 @@ class Booking extends EA_Controller
                 'matomo_analytics_url'  => $matomo_analytics_url
             ]);
 
-            $this->load->view('pages/booking_message');
+            $this->load->view('pages/landing');
 
             return;
         }
