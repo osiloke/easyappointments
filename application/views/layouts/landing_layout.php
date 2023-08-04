@@ -35,8 +35,6 @@
     <meta property="twitter:description"
         content="A scheduling automation platform for consultation & appointment bookings that allows Nigerian service providers to receive payments.(Basically, something as simple as cal.com but focusing on payment integration features to accommodate PayStack, Flutterwave, and other API-friendly payment providers)" />
     <meta property="twitter:image" content="<?= asset_url('assets/img/landing/screenshot.jpg') ?>" />
-
-    <!-- Meta Tags Generated with https://metatags.io -->
     <link rel="apple-touch-icon" sizes="180x180" href="<?= asset_url('assets/img/apple-touch-icon.png') ?>">
     <link rel="icon" type="image/png" sizes="32x32" href="<?= asset_url('assets/img/favicon-32x32.png') ?>">
     <link rel="icon" type="image/png" sizes="16x16" href="<?= asset_url('assets/img/favicon-16x16.png') ?>">

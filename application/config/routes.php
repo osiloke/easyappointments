@@ -180,6 +180,7 @@ $route['webhooks'] = 'webhooks';
 $route['api_settings'] = 'api_settings';
 $route['google_analytics_settings'] = 'google_analytics_settings';
 $route['matomo_analytics_settings'] = 'matomo_analytics_settings';
+$route['installation'] = 'installation';
 $route['(:any)'] = 'booking';
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

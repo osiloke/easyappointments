@@ -18,7 +18,7 @@
                     receive payments.
                 </div>
 
-                <a href="<?= site_url() ?>" class="button">
+                <a href="<?= site_url('jefferya') ?>" class="button">
                     <div class="state-layer">
                         <div class="button-text">Get Started!</div>
 
@@ -45,16 +45,15 @@
             <img class="person-1" src="<?= asset_url('assets/img/landing/person-1.png') ?>" />
         </div>
 
-        <div class="dark-section">
-            <div class="section-title">
-                <div class="heading-2">Streamline Your Scheduling Process</div>
-
-                <div class="paragraph2">
+        <div class="dark-section col">
+            <div class="sec-title">
+                <div class="heading-2" data-aos="fade-up">Streamline Your Scheduling Process</div>
+                <div class="paragraph2" data-aos="fade-up">
                     <span><span class="paragraph-2-span">Save time and make money by automating your appointment
                             scheduling process with </span><span class="paragraph-2-span2">schedl.me</span></span>
                 </div>
             </div>
-            <div class="w-full flex gap-10 justify-center items-center">
+            <div class="centered-grid">
                 <div class="benefit-wrapper" data-aos="fade-up">
                     <div class="benefit-content">
                         <img class="hands-show" src="<?= asset_url('assets/img/landing/feature-1-icon.png') ?>" />
@@ -101,25 +100,21 @@
         </div>
 
         <div class="dark-section">
-            <div class="flex  items-center gap-40 justify-between">
-                <div class="features">
-                    <div class="heading-3">
-                        Efficient scheduling automation experience
-                    </div>
+            <div class="features flex flex-col">
+                <div class="heading-3" data-aos="fade-up">
+                    Efficient scheduling automation experience
+                </div>
 
-                    <div class="frame-522" data-aos="fade-up">
-                        <div class="frame-521">
-                            <svg class="heroicons-mini-check-badge" width="36" height="36" viewBox="0 0 36 36"
-                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M29.5259 22.7742C31.2355 21.8678 32.4001 20.07 32.4001 18.0001C32.4001 15.9302 31.2355 14.1324 29.5258 13.226C30.0939 11.3761 29.6461 9.28135 28.1824 7.81772C26.7188 6.35409 24.624 5.90629 22.7742 6.47432C21.8678 4.76466 20.07 3.6001 18.0001 3.6001C15.9302 3.6001 14.1323 4.76468 13.226 6.47436C11.3761 5.90636 9.28138 6.35416 7.81776 7.81778C6.35415 9.2814 5.90634 11.3762 6.47434 13.226C4.76467 14.1324 3.6001 15.9302 3.6001 18.0001C3.6001 20.07 4.76468 21.8678 6.47435 22.7742C5.90632 24.6241 6.35412 26.7188 7.81775 28.1825C9.28138 29.6461 11.3762 30.0939 13.226 29.5259C14.1324 31.2355 15.9302 32.4001 18.0001 32.4001C20.07 32.4001 21.8678 31.2355 22.7742 29.5258C24.6241 30.0938 26.7188 29.646 28.1824 28.1824C29.6461 26.7188 30.0939 24.624 29.5259 22.7742ZM24.9419 14.7441C25.3804 14.1411 25.2471 13.2968 24.6441 12.8583C24.0411 12.4198 23.1968 12.5531 22.7583 13.1561L16.4875 21.7784L13.1047 18.3955C12.5775 17.8683 11.7227 17.8683 11.1955 18.3955C10.6683 18.9227 10.6683 19.7775 11.1955 20.3047L15.6955 24.8047C15.9747 25.0839 16.3621 25.2268 16.7557 25.196C17.1493 25.1651 17.5097 24.9634 17.7419 24.6441L24.9419 14.7441Z"
-                                    fill="white" />
-                            </svg>
-
+                <div data-aos="fade-up">
+                    <div class="feature-item">
+                        <svg class="heroicons-mini-check-badge" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M29.5259 22.7742C31.2355 21.8678 32.4001 20.07 32.4001 18.0001C32.4001 15.9302 31.2355 14.1324 29.5258 13.226C30.0939 11.3761 29.6461 9.28135 28.1824 7.81772C26.7188 6.35409 24.624 5.90629 22.7742 6.47432C21.8678 4.76466 20.07 3.6001 18.0001 3.6001C15.9302 3.6001 14.1323 4.76468 13.226 6.47436C11.3761 5.90636 9.28138 6.35416 7.81776 7.81778C6.35415 9.2814 5.90634 11.3762 6.47434 13.226C4.76467 14.1324 3.6001 15.9302 3.6001 18.0001C3.6001 20.07 4.76468 21.8678 6.47435 22.7742C5.90632 24.6241 6.35412 26.7188 7.81775 28.1825C9.28138 29.6461 11.3762 30.0939 13.226 29.5259C14.1324 31.2355 15.9302 32.4001 18.0001 32.4001C20.07 32.4001 21.8678 31.2355 22.7742 29.5258C24.6241 30.0938 26.7188 29.646 28.1824 28.1824C29.6461 26.7188 30.0939 24.624 29.5259 22.7742ZM24.9419 14.7441C25.3804 14.1411 25.2471 13.2968 24.6441 12.8583C24.0411 12.4198 23.1968 12.5531 22.7583 13.1561L16.4875 21.7784L13.1047 18.3955C12.5775 17.8683 11.7227 17.8683 11.1955 18.3955C10.6683 18.9227 10.6683 19.7775 11.1955 20.3047L15.6955 24.8047C15.9747 25.0839 16.3621 25.2268 16.7557 25.196C17.1493 25.1651 17.5097 24.9634 17.7419 24.6441L24.9419 14.7441Z"
+                                fill="white" />
+                        </svg>
+                        <div>
                             <div class="paragraph-bold">Optimised Booking Flow</div>
-                        </div>
-
-                        <div class="frame-525">
                             <div class="paragraph4">
                                 Enjoy a hassle-free and user-friendly booking process designed
                                 to make scheduling appointments effortless, saving you valuable
@@ -127,21 +122,19 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="frame-523" data-aos="fade-up">
-                        <div class="frame-521">
-                            <svg class="heroicons-mini-check-badge2" width="36" height="36" viewBox="0 0 36 36"
-                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M29.5259 22.7742C31.2355 21.8678 32.4001 20.07 32.4001 18.0001C32.4001 15.9302 31.2355 14.1324 29.5258 13.226C30.0939 11.3761 29.6461 9.28135 28.1824 7.81772C26.7188 6.35409 24.624 5.90629 22.7742 6.47432C21.8678 4.76466 20.07 3.6001 18.0001 3.6001C15.9302 3.6001 14.1323 4.76468 13.226 6.47436C11.3761 5.90636 9.28138 6.35416 7.81776 7.81778C6.35415 9.2814 5.90634 11.3762 6.47434 13.226C4.76467 14.1324 3.6001 15.9302 3.6001 18.0001C3.6001 20.07 4.76468 21.8678 6.47435 22.7742C5.90632 24.6241 6.35412 26.7188 7.81775 28.1825C9.28138 29.6461 11.3762 30.0939 13.226 29.5259C14.1324 31.2355 15.9302 32.4001 18.0001 32.4001C20.07 32.4001 21.8678 31.2355 22.7742 29.5258C24.6241 30.0938 26.7188 29.646 28.1824 28.1824C29.6461 26.7188 30.0939 24.624 29.5259 22.7742ZM24.9419 14.7441C25.3804 14.1411 25.2471 13.2968 24.6441 12.8583C24.0411 12.4198 23.1968 12.5531 22.7583 13.1561L16.4875 21.7784L13.1047 18.3955C12.5775 17.8683 11.7227 17.8683 11.1955 18.3955C10.6683 18.9227 10.6683 19.7775 11.1955 20.3047L15.6955 24.8047C15.9747 25.0839 16.3621 25.2268 16.7557 25.196C17.1493 25.1651 17.5097 24.9634 17.7419 24.6441L24.9419 14.7441Z"
-                                    fill="white" />
-                            </svg>
-
+                <div data-aos="fade-up">
+                    <div class="feature-item">
+                        <svg class="heroicons-mini-check-badge" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M29.5259 22.7742C31.2355 21.8678 32.4001 20.07 32.4001 18.0001C32.4001 15.9302 31.2355 14.1324 29.5258 13.226C30.0939 11.3761 29.6461 9.28135 28.1824 7.81772C26.7188 6.35409 24.624 5.90629 22.7742 6.47432C21.8678 4.76466 20.07 3.6001 18.0001 3.6001C15.9302 3.6001 14.1323 4.76468 13.226 6.47436C11.3761 5.90636 9.28138 6.35416 7.81776 7.81778C6.35415 9.2814 5.90634 11.3762 6.47434 13.226C4.76467 14.1324 3.6001 15.9302 3.6001 18.0001C3.6001 20.07 4.76468 21.8678 6.47435 22.7742C5.90632 24.6241 6.35412 26.7188 7.81775 28.1825C9.28138 29.6461 11.3762 30.0939 13.226 29.5259C14.1324 31.2355 15.9302 32.4001 18.0001 32.4001C20.07 32.4001 21.8678 31.2355 22.7742 29.5258C24.6241 30.0938 26.7188 29.646 28.1824 28.1824C29.6461 26.7188 30.0939 24.624 29.5259 22.7742ZM24.9419 14.7441C25.3804 14.1411 25.2471 13.2968 24.6441 12.8583C24.0411 12.4198 23.1968 12.5531 22.7583 13.1561L16.4875 21.7784L13.1047 18.3955C12.5775 17.8683 11.7227 17.8683 11.1955 18.3955C10.6683 18.9227 10.6683 19.7775 11.1955 20.3047L15.6955 24.8047C15.9747 25.0839 16.3621 25.2268 16.7557 25.196C17.1493 25.1651 17.5097 24.9634 17.7419 24.6441L24.9419 14.7441Z"
+                                fill="white" />
+                        </svg>
+                        <div>
                             <div class="paragraph-bold">Synchronised Calendar</div>
-                        </div>
-
-                        <div class="frame-5252">
-                            <div class="paragraph5">
+                            <div class="paragraph4">
                                 Say goodbye to double-bookings and confusion with our
                                 synchronised calendar feature, ensuring your appointments are
                                 automatically updated and managed across all your devices in
@@ -150,20 +143,20 @@
                         </div>
                     </div>
 
-                    <div class="frame-524" data-aos="fade-up">
-                        <div class="frame-521">
-                            <svg class="heroicons-mini-check-badge3" width="36" height="36" viewBox="0 0 36 36"
-                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M29.5259 22.7742C31.2355 21.8678 32.4001 20.07 32.4001 18.0001C32.4001 15.9302 31.2355 14.1324 29.5258 13.226C30.0939 11.3761 29.6461 9.28135 28.1824 7.81772C26.7188 6.35409 24.624 5.90629 22.7742 6.47432C21.8678 4.76466 20.07 3.6001 18.0001 3.6001C15.9302 3.6001 14.1323 4.76468 13.226 6.47436C11.3761 5.90636 9.28138 6.35416 7.81776 7.81778C6.35415 9.2814 5.90634 11.3762 6.47434 13.226C4.76467 14.1324 3.6001 15.9302 3.6001 18.0001C3.6001 20.07 4.76468 21.8678 6.47435 22.7742C5.90632 24.6241 6.35412 26.7188 7.81775 28.1825C9.28138 29.6461 11.3762 30.0939 13.226 29.5259C14.1324 31.2355 15.9302 32.4001 18.0001 32.4001C20.07 32.4001 21.8678 31.2355 22.7742 29.5258C24.6241 30.0938 26.7188 29.646 28.1824 28.1824C29.6461 26.7188 30.0939 24.624 29.5259 22.7742ZM24.9419 14.7441C25.3804 14.1411 25.2471 13.2968 24.6441 12.8583C24.0411 12.4198 23.1968 12.5531 22.7583 13.1561L16.4875 21.7784L13.1047 18.3955C12.5775 17.8683 11.7227 17.8683 11.1955 18.3955C10.6683 18.9227 10.6683 19.7775 11.1955 20.3047L15.6955 24.8047C15.9747 25.0839 16.3621 25.2268 16.7557 25.196C17.1493 25.1651 17.5097 24.9634 17.7419 24.6441L24.9419 14.7441Z"
-                                    fill="white" />
-                            </svg>
+                </div>
 
+                <div data-aos="fade-up">
+                    <div class="feature-item">
+                        <svg class="heroicons-mini-check-badge" width="36" height="36" viewBox="0 0 36 36" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                d="M29.5259 22.7742C31.2355 21.8678 32.4001 20.07 32.4001 18.0001C32.4001 15.9302 31.2355 14.1324 29.5258 13.226C30.0939 11.3761 29.6461 9.28135 28.1824 7.81772C26.7188 6.35409 24.624 5.90629 22.7742 6.47432C21.8678 4.76466 20.07 3.6001 18.0001 3.6001C15.9302 3.6001 14.1323 4.76468 13.226 6.47436C11.3761 5.90636 9.28138 6.35416 7.81776 7.81778C6.35415 9.2814 5.90634 11.3762 6.47434 13.226C4.76467 14.1324 3.6001 15.9302 3.6001 18.0001C3.6001 20.07 4.76468 21.8678 6.47435 22.7742C5.90632 24.6241 6.35412 26.7188 7.81775 28.1825C9.28138 29.6461 11.3762 30.0939 13.226 29.5259C14.1324 31.2355 15.9302 32.4001 18.0001 32.4001C20.07 32.4001 21.8678 31.2355 22.7742 29.5258C24.6241 30.0938 26.7188 29.646 28.1824 28.1824C29.6461 26.7188 30.0939 24.624 29.5259 22.7742ZM24.9419 14.7441C25.3804 14.1411 25.2471 13.2968 24.6441 12.8583C24.0411 12.4198 23.1968 12.5531 22.7583 13.1561L16.4875 21.7784L13.1047 18.3955C12.5775 17.8683 11.7227 17.8683 11.1955 18.3955C10.6683 18.9227 10.6683 19.7775 11.1955 20.3047L15.6955 24.8047C15.9747 25.0839 16.3621 25.2268 16.7557 25.196C17.1493 25.1651 17.5097 24.9634 17.7419 24.6441L24.9419 14.7441Z"
+                                fill="white" />
+                        </svg>
+
+                        <div>
                             <div class="paragraph-bold">Quick &amp; Seamless Settlements</div>
-                        </div>
-
-                        <div class="frame-5253">
-                            <div class="paragraph6">
+                            <div class="paragraph4">
                                 Experience swift and stress-free payment settlements, allowing
                                 you to get paid faster and effortlessly handle transactions,
                                 giving you more time to focus on what truly matters.
@@ -171,115 +164,109 @@
                         </div>
                     </div>
 
-                    <a href="<?= site_url() ?>" class="button2" data-aos="fade-up">
-                        <span class="state-layer2">
-                            <span class="button-text2">Get Started For Free!</span>
-
-                            <svg class="heroicons-outline-arrow-right2" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M13.5 4.5L21 12M21 12L13.5 19.5M21 12H3" stroke="black" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
-                    </a>
                 </div>
 
-                <div class="right-image" data-aos="zoom-in-up" data-aos-delay="300">
+                <a href="<?= site_url('jefferya') ?>" class="button2" data-aos="fade-up">
+                    <span class="state-layer2">
+                        <span class="button-text2">Get Started For Free!</span>
 
-                    <div class="ellipse-15"></div>
+                        <svg class="heroicons-outline-arrow-right2" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.5 4.5L21 12M21 12L13.5 19.5M21 12H3" stroke="black" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                    </span>
+                </a>
+            </div>
 
-                    <img class="ellipse-14" src="<?= asset_url('assets/img/landing/ellipse-14.png') ?>" />
-                    <div class="ellipse-13"></div>
+            <div class="relative" data-aos="zoom-in-up" data-aos-delay="300">
+                <div class="ellipse-15 absolute"></div>
+                <img class="ellipse-14 absolute" src="<?= asset_url('assets/img/landing/ellipse-14.png') ?>" />
+                <div class=" ellipse-13">
                 </div>
             </div>
         </div>
 
-        <div class="unique-link-section-cta">
-            <div class="columns2">
-                <div class="left-image">
-                    <img class="rectangle-4921" src="<?= asset_url('assets/img/landing/rectangle-4921.png') ?>" />
+        <div class="light-section">
+            <div class="left-image">
+                <img class="rectangle-4921" src="<?= asset_url('assets/img/landing/rectangle-4921.png') ?>" />
 
-                    <div class="group-1">
-                        <div class="rectangle-4925"></div>
+                <div class="group-1">
+                    <div class="rectangle-4925"></div>
+                    <div class="https-www-schedl-me-segira">
+                        <span><span class="https-www-schedl-me-segira-span">https://www.schedl.me/</span><span
+                                class="https-www-schedl-me-segira-span2">segira</span></span>
+                    </div>
 
-                        <div class="https-www-schedl-me-segira">
-                            <span><span class="https-www-schedl-me-segira-span">https://www.schedl.me/</span><span
-                                    class="https-www-schedl-me-segira-span2">segira</span></span>
-                        </div>
+                    <div class="cursor">
+                        <div class="page-1">
+                            <div class="pointinghand">
+                                <svg class="bg-copy" width="35" height="35" viewBox="0 0 35 35" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <g opacity="0.01">
+                                        <path opacity="0.01" d="M35 0H0V35H35V0Z" fill="white" />
+                                    </g>
+                                </svg>
 
-                        <div class="cursor">
-                            <div class="page-1">
-                                <div class="pointinghand">
-                                    <svg class="bg-copy" width="35" height="35" viewBox="0 0 35 35" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <g opacity="0.01">
-                                            <path opacity="0.01" d="M35 0H0V35H35V0Z" fill="white" />
-                                        </g>
-                                    </svg>
+                                <svg class="hand" width="15" height="16" viewBox="0 0 15 16" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M3.3315 12.3798C3.0475 12.0208 2.7025 11.2868 2.0885 10.3958C1.7405 9.89183 0.877495 8.94283 0.620495 8.46083C0.397495 8.03483 0.421496 7.84383 0.474496 7.49083C0.568496 6.86283 1.2125 6.37383 1.8995 6.43983C2.4185 6.48883 2.8585 6.83183 3.2545 7.15583C3.4935 7.35083 3.7875 7.72983 3.9645 7.94383C4.1275 8.13983 4.1675 8.22083 4.3415 8.45283C4.5715 8.75983 4.6435 8.91183 4.5555 8.57383C4.4845 8.07783 4.3685 7.23083 4.2005 6.48183C4.0725 5.91383 4.0415 5.82483 3.9195 5.38883C3.7905 4.92483 3.7245 4.59983 3.6035 4.10783C3.5195 3.75983 3.3685 3.04883 3.3275 2.64883C3.2705 2.10183 3.2405 1.20983 3.5915 0.799827C3.8665 0.478827 4.4975 0.381827 4.8885 0.579827C5.4005 0.838827 5.6915 1.58283 5.8245 1.87983C6.0635 2.41383 6.2115 3.03083 6.3405 3.84083C6.5045 4.87183 6.8065 6.30283 6.8165 6.60383C6.8405 6.23483 6.7485 5.45783 6.8125 5.10383C6.8705 4.78283 7.1405 4.40983 7.4785 4.30883C7.7645 4.22383 8.0995 4.19283 8.3945 4.25383C8.7075 4.31783 9.0375 4.54183 9.1605 4.75283C9.5225 5.37683 9.5295 6.65183 9.5445 6.58383C9.6305 6.20783 9.6155 5.35483 9.8285 4.99983C9.9685 4.76583 10.3255 4.55483 10.5155 4.52083C10.8095 4.46883 11.1705 4.45283 11.4795 4.51283C11.7285 4.56183 12.0655 4.85783 12.1565 4.99983C12.3745 5.34383 12.4985 6.31683 12.5355 6.65783C12.5505 6.79883 12.6095 6.26583 12.8285 5.92183C13.2345 5.28283 14.6715 5.15883 14.7265 6.56083C14.7515 7.21483 14.7465 7.18483 14.7465 7.62483C14.7465 8.14183 14.7345 8.45283 14.7065 8.82683C14.6755 9.22683 14.5895 10.1308 14.4645 10.5688C14.3785 10.8698 14.0935 11.5468 13.8125 11.9528C13.8125 11.9528 12.7385 13.2028 12.6215 13.7658C12.5035 14.3278 12.5425 14.3318 12.5195 14.7308C12.4965 15.1288 12.6405 15.6528 12.6405 15.6528C12.6405 15.6528 11.8385 15.7568 11.4065 15.6878C11.0155 15.6248 10.5315 14.8468 10.4065 14.6088C10.2345 14.2808 9.8675 14.3438 9.7245 14.5858C9.4995 14.9688 9.0155 15.6558 8.6735 15.6988C8.0055 15.7828 6.6195 15.7298 5.5345 15.7188C5.5345 15.7188 5.7195 14.7078 5.3075 14.3608C5.0025 14.1018 4.4775 13.5768 4.1635 13.3008L3.3315 12.3798Z"
+                                        fill="white" />
+                                </svg>
 
-                                    <svg class="hand" width="15" height="16" viewBox="0 0 15 16" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M3.3315 12.3798C3.0475 12.0208 2.7025 11.2868 2.0885 10.3958C1.7405 9.89183 0.877495 8.94283 0.620495 8.46083C0.397495 8.03483 0.421496 7.84383 0.474496 7.49083C0.568496 6.86283 1.2125 6.37383 1.8995 6.43983C2.4185 6.48883 2.8585 6.83183 3.2545 7.15583C3.4935 7.35083 3.7875 7.72983 3.9645 7.94383C4.1275 8.13983 4.1675 8.22083 4.3415 8.45283C4.5715 8.75983 4.6435 8.91183 4.5555 8.57383C4.4845 8.07783 4.3685 7.23083 4.2005 6.48183C4.0725 5.91383 4.0415 5.82483 3.9195 5.38883C3.7905 4.92483 3.7245 4.59983 3.6035 4.10783C3.5195 3.75983 3.3685 3.04883 3.3275 2.64883C3.2705 2.10183 3.2405 1.20983 3.5915 0.799827C3.8665 0.478827 4.4975 0.381827 4.8885 0.579827C5.4005 0.838827 5.6915 1.58283 5.8245 1.87983C6.0635 2.41383 6.2115 3.03083 6.3405 3.84083C6.5045 4.87183 6.8065 6.30283 6.8165 6.60383C6.8405 6.23483 6.7485 5.45783 6.8125 5.10383C6.8705 4.78283 7.1405 4.40983 7.4785 4.30883C7.7645 4.22383 8.0995 4.19283 8.3945 4.25383C8.7075 4.31783 9.0375 4.54183 9.1605 4.75283C9.5225 5.37683 9.5295 6.65183 9.5445 6.58383C9.6305 6.20783 9.6155 5.35483 9.8285 4.99983C9.9685 4.76583 10.3255 4.55483 10.5155 4.52083C10.8095 4.46883 11.1705 4.45283 11.4795 4.51283C11.7285 4.56183 12.0655 4.85783 12.1565 4.99983C12.3745 5.34383 12.4985 6.31683 12.5355 6.65783C12.5505 6.79883 12.6095 6.26583 12.8285 5.92183C13.2345 5.28283 14.6715 5.15883 14.7265 6.56083C14.7515 7.21483 14.7465 7.18483 14.7465 7.62483C14.7465 8.14183 14.7345 8.45283 14.7065 8.82683C14.6755 9.22683 14.5895 10.1308 14.4645 10.5688C14.3785 10.8698 14.0935 11.5468 13.8125 11.9528C13.8125 11.9528 12.7385 13.2028 12.6215 13.7658C12.5035 14.3278 12.5425 14.3318 12.5195 14.7308C12.4965 15.1288 12.6405 15.6528 12.6405 15.6528C12.6405 15.6528 11.8385 15.7568 11.4065 15.6878C11.0155 15.6248 10.5315 14.8468 10.4065 14.6088C10.2345 14.2808 9.8675 14.3438 9.7245 14.5858C9.4995 14.9688 9.0155 15.6558 8.6735 15.6988C8.0055 15.7828 6.6195 15.7298 5.5345 15.7188C5.5345 15.7188 5.7195 14.7078 5.3075 14.3608C5.0025 14.1018 4.4775 13.5768 4.1635 13.3008L3.3315 12.3798Z"
-                                            fill="white" />
-                                    </svg>
+                                <svg class="hand-border" width="15" height="16" viewBox="0 0 15 16" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M3.3315 12.3798C3.0475 12.0208 2.7025 11.2868 2.0885 10.3958C1.7405 9.89183 0.877495 8.94283 0.620495 8.46083C0.397495 8.03483 0.421496 7.84383 0.474496 7.49083C0.568496 6.86283 1.2125 6.37383 1.8995 6.43983C2.4185 6.48883 2.8585 6.83183 3.2545 7.15583C3.4935 7.35083 3.7875 7.72983 3.9645 7.94383C4.1275 8.13983 4.1675 8.22083 4.3415 8.45283C4.5715 8.75983 4.6435 8.91183 4.5555 8.57383C4.4845 8.07783 4.3685 7.23083 4.2005 6.48183C4.0725 5.91383 4.0415 5.82483 3.9195 5.38883C3.7905 4.92483 3.7245 4.59983 3.6035 4.10783C3.5195 3.75983 3.3685 3.04883 3.3275 2.64883C3.2705 2.10183 3.2405 1.20983 3.5915 0.799827C3.8665 0.478827 4.4975 0.381827 4.8885 0.579827C5.4005 0.838827 5.6915 1.58283 5.8245 1.87983C6.0635 2.41383 6.2115 3.03083 6.3405 3.84083C6.5045 4.87183 6.8065 6.30283 6.8165 6.60383C6.8405 6.23483 6.7485 5.45783 6.8125 5.10383C6.8705 4.78283 7.1405 4.40983 7.4785 4.30883C7.7645 4.22383 8.0995 4.19283 8.3945 4.25383C8.7075 4.31783 9.0375 4.54183 9.1605 4.75283C9.5225 5.37683 9.5295 6.65183 9.5445 6.58383C9.6305 6.20783 9.6155 5.35483 9.8285 4.99983C9.9685 4.76583 10.3255 4.55483 10.5155 4.52083C10.8095 4.46883 11.1705 4.45283 11.4795 4.51283C11.7285 4.56183 12.0655 4.85783 12.1565 4.99983C12.3745 5.34383 12.4985 6.31683 12.5355 6.65783C12.5505 6.79883 12.6095 6.26583 12.8285 5.92183C13.2345 5.28283 14.6715 5.15883 14.7265 6.56083C14.7515 7.21483 14.7465 7.18483 14.7465 7.62483C14.7465 8.14183 14.7345 8.45283 14.7065 8.82683C14.6755 9.22683 14.5895 10.1308 14.4645 10.5688C14.3785 10.8698 14.0935 11.5468 13.8125 11.9528C13.8125 11.9528 12.7385 13.2028 12.6215 13.7658C12.5035 14.3278 12.5425 14.3318 12.5195 14.7308C12.4965 15.1288 12.6405 15.6528 12.6405 15.6528C12.6405 15.6528 11.8385 15.7568 11.4065 15.6878C11.0155 15.6248 10.5315 14.8468 10.4065 14.6088C10.2345 14.2808 9.8675 14.3438 9.7245 14.5858C9.4995 14.9688 9.0155 15.6558 8.6735 15.6988C8.0055 15.7828 6.6195 15.7298 5.5345 15.7188C5.5345 15.7188 5.7195 14.7078 5.3075 14.3608C5.0025 14.1018 4.4775 13.5768 4.1635 13.3008L3.3315 12.3798Z"
+                                        stroke="#111111" stroke-width="0.75" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
 
-                                    <svg class="hand-border" width="15" height="16" viewBox="0 0 15 16" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                            d="M3.3315 12.3798C3.0475 12.0208 2.7025 11.2868 2.0885 10.3958C1.7405 9.89183 0.877495 8.94283 0.620495 8.46083C0.397495 8.03483 0.421496 7.84383 0.474496 7.49083C0.568496 6.86283 1.2125 6.37383 1.8995 6.43983C2.4185 6.48883 2.8585 6.83183 3.2545 7.15583C3.4935 7.35083 3.7875 7.72983 3.9645 7.94383C4.1275 8.13983 4.1675 8.22083 4.3415 8.45283C4.5715 8.75983 4.6435 8.91183 4.5555 8.57383C4.4845 8.07783 4.3685 7.23083 4.2005 6.48183C4.0725 5.91383 4.0415 5.82483 3.9195 5.38883C3.7905 4.92483 3.7245 4.59983 3.6035 4.10783C3.5195 3.75983 3.3685 3.04883 3.3275 2.64883C3.2705 2.10183 3.2405 1.20983 3.5915 0.799827C3.8665 0.478827 4.4975 0.381827 4.8885 0.579827C5.4005 0.838827 5.6915 1.58283 5.8245 1.87983C6.0635 2.41383 6.2115 3.03083 6.3405 3.84083C6.5045 4.87183 6.8065 6.30283 6.8165 6.60383C6.8405 6.23483 6.7485 5.45783 6.8125 5.10383C6.8705 4.78283 7.1405 4.40983 7.4785 4.30883C7.7645 4.22383 8.0995 4.19283 8.3945 4.25383C8.7075 4.31783 9.0375 4.54183 9.1605 4.75283C9.5225 5.37683 9.5295 6.65183 9.5445 6.58383C9.6305 6.20783 9.6155 5.35483 9.8285 4.99983C9.9685 4.76583 10.3255 4.55483 10.5155 4.52083C10.8095 4.46883 11.1705 4.45283 11.4795 4.51283C11.7285 4.56183 12.0655 4.85783 12.1565 4.99983C12.3745 5.34383 12.4985 6.31683 12.5355 6.65783C12.5505 6.79883 12.6095 6.26583 12.8285 5.92183C13.2345 5.28283 14.6715 5.15883 14.7265 6.56083C14.7515 7.21483 14.7465 7.18483 14.7465 7.62483C14.7465 8.14183 14.7345 8.45283 14.7065 8.82683C14.6755 9.22683 14.5895 10.1308 14.4645 10.5688C14.3785 10.8698 14.0935 11.5468 13.8125 11.9528C13.8125 11.9528 12.7385 13.2028 12.6215 13.7658C12.5035 14.3278 12.5425 14.3318 12.5195 14.7308C12.4965 15.1288 12.6405 15.6528 12.6405 15.6528C12.6405 15.6528 11.8385 15.7568 11.4065 15.6878C11.0155 15.6248 10.5315 14.8468 10.4065 14.6088C10.2345 14.2808 9.8675 14.3438 9.7245 14.5858C9.4995 14.9688 9.0155 15.6558 8.6735 15.6988C8.0055 15.7828 6.6195 15.7298 5.5345 15.7188C5.5345 15.7188 5.7195 14.7078 5.3075 14.3608C5.0025 14.1018 4.4775 13.5768 4.1635 13.3008L3.3315 12.3798Z"
-                                            stroke="#111111" stroke-width="0.75" stroke-linecap="round"
-                                            stroke-linejoin="round" />
-                                    </svg>
+                                <svg class="line-3" height="4" viewBox="0 0 0 4" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 3.459V0" stroke="#111111" stroke-width="0.75" stroke-linecap="round" />
+                                </svg>
 
-                                    <svg class="line-3" height="4" viewBox="0 0 0 4" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0 3.459V0" stroke="#111111" stroke-width="0.75"
-                                            stroke-linecap="round" />
-                                    </svg>
+                                <svg class="line-2" width="1" height="4" viewBox="0 0 1 4" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.550791 3.74619L0.53479 0.273193" stroke="#111111" stroke-width="0.75"
+                                        stroke-linecap="round" />
+                                </svg>
 
-                                    <svg class="line-2" width="1" height="4" viewBox="0 0 1 4" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.550791 3.74619L0.53479 0.273193" stroke="#111111"
-                                            stroke-width="0.75" stroke-linecap="round" />
-                                    </svg>
-
-                                    <svg class="line-1" width="1" height="4" viewBox="0 0 1 4" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M0.554688 0.304688L0.575687 3.73069" stroke="#111111"
-                                            stroke-width="0.75" stroke-linecap="round" />
-                                    </svg>
-                                </div>
+                                <svg class="line-1" width="1" height="4" viewBox="0 0 1 4" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0.554688 0.304688L0.575687 3.73069" stroke="#111111" stroke-width="0.75"
+                                        stroke-linecap="round" />
+                                </svg>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <div class="cta">
-                    <div class="heading-32">Customisable unique booking link</div>
+            <div class="cta">
+                <div class="heading-32">Customisable unique booking link</div>
 
-                    <div class="frame-5222">
-                        <div class="frame-5254">
-                            <div class="paragraph7">
-                                Stand out from the crowd with a personalized link that reflects
-                                your brand and style. Tailor the link to match your business
-                                name or create a memorable, one-of-a-kind URL that clients
-                                won&#039;t forget. It&#039;s your key to leave a lasting
-                                impression and make booking with you a breeze.
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="button3">
-                        <div class="state-layer2">
-                            <a class="button-text3" href="<?= site_url() ?>">Get Your Unique Booking Link!</a>
+                <div class="paragraph7">
+                    Stand out from the crowd with a personalized link that reflects
+                    your brand and style. Tailor the link to match your business
+                    name or create a memorable, one-of-a-kind URL that clients
+                    won&#039;t forget. It&#039;s your key to leave a lasting
+                    impression and make booking with you a breeze.
+                </div>
 
-                            <svg class="heroicons-outline-arrow-right3" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M13.5 4.5L21 12M21 12L13.5 19.5M21 12H3" stroke="white" stroke-width="1.5"
-                                    stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </div>
+                <div class="button3">
+                    <div class="state-layer2">
+                        <a class="button-text3" href="<?= site_url('jefferya') ?>">Get A Unique Booking
+                            Link!</a>
+
+                        <svg class=" heroicons-outline-arrow-right3" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.5 4.5L21 12M21 12L13.5 19.5M21 12H3" stroke="white" stroke-width="1.5"
+                                stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
                     </div>
                 </div>
             </div>
@@ -297,7 +284,7 @@
                 </div>
 
                 <div class="buttons">
-                    <a href="<?= site_url() ?>" class="button3">
+                    <a href="<?= site_url('jefferya') ?>" class=" button3">
                         <div class="state-layer2">
                             <div class="button-text3">Get Instant Support</div>
 
@@ -310,7 +297,7 @@
                         </div>
                     </a>
 
-                    <a href="<?= site_url() ?>" class="button3">
+                    <a href="mailto:hello@schedl.me" class="button3">
                         <div class="state-layer2">
                             <div class="button-text3">Send Us An Email</div>
 
@@ -323,8 +310,8 @@
                         </div>
                     </a>
 
-                    <a class="button3" href="<?= site_url() ?>">
-                        <div class="state-layer2">
+                    <a class="button3" href="<?= site_url('jefferya') ?>">
+                        <div class=" state-layer2">
                             <div class="button-text3">Chat With Us</div>
 
                             <svg class="ic-baseline-whatsapp" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -340,7 +327,8 @@
         </div>
 
         <div class="footer">
-            <div class="flex items-center justify-between container h-full">
+            <div
+                class="flex flex-col justify-center lg:flex-row items-center lg:justify-between container h-full gap-4">
                 <div class="flex flex-col w-full justify-between h-44">
                     <div class="schedl-me-logo">
                         <img src="<?= asset_url('assets/img/landing/logo.png') ?>" />
@@ -446,8 +434,6 @@
     </div>
 
     <div class="header">
-        <div class="rectangle-1"></div>
-
         <div class="container2">
             <div class="logo">
                 <div class="schedl-me-logo2">
