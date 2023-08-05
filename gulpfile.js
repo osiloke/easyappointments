@@ -147,9 +147,7 @@ function vendor(done) {
     ]).pipe(gulp.dest('assets/vendor/cookieconsent'));
 
     // fullcalendar
-    gulp.src(['node_modules/fullcalendar/index.global.min.js']).pipe(
-        gulp.dest('assets/vendor/fullcalendar')
-    );
+    gulp.src(['node_modules/fullcalendar/index.global.min.js']).pipe(gulp.dest('assets/vendor/fullcalendar'));
 
     // fullcalendar-moment
     gulp.src(['node_modules/@fullcalendar/moment/index.global.min.js']).pipe(
@@ -210,4 +208,5 @@ exports.styles = gulp.series(styles);
 exports.compile = gulp.series(clean, vendor, scripts, styles);
 exports.dev = gulp.series(clean, vendor, scripts, styles, watch);
 exports.build = gulp.series(clean, vendor, scripts, styles, archive);
+exports.archive = gulp.series(archive);
 exports.default = exports.dev;

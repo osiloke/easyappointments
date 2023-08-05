@@ -68,20 +68,19 @@ class Booking extends EA_Controller
         $matomo_analytics_url = setting('matomo_analytics_url');
 
         if ($disable_booking) {
-            $disable_booking_message = setting('disable_booking_message');
 
             html_vars([
                 'show_message'          => TRUE,
                 'page_title'            => $company_name,
                 'message_title'         => lang('booking_is_disabled'),
-                'message_text'          => $disable_booking_message,
+                'message_text'          => "provider does not exist",
                 'message_icon'          => base_url('assets/img/error.png'),
                 'google_analytics_code' => $google_analytics_code,
-                'matomo_analytics_url'  => $matomo_analytics_url
+                'matomo_analytics_url'  => $matomo_analytics_url,
+                'company_email'         => setting('company_email'),
             ]);
 
-            $this->load->view('pages/booking_message');
-
+            $this->load->view('pages/landing');
             return;
         }
 
@@ -100,7 +99,8 @@ class Booking extends EA_Controller
                     'message_text'          => "provider does not exist",
                     'message_icon'          => base_url('assets/img/error.png'),
                     'google_analytics_code' => $google_analytics_code,
-                    'matomo_analytics_url'  => $matomo_analytics_url
+                    'matomo_analytics_url'  => $matomo_analytics_url,
+                    'company_email'         => setting('company_email'),
                 ]);
 
                 $this->load->view('pages/landing');
@@ -116,7 +116,8 @@ class Booking extends EA_Controller
                 'message_text'          => "provider does not exist",
                 'message_icon'          => base_url('assets/img/error.png'),
                 'google_analytics_code' => $google_analytics_code,
-                'matomo_analytics_url'  => $matomo_analytics_url
+                'matomo_analytics_url'  => $matomo_analytics_url,
+                'company_email'         => setting('company_email'),
             ]);
 
             $this->load->view('pages/landing');

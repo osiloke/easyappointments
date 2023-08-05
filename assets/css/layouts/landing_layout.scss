@@ -85,10 +85,10 @@
     text-align: center;
     font: var(--headings-xs-medium, 500 24px/32px 'Inter', sans-serif);
     position: relative;
-    // width: 911px;
     display: flex;
     align-items: center;
     justify-content: center;
+    @apply max-w-[911px] px-5 lg:px-10;
 }
 .button {
     background: var(--primary-black, #000000);
