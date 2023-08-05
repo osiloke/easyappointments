@@ -640,3 +640,7 @@ body .modal-header {
     border: none !important;
     @apply mx-auto w-full bg-transparent lg:max-w-7xl;
 }
+
+[data-theme='lofi'] .modal.show {
+    opacity: 1 !important;
+}
