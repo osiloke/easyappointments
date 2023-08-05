@@ -8,8 +8,8 @@
 ?>
 
 <nav id="header" class="navbar navbar-expand-md navbar-dark">
-    <div id="header-logo" class="navbar-brand w-full">
-        <img src="<?= base_url('assets/img/logo.png') ?>" alt="logo">
+    <div class="navbar-brand w-full">
+        <img src="<?= base_url('assets/img/logo-white.svg') ?>" alt="logo">
         <h6>
             <?= vars("company_name") ?>
         </h6>

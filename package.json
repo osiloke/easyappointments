@@ -77,7 +77,7 @@
         "start": "npx gulp",
         "build": "npx gulp build",
         "upload": "gsutil cp easyappointments-0.0.0.zip gs://dostow-backup.appspot.com/apps/pride/easyappointments-0.0.0.zip",
-        "set-url": "URL=`gcloud storage sign-url gs://dostow-backup.appspot.com/apps/pride/easyappointments-0.0.0.zip` dokku config:set DOWNLOAD_URL=`$URL`",
+        "set-url": "URL=`gcloud storage sign-url gs://dostow-backup.appspot.com/apps/pride/easyappointments-0.0.0.zip` dokku config:set DOWNLOAD_URL=\"`$URL`\"",
         "docs": "npx gulp docs"
     }
 }

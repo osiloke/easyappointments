@@ -78,6 +78,7 @@ class Booking extends EA_Controller
                 'google_analytics_code' => $google_analytics_code,
                 'matomo_analytics_url'  => $matomo_analytics_url,
                 'company_email'         => setting('company_email'),
+                'company_name'          => $company_name,
             ]);
 
             $this->load->view('pages/landing');
@@ -88,27 +89,10 @@ class Booking extends EA_Controller
         $provider_name = strtolower(uri_string());
         $user_id = session('user_id');
         if ($provider_name == 'booking') {
-            if (!empty($user_id)) {
-                return redirect(site_url('/?provider=' . $user_id));
-            } else {
+            // if (!empty($user_id)) {
+            //     return redirect(site_url('/?provider=' . $user_id));
+            // } else {
 
-                html_vars([
-                    'show_message'          => TRUE,
-                    'page_title'            => $company_name,
-                    'message_title'         => lang('booking_is_disabled'),
-                    'message_text'          => "provider does not exist",
-                    'message_icon'          => base_url('assets/img/error.png'),
-                    'google_analytics_code' => $google_analytics_code,
-                    'matomo_analytics_url'  => $matomo_analytics_url,
-                    'company_email'         => setting('company_email'),
-                ]);
-
-                $this->load->view('pages/landing');
-                return;
-            }
-        }
-
-        if (empty($provider_name) && empty($provider_id)) {
             html_vars([
                 'show_message'          => TRUE,
                 'page_title'            => $company_name,
@@ -118,6 +102,23 @@ class Booking extends EA_Controller
                 'google_analytics_code' => $google_analytics_code,
                 'matomo_analytics_url'  => $matomo_analytics_url,
                 'company_email'         => setting('company_email'),
+                'company_name'          => $company_name,
+            ]);
+
+            //     $this->load->view('pages/landing');
+            //     return;
+            // }
+        } else if (empty($provider_name) && empty($provider_id)) {
+            html_vars([
+                'show_message'          => TRUE,
+                'page_title'            => $company_name,
+                'message_title'         => lang('booking_is_disabled'),
+                'message_text'          => "provider does not exist",
+                'message_icon'          => base_url('assets/img/error.png'),
+                'google_analytics_code' => $google_analytics_code,
+                'matomo_analytics_url'  => $matomo_analytics_url,
+                'company_email'         => setting('company_email'),
+                'company_name'          => $company_name,
             ]);
 
             $this->load->view('pages/landing');
@@ -128,10 +129,6 @@ class Booking extends EA_Controller
         $available_services = $this->services_model->get_available_services(TRUE, $provider_id ?? '', $provider_name);
         $available_providers = $this->providers_model->get_available_providers(TRUE, $provider_id ?? '', $provider_name);
 
-        if (sizeof($available_services) == 0 && sizeof($available_providers) == 0) {
-            show_404();
-            return;
-        }
         foreach ($available_providers as &$available_provider) {
             // Only expose the required provider data.
 
@@ -242,6 +239,9 @@ class Booking extends EA_Controller
 
             // Cache the token for 10 minutes.
             $this->cache->save('customer-token-' . $customer_token, $customer['id'], 600);
+        } else if (sizeof($available_services) == 0 && sizeof($available_providers) == 0) {
+            show_404();
+            return;
         } else {
             $manage_mode = FALSE;
             $customer_token = FALSE;
@@ -325,6 +325,20 @@ class Booking extends EA_Controller
      * @param string $appointment_hash
      */
     public function reschedule(string $appointment_hash)
+    {
+        html_vars(['appointment_hash' => $appointment_hash]);
+
+        $this->index();
+    }
+
+    /**
+     * Render the booking page and display the selected appointment.
+     *
+     * This method will call the "index" callback to handle the page rendering.
+     *
+     * @param string $appointment_hash
+     */
+    public function view(string $appointment_hash)
     {
         html_vars(['appointment_hash' => $appointment_hash]);
 

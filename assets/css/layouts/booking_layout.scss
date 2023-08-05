@@ -24,7 +24,7 @@ body {
 }
 
 #main {
-    min-height: 100%;
+    @apply max-h-full max-w-7xl pt-32;
 }
 
 /* BOOK APPOINTMENT WIZARD

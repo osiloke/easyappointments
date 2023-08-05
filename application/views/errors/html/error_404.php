@@ -77,7 +77,9 @@
         <p>
             <small>
 
-                <a href="<?= site_url() ?>"><?= vars("company_name") ?></a>
+                <a href="/">
+                    Home
+                </a>
             </small>
         </p>
     </div>

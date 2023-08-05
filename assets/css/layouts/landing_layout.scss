@@ -1,4 +1,7 @@
 @import '../_tailwind';
+body {
+    @apply bg-white;
+}
 .landing,
 .landing * {
     box-sizing: border-box;
@@ -10,6 +13,7 @@
     position: relative;
     // @apply mx-auto;
 }
+
 .container {
     @apply mx-auto w-full;
     max-width: 1410px;
@@ -117,25 +121,6 @@
     );
     overflow: hidden;
     @apply transition delay-150 ease-in-out hover:-translate-y-1 hover:scale-110;
-}
-.state-layer {
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-    align-items: center;
-    justify-content: center;
-    align-self: stretch;
-    flex-shrink: 0;
-    position: relative;
-}
-.button-text {
-    color: var(--primary-white, #ffffff);
-    text-align: center;
-    font: var(--body-md-semi-bold, 600 16px/24px 'Inter', sans-serif);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 .heroicons-outline-arrow-right {
     flex-shrink: 0;
@@ -830,35 +815,6 @@
     position: relative;
     overflow: visible;
 }
-.schedl-me-logo {
-    width: 207px;
-    height: 46px;
-}
-.union {
-    position: absolute;
-    left: 10.82px;
-    top: 10.34px;
-    overflow: visible;
-}
-.schedl-me {
-    border-radius: 0px;
-    position: absolute;
-    left: 47.99px;
-    top: 13.19px;
-    overflow: visible;
-}
-.online-indicators {
-    width: 11.44px;
-    height: 11.41px;
-    position: absolute;
-    left: 29.41px;
-    top: 8.91px;
-    box-shadow: var(
-        --shadows-small-box-shadow,
-        0px 2px 5px 0px rgba(103, 110, 118, 0.08),
-        0px 1px 1px 0px rgba(0, 0, 0, 0.12)
-    );
-}
 .ellipse-6 {
     background: var(--success-600, #53b483);
     border-radius: 50%;
@@ -871,15 +827,6 @@
     left: 0px;
     top: 0px;
 }
-.header {
-    width: 100%;
-    height: 119px;
-    position: absolute;
-    // left: calc(50% - 758px);
-    top: 0px;
-    overflow: hidden;
-    @apply flex items-center justify-center;
-}
 .rectangle-1 {
     background: var(--primary-white, #ffffff);
     width: 1512px;
@@ -887,174 +834,6 @@
     position: absolute;
     left: 0px;
     top: 0px;
-}
-.container2 {
-    background: var(--primary-black, #000000);
-    border-radius: 8px;
-    padding: 24px 25px 24px 25px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1410px;
-    position: absolute;
-    // left: calc(50% - 705px);
-    top: calc(50% - 44px);
-    box-shadow: 0px 4px 7px 0px rgba(0, 0, 0, 0.25);
-    @apply w-[90%];
-}
-.logo {
-    flex-shrink: 0;
-    width: 150px;
-    height: 33px;
-    position: relative;
-    overflow: hidden;
-}
-.schedl-me-logo2 {
-    width: 138.68px;
-    height: 31.57px;
-    position: absolute;
-    left: 5.66px;
-    top: 1.43px;
-}
-.union4 {
-    position: absolute;
-    left: 7.25px;
-    top: 7.1px;
-    overflow: visible;
-}
-.schedl-me2 {
-    border-radius: 0px;
-    position: absolute;
-    left: 32.15px;
-    top: 9.05px;
-    overflow: visible;
-}
-.online-indicators2 {
-    width: 7.66px;
-    height: 7.83px;
-    position: absolute;
-    left: 19.7px;
-    top: 6.12px;
-    box-shadow: var(
-        --shadows-small-box-shadow,
-        0px 2px 5px 0px rgba(103, 110, 118, 0.08),
-        0px 1px 1px 0px rgba(0, 0, 0, 0.12)
-    );
-}
-.ellipse-62 {
-    background: var(--success-600, #53b483);
-    border-radius: 50%;
-    border-style: solid;
-    border-color: var(--primary-white, #ffffff);
-    border-width: 1px;
-    width: 7.66px;
-    height: 7.83px;
-    position: absolute;
-    left: 0px;
-    top: 0px;
-    @apply animate-ping;
-}
-.header-menu-list {
-    gap: 42px;
-    align-items: center;
-    justify-content: flex-end;
-    flex-shrink: 0;
-    position: relative;
-    @apply invisible flex flex-row md:visible;
-}
-.about {
-    color: #fcfcfd;
-    text-align: right;
-    font: var(--body-sm-semi-bold, 600 14px/20px 'Inter', sans-serif);
-    position: relative;
-}
-.fa-qs {
-    color: #fcfcfd;
-    text-align: right;
-    font: var(--body-sm-semi-bold, 600 14px/20px 'Inter', sans-serif);
-    position: relative;
-}
-.contact-us {
-    color: #fcfcfd;
-    text-align: right;
-    font: var(--body-sm-semi-bold, 600 14px/20px 'Inter', sans-serif);
-    position: relative;
-}
-.header-menu-buttons {
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    align-items: center;
-    justify-content: flex-end;
-    flex-shrink: 0;
-    position: relative;
-}
-.button4 {
-    border-radius: 100px;
-    border-style: solid;
-    border-color: var(--primary-white, #ffffff);
-    border-width: 1px;
-    padding: 10px 18px 10px 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-end;
-    justify-content: center;
-    flex-shrink: 0;
-    position: relative;
-    overflow: hidden;
-}
-.state-layer3 {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    position: relative;
-}
-.heroicons-outline-chat-bubble-left-right2 {
-    flex-shrink: 0;
-    position: relative;
-    overflow: visible;
-}
-.button-text4 {
-    color: var(--primary-white, #ffffff);
-    text-align: center;
-    font: var(--body-sm-semi-bold, 600 14px/20px 'Inter', sans-serif);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.button5 {
-    background: var(--primary-white, #ffffff);
-    border-radius: 100px;
-    padding: 10px 18px 10px 18px;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    align-items: flex-end;
-    justify-content: center;
-    flex-shrink: 0;
-    position: relative;
-    box-shadow: var(
-        --shadows-medium-box-shadow,
-        0px 1px 1px 0px rgba(0, 0, 0, 0.12),
-        0px 0px 0px 1px rgba(103, 110, 118, 0.16),
-        0px 2px 5px 0px rgba(103, 110, 118, 0.08)
-    );
-    overflow: hidden;
-}
-.button-text5 {
-    color: var(--primary-black, #000000);
-    text-align: center;
-    font: var(--body-sm-semi-bold, 600 14px/20px 'Inter', sans-serif);
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 .centered-grid {
     @apply flex w-full flex-col justify-center gap-10 lg:flex-row;

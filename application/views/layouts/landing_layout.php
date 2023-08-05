@@ -42,6 +42,7 @@
 
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/cookieconsent/cookieconsent.min.css') ?>">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/general.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/layouts/landing_layout.css') ?>">
 
     <?php component('company_color_style', ['company_color' => vars('company_color')]) ?>
@@ -50,7 +51,6 @@
 </head>
 
 <body data-theme="lofi" class="bg-gray-100">
-
     <?php slot('content') ?>
 
     <?php component('js_vars_script') ?>
