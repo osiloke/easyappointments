@@ -33,6 +33,14 @@
     position: absolute;
     left: calc(50% - 904px);
     top: 244px;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow,
+        transform, filter, -webkit-backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow,
+        transform, filter, backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow,
+        transform, filter, backdrop-filter, -webkit-backdrop-filter;
+    transition-duration: 3000ms;
+    transition-timing-function: cubic-bezier(0.4, 0, 0, 1.01);
     @apply transition ease-in-out hover:scale-110;
 }
 .ellipse-9 {
@@ -68,7 +76,7 @@
     align-items: center;
     justify-content: flex-start;
     position: absolute;
-    @apply top-[200px] lg:top-[415px];
+    @apply top-[200px] lg:top-[315px];
 }
 .heading-1 {
     color: #000000;
@@ -78,7 +86,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    @apply text-[60px] lg:m-0 lg:text-[72px];
+    @apply max-w-[911px] px-5 text-[60px] lg:m-0 lg:px-10 lg:text-[72px];
 }
 .heading-6 {
     color: #000000;
@@ -144,13 +152,9 @@
     border-style: solid;
     border-color: #000000;
     border-width: 8px;
-    // width: 985px;
-    // height: 656px;
-    position: absolute;
-    // left: 264px;
     top: 742px;
     object-fit: cover;
-    @apply invisible transition ease-in-out hover:scale-110 lg:visible;
+    @apply absolute w-10/12 transition ease-in-out hover:scale-110 lg:w-[50%];
 }
 .person-3 {
     border-radius: 50%;
@@ -561,6 +565,7 @@
     gap: 16px;
     align-items: flex-start;
     justify-content: flex-start;
+    @apply w-6/12;
 }
 .heading-32 {
     color: var(--primary-black, #000000);
@@ -1057,7 +1062,7 @@
 
 div[class*='section'] {
     overflow: hidden;
-    @apply m-auto flex h-full min-h-[400px] w-full justify-center gap-10 p-5 lg:min-h-[756px] lg:p-10;
+    @apply m-auto flex h-full min-h-[500px] w-full justify-center gap-10 p-5 py-20 lg:min-h-[756px] lg:p-10;
 }
 
 img[class*='person'] {
