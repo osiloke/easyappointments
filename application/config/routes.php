@@ -160,6 +160,7 @@ $route['account'] = 'account';
 $route['accounts'] = 'accounts';
 $route['admins'] = 'admins';
 $route['backend'] = 'backend';
+$route['update'] = 'update';
 $route['calendar'] = 'calendar';
 $route['customers'] = 'customers';
 $route['login'] = 'login';

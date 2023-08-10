@@ -8,7 +8,6 @@
  * @link        https://easyappointments.org
  * @since       v1.5.0
  * ---------------------------------------------------------------------------- */
-
 /**
  * BACKEND CSS FILE FOR EASY!APPOINTMENTS
  */
@@ -1006,4 +1005,8 @@ body .form-horizontal .controls {
 
 #privacy-policy-modal .modal.show {
     @apply z-[1000] opacity-100;
+}
+
+select#bank-name {
+    @apply select;
 }

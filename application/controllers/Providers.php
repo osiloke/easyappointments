@@ -18,7 +18,8 @@
  *
  * @package Controllers
  */
-class Providers extends EA_Controller {
+class Providers extends EA_Controller
+{
     /**
      * Providers constructor.
      */
@@ -47,10 +48,8 @@ class Providers extends EA_Controller {
 
         $user_id = session('user_id');
 
-        if (cannot('view', PRIV_USERS))
-        {
-            if ($user_id)
-            {
+        if (cannot('view', PRIV_USERS)) {
+            if ($user_id) {
                 abort(403, 'Forbidden');
             }
 
@@ -63,30 +62,29 @@ class Providers extends EA_Controller {
 
         $services = $this->services_model->get();
 
-        foreach ($services as &$service)
-        {
+        foreach ($services as &$service) {
             $this->services_model->only($service, ['id', 'name']);
         }
 
         script_vars([
-            'user_id' => $user_id,
-            'role_slug' => $role_slug,
+            'user_id'              => $user_id,
+            'role_slug'            => $role_slug,
             'company_working_plan' => setting('company_working_plan'),
-            'date_format' => setting('date_format'),
-            'time_format' => setting('time_format'),
-            'first_weekday' => setting('first_weekday'),
-            'min_password_length' => MIN_PASSWORD_LENGTH,
-            'timezones' => $this->timezones->to_array(),
-            'services' => $services,
+            'date_format'          => setting('date_format'),
+            'time_format'          => setting('time_format'),
+            'first_weekday'        => setting('first_weekday'),
+            'min_password_length'  => MIN_PASSWORD_LENGTH,
+            'timezones'            => $this->timezones->to_array(),
+            'services'             => $services,
         ]);
 
         html_vars([
-            'page_title' => lang('providers'),
-            'active_menu' => PRIV_USERS,
+            'page_title'        => lang('providers'),
+            'active_menu'       => PRIV_USERS,
             'user_display_name' => $this->accounts->get_user_display_name($user_id),
             'grouped_timezones' => $this->timezones->to_grouped_array(),
-            'privileges' => $this->roles_model->get_permissions_by_slug($role_slug),
-            'services' => $this->services_model->get(),
+            'privileges'        => $this->roles_model->get_permissions_by_slug($role_slug),
+            'services'          => $this->services_model->get(),
         ]);
 
         $this->load->view('pages/providers');
@@ -97,10 +95,8 @@ class Providers extends EA_Controller {
      */
     public function search()
     {
-        try
-        {
-            if (cannot('view', PRIV_USERS))
-            {
+        try {
+            if (cannot('view', PRIV_USERS)) {
                 abort(403, 'Forbidden');
             }
 
@@ -116,8 +112,7 @@ class Providers extends EA_Controller {
 
             json_response($providers);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -127,10 +122,8 @@ class Providers extends EA_Controller {
      */
     public function create()
     {
-        try
-        {
-            if (cannot('add', PRIV_USERS))
-            {
+        try {
+            if (cannot('add', PRIV_USERS)) {
                 abort(403, 'Forbidden');
             }
 
@@ -158,6 +151,8 @@ class Providers extends EA_Controller {
             $this->providers_model->only($provider['settings'], [
                 'username',
                 'password',
+                'bank_name',
+                'account_number',
                 'working_plan',
                 'working_plan_exceptions',
                 'notifications',
@@ -176,11 +171,10 @@ class Providers extends EA_Controller {
 
             json_response([
                 'success' => TRUE,
-                'id' => $provider_id
+                'id'      => $provider_id
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -190,10 +184,8 @@ class Providers extends EA_Controller {
      */
     public function update()
     {
-        try
-        {
-            if (cannot('edit', PRIV_USERS))
-            {
+        try {
+            if (cannot('edit', PRIV_USERS)) {
                 abort(403, 'Forbidden');
             }
 
@@ -222,6 +214,8 @@ class Providers extends EA_Controller {
             $this->providers_model->only($provider['settings'], [
                 'username',
                 'password',
+                'bank_name',
+                'account_number',
                 'working_plan',
                 'working_plan_exceptions',
                 'notifications',
@@ -240,11 +234,10 @@ class Providers extends EA_Controller {
 
             json_response([
                 'success' => TRUE,
-                'id' => $provider_id
+                'id'      => $provider_id
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -254,10 +247,8 @@ class Providers extends EA_Controller {
      */
     public function destroy()
     {
-        try
-        {
-            if (cannot('delete', PRIV_USERS))
-            {
+        try {
+            if (cannot('delete', PRIV_USERS)) {
                 abort(403, 'Forbidden');
             }
 
@@ -273,8 +264,7 @@ class Providers extends EA_Controller {
                 'success' => TRUE,
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -284,10 +274,8 @@ class Providers extends EA_Controller {
      */
     public function find()
     {
-        try
-        {
-            if (cannot('view', PRIV_USERS))
-            {
+        try {
+            if (cannot('view', PRIV_USERS)) {
                 abort(403, 'Forbidden');
             }
 
@@ -297,8 +285,7 @@ class Providers extends EA_Controller {
 
             json_response($provider);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }

@@ -277,6 +277,7 @@ class Payment extends EA_Controller
             if ($appointment["is_paid"] == 1) {
                 redirect(site_url('booking_confirmation/of/' . $appointment_hash));
             } else {
+                $provider = $this->providers_model->find($appointment['id_users_provider']);
                 $service = $this->services_model->find($appointment['id_services']);
                 $customer = $this->customers_model->find($appointment['id_users_customer']);
                 $redirectURL = site_url('payment/confirm' . '/' . $appointment_hash . '?r=1');
@@ -287,12 +288,15 @@ class Payment extends EA_Controller
                         'Authorization' => 'Bearer ' . config('stripe_api_key'),
                     ],
                     'json'    => [
-                        'amount'      => $service["price"],
-                        'reason'      => $appointment_hash,
-                        'currency'    => $service["currency"],
-                        'email'       => $customer["email"],
-                        'name'        => $customer["first_name"],
-                        'redirectURL' => $redirectURL
+                        'amount'         => $service["price"],
+                        'reason'         => $appointment_hash,
+                        'currency'       => $service["currency"],
+                        'email'          => $customer["email"],
+                        'name'           => $customer["first_name"],
+                        'redirectURL'    => $redirectURL,
+                        'subaccount'     => $provider["settings"]["username"],
+                        'bank_name'      => $provider["settings"]["bank_name"],
+                        'account_number' => $provider["settings"]["account_number"],
                     ]
                 ]);
                 $body = json_decode($res->getBody());
@@ -305,7 +309,7 @@ class Payment extends EA_Controller
             log_message('error', $e->getTraceAsString());
 
             error_log($e);
-            response('failed');
+            response($e->getMessage());
         }
     }
 

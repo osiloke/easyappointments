@@ -18,7 +18,7 @@
             </div>
             <div class="modal-body">
                 <p>
-                    <?= e($privacy_policy_content) ?>
+                    <?= strip_tags($privacy_policy_content, '<p><strong><br><ul><li><span><ol><h1><h2><h3><h4><h5>') ?>
                 </p>
             </div>
             <div class="modal-footer">

@@ -10,7 +10,7 @@
                     <input type="text" class="key form-control">
 
                     <button class="filter btn btn-outline-secondary" type="submit"
-                            data-tippy-content="<?= lang('filter') ?>">
+                        data-tippy-content="<?= lang('filter') ?>">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
@@ -19,7 +19,7 @@
             <h4 class="text-black-50 mb-3 fw-light">
                 <?= lang('providers') ?>
             </h4>
-            
+
             <div class="results">
                 <!-- JS -->
             </div>
@@ -152,7 +152,6 @@
                                 </label>
                                 <input id="zip-code" class="form-control" maxlength="64" disabled>
                             </div>
-
                             <div class="mb-3">
                                 <label class="form-label" for="notes">
                                     <?= lang('notes') ?>
@@ -174,8 +173,8 @@
                                     <?= lang('password') ?>
                                     <span class="text-danger" hidden>*</span>
                                 </label>
-                                <input type="password" id="password" class="form-control required"
-                                       maxlength="512" autocomplete="new-password" disabled>
+                                <input type="password" id="password" class="form-control required" maxlength="512"
+                                    autocomplete="new-password" disabled>
                             </div>
 
                             <div class="mb-3">
@@ -183,10 +182,11 @@
                                     <?= lang('retype_password') ?>
                                     <span class="text-danger" hidden>*</span>
                                 </label>
-                                <input type="password" id="password-confirm"
-                                       class="form-control required" maxlength="512"
-                                       autocomplete="new-password" disabled>
+                                <input type="password" id="password-confirm" class="form-control required"
+                                    maxlength="512" autocomplete="new-password" disabled>
                             </div>
+
+
 
                             <div class="mb-3">
                                 <label class="form-label" for="calendar-view">
@@ -220,11 +220,85 @@
                                     <span class="text-danger" hidden>*</span>
                                 </label>
                                 <?php component('timezone_dropdown', [
-                                    'attributes' => 'id="timezone" class="form-control required" disabled',
+                                    'attributes'        => 'id="timezone" class="form-control required" disabled',
                                     'grouped_timezones' => vars('grouped_timezones')
                                 ]) ?>
                             </div>
 
+                            <div>
+                                <label class="form-label mb-3">
+                                    <?= lang('Payout') ?>
+                                </label>
+                            </div>
+                            <div class="border rounded mb-3 p-3">
+                                <div class="mb-3">
+                                    <label class="form-label" for="bank_name">
+                                        <?= lang('Bank Name') ?><span class="text-danger" hidden>*</span>
+                                    </label>
+                                    <?php
+                                    $banks = [
+                                        "Access Bank"                            => "044",
+                                        "Access Bank (Diamond)"                  => "063",
+                                        "ALAT by WEMA"                           => "035A",
+                                        "ASO Savings and Loans"                  => "401",
+                                        "Bowen Microfinance Bank"                => "50931",
+                                        "CEMCS Microfinance Bank"                => "50823",
+                                        "Citibank Nigeria"                       => "023",
+                                        "Ecobank Nigeria"                        => "050",
+                                        "Ekondo Microfinance Bank"               => "562",
+                                        "Eyowo"                                  => "50126",
+                                        "Fidelity Bank"                          => "070",
+                                        "First Bank of Nigeria"                  => "011",
+                                        "First City Monument Bank"               => "214",
+                                        "FSDH Merchant Bank Limited"             => "501",
+                                        "Globus Bank"                            => "00103",
+                                        "Guaranty Trust Bank"                    => "058",
+                                        "Hackman Microfinance Bank"              => "51251",
+                                        "Hasal Microfinance Bank"                => "50383",
+                                        "Heritage Bank"                          => "030",
+                                        "Ibile Microfinance Bank"                => "51244",
+                                        "Jaiz Bank"                              => "301",
+                                        "Keystone Bank"                          => "082",
+                                        "Kuda Bank"                              => "50211",
+                                        "Lagos Building Investment Company Plc." => "90052",
+                                        "One Finance"                            => "565",
+                                        "Parallex Bank"                          => "526",
+                                        "Parkway - ReadyCash"                    => "311",
+                                        "Polaris Bank"                           => "076",
+                                        "Providus Bank"                          => "101",
+                                        "Rubies MFB"                             => "125",
+                                        "Sparkle Microfinance Bank"              => "51310",
+                                        "Stanbic IBTC Bank"                      => "221",
+                                        "Standard Chartered Bank"                => "068",
+                                        "Sterling Bank"                          => "232",
+                                        "Suntrust Bank"                          => "100",
+                                        "TAJ Bank"                               => "302",
+                                        "TCF MFB"                                => "51211",
+                                        "Titan Bank"                             => "102",
+                                        "Union Bank of Nigeria"                  => "032",
+                                        "United Bank For Africa"                 => "033",
+                                        "Unity Bank"                             => "215",
+                                        "VFD"                                    => "566",
+                                        "Wema Bank"                              => "035",
+                                        "Zenith Bank"                            => "057"
+                                    ];
+                                    ?>
+
+                                    <select id="bank-name" class="form-control required" maxlength="128" disabled>
+                                        <option value="">Select Bank</option>
+                                        <?php foreach ($banks as $bank => $code): ?>
+                                            <option value="<?php echo $bank; ?>"><?php echo $bank; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label" for="account_number">
+                                        <?= lang('Account Number') ?>
+                                        <span class="text-danger" hidden>*</span>
+                                    </label>
+                                    <input id="account-number" class="form-control required" maxlength="128" disabled>
+                                </div>
+                            </div>
                             <div>
                                 <label class="form-label mb-3">
                                     <?= lang('options') ?>
@@ -270,18 +344,25 @@
                     <h4 class="text-black-50 mb-3 fw-light">
                         <?= lang('working_plan') ?>
                     </h4>
-                    
+
                     <button id="reset-working-plan" class="btn btn-primary"
-                            data-tippy-content="<?= lang('reset_working_plan') ?>">
+                        data-tippy-content="<?= lang('reset_working_plan') ?>">
                         <i class="fas fa-undo-alt me-2"></i>
-                        <?= lang('reset_plan') ?></button>
+                        <?= lang('reset_plan') ?>
+                    </button>
                     <table class="working-plan table table-striped mt-2">
                         <thead>
-                        <tr>
-                            <th><?= lang('day') ?></th>
-                            <th><?= lang('start') ?></th>
-                            <th><?= lang('end') ?></th>
-                        </tr>
+                            <tr>
+                                <th>
+                                    <?= lang('day') ?>
+                                </th>
+                                <th>
+                                    <?= lang('start') ?>
+                                </th>
+                                <th>
+                                    <?= lang('end') ?>
+                                </th>
+                            </tr>
                         </thead>
                         <tbody><!-- Dynamic Content --></tbody>
                     </table>
@@ -307,12 +388,20 @@
 
                     <table class="breaks table table-striped">
                         <thead>
-                        <tr>
-                            <th><?= lang('day') ?></th>
-                            <th><?= lang('start') ?></th>
-                            <th><?= lang('end') ?></th>
-                            <th><?= lang('actions') ?></th>
-                        </tr>
+                            <tr>
+                                <th>
+                                    <?= lang('day') ?>
+                                </th>
+                                <th>
+                                    <?= lang('start') ?>
+                                </th>
+                                <th>
+                                    <?= lang('end') ?>
+                                </th>
+                                <th>
+                                    <?= lang('actions') ?>
+                                </th>
+                            </tr>
                         </thead>
                         <tbody><!-- Dynamic Content --></tbody>
                     </table>
@@ -338,12 +427,20 @@
 
                     <table class="working-plan-exceptions table table-striped">
                         <thead>
-                        <tr>
-                            <th><?= lang('day') ?></th>
-                            <th><?= lang('start') ?></th>
-                            <th><?= lang('end') ?></th>
-                            <th><?= lang('actions') ?></th>
-                        </tr>
+                            <tr>
+                                <th>
+                                    <?= lang('day') ?>
+                                </th>
+                                <th>
+                                    <?= lang('start') ?>
+                                </th>
+                                <th>
+                                    <?= lang('end') ?>
+                                </th>
+                                <th>
+                                    <?= lang('actions') ?>
+                                </th>
+                            </tr>
                         </thead>
                         <tbody><!-- Dynamic Content --></tbody>
                     </table>
@@ -369,9 +466,4 @@
 <script src="<?= asset_url('assets/js/utils/working_plan.js') ?>"></script>
 <script src="<?= asset_url('assets/js/http/account_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/http/providers_http_client.js') ?>"></script>
-<script src="<?= asset_url('assets/js/pages/providers.js') ?>"></script>
-
-<?php end_section('scripts') ?>
-
-
-
+<script src="<?= asset_url('assets/js/pages/providers.js') ?>"></script><?php end_section('scripts') ?>

@@ -32,6 +32,8 @@ App.Pages.Providers = (function () {
     const $timezone = $('#timezone');
     const $username = $('#username');
     const $password = $('#password');
+    const $bankName = $('#bank-name');
+    const $accountNumber = $('#account-number');
     const $passwordConfirmation = $('#password-confirm');
     const $notifications = $('#notifications');
     const $calendarView = $('#calendar-view');
@@ -170,6 +172,8 @@ App.Pages.Providers = (function () {
                 timezone: $timezone.val(),
                 settings: {
                     username: $username.val(),
+                    bank_name: $bankName.val(),
+                    account_number: $accountNumber.val(),
                     working_plan: JSON.stringify(workingPlanManager.get()),
                     working_plan_exceptions: JSON.stringify(workingPlanManager.getWorkingPlanExceptions()),
                     notifications: Number($notifications.prop('checked')),
@@ -385,6 +389,8 @@ App.Pages.Providers = (function () {
         $language.val(provider.language);
         $timezone.val(provider.timezone);
 
+        $bankName.val(provider.settings.bank_name);
+        $accountNumber.val(provider.settings.account_number);
         $username.val(provider.settings.username);
         $calendarView.val(provider.settings.calendar_view);
         $notifications.prop('checked', Boolean(Number(provider.settings.notifications)));
@@ -560,8 +566,8 @@ App.Pages.Providers = (function () {
         addEventListeners();
 
         vars('services').forEach((service) => {
-            const checkboxId = `provider-service-${service.id}`; 
-            
+            const checkboxId = `provider-service-${service.id}`;
+
             $('<div/>', {
                 'class': 'checkbox',
                 'html': [
@@ -580,7 +586,7 @@ App.Pages.Providers = (function () {
                             $('<label/>', {
                                 'class': 'form-check-label',
                                 'text': service.name,
-                                'for': checkboxId,
+                                'for': checkboxId
                             })
                         ]
                     })
