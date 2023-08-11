@@ -287,7 +287,7 @@
                                     <select id="bank-name" class="form-control required" maxlength="128" disabled>
                                         <option value="">Select Bank</option>
                                         <?php foreach ($banks as $bank => $code): ?>
-                                            <option value="<?php echo $bank; ?>"><?php echo $bank; ?></option>
+                                            <option value="<?php echo $code; ?>"><?php echo $bank; ?></option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -466,4 +466,5 @@
 <script src="<?= asset_url('assets/js/utils/working_plan.js') ?>"></script>
 <script src="<?= asset_url('assets/js/http/account_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/http/providers_http_client.js') ?>"></script>
-<script src="<?= asset_url('assets/js/pages/providers.js') ?>"></script><?php end_section('scripts') ?>
+<script src="<?= asset_url('assets/js/pages/providers.js') ?>"></script>
+<?php end_section('scripts') ?>
