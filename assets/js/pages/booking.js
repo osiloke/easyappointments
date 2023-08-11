@@ -50,32 +50,34 @@ App.Pages.Booking = (function () {
      */
     function initialize() {
         if (Boolean(Number(vars('display_cookie_notice')))) {
-            cookieconsent.initialise({
-                palette: {
-                    popup: {
-                        background: '#ffffffbd',
-                        text: '#666666'
+            try {
+                cookieconsent.initialise({
+                    palette: {
+                        popup: {
+                            background: '#ffffffbd',
+                            text: '#666666'
+                        },
+                        button: {
+                            background: '#000000',
+                            text: '#ffffff'
+                        }
                     },
-                    button: {
-                        background: '#429a82',
-                        text: '#ffffff'
+                    content: {
+                        message: lang('website_using_cookies_to_ensure_best_experience'),
+                        dismiss: 'OK'
                     }
-                },
-                content: {
-                    message: lang('website_using_cookies_to_ensure_best_experience'),
-                    dismiss: 'OK'
-                }
-            });
+                });
 
-            $cookieNoticeLink.replaceWith(
-                $('<a/>', {
-                    'data-toggle': 'modal',
-                    'data-target': '#cookie-notice-modal',
-                    'href': '#',
-                    'class': 'cc-link',
-                    'text': $cookieNoticeLink.text()
-                })
-            );
+                $cookieNoticeLink.replaceWith(
+                    $('<a/>', {
+                        'data-toggle': 'modal',
+                        'data-target': '#cookie-notice-modal',
+                        'href': '#',
+                        'class': 'cc-link',
+                        'text': $cookieNoticeLink.text()
+                    })
+                );
+            } catch (error) {}
         }
 
         manageMode = vars('manage_mode');
