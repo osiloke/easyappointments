@@ -47,11 +47,11 @@
         </a>
 
         <div class="header-menu-list">
-            <div class="nav-text-left">About</div>
+            <a class="nav-text-left" href="mailto:hello@schedl.me">About</a>
 
-            <div class="nav-text-right">FAQs</div>
+            <a class="nav-text-right" href="mailto:hello@schedl.me">FAQs</a>
 
-            <div class="nav-text-right">Contact Us</div>
+            <a class="nav-text-right" href="mailto:hello@schedl.me">Contact Us</a>
 
             <div class="header-menu-buttons">
                 <div class="button4">
@@ -63,7 +63,7 @@
                                 stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
 
-                        <div class="button-text4">Get Support</div>
+                        <a class="button-text4" href="mailto:support@schedl.me">Get Support</a>
                     </div>
                 </div>
 
