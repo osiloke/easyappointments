@@ -19,6 +19,5 @@
             <span class="display-selected-service text-neutral-600 text-base font-medium leading-normal">
             <? } ?>
         </span>
-
     </div>
 </div>

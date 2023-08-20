@@ -422,6 +422,22 @@ App.Pages.Booking = (function () {
         });
 
         /**
+         * Event: Back Select Service Button "Clicked"
+         *
+         * This handler is triggered every time the user pressed the "Choose another service" button on the
+         * book wizard.
+         */
+        $('.button-back-service').on('click', (event) => {
+            const currentIndex = parseInt($(event.currentTarget).attr('data-step_index'));
+
+            $('#wizard-frame-' + currentIndex).fadeOut(() => {
+                $('.active-step').removeClass('active-step');
+                $('#step-' + '1').addClass('active-step');
+                $('#wizard-frame-' + '1').fadeIn();
+            });
+        });
+
+        /**
          * Event: Available Hour "Click"
          *
          * Triggered whenever the user clicks on an available hour for his appointment.
@@ -616,14 +632,29 @@ App.Pages.Booking = (function () {
         const serviceId = $selectService.val();
         let servicePrice = '';
         let serviceCurrency = '';
-
+        let serviceDescription = '';
+        let serviceDuration = '';
         vars('available_services').forEach((service) => {
             if (Number(service.id) === Number(serviceId) && Number(service.price) > 0) {
-                servicePrice = service.price;
-                serviceCurrency = service.currency;
+                const formatter = new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: service.currency || 'NGN',
+                    minimumFractionDigits: 0
+                });
+                servicePrice = formatter.format(service.price);
+                serviceDescription = service.description;
+                serviceDuration = service.duration + ' Mins';
                 return false; // Break loop
             }
         });
+
+        $(document).find('.display-selected-service-tile').removeClass('invisible');
+
+        $(document).find('.display-selected-service-description').text(serviceDescription).removeClass('invisible');
+
+        $(document).find('.display-selected-service-duration').text(serviceDuration).removeClass('invisible');
+
+        $(document).find('.display-selected-service-price').text(servicePrice).removeClass('invisible');
 
         $(document)
             .find('.display-selected-service')

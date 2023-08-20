@@ -24,8 +24,9 @@
 <div id="wizard-frame-3" class="wizard-frame" style="display:none;">
     <div class="frame-container">
         <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-5">
-            <div class="w-full lg:w-5/12">
+            <div class="w-full lg:w-5/12 flex flex-col gap-10">
                 <?php component('provider_card', ['hide_service' => FALSE, 'company_name' => vars('company_name'), 'company_logo' => vars('company_logo')]) ?>
+                <?php component('selected_service', ['services' => $available_services, 'step' => '3']) ?>
             </div>
             <div id="step-content">
                 <h2 class="frame-title">
