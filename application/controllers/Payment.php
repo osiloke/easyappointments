@@ -143,7 +143,7 @@ class Payment extends EA_Controller
     public function confirm(string $appointment_hash)
     {
         $client = new Client([
-            'timeout' => 10.0,
+            'timeout' => 15.0,
         ]);
         try {
             $res = $client->post('https://api.vazapay.com/v1/onepay/confirm', [
@@ -193,7 +193,6 @@ class Payment extends EA_Controller
     private function set_paid($appointment_hash, $payment_intent)
     {
         try {
-            $manage_mode = TRUE;
 
             $occurrences = $this->appointments_model->get(['hash' => $appointment_hash]);
 
@@ -202,6 +201,7 @@ class Payment extends EA_Controller
             }
 
             $appointment = $occurrences[0];
+            $manage_mode = $appointment["status"] == "Booked";
 
             $provider = $this->providers_model->find($appointment['id_users_provider']);
 
@@ -265,7 +265,7 @@ class Payment extends EA_Controller
     public function link(string $appointment_hash)
     {
         $client = new Client([
-            'timeout' => 10.0,
+            'timeout' => 15.0,
         ]);
         try {
             $occurrences = $this->appointments_model->get(['hash' => $appointment_hash]);
