@@ -162,7 +162,8 @@ class Payment extends EA_Controller
 
             $message = $body->message;
 
-            $payment_intent = $body->reference;
+            $payment_intent = $body->reason ?? $body->reference;
+
 
             if ($status == 'success') {
                 $appointment = $this->set_paid($appointment_hash, $payment_intent);
@@ -304,12 +305,19 @@ class Payment extends EA_Controller
                 redirect($url);
             }
         }
-        catch (Throwable $e) {
+        catch (\GuzzleHttp\Exception\RequestException $e) {
             log_message('error', 'Webhooks Client - The webhook (' . ($appointment_hash ?? NULL) . ') request received an unexpected exception: ' . $e->getMessage());
             log_message('error', $e->getTraceAsString());
 
             error_log($e);
-            response($e->getMessage());
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+                $exception = (string) $response->getBody();
+                $exception = json_decode($exception);
+                show_error((string) $exception->error, $response->getStatusCode(), 'Payment could not be completed');
+            } else {
+                show_error($e->getMessage());
+            }
         }
     }
 
