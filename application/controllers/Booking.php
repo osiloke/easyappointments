@@ -129,6 +129,8 @@ class Booking extends EA_Controller
         $available_services = $this->services_model->get_available_services(TRUE, $provider_id ?? '', $provider_name);
         $available_providers = $this->providers_model->get_available_providers(TRUE, $provider_id ?? '', $provider_name);
 
+        $available_services = sanitize_fields($available_services, ['description', 'name', 'duration', 'price']);
+
         foreach ($available_providers as &$available_provider) {
             // Only expose the required provider data.
 
