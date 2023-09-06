@@ -90,7 +90,6 @@ App.Components.AppointmentsModal = (function () {
                 start_datetime: startDatetime,
                 end_datetime: endDatetime,
                 location: $appointmentLocation.val(),
-                is_paid: Number($appointmentIsPaid.prop('checked')),
                 color: App.Components.ColorSelection.getColor($appointmentColor),
                 status: $appointmentStatus.val(),
                 notes: $appointmentNotes.val(),
@@ -198,7 +197,7 @@ App.Components.AppointmentsModal = (function () {
 
             $startDatetime[0]._flatpickr.setDate(startMoment.toDate());
             $endDatetime[0]._flatpickr.setDate(startMoment.add(duration, 'minutes').toDate());
-            
+
             // Display modal form.
             $appointmentsModal.find('.modal-header h3').text(lang('new_appointment_title'));
 
@@ -219,7 +218,8 @@ App.Components.AppointmentsModal = (function () {
                 vars('customers').forEach((customer) => {
                     $('<div/>', {
                         'data-id': customer.id,
-                        'text': (customer.first_name || '[No First Name]') + ' ' + (customer.last_name || '[No Last Name]')
+                        'text':
+                            (customer.first_name || '[No First Name]') + ' ' + (customer.last_name || '[No Last Name]')
                     }).appendTo($existingCustomersList);
                 });
             } else {
@@ -280,7 +280,10 @@ App.Components.AppointmentsModal = (function () {
                         response.forEach((customer) => {
                             $('<div/>', {
                                 'data-id': customer.id,
-                                'text': (customer.first_name || '[No First Name]') + ' ' + (customer.last_name || '[No Last Name]')
+                                'text':
+                                    (customer.first_name || '[No First Name]') +
+                                    ' ' +
+                                    (customer.last_name || '[No Last Name]')
                             }).appendTo($existingCustomersList);
 
                             // Verify if this customer is on the old customer list.
@@ -311,7 +314,10 @@ App.Components.AppointmentsModal = (function () {
                             ) {
                                 $('<div/>', {
                                     'data-id': customer.id,
-                                    'text': (customer.first_name || '[No First Name]') + ' ' + (customer.last_name || '[No Last Name]')
+                                    'text':
+                                        (customer.first_name || '[No First Name]') +
+                                        ' ' +
+                                        (customer.last_name || '[No Last Name]')
                                 }).appendTo($existingCustomersList);
                             }
                         });
@@ -341,7 +347,7 @@ App.Components.AppointmentsModal = (function () {
             const duration = service ? service.duration : 60;
 
             const start = $startDatetime[0]._flatpickr.selectedDates[0];
-            $endDatetime[0]._flatpickr.setDate( new Date(start.getTime() + duration * 60000));
+            $endDatetime[0]._flatpickr.setDate(new Date(start.getTime() + duration * 60000));
 
             // Update the providers select box.
 
@@ -460,14 +466,14 @@ App.Components.AppointmentsModal = (function () {
                 );
 
                 const start = $startDatetime[0]._flatpickr.selectedDates[0];
-                $endDatetime[0]._flatpickr.setDate( new Date(start.getTime() + service.duration * 60000));
+                $endDatetime[0]._flatpickr.setDate(new Date(start.getTime() + service.duration * 60000));
             }
         });
 
-        $startDatetime[0]._flatpickr.setDate( startDatetime);
+        $startDatetime[0]._flatpickr.setDate(startDatetime);
 
         App.Utils.UI.initializeDatetimepicker($endDatetime);
-        $endDatetime[0]._flatpickr.setDate( endDatetime);
+        $endDatetime[0]._flatpickr.setDate(endDatetime);
     }
 
     /**
@@ -498,7 +504,10 @@ App.Components.AppointmentsModal = (function () {
             }
 
             // Check email address.
-            if ($appointmentsModal.find('#email').val() && !App.Utils.Validation.email($appointmentsModal.find('#email').val())) {
+            if (
+                $appointmentsModal.find('#email').val() &&
+                !App.Utils.Validation.email($appointmentsModal.find('#email').val())
+            ) {
                 $appointmentsModal.find('#email').addClass('is-invalid');
                 throw new Error(lang('invalid_email'));
             }
