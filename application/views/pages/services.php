@@ -97,7 +97,7 @@
                 <label class="form-label" for="category">
                     <?= lang('category') ?>
                 </label>
-                <select id="category" class="form-control" disabled></select>
+                <select id="category" class="form-control required" disabled></select>
             </div>
 
             <div class="mb-3">
