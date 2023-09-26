@@ -29,7 +29,7 @@
                                     <?= lang('timezone') ?>
                                 </label>
                                 <?php component('timezone_dropdown', [
-                                    'attributes'        => 'id="select-timezone" class="form-control" value="UTC"',
+                                    'attributes'        => 'id="select-timezone" class="form-control" value="Africa/Lagos"',
                                     'grouped_timezones' => $grouped_timezones
                                 ]) ?>
                             </div>

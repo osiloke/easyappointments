@@ -395,7 +395,7 @@ App.Components.AppointmentsModal = (function () {
             $city.val('');
             $zipCode.val('');
             $language.val('english');
-            $timezone.val('UTC');
+            $timezone.val('Africa/Lagos');
             $customerNotes.val('');
         });
     }
@@ -415,7 +415,7 @@ App.Components.AppointmentsModal = (function () {
         $appointmentStatus.val(defaultStatusValue);
 
         $language.val('english');
-        $timezone.val('UTC');
+        $timezone.val('Africa/Lagos');
 
         // Reset color.
         $appointmentColor.find('.color-selection-option:first').trigger('click');

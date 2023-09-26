@@ -345,7 +345,7 @@ App.Pages.Providers = (function () {
         $providers.find('.record-details .form-label span').prop('hidden', true);
         $providers.find('.record-details #calendar-view').val('default');
         $providers.find('.record-details #language').val('english');
-        $providers.find('.record-details #timezone').val('UTC');
+        $providers.find('.record-details #timezone').val('Africa/Lagos');
         $providers.find('.record-details #is-private').prop('checked', false);
         $providers.find('.record-details #notifications').prop('checked', true);
         $providers.find('.add-break, .add-working-plan-exception, #reset-working-plan').prop('disabled', true);

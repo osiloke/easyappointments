@@ -134,7 +134,7 @@ App.Pages.Booking = (function () {
 
         const browserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
         const isTimezoneSupported = $selectTimezone.find(`option[value="${browserTimezone}"]`).length > 0;
-        $selectTimezone.val(isTimezoneSupported ? browserTimezone : 'UTC');
+        $selectTimezone.val(isTimezoneSupported ? browserTimezone : 'Africa/Lagos');
 
         // Bind the event handlers (might not be necessary every time we use this class).
         addEventListeners();

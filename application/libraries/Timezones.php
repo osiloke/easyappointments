@@ -27,7 +27,7 @@ class Timezones {
     /**
      * @var string
      */
-    protected string $default = 'UTC';
+    protected string $default = 'Africa/Lagos';
 
     /**
      * @var array
@@ -529,7 +529,7 @@ class Timezones {
      */
     public function get_default_timezone(): string
     {
-        return 'UTC';
+        return 'Africa/Lagos';
     }
 
     /**

@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -68,7 +70,6 @@ class Booking extends EA_Controller
         $matomo_analytics_url = setting('matomo_analytics_url');
 
         if ($disable_booking) {
-
             html_vars([
                 'show_message'          => TRUE,
                 'page_title'            => $company_name,
@@ -82,6 +83,7 @@ class Booking extends EA_Controller
             ]);
 
             $this->load->view('pages/landing');
+
             return;
         }
 
@@ -108,7 +110,8 @@ class Booking extends EA_Controller
             //     $this->load->view('pages/landing');
             //     return;
             // }
-        } else if (empty($provider_name) && empty($provider_id)) {
+        }
+        elseif (empty($provider_name) && empty($provider_id)) {
             html_vars([
                 'show_message'          => TRUE,
                 'page_title'            => $company_name,
@@ -217,10 +220,10 @@ class Booking extends EA_Controller
                 $minutes = ($book_advance_timeout % 60);
 
                 html_vars([
-                    'show_message'          => TRUE,
-                    'page_title'            => lang('page_title') . ' ' . $company_name,
-                    'message_title'         => lang('appointment_locked'),
-                    'message_text'          => strtr(lang('appointment_locked_message'), [
+                    'show_message'  => TRUE,
+                    'page_title'    => lang('page_title') . ' ' . $company_name,
+                    'message_title' => lang('appointment_locked'),
+                    'message_text'  => strtr(lang('appointment_locked_message'), [
                         '{$limit}' => sprintf('%02d:%02d', $hours, $minutes)
                     ]),
                     'message_icon'          => base_url('assets/img/error.png'),
@@ -241,10 +244,13 @@ class Booking extends EA_Controller
 
             // Cache the token for 10 minutes.
             $this->cache->save('customer-token-' . $customer_token, $customer['id'], 600);
-        } else if (sizeof($available_services) == 0 && sizeof($available_providers) == 0) {
+        }
+        elseif (sizeof($available_services) == 0 && sizeof($available_providers) == 0) {
             show_404();
+
             return;
-        } else {
+        }
+        else {
             $manage_mode = FALSE;
             $customer_token = FALSE;
             $appointment = NULL;
@@ -398,7 +404,8 @@ class Booking extends EA_Controller
                 sort($available_hours);
 
                 $response = $available_hours;
-            } else {
+            }
+            else {
                 $provider = $this->providers_model->find($provider_id);
 
                 $response = $this->availability->get_available_hours($selected_date, $service, $provider, $exclude_appointment_id);
@@ -451,7 +458,6 @@ class Booking extends EA_Controller
 
         return $provider_id;
     }
-
 
     /**
      * Register the appointment to the database.
@@ -666,6 +672,7 @@ class Booking extends EA_Controller
         foreach ($available_hours as $available_hour) {
             if ($appointment_hour === $available_hour) {
                 $is_still_available = TRUE;
+
                 break;
             }
         }
@@ -709,6 +716,7 @@ class Booking extends EA_Controller
                 if ($current_date < new DateTime(date('Y-m-d 00:00:00'))) {
                     // Past dates become immediately unavailability.
                     $unavailable_dates[] = $current_date->format('Y-m-d');
+
                     continue;
                 }
 

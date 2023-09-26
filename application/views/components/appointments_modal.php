@@ -171,7 +171,7 @@
                                             <small>
                                                 <?= lang('current_user') ?>:
                                                 <span>
-                                                    <?= $timezones[session('timezone', 'UTC')] ?>
+                                                    <?= $timezones[session('timezone', 'Africa/Lagos')] ?>
                                                 </span>
                                             </small>
                                         </div>
