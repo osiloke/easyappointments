@@ -10,25 +10,25 @@ get_env_value() {
     fi
 }
 
-# echo "DOWNLOAD URL = $DOWNLOAD_URL"
-# if [[ -n "$DOWNLOAD_URL" ]]; then
-#   # Run wget to fetch easyappointments-0.0.0.zip to /tmp/html.zip
-#   curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip
-#   unzip -o /tmp/html.zip -d /var/www/html
+echo "DOWNLOAD URL = $DOWNLOAD_URL"
+if [[ -n "$DOWNLOAD_URL" ]]; then
+    # Run wget to fetch easyappointments-0.0.0.zip to /tmp/html.zip
+    curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip
+    unzip -o /tmp/html.zip -d /var/www/html
 
-#   chown -R www-data:www-data /var/www/html &&
-#     chmod -R 755 /var/www/html
+    chown -R www-data:www-data /var/www/html &&
+        chmod -R 755 /var/www/html
 
-# fi
+fi
 
-echo "➜ Install Composer Dependencies"
-composer install
+# echo "➜ Install Composer Dependencies"
+# composer install
 
-echo "➜ Install NPM Dependencies"
-npm install
+# echo "➜ Install NPM Dependencies"
+# npm install
 
-echo "➜ Build Project Assets"
-gulp build
+# echo "➜ Build Project Assets"
+# gulp build
 
 # Database Configuration
 if [[ -n "$DATABASE_URL" ]]; then

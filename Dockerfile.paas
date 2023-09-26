@@ -57,7 +57,7 @@ RUN apt-get update \
 RUN npm install -g gulp-cli
 
 VOLUME /var/www/html
-COPY . ./
+# COPY . ./
 # Download and unzip if DOWNLOAD_URL is not empty 
 # RUN curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip 
 # RUN unzip /tmp/html.zip -d /var/www/html
