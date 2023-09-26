@@ -630,18 +630,20 @@ App.Pages.Booking = (function () {
         }
 
         const serviceId = $selectService.val();
-        let servicePrice = '';
+        let servicePrice = 'FREE';
         let serviceCurrency = '';
         let serviceDescription = '';
         let serviceDuration = '';
         vars('available_services').forEach((service) => {
-            if (Number(service.id) === Number(serviceId) && Number(service.price) > 0) {
+            if (Number(service.id) === Number(serviceId)) {
                 const formatter = new Intl.NumberFormat('en-US', {
                     style: 'currency',
                     currency: service.currency || 'NGN',
                     minimumFractionDigits: 0
                 });
-                servicePrice = formatter.format(service.price);
+                if (Number(service.price) > 0) {
+                    servicePrice = formatter.format(service.price);
+                }
                 serviceDescription = service.description;
                 serviceDuration = service.duration + ' Mins';
                 return false; // Break loop

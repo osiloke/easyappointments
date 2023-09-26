@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +17,4 @@ $config['url'] = Config::BASE_URL;
 
 $config['debug'] = Config::DEBUG_MODE;
 
-$config['cache_busting_token'] = 'SMV013';
+$config['cache_busting_token'] = 'SMV014';

@@ -10,7 +10,7 @@
 
         <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-10">
             <div class="w-full lg:w-5/12">
-                <?php component('provider_card', ["hide_service" => true]) ?>
+                <?php component('provider_card', ["hide_service" => TRUE]) ?>
             </div>
             <div id="step-content">
                 <h2 class="frame-title">
@@ -34,70 +34,72 @@
                                     <?php
                                     // Group services by category, only if there is at least one service with a parent category.
                                     $has_category = FALSE;
-                                    foreach ($available_services as $service) {
-                                        if (!empty($service['category_id'])) {
-                                            $has_category = TRUE;
-                                            break;
-                                        }
-                                    }
+foreach ($available_services as $service) {
+    if (!empty($service['category_id'])) {
+        $has_category = TRUE;
 
-                                    if ($has_category) {
-                                        $grouped_services = [];
+        break;
+    }
+}
 
-                                        foreach ($available_services as $service) {
-                                            if (!empty($service['category_id'])) {
-                                                if (!isset($grouped_services[$service['category_name']])) {
-                                                    $grouped_services[$service['category_name']] = [];
-                                                }
+if ($has_category) {
+    $grouped_services = [];
 
-                                                $grouped_services[$service['category_name']][] = $service;
-                                            }
-                                        }
+    foreach ($available_services as $service) {
+        if (!empty($service['category_id'])) {
+            if (!isset($grouped_services[$service['category_name']])) {
+                $grouped_services[$service['category_name']] = [];
+            }
 
-                                        // We need the uncategorized services at the end of the list, so we will use another
-                                        // iteration only for the uncategorized services.
-                                        $grouped_services['uncategorized'] = [];
-                                        foreach ($available_services as $service) {
-                                            if ($service['category_id'] == NULL) {
-                                                $grouped_services['uncategorized'][] = $service;
-                                            }
-                                        }
+            $grouped_services[$service['category_name']][] = $service;
+        }
+    }
 
-                                        foreach ($grouped_services as $key => $group) {
-                                            $group_label = $key !== 'uncategorized'
-                                                ? $group[0]['category_name']
-                                                : 'Uncategorized';
+    // We need the uncategorized services at the end of the list, so we will use another
+    // iteration only for the uncategorized services.
+    $grouped_services['uncategorized'] = [];
+    foreach ($available_services as $service) {
+        if ($service['category_id'] == NULL) {
+            $grouped_services['uncategorized'][] = $service;
+        }
+    }
 
-                                            if (count($group) > 0) {
-                                                echo '<optgroup label="' . e($group_label) . '">';
-                                                foreach ($group as $service) {
-                                                    echo '<option value="' . $service['id'] . '">'
-                                                        . e($service['name']) . '</option>';
-                                                }
-                                                echo '</optgroup>';
-                                            }
-                                        }
-                                    } else {
-                                        foreach ($available_services as $service) {
-                                            echo '<option value="' . $service['id'] . '">' . e($service['name']) . '</option>';
-                                        }
-                                    }
-                                    ?>
+    foreach ($grouped_services as $key => $group) {
+        $group_label = $key !== 'uncategorized'
+            ? $group[0]['category_name']
+            : 'Uncategorized';
+
+        if (count($group) > 0) {
+            echo '<optgroup label="' . e($group_label) . '">';
+            foreach ($group as $service) {
+                echo '<option value="' . $service['id'] . '">'
+                    . e($service['name']) . '</option>';
+            }
+            echo '</optgroup>';
+        }
+    }
+}
+else {
+    foreach ($available_services as $service) {
+        echo '<option value="' . $service['id'] . '">' . e($service['name']) . '</option>';
+    }
+}
+?>
                                 </select>
 
                                 <div class="service-grid">
                                     <?php
-                                    foreach ($grouped_services as $key => $group) {
-                                        $group_label = $key !== 'uncategorized'
-                                            ? $group[0]['category_name']
-                                            : 'Uncategorized';
-                                        if (count($group) > 0) {
-                                            foreach ($group as $service) { ?>
+foreach ($grouped_services as $key => $group) {
+    $group_label = $key !== 'uncategorized'
+        ? $group[0]['category_name']
+        : 'Uncategorized';
+    if (count($group) > 0) {
+        foreach ($group as $service) { ?>
                                                 <?php component('service_tile', ["id" => $service['id'], "name" => $service['name'], "description" => $service['description'], "price" => $service['price'], "duration" => $service['duration']]) ?>
                                             <?php }
-                                            ;
-                                        }
-                                        ?>
+        ;
+    }
+    ?>
 
                                     <?php } ?>
                                 </div>
@@ -111,7 +113,7 @@
                                                 ])
                                             ]
                                         )
-                                            ?>
+                                    ?>
                                         <?= lang('') ?>
                                     </p>
                                 <?php endif ?>

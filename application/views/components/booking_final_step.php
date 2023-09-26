@@ -50,7 +50,7 @@
                                         '{/$link}' => '</a>'
                                     ]
                                 )
-                                    ?>
+                        ?>
                             </label>
                         </div>
                     <?php endif ?>
@@ -66,7 +66,7 @@
                                         '{/$link}' => '</a>'
                                     ]
                                 )
-                                    ?>
+                        ?>
                             </label>
                         </div>
                     <?php endif ?>
@@ -80,8 +80,8 @@
             <?= lang('back') ?>
         </button>
         <form id="book-appointment-form" style="display:inline-block" method="post">
-            <button id="book-appointment-submit" type="button" class="btn button-next btn-dark btn-primary">
-                <?= $manage_mode ? lang('update') : lang('PROCEED TO PAYMENT') ?>
+            <button id="book-appointment-submit" type="button" class="btn button-submit btn-dark btn-primary">
+                <?= $manage_mode ? lang('update') : ($is_paid == 1 ? lang('PROCEED TO PAYMENT') : lang('Complete')) ?>
                 <i class="fas fa-chevron-right ms-2"></i>
             </button>
             <input type="hidden" name="csrfToken" />

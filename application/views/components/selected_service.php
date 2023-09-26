@@ -50,6 +50,7 @@
             ">
                 </div>
             </div>
+             <?php if ($available_services[0]["price"] > 0) { ?>
             <div class="flex flex-col gap-0 items-start justify-start self-stretch shrink-0 relative">
                 <div class="text-[#888888] text-left uppercase relative "
                     style="font: 700 12px/18px 'Inter', sans-serif">
@@ -65,6 +66,7 @@
             ">
                 </div>
             </div>
+            <?php } ?>
         </div>
     </div>
 </div>

@@ -477,7 +477,8 @@ body {
     }
 }
 
-.button-next {
+.button-next,
+.button-submit {
     @apply btn-primary btn rounded-full;
 }
 
