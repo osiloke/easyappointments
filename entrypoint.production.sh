@@ -2,51 +2,61 @@
 
 # Function to get the value of an environment variable or use the default value
 get_env_value() {
-  local env_var_value=$(printenv "$1")
-  if [[ -n "$env_var_value" ]]; then
-    echo "$env_var_value"
-  else
-    echo "$2"
-  fi
+    local env_var_value=$(printenv "$1")
+    if [[ -n "$env_var_value" ]]; then
+        echo "$env_var_value"
+    else
+        echo "$2"
+    fi
 }
 
-echo "DOWNLOAD URL = $DOWNLOAD_URL"
-if [[ -n "$DOWNLOAD_URL" ]]; then
-  # Run wget to fetch easyappointments-0.0.0.zip to /tmp/html.zip
-  curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip
-  unzip -o /tmp/html.zip -d /var/www/html
+# echo "DOWNLOAD URL = $DOWNLOAD_URL"
+# if [[ -n "$DOWNLOAD_URL" ]]; then
+#   # Run wget to fetch easyappointments-0.0.0.zip to /tmp/html.zip
+#   curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip
+#   unzip -o /tmp/html.zip -d /var/www/html
 
-  chown -R www-data:www-data /var/www/html &&
-    chmod -R 755 /var/www/html
+#   chown -R www-data:www-data /var/www/html &&
+#     chmod -R 755 /var/www/html
 
-fi
+# fi
+
+echo "➜ Install Composer Dependencies"
+composer install
+
+echo "➜ Install NPM Dependencies"
+npm install
+
+echo "➜ Build Project Assets"
+gulp build
+
 # Database Configuration
 if [[ -n "$DATABASE_URL" ]]; then
-  # Extract the database configuration from the DATABASE_URL environment variable
-  DB_URL="$DATABASE_URL"
-  DB_HOST_PORT=$(echo "$DB_URL" | awk -F[@//] '{print $4}')
-  DB_HOST=$(echo "$DB_HOST_PORT" | awk -F[:] '{print $1}')
-  DB_PORT=$(echo "$DB_HOST_PORT" | awk -F[:] '{print $2}')
-  DB_USERNAME=$(echo "$DB_URL" | awk -F[@//] '{print $3}' | awk -F[:] '{print $1}')
-  DB_PASSWORD=$(echo "$DB_URL" | awk -F[@//] '{print $3}' | awk -F[:] '{print $2}')
-  DB_NAME=$(echo "$DB_URL" | awk -F[/] '{print $NF}')
+    # Extract the database configuration from the DATABASE_URL environment variable
+    DB_URL="$DATABASE_URL"
+    DB_HOST_PORT=$(echo "$DB_URL" | awk -F[@//] '{print $4}')
+    DB_HOST=$(echo "$DB_HOST_PORT" | awk -F[:] '{print $1}')
+    DB_PORT=$(echo "$DB_HOST_PORT" | awk -F[:] '{print $2}')
+    DB_USERNAME=$(echo "$DB_URL" | awk -F[@//] '{print $3}' | awk -F[:] '{print $1}')
+    DB_PASSWORD=$(echo "$DB_URL" | awk -F[@//] '{print $3}' | awk -F[:] '{print $2}')
+    DB_NAME=$(echo "$DB_URL" | awk -F[/] '{print $NF}')
 else
-  # Use the existing configuration
-  DB_HOST=$(get_env_value "DB_HOST" "easyappointments-database")
-  DB_NAME=$(get_env_value "DB_NAME" "easyappointments")
-  DB_PASSWORD=$(get_env_value "DB_PASSWORD" "root")
-  DB_PORT=$(get_env_value "DB_PORT" "3306")
-  DB_USERNAME=$(get_env_value "DB_USERNAME" "root")
+    # Use the existing configuration
+    DB_HOST=$(get_env_value "DB_HOST" "easyappointments-database")
+    DB_NAME=$(get_env_value "DB_NAME" "easyappointments")
+    DB_PASSWORD=$(get_env_value "DB_PASSWORD" "root")
+    DB_PORT=$(get_env_value "DB_PORT" "3306")
+    DB_USERNAME=$(get_env_value "DB_USERNAME" "root")
 fi
 
 if [[ $USE_SMTP == "Yes" ]]; then
-  # Configure ssmtp with environment variables
-  echo "mailhub=${SMTP_SERVER}:${SMTP_PORT}" >/etc/ssmtp/ssmtp.conf
-  echo "UseTLS=${SMTP_USE_TLS}" >>/etc/ssmtp/ssmtp.conf
-  echo "UseSTARTTLS=${SMTP_USE_STARTTLS}" >>/etc/ssmtp/ssmtp.conf
-  echo "FromLineOverride=YES" >>/etc/ssmtp/ssmtp.conf
-  echo "AuthUser=${SMTP_USERNAME}" >>/etc/ssmtp/ssmtp.conf
-  echo "AuthPass=${SMTP_PASSWORD}" >>/etc/ssmtp/ssmtp.conf
+    # Configure ssmtp with environment variables
+    echo "mailhub=${SMTP_SERVER}:${SMTP_PORT}" >/etc/ssmtp/ssmtp.conf
+    echo "UseTLS=${SMTP_USE_TLS}" >>/etc/ssmtp/ssmtp.conf
+    echo "UseSTARTTLS=${SMTP_USE_STARTTLS}" >>/etc/ssmtp/ssmtp.conf
+    echo "FromLineOverride=YES" >>/etc/ssmtp/ssmtp.conf
+    echo "AuthUser=${SMTP_USERNAME}" >>/etc/ssmtp/ssmtp.conf
+    echo "AuthPass=${SMTP_PASSWORD}" >>/etc/ssmtp/ssmtp.conf
 fi
 
 # Create the configuration file
