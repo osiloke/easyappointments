@@ -304,7 +304,7 @@ App.Pages.Booking = (function () {
                 $selectServiceTile.each(function () {
                     var $service = $(this);
                     var serviceID = Number($service.attr('value'));
-                    $parentLabel = $service.parent('label');
+                    var $parentLabel = $service.parent('label');
                     // Check if current div's value is in filter array
                     if (provider.services.indexOf(serviceID) > -1) {
                         $parentLabel.show();
