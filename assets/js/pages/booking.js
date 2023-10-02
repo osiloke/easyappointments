@@ -20,6 +20,7 @@ App.Pages.Booking = (function () {
     const $cookieNoticeLink = $('.cc-link');
     const $selectDate = $('#select-date');
     const $selectServiceTile = $('input[type=radio][name=select-service-tile]');
+    const $selectProviderTile = $('input[type=radio][name=select-provider-tile]');
     const $selectService = $('#select-service');
     const $selectProvider = $('#select-provider');
     const $selectTimezone = $('#select-timezone');
@@ -291,7 +292,33 @@ App.Pages.Booking = (function () {
          */
         $selectProvider.on('change', (event) => {
             const $target = $(event.target);
+            // filter list of service by available provider services
+            const filtered = vars('available_providers').filter(
+                (provider) => Number(provider.id) === Number($target.val())
+            );
+            if (filtered.length > 0) {
+                const provider = filtered[0];
+                var selectedServiceID = Number($selectService.val());
+                var hasSelected = false;
 
+                $selectServiceTile.each(function () {
+                    var $service = $(this);
+                    var serviceID = Number($service.attr('value'));
+                    $parentLabel = $service.parent('label');
+                    // Check if current div's value is in filter array
+                    if (provider.services.indexOf(serviceID) > -1) {
+                        $parentLabel.show();
+                        if (selectedServiceID == serviceID) {
+                            hasSelected = true;
+                        }
+                    } else {
+                        $parentLabel.hide();
+                    }
+                });
+                // if (!hasSelected) {
+                $selectService.val('').trigger('change');
+                // }
+            }
             App.Http.Booking.getUnavailableDates(
                 $target.val(),
                 $selectService.val(),
@@ -309,26 +336,30 @@ App.Pages.Booking = (function () {
         $selectService.on('change', (event) => {
             const $target = $(event.target);
             const serviceId = $selectService.val();
-            $($selectServiceTile)
-                .filter('[value="' + serviceId + '"]')
-                .prop('checked', true);
-            $selectProvider.empty();
+            if (serviceId) {
+                $($selectServiceTile)
+                    .filter('[value="' + serviceId + '"]')
+                    .prop('checked', true);
+                // $selectProvider.empty();
+            } else {
+                $($selectServiceTile).prop('checked', false);
+                $availableHours.empty();
+            }
 
             vars('available_providers').forEach((provider) => {
                 // If the current provider is able to provide the selected service, add him to the list box.
-                const canServeService =
-                    provider.services.filter((providerServiceId) => Number(providerServiceId) === Number(serviceId))
-                        .length > 0;
-
-                if (canServeService) {
-                    $selectProvider.append(new Option(provider.first_name + ' ' + provider.last_name, provider.id));
-                }
+                // const canServeService =
+                //     provider.services.filter((providerServiceId) => Number(providerServiceId) === Number(serviceId))
+                //         .length > 0;
+                // if (canServeService) {
+                // $selectProvider.append(new Option(provider.first_name + ' ' + provider.last_name, provider.id));
+                // }
             });
 
             // Add the "Any Provider" entry.
-            if ($selectProvider.find('option').length > 1 && vars('display_any_provider') === '1') {
-                $selectProvider.prepend(new Option(lang('any_provider'), 'any-provider', true, true));
-            }
+            // if ($selectProvider.find('option').length > 1 && vars('display_any_provider') === '1') {
+            //     $selectProvider.prepend(new Option(lang('any_provider'), 'any-provider', true, true));
+            // }
 
             App.Http.Booking.getUnavailableDates(
                 $selectProvider.val(),
@@ -350,6 +381,25 @@ App.Pages.Booking = (function () {
             const $target = $(event.target);
             const serviceId = $target.val();
             $selectService.val(serviceId).trigger('change');
+        });
+        /**
+         * Event: Selected Provider Tile "Changed"
+         *
+         * When the user clicks on a provider tile radio intut, its available services should
+         * become visible.
+         */
+        $selectProviderTile.on('change', (event) => {
+            const $target = $(event.target);
+            const providerId = $target.val();
+            $selectProvider.val(providerId).trigger('change');
+            $('#provider-list').fadeOut(() => {
+                $('#service-list')
+                    .css({
+                        'visibility': 'visible',
+                        'display': 'none'
+                    })
+                    .fadeIn();
+            });
         });
         /**
          * Event: Next Step Button "Clicked"
@@ -420,7 +470,6 @@ App.Pages.Booking = (function () {
                     $('#wizard-frame-' + prevTabIndex).fadeIn();
                 });
         });
-
         /**
          * Event: Back Select Service Button "Clicked"
          *
@@ -436,7 +485,21 @@ App.Pages.Booking = (function () {
                 $('#wizard-frame-' + '1').fadeIn();
             });
         });
-
+        /**
+         * Event: Back Select Provider Button "Clicked"
+         *
+         * This handler is triggered every time the user pressed the "Choose another service" button on the
+         * first step of thebook wizard.
+         */
+        $('.button-back-provider').on('click', (event) => {
+            $('#service-list').fadeOut(() => {
+                $selectService.val('').trigger('change');
+                $selectProvider.val('').trigger('change');
+                $selectProviderTile.prop('checked', false);
+                $selectServiceTile.prop('checked', false);
+                $('#provider-list').fadeIn();
+            });
+        });
         /**
          * Event: Available Hour "Click"
          *
@@ -618,6 +681,14 @@ App.Pages.Booking = (function () {
      * customer settings and input for the appointment booking.
      */
     function updateConfirmFrame() {
+        $(document)
+            .find('.display-selected-provider')
+            .text($selectProvider.find('option:selected').text())
+            .removeClass('invisible');
+        $(document)
+            .find('.display-selected-service')
+            .text($selectService.find('option:selected').text())
+            .removeClass('invisible');
         if ($availableHours.find('.selected-hour').text() === '') {
             return;
         }
@@ -650,23 +721,13 @@ App.Pages.Booking = (function () {
             }
         });
 
-        $(document).find('.display-selected-service-tile').removeClass('invisible');
-
         $(document).find('.display-selected-service-description').html(serviceDescription).removeClass('invisible');
 
         $(document).find('.display-selected-service-duration').text(serviceDuration).removeClass('invisible');
 
         $(document).find('.display-selected-service-price').text(servicePrice).removeClass('invisible');
 
-        $(document)
-            .find('.display-selected-service')
-            .text($selectService.find('option:selected').text())
-            .removeClass('invisible');
-
-        $(document)
-            .find('.display-selected-provider')
-            .text($selectProvider.find('option:selected').text())
-            .removeClass('invisible');
+        $(document).find('.display-selected-service-tile').removeClass('invisible');
 
         $('#appointment-details').empty();
 

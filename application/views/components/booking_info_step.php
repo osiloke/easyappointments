@@ -1,7 +1,7 @@
 <?php
 /**
  * Local variables.
- * 
+ *
  * @var string $display_first_name
  * @var string $require_first_name
  * @var string $display_last_name
@@ -24,8 +24,8 @@
 <div id="wizard-frame-3" class="wizard-frame" style="display:none;">
     <div class="frame-container">
         <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-5">
-            <div class="w-full lg:w-5/12 flex flex-col gap-10">
-                <?php component('provider_card', ['hide_service' => FALSE, 'company_name' => vars('company_name'), 'company_logo' => vars('company_logo')]) ?>
+            <div class="w-full lg:w-5/12 flex flex-col gap-10">                
+                <?php component('provider_card', ["hide_service" => (count($available_providers) == 1), "secretary" => vars('secretary')]) ?>
                 <?php component('selected_service', ['services' => $available_services, 'step' => '3']) ?>
             </div>
             <div id="step-content">

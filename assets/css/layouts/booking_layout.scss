@@ -145,7 +145,7 @@ body {
         height: 35px;
         width: 35px;
         float: left;
-        background: #225d4d;
+
         padding: 8px;
         margin-right: 12px;
         margin-top: 6px;
@@ -451,7 +451,7 @@ body {
 }
 
 #book-appointment-wizard .join-item.active-step {
-    @apply bg-black text-white;
+    @apply bg-primary text-white;
 
     & > div svg {
         @apply fill-white stroke-white;
@@ -470,7 +470,7 @@ body {
 }
 #book-appointment-wizard .join-item {
     transition: all 0.3s linear;
-    @apply border-b border-l border-r border-t border-gray-200 bg-white px-2.5 text-center transition-all;
+    @apply border-b border-l border-r border-t border-gray-200 bg-base-100 px-2.5 text-center transition-all;
 
     > div {
         @apply h-full;
@@ -487,7 +487,7 @@ body {
 }
 
 #nav {
-    @apply my-5 flex items-center justify-between rounded-lg bg-black px-3.5 py-2;
+    @apply my-5 flex items-center justify-between rounded-lg bg-primary px-3.5 py-2;
 
     > div {
         @apply flex h-5 items-center justify-between space-x-10;
@@ -624,11 +624,6 @@ body {
 [data-theme='lofi'] .modal-header {
     button.btn-close {
         background-image: none;
-        @apply bg-white fill-white;
-        --bs-btn-close-bg: url(
-            data:image/svg + xml,
-            %3csvgxmlns='http://www.w3.org/2000/svg'viewBox='0 0 16 16'fill='%23fff'%3e%3cpathd='M.293.293a1 1 0 0 1 1.414 0L8 6.586 14.293.293a1 1 0 1 1 1.414 1.414L9.414 8l6.293 6.293a1 1 0 0 1-1.414 1.414L8 9.414l-6.293 6.293a1 1 0 0 1-1.414-1.414L6.586 8 .293 1.707a1 1 0 0 1 0-1.414z'/%3e%3c/svg%3e
-        );
         &::before {
             position: absolute;
             top: 0.8rem;
@@ -648,4 +643,7 @@ body .modal-header {
 
 [data-theme='lofi'] .modal.show {
     opacity: 1 !important;
+}
+html {
+    @apply overflow-x-hidden;
 }

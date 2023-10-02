@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -65,7 +67,8 @@ class Services_model extends EA_Model
 
         if (empty($service['id'])) {
             return $this->insert($service);
-        } else {
+        }
+        else {
             return $this->update($service);
         }
     }
@@ -95,7 +98,7 @@ class Services_model extends EA_Model
             throw new InvalidArgumentException('Not all required fields are provided: ' . print_r($service, TRUE));
         }
 
-        // If a category was provided then make sure it really exists in the database. 
+        // If a category was provided then make sure it really exists in the database.
         if (!empty($service['id_categories'])) {
             $count = $this->db->get_where('categories', ['id' => $service['id_categories']])->num_rows();
 
@@ -104,7 +107,7 @@ class Services_model extends EA_Model
             }
         }
 
-        // Make sure the duration value is valid. 
+        // Make sure the duration value is valid.
         if (!empty($service['duration'])) {
             if ((int) $service['duration'] < EVENT_MINIMUM_DURATION) {
                 throw new InvalidArgumentException('The service duration cannot be less than ' . EVENT_MINIMUM_DURATION . ' minutes long.');
@@ -128,7 +131,7 @@ class Services_model extends EA_Model
             throw new InvalidArgumentException('The provided availabilities type is invalid: ' . $service['availabilities_type']);
         }
 
-        // Validate the attendants number value. 
+        // Validate the attendants number value.
         if (empty($service['attendants_number']) || (int) $service['attendants_number'] < 1) {
             throw new InvalidArgumentException('The provided attendants number is invalid: ' . $service['attendants_number']);
         }
@@ -187,7 +190,8 @@ class Services_model extends EA_Model
     {
         if ($force_delete) {
             $this->db->delete('services', ['id' => $service_id]);
-        } else {
+        }
+        else {
             $this->db->update('services', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $service_id]);
         }
     }
@@ -299,17 +303,20 @@ class Services_model extends EA_Model
      *
      * @return array Returns an array of services.
      */
-    public function get_available_services(bool $without_private = FALSE, string $provider_id = '', $provider_name = ''): array
+    public function get_available_services(bool $without_private = FALSE, string $provider_id = '', $provider_name = '', $provider_ids = []): array
     {
         if (strlen($provider_name) > 0) {
             $provider_from_username = $this->db->get_where('user_settings', ['username' => $provider_name])->first_row();
-            if ($provider_from_username == null) {
+            if ($provider_from_username == NULL) {
                 return [];
             }
             $provider_id = $provider_from_username->id_users;
         }
         if (strlen($provider_id) > 0) {
             $this->db->where('services_providers.id_users', intval($provider_id));
+        }
+        if (!empty($provider_ids)) {
+            $this->db->where_in('services_providers.id_users', $provider_ids);
         }
         if ($without_private) {
             $this->db->where('services.is_private', FALSE);

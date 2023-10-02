@@ -13,15 +13,17 @@
 <!-- Select Service & Provider -->
 
 <?php component('booking_type_step', [
-    'available_services' => vars('available_services'),
-    'is_paid'            => vars('is_paid'),
-    'company_email'      => vars('company_email')
+    'available_services'  => vars('available_services'),
+    'available_providers' => vars('available_providers'),
+    'is_paid'             => vars('is_paid'),
+    'company_email'       => vars('company_email')
 ]) ?>
 <!-- Pick An Appointment Date -->
 
 <?php component('booking_time_step', [
-    'grouped_timezones'  => vars('grouped_timezones'),
-    'available_services' => vars('available_services'),
+    'grouped_timezones'   => vars('grouped_timezones'),
+    'available_services'  => vars('available_services'),
+    'available_providers' => vars('available_providers'),
 ]) ?>
 
 <!-- Enter Customer Information -->

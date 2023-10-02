@@ -178,7 +178,8 @@ App.Http.Booking = (function () {
 
         const url = App.Utils.Url.siteUrl('booking/register');
 
-        const $layer = $('<div/>');
+        $('#loader').remove();
+        const $layer = $('<div id="loader"/>');
 
         $.ajax({
             url: url,
@@ -260,30 +261,48 @@ App.Http.Booking = (function () {
             appointment_id: appointmentId
         };
 
+        const $layer = $('<div/>');
+
         $.ajax({
             url: url,
             type: 'GET',
             data: data,
-            dataType: 'json'
-        }).done((response) => {
-            if (response.is_month_unavailable) {
-                if (searchedMonthCounter >= 3) {
-                    searchedMonthCounter = 0;
-                    return; // Stop searching
+            dataType: 'json',
+            beforeSend: () => {
+                $layer.appendTo('body').css({
+                    background: 'white',
+                    position: 'fixed',
+                    top: '0',
+                    left: '0',
+                    height: '100vh',
+                    width: '100vw',
+                    opacity: '0.5'
+                });
+            }
+        })
+            .done((response) => {
+                if (response.is_month_unavailable) {
+                    if (searchedMonthCounter >= 3) {
+                        searchedMonthCounter = 0;
+                        $availableHours.empty();
+                        return; // Stop searching
+                    }
+
+                    searchedMonthCounter++;
+                    const selectedDateMoment = moment(selectedDateString);
+                    selectedDateMoment.add(1, 'month');
+                    const nextSelectedDate = selectedDateMoment.format('YYYY-MM-DD');
+                    getUnavailableDates(providerId, serviceId, nextSelectedDate);
+                    return;
                 }
 
-                searchedMonthCounter++;
-                const selectedDateMoment = moment(selectedDateString);
-                selectedDateMoment.add(1, 'month');
-                const nextSelectedDate = selectedDateMoment.format('YYYY-MM-DD');
-                getUnavailableDates(providerId, serviceId, nextSelectedDate);
-                return;
-            }
-
-            unavailableDatesBackup = response;
-            selectedDateStringBackup = selectedDateString;
-            applyUnavailableDates(response, selectedDateString, true);
-        });
+                unavailableDatesBackup = response;
+                selectedDateStringBackup = selectedDateString;
+                applyUnavailableDates(response, selectedDateString, true);
+            })
+            .always(() => {
+                $layer.remove();
+            });
     }
 
     function applyPreviousUnavailableDates() {

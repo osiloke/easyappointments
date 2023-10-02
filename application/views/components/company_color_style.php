@@ -4,7 +4,7 @@
  */
 ?>
 
-<?php if ( ! empty($company_color) && $company_color !== DEFAULT_COMPANY_COLOR): ?>
+<?php if (!empty($company_color) && $company_color !== DEFAULT_COMPANY_COLOR): ?>
     <style>
         /* Generic Overrides */
 
@@ -16,10 +16,10 @@
             color: <?= $company_color ?>;
         }
 
-        .btn-primary {
+        /* .btn-primary {
             background-color: <?= $company_color ?>;
             border-color: <?= $company_color ?>;
-        }
+        } */
 
         .btn-primary:hover,
         .btn-primary:active,

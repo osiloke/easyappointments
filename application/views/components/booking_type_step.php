@@ -3,18 +3,50 @@
  * Local variables.
  *
  * @var array $available_services
+ * @var array $available_providers
  */
+
+$has_category = FALSE;
+foreach ($available_services as $service) {
+    if (!empty($service['category_id'])) {
+        $has_category = TRUE;
+
+        break;
+    }
+}
+// Group services by category
+$grouped_services = [];
+
+foreach ($available_services as $service) {
+    if (!empty($service['category_id'])) {
+        if (!isset($grouped_services[$service['category_name']])) {
+            $grouped_services[$service['category_name']] = [];
+        }
+
+        $grouped_services[$service['category_name']][] = $service;
+    }
+}
+
+// Add uncategorized services
+$grouped_services['uncategorized'] = [];
+
+foreach ($available_services as $service) {
+    if ($service['category_id'] == NULL) {
+        $grouped_services['uncategorized'][] = $service;
+    }
+}
+
 ?>
 <div id="wizard-frame-1" class="wizard-frame" style="visibility: hidden;">
     <div class="frame-container">
 
         <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-10">
             <div class="w-full lg:w-5/12">
-                <?php component('provider_card', ["hide_service" => TRUE]) ?>
+                <?php component('provider_card', ["hide_service" => (count($available_providers) == 1), "secretary" => vars('secretary')]) ?>
             </div>
             <div id="step-content">
                 <h2 class="frame-title">
-                    <?= lang('choose service') ?>
+                    <?= lang('Choose a service to book') ?>
                 </h2>
 
                 <div class="row frame-content">
@@ -24,116 +56,97 @@
                                 <strong>
                                     <?= lang('service') ?>
                                 </strong>
-                            </label> -->
+                            </label>    -->
 
-                            <?php if ($is_paid): ?>
-                                <select id="select-service" class="form-control w-7/12" disabled="true">
-                                <?php else: ?>
-                                    <select id="select-service" class="form-control w-full lg:w-6/12 hidden">
-                                    <?php endif ?>
-                                    <?php
-                                    // Group services by category, only if there is at least one service with a parent category.
-                                    $has_category = FALSE;
-foreach ($available_services as $service) {
-    if (!empty($service['category_id'])) {
-        $has_category = TRUE;
-
-        break;
-    }
-}
-
-if ($has_category) {
-    $grouped_services = [];
-
-    foreach ($available_services as $service) {
-        if (!empty($service['category_id'])) {
-            if (!isset($grouped_services[$service['category_name']])) {
-                $grouped_services[$service['category_name']] = [];
-            }
-
-            $grouped_services[$service['category_name']][] = $service;
-        }
-    }
-
-    // We need the uncategorized services at the end of the list, so we will use another
-    // iteration only for the uncategorized services.
-    $grouped_services['uncategorized'] = [];
-    foreach ($available_services as $service) {
-        if ($service['category_id'] == NULL) {
-            $grouped_services['uncategorized'][] = $service;
-        }
-    }
-
-    foreach ($grouped_services as $key => $group) {
-        $group_label = $key !== 'uncategorized'
-            ? $group[0]['category_name']
-            : 'Uncategorized';
-
-        if (count($group) > 0) {
-            echo '<optgroup label="' . e($group_label) . '">';
-            foreach ($group as $service) {
-                echo '<option value="' . $service['id'] . '">'
-                    . e($service['name']) . '</option>';
-            }
-            echo '</optgroup>';
-        }
-    }
-}
-else {
-    foreach ($available_services as $service) {
-        echo '<option value="' . $service['id'] . '">' . e($service['name']) . '</option>';
-    }
-}
-?>
-                                </select>
-
-                                <div class="service-grid">
-                                    <?php
-foreach ($grouped_services as $key => $group) {
-    $group_label = $key !== 'uncategorized'
-        ? $group[0]['category_name']
-        : 'Uncategorized';
-    if (count($group) > 0) {
-        foreach ($group as $service) { ?>
-                                                <?php component('service_tile', ["id" => $service['id'], "name" => $service['name'], "description" => $service['description'], "price" => $service['price'], "duration" => $service['duration']]) ?>
-                                            <?php }
-        ;
-    }
-    ?>
-
-                                    <?php } ?>
+                        <div id="provider-list" class="mb-3 <?php if (count($available_providers) == 1) : ?>hidden<?php endif ?>">
+                                <label for="select-provider hidden">
+                                    <strong class="hidden">
+                                        <?= lang('provider') ?>
+                                    </strong>
+                                </label>
+                                <select id="select-provider" class="form-control hidden"> 
+                                    <?php if (count($available_providers) > 1) : ?><option value></option><?php endif ?>          
+                                    <?php foreach ($available_providers as $provider): ?>         
+                                    <option value="<?= $provider["id"] ?>">
+                                        <?= $provider["first_name"] . ' ' . $provider["last_name"] ?>
+                                    </option>                          
+                                    <?php endforeach; ?>  
+                                    
+                                </select>  
+                                <div role="radiogroup" id="select-provider-tile">
+                                    <div class="service-grid">
+                                        <?php foreach ($available_providers as $provider): ?>                                        
+                                        <?php component('provider_tile', ["id" => $provider['id'],  "first_name" => $provider['first_name'], "last_name" => $provider['last_name'], "description" => $provider['notes'] ?? '']); ?>
+                                        <?php endforeach; ?>  
+                                    </div>
                                 </div>
-                                <?php if ($is_paid): ?>
-                                    <p class="warn">
-                                        <?= strtr(
-                                            lang('service_paid_warning'),
-                                            [
-                                                '{$mail_link}' => strtr('<a href="maiilto:{$company_email}">{$company_email}</a>', [
-                                                    '{$company_email}' => $company_email
-                                                ])
-                                            ]
-                                        )
-                                    ?>
-                                        <?= lang('') ?>
-                                    </p>
-                                <?php endif ?>
+                            </div>
+                            <div id="service-list" class="<?php if (count($available_providers) > 1) : ?>hidden<?php endif ?>">
+                                <div class="pb-10 <?php if (count($available_providers) == 1) : ?>hidden<?php endif ?>">
+                                    <button data-step_index="1"
+                                            class="button-back-provider rounded-[100px] flex flex-col gap-2 items-start justify-center shrink-0 relative overflow-hidden">
+                                            <div class="flex flex-row gap-2 items-center justify-center self-stretch shrink-0 relative">
+                                                <svg class="shrink-0 relative overflow-visible" style="" width="18" height="18" viewBox="0 0 18 18"
+                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M14.625 9L3.375 9M3.375 9L8.4375 14.0625M3.375 9L8.4375 3.9375" stroke="black"
+                                                        stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+
+                                                <div class="text-primary-black text-center relative flex items-center justify-center display-selected-provider" style="
+                                        font: var(
+                                        --body-sm-semi-bold,
+                                        500 14px/20px 'DM Sans',
+                                        sans-serif
+                                        );
+                                    ">
+                                                    
+                                                </div>
+                                            </div>
+                                        </button>
+                                </div>
+
+                            <select id="select-service" class="form-control w-full lg:w-6/12 hidden"> 
+                                <option value></option>
+                            <?php foreach ($available_services as $service):?>
+                                <option value="<?= $service['id'] ?>"><?= e($service['name']) ?></option>
+                            <?php endforeach; ?>
+                            </select>
+                                <div class="service-grid" id="service-tiles">
+                                    <?php foreach ($grouped_services as $key => $group): ?>
+
+                                        <?php if (count($group) > 0): ?>
+                                            
+                                            <?php foreach ($group as $service): ?>
+                                            
+                                            <?php component('service_tile', ["id" => $service['id'], "name" => $service['name'], "description" => $service['description'], "price" => $service['price'], "duration" => $service['duration']]); ?>
+
+                                            <?php endforeach; ?>
+
+                                        <?php endif; ?>
+
+                                    <?php endforeach; ?>  
+                                </div>
+                            </div>
+                        <?php if ($is_paid): ?>
+                            <p class="warn">
+                            <?= strtr(
+                                lang('service_paid_warning'),
+                                [
+                                    '{$mail_link}' => strtr('<a href="maiilto:{$company_email}">{$company_email}</a>', [
+                                        '{$company_email}' => $company_email
+                                    ])
+                                ]
+                            )
+                            ?>
+                            <?= lang('') ?>
+                            </p>
+                        <?php endif ?>
                         </div>
-
-                        <div class="mb-3">
-                            <label for="select-provider">
-                                <strong>
-                                    <!-- <?= lang('provider') ?> -->
-                                </strong>
-                            </label>
-
-                            <select disabled id="select-provider" class="form-control hidden"></select>
-                        </div>
-
                     </div>
                 </div>
             </div>
-        </div>
-
+        </div> 
+        
     </div>
 
     <div class="command-buttons">

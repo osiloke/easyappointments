@@ -41,6 +41,7 @@ class Booking extends EA_Controller
         $this->load->model('customers_model');
         $this->load->model('settings_model');
         $this->load->model('consents_model');
+        $this->load->model('secretaries_model');
 
         $this->load->library('timezones');
         $this->load->library('synchronization');
@@ -128,9 +129,21 @@ class Booking extends EA_Controller
 
             return;
         }
+        // TODO: fetch secretary with username
 
-        $available_services = $this->services_model->get_available_services(TRUE, $provider_id ?? '', $provider_name);
-        $available_providers = $this->providers_model->get_available_providers(TRUE, $provider_id ?? '', $provider_name);
+        $secretary_from_username = $this->db->get_where('user_settings', ['username' => $provider_name])->first_row();
+        if (!empty($secretary_from_username)) {
+            $secretary = $this->secretaries_model->find($secretary_from_username->id_users);
+        }
+        if (!empty($secretary) && !empty($secretary["providers"])) {
+            $available_providers = $this->providers_model->get_available_providers(TRUE, '', '', $secretary['providers']);
+            $available_services = $this->services_model->get_available_services(TRUE, '', '', $secretary['providers']);
+        }
+        else {
+            // TODO: if secretary found, fetch services providers for secretrary
+            $available_services = $this->services_model->get_available_services(TRUE, $provider_id ?? '', $provider_name);
+            $available_providers = $this->providers_model->get_available_providers(TRUE, $provider_id ?? '', $provider_name);
+        }
 
         $available_services = sanitize_fields($available_services, ['description', 'name', 'duration', 'price']);
 
@@ -142,7 +155,8 @@ class Booking extends EA_Controller
                 'first_name',
                 'last_name',
                 'services',
-                'timezone'
+                'timezone',
+                'notes'
             ]);
         }
         $date_format = setting('date_format');
@@ -270,11 +284,13 @@ class Booking extends EA_Controller
             'display_any_provider'  => setting('display_any_provider'),
             'future_booking_limit'  => setting('future_booking_limit'),
             'appointment_data'      => $appointment,
+            'secretary_data'        => $secretary,
             'provider_data'         => $provider,
             'customer_data'         => $customer,
         ]);
 
         html_vars([
+            'secretary'                           => $secretary,
             'available_services'                  => $available_services,
             'available_providers'                 => $available_providers,
             'theme'                               => $theme,

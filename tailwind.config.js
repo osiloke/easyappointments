@@ -9,11 +9,10 @@ module.exports = {
                 lofi: {
                     ...require('daisyui/src/theming/themes')['[data-theme=lofi]'],
                     '.modal': {},
-                    colors: {
-                        'primary-black': '#000000',
-                        'primary-white': '#ffffff',
-                        'success-600': '#53b483'
-                    }
+                    'primary': '#3F51B5',
+                    'primary-black': '#00000',
+                    'primary-white': '#ffffff',
+                    'success-600': '#53b483'
                 }
             }
         ]
