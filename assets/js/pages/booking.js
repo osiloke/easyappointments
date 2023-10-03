@@ -341,9 +341,11 @@ App.Pages.Booking = (function () {
                     .filter('[value="' + serviceId + '"]')
                     .prop('checked', true);
                 // $selectProvider.empty();
+                $('.button-next').show();
             } else {
                 $($selectServiceTile).prop('checked', false);
                 $availableHours.empty();
+                $('.button-next').hide();
             }
 
             vars('available_providers').forEach((provider) => {

@@ -131,6 +131,15 @@ body {
 
 #book-appointment-wizard .wizard-frame .flatpickr-calendar {
     margin: 25px auto;
+    @apply rounded-lg bg-base-100 shadow;
+}
+
+.flatpickr-calendar .flatpickr-months,
+.flatpickr-calendar .flatpickr-months .flatpickr-month,
+.flatpickr-calendar .flatpickr-weekdays,
+.flatpickr-calendar .flatpickr-current-month .flatpickr-monthDropdown-months,
+.flatpickr-calendar span.flatpickr-weekday {
+    @apply bg-base-100;
 }
 
 #book-appointment-wizard .wizard-frame #select-time {

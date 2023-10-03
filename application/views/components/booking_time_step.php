@@ -18,7 +18,22 @@
                 <h2 class=" frame-title">
                     <?= lang('appointment_date_and_time') ?>
                 </h2>
-                <div class="flex flex-col lg:flex-row gap-2 lg:gap-5">
+                <div class="justify-start items-center gap-10 inline-flex">
+                    <div class="flex-col justify-center items-start inline-flex w-full">
+                        <div class="text-black text-lg font-medium leading-7">How long will you like this session to last for?</div>
+                        <div class="text-sm font-normal leading-tight">Note: This will affect the cost of your booking</div>
+                    </div>
+                    <div class="w-3/12">
+                         <select class="select select-bordered w-full max-w-xs">
+                            <option selected value="1">1 Hour</option>
+                            <option value="2">2 Hours</option>
+                            <option value="3">3 Hours</option>
+                            <option value="4">4 Hours</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="h-10"></div>
+                <div class="flex flex-col lg:flex-row gap-5 lg:gap-10">
                     <div class="w-full lg:w-6/12">
                         <div id="select-date" class="p-0 py-0"></div>
                     </div>

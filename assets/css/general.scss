@@ -731,3 +731,16 @@ body .clearfix {
     top: 0px;
     @apply animate-ping;
 }
+
+.flatpickr-day {
+    @apply rounded-md;
+}
+
+.flatpickr-calendar .flatpickr-months {
+    padding: 10px 0;
+    background: #449a82;
+    @apply rounded-b-none rounded-t-md;
+}
+.flatpickr-calendar .flatpickr-innerContainer {
+    @apply rounded-b-md;
+}
