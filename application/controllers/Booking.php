@@ -381,6 +381,7 @@ class Booking extends EA_Controller
             $provider_id = request('provider_id');
             $service_id = request('service_id');
             $selected_date = request('selected_date');
+            $service_duration = request('service_duration');
 
             // Do not continue if there was no provider selected (more likely there is no provider in the system).
 
@@ -409,7 +410,9 @@ class Booking extends EA_Controller
                     if (!in_array($service_id, $provider['services'])) {
                         continue;
                     }
-
+                    if (isset($service_duration)) {
+                        $service['duration'] = $service_duration;
+                    }
                     $provider_available_hours = $this->availability->get_available_hours($selected_date, $service, $provider, $exclude_appointment_id);
 
                     $available_hours = array_merge($available_hours, $provider_available_hours);
@@ -424,6 +427,9 @@ class Booking extends EA_Controller
             else {
                 $provider = $this->providers_model->find($provider_id);
 
+                if (isset($service_duration)) {
+                    $service['duration'] = $service_duration;
+                }
                 $response = $this->availability->get_available_hours($selected_date, $service, $provider, $exclude_appointment_id);
             }
 

@@ -23,12 +23,12 @@
                         <div class="text-black text-lg font-medium leading-7">How long will you like this session to last for?</div>
                         <div class="text-sm font-normal leading-tight">Note: This will affect the cost of your booking</div>
                     </div>
-                    <div class="w-3/12">
-                         <select class="select select-bordered w-full max-w-xs">
-                            <option selected value="1">1 Hour</option>
-                            <option value="2">2 Hours</option>
-                            <option value="3">3 Hours</option>
-                            <option value="4">4 Hours</option>
+                    <div class="w-4/12 lg:w-3/12">
+                         <select name="interval" class="select select-bordered w-full max-w-xs">
+                            <option selected value="60">1 Hour</option>
+                            <option value="120">2 Hours</option>
+                            <option value="180">3 Hours</option>
+                            <option value="240">4 Hours</option>
                         </select>
                     </div>
                 </div>

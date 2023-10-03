@@ -36,6 +36,7 @@ App.Pages.Booking = (function () {
     const $availableHours = $('#available-hours');
     const $bookAppointmentSubmit = $('#book-appointment-submit');
     const $deletePersonalInformation = $('#delete-personal-information');
+    const $interval = $('select[name=interval]');
     const tippy = window.tippy;
     const moment = window.moment;
 
@@ -471,6 +472,24 @@ App.Pages.Booking = (function () {
                     $('#step-' + prevTabIndex).addClass('active-step');
                     $('#wizard-frame-' + prevTabIndex).fadeIn();
                 });
+        });
+
+        /**
+         * Event: Interval select "Changed"
+         *
+         * This handler is triggered every time the user changes the interval select input.
+         * The available hours should be updated accordingly.
+         */
+        $interval.on('change', (event) => {
+            const date = $selectDate[0]._flatpickr.selectedDates[0];
+
+            if (!date) {
+                return;
+            }
+
+            App.Http.Booking.getAvailableHours(moment(date).format('YYYY-MM-DD'));
+
+            updateConfirmFrame();
         });
         /**
          * Event: Back Select Service Button "Clicked"

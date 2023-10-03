@@ -22,6 +22,7 @@ App.Http.Booking = (function () {
     const $availableHours = $('#available-hours');
     const $captchaHint = $('#captcha-hint');
     const $captchaTitle = $('.captcha-title');
+    const $interval = $('select[name=interval]');
 
     const moment = window.moment;
 
@@ -53,6 +54,9 @@ App.Http.Booking = (function () {
 
         if (service) {
             serviceDuration = service.duration;
+        }
+        if ($interval) {
+            serviceDuration = Number($interval.val());
         }
 
         // If the manage mode is true then the appointment's start date should return as available too.
