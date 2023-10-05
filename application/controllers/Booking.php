@@ -491,6 +491,7 @@ class Booking extends EA_Controller
             $captcha = request('captcha');
             $appointment = $post_data['appointment'];
             $customer = $post_data['customer'];
+            $service_duration = $post_data['service_duration'];
             $manage_mode = filter_var($post_data['manage_mode'], FILTER_VALIDATE_BOOLEAN);
 
             if (!array_key_exists('address', $customer)) {
@@ -523,6 +524,19 @@ class Booking extends EA_Controller
             $provider = $this->providers_model->find($appointment['id_users_provider']);
 
             $service = $this->services_model->find($appointment['id_services']);
+
+            if (isset($service_duration)) {
+                $service['duration'] = $service_duration;
+
+                $duration_seconds = (int) $service_duration * 60;
+
+                // Add duration to start datetime
+                $start_datetime = strtotime($appointment['start_datetime']);
+                $end_datetime = $start_datetime + $duration_seconds;
+
+                // Format back to datetime string
+                $appointment['end_datetime'] = date('Y-m-d H:i:s', $end_datetime);
+            }
 
             $require_captcha = (bool) setting('require_captcha');
 
@@ -600,6 +614,7 @@ class Booking extends EA_Controller
             $appointment['status'] = $appointment_status_options[0] ?? NULL;
             if ($service["price"] > 0) {
                 $appointment['status'] = "Pending";
+                // also calculat new price using duration
             }
 
             $this->appointments_model->only($appointment, [
@@ -665,6 +680,8 @@ class Booking extends EA_Controller
     {
         $post_data = request('post_data');
 
+        $service_duration = $post_data['service_duration'];
+
         $appointment = $post_data['appointment'];
 
         $appointment_start = new DateTime($appointment['start_datetime']);
@@ -680,6 +697,10 @@ class Booking extends EA_Controller
         }
 
         $service = $this->services_model->find($appointment['id_services']);
+
+        if (isset($service_duration)) {
+            $service['duration'] = $service_duration;
+        }
 
         $exclude_appointment_id = $appointment['id'] ?? NULL;
 

@@ -5,6 +5,31 @@
  * @var array $grouped_timezones
  * @var array $available_services
  */
+
+$fullday = 540; // 9 hours
+$halfDay = 240;
+
+$intervals = getTimeIntervals($fullday, $halfDay);
+
+function getTimeIntervals($duration, $halfDay)
+{
+    $intervals = [];
+
+    for ($i = 60; $i <= $duration; $i += 60) {
+        $intervals[] = $i;
+
+        if ($i >= 60 && !in_array(60, $intervals)) {
+            $intervals[] = 60;
+        }
+
+        if ($i >= $halfDay && !in_array($halfDay, $intervals)) {
+            $intervals[] = $halfDay;
+        }
+    }
+
+    return $intervals;
+}
+
 ?>
 
 <div id="wizard-frame-2" class="wizard-frame" style="display:none;">
@@ -23,12 +48,18 @@
                         <div class="text-black text-lg font-medium leading-7">How long will you like this session to last for?</div>
                         <div class="text-sm font-normal leading-tight">Note: This will affect the cost of your booking</div>
                     </div>
-                    <div class="w-4/12 lg:w-3/12">
-                         <select name="interval" class="select select-bordered w-full max-w-xs">
-                            <option selected value="60">1 Hour</option>
-                            <option value="120">2 Hours</option>
-                            <option value="180">3 Hours</option>
-                            <option value="240">4 Hours</option>
+                    <div class="w-4/12 lg:w-4/12">
+                        <select name="interval" class="select select-bordered w-full">
+
+                        <?php foreach ($intervals as $interval): ?>
+
+                        <option value="<?php echo $interval; ?>">
+                        <?php $dur = $interval / 60; ?>
+                            <?php if ($interval == $halfDay): ?>Half day<?php elseif ($interval == $fullday):?>Full day<?php else: ?> <?= $dur ?> Hour(s) <?php endif; ?>
+                        </option>
+
+                        <?php endforeach; ?>
+
                         </select>
                     </div>
                 </div>

@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -64,7 +66,8 @@ class Payment extends EA_Controller
 
         if (empty($appointment)) {
             abort(404, "Forbidden");
-        } else {
+        }
+        else {
             $manage_mode = TRUE;
             $company_name = setting('company_name');
             $company_logo = setting('company_logo');
@@ -145,13 +148,14 @@ class Payment extends EA_Controller
         $client = new Client([
             'timeout' => 15.0,
         ]);
+
         try {
             $res = $client->post('https://api.vazapay.com/v1/onepay/confirm', [
                 'headers' => [
                     'Content-Type'  => 'application/json',
                     'Authorization' => 'Bearer ' . config('stripe_api_key'),
                 ],
-                'json'    => [
+                'json' => [
                     'reason' => $appointment_hash,
                 ]
             ]);
@@ -164,7 +168,6 @@ class Payment extends EA_Controller
 
             $payment_intent = $body->reason ?? $body->reference;
 
-
             if ($status == 'success') {
                 $appointment = $this->set_paid($appointment_hash, $payment_intent);
                 $add_to_google_url = $this->google_sync->get_add_to_google_url($appointment['id']);
@@ -175,7 +178,8 @@ class Payment extends EA_Controller
                 ]);
 
                 $this->index();
-            } else {
+            }
+            else {
                 response($message);
             }
         }
@@ -194,7 +198,6 @@ class Payment extends EA_Controller
     private function set_paid($appointment_hash, $payment_intent)
     {
         try {
-
             $occurrences = $this->appointments_model->get(['hash' => $appointment_hash]);
 
             if (empty($occurrences)) {
@@ -266,8 +269,9 @@ class Payment extends EA_Controller
     public function link(string $appointment_hash)
     {
         $client = new Client([
-            'timeout' => 15.0,
+            'timeout' => 20.0,
         ]);
+
         try {
             $occurrences = $this->appointments_model->get(['hash' => $appointment_hash]);
             if (empty($occurrences)) {
@@ -277,7 +281,8 @@ class Payment extends EA_Controller
             $appointment = $occurrences[0];
             if ($appointment["is_paid"] == 1) {
                 redirect(site_url('booking_confirmation/of/' . $appointment_hash));
-            } else {
+            }
+            else {
                 $provider = $this->providers_model->find($appointment['id_users_provider']);
                 $service = $this->services_model->find($appointment['id_services']);
                 $customer = $this->customers_model->find($appointment['id_users_customer']);
@@ -288,7 +293,7 @@ class Payment extends EA_Controller
                         'Content-Type'  => 'application/json',
                         'Authorization' => 'Bearer ' . config('stripe_api_key'),
                     ],
-                    'json'    => [
+                    'json' => [
                         'amount'         => $service["price"],
                         'reason'         => $appointment_hash,
                         'currency'       => $service["currency"],
@@ -315,10 +320,10 @@ class Payment extends EA_Controller
                 $exception = (string) $response->getBody();
                 $exception = json_decode($exception);
                 show_error((string) $exception->error, $response->getStatusCode(), 'Payment could not be completed');
-            } else {
+            }
+            else {
                 show_error($e->getMessage());
             }
         }
     }
-
 }

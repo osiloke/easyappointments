@@ -337,6 +337,10 @@ App.Pages.Customers = (function () {
                             $('<br/>')
                         ]
                     }),
+                    $('<strong/>', {
+                        'text': appointment.status
+                    }),
+                    $('<br/>'),
 
                     // Start
 

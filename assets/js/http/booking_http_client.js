@@ -260,6 +260,7 @@ App.Http.Booking = (function () {
             provider_id: providerId,
             service_id: serviceId,
             selected_date: encodeURIComponent(selectedDateString),
+            service_duration: Number($interval.val()),
             csrf_token: vars('csrf_token'),
             manage_mode: Number(App.Pages.Booking.manageMode),
             appointment_id: appointmentId

@@ -734,10 +734,12 @@ App.Pages.Booking = (function () {
                     minimumFractionDigits: 0
                 });
                 if (Number(service.price) > 0) {
-                    servicePrice = formatter.format(service.price);
+                    servicePrice = formatter.format(
+                        (service.price * Number($interval.val())) / Number(service.duration)
+                    );
                 }
                 serviceDescription = service.description;
-                serviceDuration = service.duration + ' Mins';
+                serviceDuration = $interval.val() + ' Mins';
                 return false; // Break loop
             }
         });
@@ -770,6 +772,12 @@ App.Pages.Booking = (function () {
                         }),
                         $('<span/>', {
                             'text': $selectProvider.find('option:selected').text()
+                        }),
+                        $('<span/>', {
+                            'text': lang('duration')
+                        }),
+                        $('<span/>', {
+                            'text': serviceDuration
                         }),
                         $('<span/>', {
                             'text': lang('start')
@@ -907,6 +915,8 @@ App.Pages.Booking = (function () {
             id_users_provider: $selectProvider.val(),
             id_services: $selectService.val()
         };
+
+        data.service_duration = Number($interval.val());
 
         data.manage_mode = Number(manageMode);
 
