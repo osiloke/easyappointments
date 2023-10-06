@@ -6,6 +6,7 @@
  * @var array $available_services
  */
 
+// TODO: modiy to work with any duration. This should be done in booking.js
 $fullday = 540; // 9 hours
 $halfDay = 240;
 $duration = 60;

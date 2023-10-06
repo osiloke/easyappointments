@@ -356,6 +356,7 @@ App.Pages.Booking = (function () {
         $selectService.on('change', (event) => {
             const $target = $(event.target);
             const serviceId = $selectService.val();
+            $interval.prop('selectedIndex', 0);
             if (serviceId) {
                 $($selectServiceTile)
                     .filter('[value="' + serviceId + '"]')
@@ -733,14 +734,18 @@ App.Pages.Booking = (function () {
                     currency: service.currency || 'NGN',
                     minimumFractionDigits: 0
                 });
+                // TODO: modiy to work with any duration
+                let duration = Number(service.duration);
+                let interval = Number(service.duration);
+                if (duration == 60) {
+                    interval = Number($interval.val());
+                }
                 if (Number(service.price) > 0) {
-                    servicePrice = formatter.format(
-                        (service.price * Number($interval.val())) / Number(service.duration)
-                    );
+                    servicePrice = formatter.format(service.price * (interval / duration));
                 }
                 serviceDescription = service.description;
                 serviceDuration = $interval.val() + ' Mins';
-                if (service.availabilities_type == 'fixed' && Number(service.duration) == 60) {
+                if (service.availabilities_type == 'fixed' && duration == 60) {
                     $(document).find('.duration-selector').removeClass('hidden');
                 } else {
                     $(document).find('.duration-selector').addClass('hidden');

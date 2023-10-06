@@ -13,11 +13,11 @@
             <img class="w-24 my-2" src="<?= base_url('assets/img/Avatars.png') ?>" />
         </div>
     </div>
-    <div class=" flex flex-col w-full">
+    <div class="flex flex-col w-8/12">
         <span class="text-neutral-600 text-xl font-bold leading-loose mt-2">
             <?= $secretary["first_name"] ?> <?= $secretary["last_name"] ?>
         </span>
-        <div class="w-96 text-neutral-600 text-base font-medium font-['DM Sans'] leading-normal"><?= $secretary["notes"] ?></div>
+        <div class="text-neutral-600 text-base font-medium leading-normal"><?= $secretary["notes"] ?></div>
         <?php if ($hide_service != TRUE): ?>
         <span class="display-selected-provider text-neutral-600 text-xl font-bold leading-loose"> 
         </span>
