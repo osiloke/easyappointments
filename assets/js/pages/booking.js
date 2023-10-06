@@ -744,7 +744,7 @@ App.Pages.Booking = (function () {
                     servicePrice = formatter.format(service.price * (interval / duration));
                 }
                 serviceDescription = service.description;
-                serviceDuration = $interval.val() + ' Mins';
+                serviceDuration = App.Utils.Date.toHumanReadableTime(interval);
                 if (service.availabilities_type == 'fixed' && duration == 60) {
                     $(document).find('.duration-selector').removeClass('hidden');
                 } else {

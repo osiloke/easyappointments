@@ -189,10 +189,32 @@ window.App.Utils.Date = (function () {
         return result;
     }
 
+    function toHumanReadableTime(interval) {
+        // Calculate the number of hours, minutes, and days.
+        const hours = Math.floor(interval / 60);
+        const minutes = interval % 60;
+        const days = Math.floor(hours / 24);
+
+        // Build the human readable time string.
+        let humanReadableTime = '';
+        if (days > 0) {
+            humanReadableTime += `${days} Day${days > 1 ? 's' : ''}`;
+        }
+        if (hours > 0 && days === 0) {
+            humanReadableTime += `${hours} Hour${hours > 1 ? 's' : ''}`;
+        }
+        if (minutes > 0) {
+            humanReadableTime += `${minutes} Min${minutes > 1 ? 's' : ''}`;
+        }
+
+        return humanReadableTime;
+    }
+
     return {
         format,
         getWeekdayId,
         sortWeekDictionary,
-        getWeekdayName
+        getWeekdayName,
+        toHumanReadableTime
     };
 })();
