@@ -42,65 +42,67 @@
                                         <?= lang('service') ?>
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <select id="select-service" class="required form-control">
+                                    <select id="select-service" class="required form-control" disabled>
                                         <?php
                                         // Group services by category, only if there is at least one service
                                         // with a parent category.
                                         $has_category = FALSE;
 
-                                        foreach ($available_services as $service) {
-                                            if (!empty($service['category_id'])) {
-                                                $has_category = TRUE;
-                                                break;
-                                            }
-                                        }
+foreach ($available_services as $service) {
+    if (!empty($service['category_id'])) {
+        $has_category = TRUE;
 
-                                        if ($has_category) {
-                                            $grouped_services = [];
+        break;
+    }
+}
 
-                                            foreach ($available_services as $service) {
-                                                if (!empty($service['category_id'])) {
-                                                    if (!isset($grouped_services[$service['category_name']])) {
-                                                        $grouped_services[$service['category_name']] = [];
-                                                    }
+if ($has_category) {
+    $grouped_services = [];
 
-                                                    $grouped_services[$service['category_name']][] = $service;
-                                                }
-                                            }
+    foreach ($available_services as $service) {
+        if (!empty($service['category_id'])) {
+            if (!isset($grouped_services[$service['category_name']])) {
+                $grouped_services[$service['category_name']] = [];
+            }
 
-                                            // We need the uncategorized services at the end of the list, so we will use
-                                            // another iteration only for the uncategorized services.
-                                            $grouped_services['uncategorized'] = [];
+            $grouped_services[$service['category_name']][] = $service;
+        }
+    }
 
-                                            foreach ($available_services as $service) {
-                                                if ($service['category_id'] == NULL) {
-                                                    $grouped_services['uncategorized'][] = $service;
-                                                }
-                                            }
+    // We need the uncategorized services at the end of the list, so we will use
+    // another iteration only for the uncategorized services.
+    $grouped_services['uncategorized'] = [];
 
-                                            foreach ($grouped_services as $key => $group) {
-                                                $group_label = $key !== 'uncategorized'
-                                                    ? e($group[0]['category_name'])
-                                                    : 'Uncategorized';
+    foreach ($available_services as $service) {
+        if ($service['category_id'] == NULL) {
+            $grouped_services['uncategorized'][] = $service;
+        }
+    }
 
-                                                if (count($group) > 0) {
-                                                    echo '<optgroup label="' . $group_label . '">';
+    foreach ($grouped_services as $key => $group) {
+        $group_label = $key !== 'uncategorized'
+            ? e($group[0]['category_name'])
+            : 'Uncategorized';
 
-                                                    foreach ($group as $service) {
-                                                        echo '<option value="' . $service['id'] . '">'
-                                                            . e($service['name']) . '</option>';
-                                                    }
+        if (count($group) > 0) {
+            echo '<optgroup label="' . $group_label . '">';
 
-                                                    echo '</optgroup>';
-                                                }
-                                            }
-                                        } else {
-                                            foreach ($available_services as $service) {
-                                                echo '<option value="' . $service['id'] . '">'
-                                                    . e($service['name']) . '</option>';
-                                            }
-                                        }
-                                        ?>
+            foreach ($group as $service) {
+                echo '<option value="' . $service['id'] . '">'
+                    . e($service['name']) . '</option>';
+            }
+
+            echo '</optgroup>';
+        }
+    }
+}
+else {
+    foreach ($available_services as $service) {
+        echo '<option value="' . $service['id'] . '" disabled>'
+            . e($service['name']) . '</option>';
+    }
+}
+?>
                                     </select>
                                 </div>
 
@@ -109,7 +111,7 @@
                                         <?= lang('provider') ?>
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <select id="select-provider" class="required form-control"></select>
+                                    <select id="select-provider" class="required form-control" disabled></select>
                                 </div>
 
                                 <div class="mb-3 hidden">
@@ -135,6 +137,15 @@
                                         <?php endforeach ?>
                                     </select>
                                 </div>
+
+                                <?php if (config('stripe_payment_feature')): ?>
+                                <!-- <div class="mb-3 form-check form-switch">
+                                    <input class="form-check-input toggle toggle-md hidden" disabled type="checkbox" id="appointment-is-paid">
+                                    <label class="form-check-label" for="appointment-is-paid">
+                                        <?= lang('is_paid') ?>
+                                    </label>
+                                </div> -->
+                                <?php endif ?>
                             </div>
 
                             <div class="col-12 col-sm-6">
@@ -142,14 +153,14 @@
                                     <label for="start-datetime" class="form-label">
                                         <?= lang('start_date_time') ?>
                                     </label>
-                                    <input id="start-datetime" class="required form-control">
+                                    <input id="start-datetime" class="required form-control" disabled>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="end-datetime" class="form-label">
                                         <?= lang('end_date_time') ?>
                                     </label>
-                                    <input id="end-datetime" class="required form-control">
+                                    <input id="end-datetime" class="required form-control" disabled>
                                 </div>
 
                                 <div class="mb-3">

@@ -744,3 +744,7 @@ body .clearfix {
 .flatpickr-calendar .flatpickr-innerContainer {
     @apply rounded-b-md;
 }
+
+checkbox .paid {
+    @apply toggle-success;
+}

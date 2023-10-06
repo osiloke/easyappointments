@@ -206,8 +206,13 @@ App.Utils.CalendarTableView = (function () {
                 $appointmentsModal.find('#appointment-id').val(appointment.id);
                 $appointmentsModal.find('#select-service').val(appointment.id_services).trigger('change');
                 $appointmentsModal.find('#select-provider').val(appointment.id_users_provider);
-                $appointmentsModal.find('#appointment-is-paid').prop('checked', appointment.is_paid);
-
+                if (appointment.service.price > 0) {
+                    $appointmentsModal.find('#appointment-is-paid').removeClass('hidden');
+                    $appointmentsModal.find('#appointment-is-paid').prop('checked', appointment.is_paid);
+                    if (appointment.is_paid) {
+                        $appointmentsModal.find('#appointment-is-paid').addClass('paid');
+                    }
+                }
                 // Set the start and end datetime of the appointment.
                 startMoment = moment(appointment.start_datetime);
                 $appointmentsModal.find('#start-datetime')[0]._flatpickr.setDate(startMoment.toDate());
@@ -385,7 +390,9 @@ App.Utils.CalendarTableView = (function () {
         App.Utils.UI.initializeDatepicker($calendarHeader.find('.select-date'), {
             onChange(selectedDates) {
                 const startDate = selectedDates[0];
-                const endDate = moment(startDate).add(parseInt($selectFilterItem.val()) - 1, 'days').toDate();
+                const endDate = moment(startDate)
+                    .add(parseInt($selectFilterItem.val()) - 1, 'days')
+                    .toDate();
                 createView(startDate, endDate);
             }
         });
@@ -862,9 +869,7 @@ App.Utils.CalendarTableView = (function () {
                 continue;
             }
 
-            const title = [
-                appointment.service.name
-            ];
+            const title = [appointment.service.name];
 
             const customerInfo = [];
 
@@ -973,11 +978,11 @@ App.Utils.CalendarTableView = (function () {
 
             $event.html(
                 lang('break') +
-                ' <span class="hour">' +
-                moment(eventDate).format('HH:mm') +
-                '</span> (' +
-                eventDuration +
-                "')"
+                    ' <span class="hour">' +
+                    moment(eventDate).format('HH:mm') +
+                    '</span> (' +
+                    eventDuration +
+                    "')"
             );
 
             $event.data(entry);
@@ -1149,8 +1154,8 @@ App.Utils.CalendarTableView = (function () {
                     $('<span/>', {
                         'text': info.event.extendedProps.data
                             ? info.event.extendedProps.data.provider.first_name +
-                            ' ' +
-                            info.event.extendedProps.data.provider.last_name
+                              ' ' +
+                              info.event.extendedProps.data.provider.last_name
                             : '-'
                     }),
                     $('<br/>'),
@@ -1162,8 +1167,8 @@ App.Utils.CalendarTableView = (function () {
                     $('<span/>', {
                         'text': App.Utils.Date.format(
                             info.event.extendedProps.data.date +
-                            ' ' +
-                            info.event.extendedProps.data.workingPlanException.start,
+                                ' ' +
+                                info.event.extendedProps.data.workingPlanException.start,
                             vars('date_format'),
                             vars('time_format'),
                             true
@@ -1178,8 +1183,8 @@ App.Utils.CalendarTableView = (function () {
                     $('<span/>', {
                         'text': App.Utils.Date.format(
                             info.event.extendedProps.data.date +
-                            ' ' +
-                            info.event.extendedProps.data.workingPlanException.end,
+                                ' ' +
+                                info.event.extendedProps.data.workingPlanException.end,
                             vars('date_format'),
                             vars('time_format'),
                             true
@@ -1360,13 +1365,13 @@ App.Utils.CalendarTableView = (function () {
                         'text': getEventNotes(info.event)
                     }),
                     $('<br/>'),
-
-                    vars('stripe_payment_feature') && info.event.extendedProps.data.service.payment_link
+                    $('<hr/>'),
+                    vars('stripe_payment_feature')
                         ? $('<strong/>', {
-                            'text': lang('is_paid')
-                        })
+                              'text': lang('is_paid')
+                          })
                         : undefined,
-                    vars('stripe_payment_feature') && info.event.extendedProps.data.service.payment_link
+                    vars('stripe_payment_feature')
                         ? App.Utils.CalendarEventPopover.getIsPaidIcon(info.event)
                         : undefined,
                     vars('stripe_payment_feature') && info.event.extendedProps.data.service.payment_link

@@ -285,6 +285,25 @@ App.Pages.Booking = (function () {
 
             updateConfirmFrame();
         });
+        /**
+         * Event: Selected Provider Tile "Changed"
+         *
+         * When the user clicks on a provider tile radio intut, its available services should
+         * become visible.
+         */
+        $selectProviderTile.on('click', (event) => {
+            const $target = $(event.target);
+            const providerId = $target.val();
+            $selectProvider.val(providerId).trigger('change');
+            $('#provider-list').fadeOut(() => {
+                $('#service-list')
+                    .css({
+                        'visibility': 'visible',
+                        'display': 'none'
+                    })
+                    .fadeIn();
+            });
+        });
 
         /**
          * Event: Selected Provider "Changed"
@@ -380,29 +399,10 @@ App.Pages.Booking = (function () {
          * When the user clicks on a service tile radio intut, its available providers should
          * become visible.
          */
-        $selectServiceTile.on('change', (event) => {
+        $selectServiceTile.on('click', (event) => {
             const $target = $(event.target);
             const serviceId = $target.val();
             $selectService.val(serviceId).trigger('change');
-        });
-        /**
-         * Event: Selected Provider Tile "Changed"
-         *
-         * When the user clicks on a provider tile radio intut, its available services should
-         * become visible.
-         */
-        $selectProviderTile.on('change', (event) => {
-            const $target = $(event.target);
-            const providerId = $target.val();
-            $selectProvider.val(providerId).trigger('change');
-            $('#provider-list').fadeOut(() => {
-                $('#service-list')
-                    .css({
-                        'visibility': 'visible',
-                        'display': 'none'
-                    })
-                    .fadeIn();
-            });
         });
         /**
          * Event: Next Step Button "Clicked"
@@ -740,6 +740,11 @@ App.Pages.Booking = (function () {
                 }
                 serviceDescription = service.description;
                 serviceDuration = $interval.val() + ' Mins';
+                if (service.availabilities_type == 'fixed' && Number(service.duration) == 60) {
+                    $(document).find('.duration-selector').removeClass('hidden');
+                } else {
+                    $(document).find('.duration-selector').addClass('hidden');
+                }
                 return false; // Break loop
             }
         });

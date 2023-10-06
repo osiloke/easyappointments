@@ -8,18 +8,19 @@
 
 $fullday = 540; // 9 hours
 $halfDay = 240;
+$duration = 60;
 
-$intervals = getTimeIntervals($fullday, $halfDay);
+$intervals = getTimeIntervals($fullday, $halfDay, $duration);
 
-function getTimeIntervals($duration, $halfDay)
+function getTimeIntervals($fullday, $halfDay, $duration)
 {
     $intervals = [];
 
-    for ($i = 60; $i <= $duration; $i += 60) {
+    for ($i = $duration; $i <= $fullday; $i += $duration) {
         $intervals[] = $i;
 
-        if ($i >= 60 && !in_array(60, $intervals)) {
-            $intervals[] = 60;
+        if ($i >= $duration && !in_array($duration, $intervals)) {
+            $intervals[] = $duration;
         }
 
         if ($i >= $halfDay && !in_array($halfDay, $intervals)) {
@@ -43,27 +44,29 @@ function getTimeIntervals($duration, $halfDay)
                 <h2 class=" frame-title">
                     <?= lang('appointment_date_and_time') ?>
                 </h2>
-                <div class="justify-start items-center gap-10 inline-flex">
-                    <div class="flex-col justify-center items-start inline-flex w-full">
-                        <div class="text-black text-lg font-medium leading-7">How long will you like this session to last for?</div>
-                        <div class="text-sm font-normal leading-tight">Note: This will affect the cost of your booking</div>
+                <div class="duration-selector hidden">
+                    <div class="justify-start items-center gap-10 flex flex-col md:flex-row">
+                        <div class="flex-col justify-center items-start w-full">
+                            <div class="text-black text-lg font-medium leading-7">How long will you like this session to last for?</div>
+                            <div class="text-sm font-normal leading-tight">Note: This will affect the cost of your booking</div>
+                        </div>
+                        <div class="w-4/12 lg:w-4/12">
+                            <select name="interval" class="select select-bordered w-full">
+
+                            <?php foreach ($intervals as $interval): ?>
+
+                            <option value="<?php echo $interval; ?>">
+                            <?php $dur = $interval / 60; ?>
+                                <?php if ($interval == $halfDay): ?>Half day<?php elseif ($interval == $fullday):?>Full day<?php else: ?> <?= $dur ?> Hour(s) <?php endif; ?>
+                            </option>
+
+                            <?php endforeach; ?>
+
+                            </select>
+                        </div>
                     </div>
-                    <div class="w-4/12 lg:w-4/12">
-                        <select name="interval" class="select select-bordered w-full">
-
-                        <?php foreach ($intervals as $interval): ?>
-
-                        <option value="<?php echo $interval; ?>">
-                        <?php $dur = $interval / 60; ?>
-                            <?php if ($interval == $halfDay): ?>Half day<?php elseif ($interval == $fullday):?>Full day<?php else: ?> <?= $dur ?> Hour(s) <?php endif; ?>
-                        </option>
-
-                        <?php endforeach; ?>
-
-                        </select>
-                    </div>
+                    <div class="h-10"></div>                                
                 </div>
-                <div class="h-10"></div>
                 <div class="flex flex-col lg:flex-row gap-5 lg:gap-10">
                     <div class="w-full lg:w-6/12">
                         <div id="select-date" class="p-0 py-0"></div>

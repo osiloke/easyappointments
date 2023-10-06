@@ -49,6 +49,7 @@ class Payment extends EA_Controller
         $this->load->library('webhooks_client');
 
         $this->load->driver('cache', ['adapter' => 'file']);
+        $this->load->helper('payment_helper');
     }
 
     /**
@@ -214,7 +215,7 @@ class Payment extends EA_Controller
             $service = $this->services_model->find($appointment['id_services']);
             $appointment_status_options_json = setting('appointment_status_options', '[]');
             $appointment_status_options = json_decode($appointment_status_options_json, TRUE) ?? [];
-            $appointment['status'] = $appointment_status_options[0] ?? "Paid";
+            $appointment['status'] = $appointment_status_options[0] ?? "Booked";
             $appointment['is_paid'] = 1;
             $appointment['payment_intent'] = $payment_intent;
             $this->appointments_model->only($appointment, [
@@ -288,13 +289,15 @@ class Payment extends EA_Controller
                 $customer = $this->customers_model->find($appointment['id_users_customer']);
                 $redirectURL = site_url('payment/confirm' . '/' . $appointment_hash . '?r=1');
 
+                $amount = price_from_duration($appointment['start_datetime'], $appointment['end_datetime'], $service['duration'], $service['price']);
+
                 $res = $client->post('https://api.vazapay.com/v1/onepay/charge', [
                     'headers' => [
                         'Content-Type'  => 'application/json',
                         'Authorization' => 'Bearer ' . config('stripe_api_key'),
                     ],
                     'json' => [
-                        'amount'         => $service["price"],
+                        'amount'         => $amount,
                         'reason'         => $appointment_hash,
                         'currency'       => $service["currency"],
                         'email'          => $customer["email"],
