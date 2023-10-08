@@ -55,7 +55,8 @@ App.Http.Booking = (function () {
         if (service) {
             serviceDuration = service.duration;
         }
-        if ($interval) {
+        // TODO: remove duration check when client side duration generation is ready
+        if ($interval && serviceDuration == 60) {
             serviceDuration = Number($interval.val());
         }
 

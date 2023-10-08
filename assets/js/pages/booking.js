@@ -727,6 +727,7 @@ App.Pages.Booking = (function () {
         let serviceCurrency = '';
         let serviceDescription = '';
         let serviceDuration = '';
+        let readableServiceDuration = '';
         vars('available_services').forEach((service) => {
             if (Number(service.id) === Number(serviceId)) {
                 const formatter = new Intl.NumberFormat('en-US', {
@@ -744,7 +745,8 @@ App.Pages.Booking = (function () {
                     servicePrice = formatter.format(service.price * (interval / duration));
                 }
                 serviceDescription = service.description;
-                serviceDuration = App.Utils.Date.toHumanReadableTime(interval);
+                serviceDuration = interval;
+                readableServiceDuration = App.Utils.Date.toHumanReadableTime(interval);
                 if (service.availabilities_type == 'fixed' && duration == 60) {
                     $(document).find('.duration-selector').removeClass('hidden');
                 } else {
@@ -925,8 +927,11 @@ App.Pages.Booking = (function () {
             id_users_provider: $selectProvider.val(),
             id_services: $selectService.val()
         };
-
-        data.service_duration = Number($interval.val());
+        if (serviceDuration == 60) {
+            data.service_duration = Number($interval.val());
+        } else {
+            data.service_duration = serviceDuration;
+        }
 
         data.manage_mode = Number(manageMode);
 
@@ -1066,6 +1071,44 @@ App.Pages.Booking = (function () {
                 'text': '[' + lang('location') + ' ' + service.location + ']'
             }).appendTo($serviceDescription);
         }
+    }
+
+    // TODO: execute this whenever service changes
+    function generateIntervalOptions(fullday, halfDay, duration) {
+        let intervals = [];
+
+        for (let i = duration; i <= fullday; i += duration) {
+            intervals.push(i);
+
+            if (i >= duration && !intervals.includes(duration)) {
+                intervals.push(duration);
+            }
+
+            if (i >= halfDay && !intervals.includes(halfDay)) {
+                intervals.push(halfDay);
+            }
+        }
+        const $select = $('select[name=interval]');
+        $select.empty();
+        // Loop through intervals
+        $.each(intervals, function (i, interval) {
+            // Create option
+            const $option = $('<option>').val(interval);
+
+            // Set option text
+            if (interval === 4) {
+                $option.text('Half day');
+            } else if (interval === 9) {
+                $option.text('Full day');
+            } else {
+                const dur = interval / 60;
+                $option.text(`${dur} Hour(s)`);
+            }
+
+            // Append option
+            $select.append($option);
+        });
+        return intervals;
     }
 
     document.addEventListener('DOMContentLoaded', initialize);

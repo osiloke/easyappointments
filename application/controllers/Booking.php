@@ -381,7 +381,7 @@ class Booking extends EA_Controller
             $provider_id = request('provider_id');
             $service_id = request('service_id');
             $selected_date = request('selected_date');
-            $service_duration = request('service_duration');
+            $service_duration = request('service_duration') ?? NULL;
 
             // Do not continue if there was no provider selected (more likely there is no provider in the system).
 
@@ -491,7 +491,7 @@ class Booking extends EA_Controller
             $captcha = request('captcha');
             $appointment = $post_data['appointment'];
             $customer = $post_data['customer'];
-            $service_duration = $post_data['service_duration'];
+            $service_duration = $post_data['service_duration'] ?? NULL;
             $manage_mode = filter_var($post_data['manage_mode'], FILTER_VALIDATE_BOOLEAN);
 
             if (!array_key_exists('address', $customer)) {
@@ -680,7 +680,7 @@ class Booking extends EA_Controller
     {
         $post_data = request('post_data');
 
-        $service_duration = $post_data['service_duration'];
+        $service_duration = $post_data['service_duration'] ?? NULL;
 
         $appointment = $post_data['appointment'];
 
