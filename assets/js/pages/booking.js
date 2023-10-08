@@ -758,7 +758,7 @@ App.Pages.Booking = (function () {
 
         $(document).find('.display-selected-service-description').html(serviceDescription).removeClass('invisible');
 
-        $(document).find('.display-selected-service-duration').text(serviceDuration).removeClass('invisible');
+        $(document).find('.display-selected-service-duration').text(readableServiceDuration).removeClass('invisible');
 
         $(document).find('.display-selected-service-price').text(servicePrice).removeClass('invisible');
 
