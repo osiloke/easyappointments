@@ -45,7 +45,7 @@ foreach ($available_services as $service) {
                 <?php component('provider_card', ["hide_service" => (count($available_providers) == 1), "secretary" => vars('secretary')]) ?>
             </div>
             <div id="step-content">
-                <h2 class="frame-title">
+                <h2 class="frame-title normal-case">
                     <?= lang('Choose a service to book') ?>
                 </h2>
 
@@ -76,7 +76,7 @@ foreach ($available_services as $service) {
                                 <div role="radiogroup" id="select-provider-tile">
                                     <div class="service-grid">
                                         <?php foreach ($available_providers as $provider): ?>                                        
-                                        <?php component('provider_tile', ["id" => $provider['id'],  "first_name" => $provider['first_name'], "last_name" => $provider['last_name'], "description" => $provider['notes'] ?? '']); ?>
+                                        <?php component('provider_tile', ["id" => $provider['id'], "image" => $provider['image'], "first_name" => $provider['first_name'], "last_name" => $provider['last_name'], "description" => $provider['notes'] ?? '']); ?>
                                         <?php endforeach; ?>  
                                     </div>
                                 </div>

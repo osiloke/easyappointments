@@ -38,6 +38,10 @@ App.Pages.Providers = (function () {
     const $notifications = $('#notifications');
     const $calendarView = $('#calendar-view');
     const $filterProviders = $('#filter-providers');
+    const $providerImage = $('#provider-image');
+    const $providerImagePreview = $('#provider-image-preview');
+    const $removeProviderImage = $('#remove-provider-image');
+    let providerImageBase64 = '';
     let filterResults = {};
     let filterLimit = 20;
     let workingPlanManager;
@@ -177,7 +181,8 @@ App.Pages.Providers = (function () {
                     working_plan: JSON.stringify(workingPlanManager.get()),
                     working_plan_exceptions: JSON.stringify(workingPlanManager.getWorkingPlanExceptions()),
                     notifications: Number($notifications.prop('checked')),
-                    calendar_view: $calendarView.val()
+                    calendar_view: $calendarView.val(),
+                    image: providerImageBase64
                 }
             };
 
@@ -230,6 +235,9 @@ App.Pages.Providers = (function () {
             workingPlanManager.setup(companyWorkingPlan);
             workingPlanManager.timepickers(false);
         });
+
+        $providerImage.on('change', onProviderImageChange);
+        $removeProviderImage.on('click', onRemoveProviderImageClick);
     }
 
     /**
@@ -366,6 +374,10 @@ App.Pages.Providers = (function () {
         $('#providers .working-plan tbody').empty();
         $('#providers .breaks tbody').empty();
         $('#providers .working-plan-exceptions tbody').empty();
+        providerImageBase64 = null;
+        $providerImagePreview.attr('src', null);
+        $providerImagePreview.prop('hidden', true);
+        $removeProviderImage.prop('hidden', true);
     }
 
     /**
@@ -394,6 +406,13 @@ App.Pages.Providers = (function () {
         $username.val(provider.settings.username);
         $calendarView.val(provider.settings.calendar_view);
         $notifications.prop('checked', Boolean(Number(provider.settings.notifications)));
+
+        if (provider.settings.image) {
+            providerImageBase64 = provider.settings.image;
+            $providerImagePreview.attr('src', provider.settings.image);
+            $providerImagePreview.prop('hidden', false);
+            $removeProviderImage.prop('hidden', false);
+        }
 
         // Add dedicated provider link.
         let dedicatedUrl = App.Utils.Url.siteUrl('?provider=' + encodeURIComponent(provider.id));
@@ -593,6 +612,35 @@ App.Pages.Providers = (function () {
                 ]
             }).appendTo('#provider-services');
         });
+    }
+
+    /**
+     * Convert the selected image to a base64 encoded string.
+     */
+    function onProviderImageChange() {
+        const file = $providerImage[0].files[0];
+
+        if (!file) {
+            $removeProviderImage.trigger('click');
+            return;
+        }
+
+        App.Utils.File.toBase64(file).then((base64) => {
+            providerImageBase64 = base64;
+            $providerImagePreview.attr('src', base64);
+            $providerImagePreview.prop('hidden', false);
+            $removeProviderImage.prop('hidden', false);
+        });
+    }
+    /**
+     * Remove the provider image data.
+     */
+    function onRemoveProviderImageClick() {
+        providerImageBase64 = '';
+        $providerImage.val('');
+        $providerImagePreview.attr('src', '#');
+        $providerImagePreview.prop('hidden', true);
+        $removeProviderImage.prop('hidden', true);
     }
 
     document.addEventListener('DOMContentLoaded', initialize);
