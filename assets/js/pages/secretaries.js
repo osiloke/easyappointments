@@ -296,9 +296,7 @@ App.Pages.Secretaries = (function () {
 
             if ($password.val().length < vars('min_password_length') && $password.val() !== '') {
                 $('#password, #password-confirm').addClass('is-invalid');
-                throw new Error(
-                    'Password must be at least ' + vars('min_password_length')+ ' characters long.'
-                );
+                throw new Error('Password must be at least ' + vars('min_password_length') + ' characters long.');
             }
 
             // Validate user email.
@@ -499,26 +497,26 @@ App.Pages.Secretaries = (function () {
 
         vars('providers').forEach((provider) => {
             const checkboxId = `provider-service-${provider.id}`;
-          
+
             $('<div/>', {
-                'class': 'checkbox',
+                'class': 'checkbox-control',
                 'html': [
-                    $('<div/>', {
-                        'class': 'checkbox form-check',
+                    $('<LABEL/>', {
+                        'class': 'cursor-pointer label form-check',
                         'html': [
                             $('<input/>', {
                                 'id': checkboxId,
-                                'class': 'form-check-input',
+                                'class': 'form-check-input checkbox',
                                 'type': 'checkbox',
                                 'data-id': provider.id,
                                 'prop': {
-                                    'disabled': true,
+                                    'disabled': true
                                 }
                             }),
                             $('<label/>', {
-                                'class': 'form-check-label',
+                                'class': 'form-check-label label-text',
                                 'text': provider.first_name + ' ' + provider.last_name,
-                                'for': checkboxId,
+                                'for': checkboxId
                             })
                         ]
                     })

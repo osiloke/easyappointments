@@ -1072,3 +1072,7 @@ button.btn-disabled {
 a.nav-link {
     color: white !important;
 }
+
+.checkbox-control label {
+    @apply flex flex-row justify-normal gap-2;
+}

@@ -588,22 +588,22 @@ App.Pages.Providers = (function () {
             const checkboxId = `provider-service-${service.id}`;
 
             $('<div/>', {
-                'class': 'checkbox',
+                'class': 'checkbox-control',
                 'html': [
-                    $('<div/>', {
-                        'class': 'checkbox form-check',
+                    $('<label/>', {
+                        'class': 'cursor-pointer label form-check',
                         'html': [
                             $('<input/>', {
                                 'id': checkboxId,
-                                'class': 'form-check-input',
+                                'class': 'form-check-input checkbox',
                                 'type': 'checkbox',
                                 'data-id': service.id,
                                 'prop': {
                                     'disabled': true
                                 }
                             }),
-                            $('<label/>', {
-                                'class': 'form-check-label',
+                            $('<span/>', {
+                                'class': 'form-check-label label-text',
                                 'text': service.name,
                                 'for': checkboxId
                             })
