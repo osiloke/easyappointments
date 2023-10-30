@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -477,7 +479,7 @@ class Calendar extends EA_Controller
             $end_date = request('end_date') . ' 23:59:59';
 
             $response = [
-                'appointments'     => $this->appointments_model->get([
+                'appointments' => $this->appointments_model->get([
                     'status ='          => "Booked",
                     'start_datetime >=' => $start_date,
                     'end_datetime <='   => $end_date
@@ -577,9 +579,11 @@ class Calendar extends EA_Controller
 
             if ($filter_type == FILTER_TYPE_PROVIDER) {
                 $where_id = 'id_users_provider';
-            } elseif ($filter_type === FILTER_TYPE_SERVICE) {
+            }
+            elseif ($filter_type === FILTER_TYPE_SERVICE) {
                 $where_id = 'id_services';
-            } else {
+            }
+            else {
                 $where_id = $record_id;
             }
 
@@ -608,7 +612,6 @@ class Calendar extends EA_Controller
 
             if ($filter_type == FILTER_TYPE_PROVIDER) {
                 $where_clause = $where_id . ' = ' . $record_id . '
-                    AND (status = ' . ' "Booked"' . ') 
                     AND ((start_datetime > ' . $start_date . ' AND start_datetime < ' . $end_date . ') 
                     or (end_datetime > ' . $start_date . ' AND end_datetime < ' . $end_date . ') 
                     or (start_datetime <= ' . $start_date . ' AND end_datetime >= ' . $end_date . ')) 

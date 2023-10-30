@@ -8,6 +8,9 @@
  * @link        https://easyappointments.org
  * @since       v1.5.0
  * ---------------------------------------------------------------------------- */
+
+@import '../_tailwind.scss';
+
 /**
  * BACKEND CSS FILE FOR EASY!APPOINTMENTS
  */
@@ -50,28 +53,28 @@ root {
     color: white;
 }
 
-#header .navbar-toggler {
-    margin-right: 5px;
-}
+// #header .navbar-toggler {
+//     margin-right: 5px;
+// }
 
-#header .nav-link {
-    color: white;
-    padding: 20px 15px;
-    font-weight: lighter;
-}
+// #header .nav-link {
+//     color: white;
+//     padding: 20px 15px;
+//     font-weight: lighter;
+// }
 
-#header #header-menu .nav-item {
-    min-width: 100px;
-    text-align: center;
-}
+// #header #header-menu .nav-item {
+//     min-width: 100px;
+//     text-align: center;
+// }
 
-#header #header-menu .nav-item:hover {
-    background: #3a8873;
-}
+// #header #header-menu .nav-item:hover {
+//     background: #3a8873;
+// }
 
-#header #header-menu .nav-item.active {
-    background: #2e6a5b;
-}
+// #header #header-menu .nav-item.active {
+//     background: #2e6a5b;
+// }
 
 #footer {
     background-color: #f7f7f7;
@@ -1009,4 +1012,63 @@ body .form-horizontal .controls {
 
 select#bank-name {
     @apply select;
+}
+
+.form-control select {
+    @apply select-bordered w-full max-w-xs;
+}
+
+.fade:not(.show) {
+    opacity: 0;
+    z-index: -1;
+}
+
+.modal.fade.show {
+    z-index: 99999;
+    opacity: 100;
+}
+
+.modal button {
+    @apply rounded-full;
+}
+
+.modal .modal-title {
+    @apply text-white;
+}
+
+.modal-header {
+    button.btn-close {
+        background-image: none;
+        &::before {
+            position: absolute;
+            top: 0.8rem;
+            right: 1rem;
+            content: 'X';
+        }
+    }
+}
+
+input {
+    @apply input-bordered input;
+}
+
+body .modal-header {
+    background: #646464 !important;
+}
+
+.modal.show {
+    opacity: 1 !important;
+}
+
+summary {
+    color: white !important;
+    @apply text-white;
+}
+
+button.btn-disabled {
+    @apply text-white;
+}
+
+a.nav-link {
+    color: white !important;
 }

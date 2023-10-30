@@ -150,6 +150,7 @@ class Payment extends EA_Controller
             'timeout' => 15.0,
         ]);
 
+        // TODO: fetch apppintment and use reference to verify payment_intent
         try {
             $res = $client->post('https://api.vazapay.com/v1/onepay/confirm', [
                 'headers' => [
@@ -309,6 +310,7 @@ class Payment extends EA_Controller
                     ]
                 ]);
                 $body = json_decode($res->getBody());
+                //TODO: store payment id as payment intent
                 $url = $body->url;
                 redirect($url);
             }
