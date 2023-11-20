@@ -152,26 +152,15 @@ class Payment extends EA_Controller
 
         // TODO: fetch apppintment and use reference to verify payment_intent
         try {
-            $res = $client->post('https://api.vazapay.com/v1/onepay/confirm', [
-                'headers' => [
-                    'Content-Type'  => 'application/json',
-                    'Authorization' => 'Bearer ' . config('stripe_api_key'),
-                ],
-                'json' => [
-                    'reason' => $appointment_hash,
-                ]
-            ]);
+            $occurrences = $this->appointments_model->get(['hash' => $appointment_hash]);
 
-            $body = json_decode($res->getBody());
+            if (empty($occurrences)) {
+                abort(404, 'Not Found');
+            }
 
-            $status = $body->status;
+            $appointment = $occurrences[0];
 
-            $message = $body->message;
-
-            $payment_intent = $body->reason ?? $body->reference;
-
-            if ($status == 'success') {
-                $appointment = $this->set_paid($appointment_hash, $payment_intent);
+            if ($appointment['status'] == 'Booked' && $appointment['is_paid'] == 1) {
                 $add_to_google_url = $this->google_sync->get_add_to_google_url($appointment['id']);
 
                 html_vars([
@@ -182,7 +171,38 @@ class Payment extends EA_Controller
                 $this->index();
             }
             else {
-                response($message);
+                $res = $client->post('https://api.vazapay.com/v1/onepay/confirm', [
+                    'headers' => [
+                        'Content-Type'  => 'application/json',
+                        'Authorization' => 'Bearer ' . config('stripe_api_key'),
+                    ],
+                    'json' => [
+                        'reason' => $appointment_hash,
+                    ]
+                ]);
+
+                $body = json_decode($res->getBody());
+
+                $status = $body->status;
+
+                $message = $body->message;
+
+                $payment_intent = $body->reason ?? $body->reference;
+
+                if ($status == 'success') {
+                    $appointment = $this->set_paid($appointment_hash, $payment_intent);
+                    $add_to_google_url = $this->google_sync->get_add_to_google_url($appointment['id']);
+
+                    html_vars([
+                        'appointment'       => $appointment,
+                        'add_to_google_url' => $add_to_google_url,
+                    ]);
+
+                    $this->index();
+                }
+                else {
+                    response($message);
+                }
             }
         }
         catch (Throwable $e) {
