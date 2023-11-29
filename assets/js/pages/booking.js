@@ -724,6 +724,9 @@ App.Pages.Booking = (function () {
 
         const serviceId = $selectService.val();
         let servicePrice = 'FREE';
+        let serviceFee = '0';
+        let _serviceFee = 0;
+        let _servicePrice = 0;
         let serviceCurrency = '';
         let serviceDescription = '';
         let serviceDuration = '';
@@ -742,7 +745,12 @@ App.Pages.Booking = (function () {
                     interval = Number($interval.val());
                 }
                 if (Number(service.price) > 0) {
+                    _servicePrice = service.price;
                     servicePrice = formatter.format(service.price * (interval / duration));
+                }
+                if (Number(service.fee) > 0) {
+                    _serviceFee = service.fee;
+                    serviceFee = `FEES: ${formatter.format(Number(service.fee))}`;
                 }
                 serviceDescription = service.description;
                 serviceDuration = interval;
@@ -762,10 +770,19 @@ App.Pages.Booking = (function () {
 
         $(document).find('.display-selected-service-price').text(servicePrice).removeClass('invisible');
 
+        if (serviceFee != 0) {
+            $(document).find('.display-selected-service-fee').text(serviceFee).removeClass('invisible');
+        }
+
         $(document).find('.display-selected-service-tile').removeClass('invisible');
 
         $('#appointment-details').empty();
 
+        const formatter = new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: serviceCurrency || 'NGN',
+            minimumFractionDigits: 0
+        });
         $('<div/>', {
             'html': [
                 $('<h4/>', {
@@ -789,7 +806,7 @@ App.Pages.Booking = (function () {
                             'text': lang('duration')
                         }),
                         $('<span/>', {
-                            'text': serviceDuration
+                            'text': readableServiceDuration
                         }),
                         $('<span/>', {
                             'text': lang('start')
@@ -810,6 +827,30 @@ App.Pages.Booking = (function () {
                             'text': serviceCurrency + ' ' + servicePrice,
                             'prop': {
                                 'hidden': !servicePrice
+                            }
+                        }),
+                        $('<span/>', {
+                            'text': lang('Fee'),
+                            'prop': {
+                                'hidden': Number(_serviceFee) == 0
+                            }
+                        }),
+                        $('<span/>', {
+                            'text': formatter.format(Number(_serviceFee)),
+                            'prop': {
+                                'hidden': Number(_serviceFee) == 0
+                            }
+                        }),
+                        $('<span/>', {
+                            'text': lang('Total Price'),
+                            'prop': {
+                                'hidden': Number(_serviceFee) == 0
+                            }
+                        }),
+                        $('<span/>', {
+                            'text': formatter.format(Number(_serviceFee) + Number(_servicePrice)),
+                            'prop': {
+                                'hidden': Number(_serviceFee) == 0
                             }
                         })
                     ]
@@ -923,6 +964,8 @@ App.Pages.Booking = (function () {
                 ':00',
             end_datetime: calculateEndDatetime(),
             notes: $notes.val(),
+            price: servicePrice,
+            fee: serviceFee,
             is_unavailability: false,
             id_users_provider: $selectProvider.val(),
             id_services: $selectService.val()
@@ -1063,6 +1106,12 @@ App.Pages.Booking = (function () {
         if (Number(service.price) > 0) {
             $('<span/>', {
                 'text': '[' + lang('price') + ' ' + service.price + ' ' + service.currency + ']'
+            }).appendTo($serviceDescription);
+        }
+
+        if (Number(service.fee) > 0) {
+            $('<span/>', {
+                'text': '[' + lang('fee') + ' ' + service.fee + ' ' + service.currency + ']'
             }).appendTo($serviceDescription);
         }
 

@@ -86,6 +86,13 @@
             </div>
 
             <div class="mb-3">
+                <label class="form-label" for="fee">
+                    <?= lang('fee') ?> 
+                </label>
+                <input id="fee" class="form-control" disabled>
+            </div>
+
+            <div class="mb-3">
                 <label class="form-label" for="currency">
                     <?= lang('currency') ?>
 

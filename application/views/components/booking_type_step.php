@@ -118,7 +118,7 @@ foreach ($available_services as $service) {
                                             
                                             <?php foreach ($group as $service): ?>
                                             
-                                            <?php component('service_tile', ["id" => $service['id'], "name" => $service['name'], "description" => $service['description'], "price" => $service['price'], "duration" => $service['duration']]); ?>
+                                            <?php component('service_tile', ["id" => $service['id'], "name" => $service['name'], "description" => $service['description'], "price" => $service['price'], "fee" => $service['fee'] ?? 0, "duration" => $service['duration']]); ?>
 
                                             <?php endforeach; ?>
 

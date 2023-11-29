@@ -20,6 +20,7 @@ App.Pages.Services = (function () {
     const $name = $('#name');
     const $duration = $('#duration');
     const $price = $('#price');
+    const $fee = $('#fee');
     const $currency = $('#currency');
     const $category = $('#category');
     const $availabilitiesType = $('#availabilities-type');
@@ -106,6 +107,7 @@ App.Pages.Services = (function () {
             $name.val('Service');
             $duration.val('30');
             $price.val('0');
+            $fee.val('0');
             $currency.val('');
             $category.val('');
             $availabilitiesType.val('flexible');
@@ -135,6 +137,7 @@ App.Pages.Services = (function () {
                 name: $name.val(),
                 duration: $duration.val(),
                 price: $price.val(),
+                fee: $fee.val() ?? 0,
                 currency: $currency.val(),
                 description: $description.val(),
                 location: $location.val(),
@@ -293,6 +296,7 @@ App.Pages.Services = (function () {
         $name.val(service.name);
         $duration.val(service.duration);
         $price.val(service.price);
+        $fee.val(service.fee ?? 0);
         $currency.val(service.currency);
         $description.val(service.description);
         $location.val(service.location);

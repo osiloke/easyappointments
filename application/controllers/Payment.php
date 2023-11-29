@@ -311,6 +311,7 @@ class Payment extends EA_Controller
                 $redirectURL = site_url('payment/confirm' . '/' . $appointment_hash . '?r=1');
 
                 $amount = price_from_duration($appointment['start_datetime'], $appointment['end_datetime'], $service['duration'], $service['price']);
+                $amount = $amount + (float) $service['fee'];
 
                 $res = $client->post('https://api.vazapay.com/v1/onepay/charge', [
                     'headers' => [

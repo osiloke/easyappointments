@@ -44,6 +44,12 @@
                         </div>
                     </div>
                     <div class="flex-col justify-start items-start gap-2 inline-flex">
+                        <div class="text-gray-600 text-sm font-semibold leading-tight">Fee</div>
+                        <div class="text-zinc-900 text-base font-medium leading-normal">
+                            <?= numfmt_format_currency($fmt, vars('service')["fee"], 'NGN') ?>
+                        </div>
+                    </div>
+                    <div class="flex-col justify-start items-start gap-2 inline-flex">
                         <div class="text-gray-600 text-sm font-semibold leading-tight">Duration</div>
                         <div class="text-zinc-900 text-base font-medium leading-normal">
                             <?= vars('service')["duration"] ?> min(s)

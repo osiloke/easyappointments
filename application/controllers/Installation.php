@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -18,20 +20,21 @@
  *
  * @package Controllers
  */
-class Installation extends EA_Controller {
+class Installation extends EA_Controller
+{
     /**
      * Installation constructor.
      */
     public function __construct()
     {
         parent::__construct();
-        
+
         $this->load->model('admins_model');
         $this->load->model('settings_model');
         $this->load->model('services_model');
         $this->load->model('providers_model');
         $this->load->model('customers_model');
-        
+
         $this->load->library('instance');
     }
 
@@ -40,9 +43,9 @@ class Installation extends EA_Controller {
      */
     public function index()
     {
-        if (is_app_installed())
-        {
+        if (is_app_installed()) {
             redirect();
+
             return;
         }
 
@@ -56,17 +59,15 @@ class Installation extends EA_Controller {
      */
     public function perform()
     {
-        try
-        {
-            if (is_app_installed())
-            {
+        try {
+            if (is_app_installed()) {
                 return;
             }
 
             $admin = request('admin');
             $company = request('company');
 
-            $this->instance->migrate(); 
+            $this->instance->migrate();
 
             // Insert admin
             $admin['timezone'] = 'UTC';
@@ -78,65 +79,65 @@ class Installation extends EA_Controller {
             $admin['id'] = $this->admins_model->save($admin);
 
             session([
-                'user_id' => $admin['id'],
+                'user_id'    => $admin['id'],
                 'user_email' => $admin['email'],
-                'role_slug' => DB_SLUG_ADMIN,
-                'timezone' => $admin['timezone'],
-                'username' => $admin['settings']['username']                
+                'role_slug'  => DB_SLUG_ADMIN,
+                'timezone'   => $admin['timezone'],
+                'username'   => $admin['settings']['username']
             ]);
 
             // Save company settings
             setting([
-                'company_name' => $company['company_name'],
+                'company_name'  => $company['company_name'],
                 'company_email' => $company['company_email'],
-                'company_link' => $company['company_link'],
+                'company_link'  => $company['company_link'],
             ]);
 
             // Service
             $service_id = $this->services_model->save([
-                'name' => 'Service',
-                'duration' => '30',
-                'price' => '0',
-                'currency' => '',
+                'name'                => 'Service',
+                'duration'            => '30',
+                'price'               => '0',
+                'fee'                 => '0',
+                'currency'            => '',
                 'availabilities_type' => 'flexible',
-                'attendants_number' => '1'
+                'attendants_number'   => '1'
             ]);
 
             // Provider
             $this->providers_model->save([
-                'first_name' => 'Jane',
-                'last_name' => 'Doe',
-                'email' => 'jane@example.org',
+                'first_name'   => 'Jane',
+                'last_name'    => 'Doe',
+                'email'        => 'jane@example.org',
                 'phone_number' => '+1 (000) 000-0000',
-                'services' => [
+                'services'     => [
                     $service_id
                 ],
                 'settings' => [
-                    'username' => 'janedoe',
-                    'password' => random_string(),
-                    'working_plan' => setting('company_working_plan'),
-                    'notifications' => TRUE,
-                    'google_sync' => FALSE,
-                    'sync_past_days' => 30,
+                    'username'         => 'janedoe',
+                    'password'         => random_string(),
+                    'working_plan'     => setting('company_working_plan'),
+                    'notifications'    => TRUE,
+                    'google_sync'      => FALSE,
+                    'sync_past_days'   => 30,
                     'sync_future_days' => 90,
-                    'calendar_view' => CALENDAR_VIEW_DEFAULT
+                    'calendar_view'    => CALENDAR_VIEW_DEFAULT
                 ],
             ]);
 
             // Customer
             $this->customers_model->save([
-                'first_name' => 'James',
-                'last_name' => 'Doe',
-                'email' => 'james@example.org',
+                'first_name'   => 'James',
+                'last_name'    => 'Doe',
+                'email'        => 'james@example.org',
                 'phone_number' => '+1 (000) 000-0000',
             ]);
 
             json_response([
-                'success' => true
+                'success' => TRUE
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }

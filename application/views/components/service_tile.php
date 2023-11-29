@@ -6,6 +6,7 @@
  * @var string $name
  * @var string $description
  * @var string $price
+ * @var string $fee
  * @var string $duration
  */
 $fmt = numfmt_create('en_NG', NumberFormatter::CURRENCY);
@@ -25,6 +26,11 @@ $fmt = numfmt_create('en_NG', NumberFormatter::CURRENCY);
             <div class="text-gray-400 text-xs font-bold leading-none cursor-pointer">
                 <?= numfmt_format_currency($fmt, $price, 'NGN') ?>
             </div>
+            <!-- <?php if ((int) $fee > 0) { ?>
+            <div class="text-gray-400 text-xs font-bold leading-none cursor-pointer">
+                <?= numfmt_format_currency($fmt, $fee, 'NGN') ?>
+            </div>
+            <?php }?> -->
             <div class="text-right text-gray-400 text-xs font-normal leading-none cursor-pointer">
                 <?= $duration ?> min
             </div>

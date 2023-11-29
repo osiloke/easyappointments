@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -18,7 +20,8 @@
  *
  * @package Controllers
  */
-class Services extends EA_Controller {
+class Services extends EA_Controller
+{
     /**
      * Services constructor.
      */
@@ -46,10 +49,8 @@ class Services extends EA_Controller {
 
         $user_id = session('user_id');
 
-        if (cannot('view', PRIV_SERVICES))
-        {
-            if ($user_id)
-            {
+        if (cannot('view', PRIV_SERVICES)) {
+            if ($user_id) {
                 abort(403, 'Forbidden');
             }
 
@@ -61,17 +62,17 @@ class Services extends EA_Controller {
         $role_slug = session('role_slug');
 
         script_vars([
-            'user_id' => $user_id,
-            'role_slug' => $role_slug,
+            'user_id'                => $user_id,
+            'role_slug'              => $role_slug,
             'event_minimum_duration' => EVENT_MINIMUM_DURATION,
         ]);
 
         html_vars([
-            'page_title' => lang('services'),
-            'active_menu' => PRIV_SERVICES,
+            'page_title'        => lang('services'),
+            'active_menu'       => PRIV_SERVICES,
             'user_display_name' => $this->accounts->get_user_display_name($user_id),
-            'timezones' => $this->timezones->to_array(),
-            'privileges' => $this->roles_model->get_permissions_by_slug($role_slug),
+            'timezones'         => $this->timezones->to_array(),
+            'privileges'        => $this->roles_model->get_permissions_by_slug($role_slug),
         ]);
 
         $this->load->view('pages/services');
@@ -82,10 +83,8 @@ class Services extends EA_Controller {
      */
     public function search()
     {
-        try
-        {
-            if (cannot('view', PRIV_SERVICES))
-            {
+        try {
+            if (cannot('view', PRIV_SERVICES)) {
                 abort(403, 'Forbidden');
             }
 
@@ -101,8 +100,7 @@ class Services extends EA_Controller {
 
             json_response($services);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -112,10 +110,8 @@ class Services extends EA_Controller {
      */
     public function create()
     {
-        try
-        {
-            if (cannot('add', PRIV_SERVICES))
-            {
+        try {
+            if (cannot('add', PRIV_SERVICES)) {
                 abort(403, 'Forbidden');
             }
 
@@ -148,11 +144,10 @@ class Services extends EA_Controller {
 
             json_response([
                 'success' => TRUE,
-                'id' => $service_id
+                'id'      => $service_id
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -162,10 +157,8 @@ class Services extends EA_Controller {
      */
     public function update()
     {
-        try
-        {
-            if (cannot('edit', PRIV_SERVICES))
-            {
+        try {
+            if (cannot('edit', PRIV_SERVICES)) {
                 abort(403, 'Forbidden');
             }
 
@@ -176,6 +169,7 @@ class Services extends EA_Controller {
                 'name',
                 'duration',
                 'price',
+                'fee',
                 'currency',
                 'description',
                 'color',
@@ -199,11 +193,10 @@ class Services extends EA_Controller {
 
             json_response([
                 'success' => TRUE,
-                'id' => $service_id
+                'id'      => $service_id
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -213,10 +206,8 @@ class Services extends EA_Controller {
      */
     public function destroy()
     {
-        try
-        {
-            if (cannot('delete', PRIV_SERVICES))
-            {
+        try {
+            if (cannot('delete', PRIV_SERVICES)) {
                 abort(403, 'Forbidden');
             }
 
@@ -232,8 +223,7 @@ class Services extends EA_Controller {
                 'success' => TRUE,
             ]);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -243,10 +233,8 @@ class Services extends EA_Controller {
      */
     public function find()
     {
-        try
-        {
-            if (cannot('delete', PRIV_SERVICES))
-            {
+        try {
+            if (cannot('delete', PRIV_SERVICES)) {
                 abort(403, 'Forbidden');
             }
 
@@ -256,8 +244,7 @@ class Services extends EA_Controller {
 
             json_response($service);
         }
-        catch (Throwable $e)
-        {
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
