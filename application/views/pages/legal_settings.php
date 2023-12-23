@@ -1,12 +1,12 @@
-<?php extend('layouts/backend_layout') ?>
+<?php extend('layouts/backend_layout'); ?>
 
-<?php section('content') ?>
+<?php section('content'); ?>
 
 <div id="legal-settings-page" class="container backend-page">
     <div id="legal-contents">
         <div class="row">
             <div class="col-sm-3 offset-sm-1">
-                <?php component('settings_nav') ?>
+                <?php component('settings_nav'); ?>
             </div>
             <div class="col-sm-6">
                 <form>
@@ -21,7 +21,7 @@
                                     <i class="fas fa-check-square me-2"></i>
                                     <?= lang('save') ?>
                                 </button>
-                            <?php endif ?>
+                            <?php endif; ?>
                         </div>
 
                         <div class="row">
@@ -37,7 +37,9 @@
                                 </div>
 
                                 <div class="mb-5">
-                                    <label class="form-label" for="cookie-notice-content"><?= lang('cookie_notice_content') ?></label>
+                                    <label class="form-label" for="cookie-notice-content"><?= lang(
+                                        'cookie_notice_content'
+                                    ) ?></label>
                                     <textarea id="cookie-notice-content" cols="30" rows="10" class="mb-3"></textarea>
                                 </div>
                                 
@@ -52,7 +54,9 @@
                                 </div>
                                 
                                 <div class="mb-5">
-                                    <label class="form-label" for="terms-and-conditions-content"><?= lang('terms_and_conditions_content') ?></label>
+                                    <label class="form-label" for="terms-and-conditions-content"><?= lang(
+                                        'terms_and_conditions_content'
+                                    ) ?></label>
                                     <textarea id="terms-and-conditions-content" cols="30" rows="10"
                                               class="mb-3"></textarea>
                                 </div>
@@ -68,7 +72,9 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label class="form-label" for="privacy-policy-content"><?= lang('privacy_policy_content') ?></label>
+                                    <label class="form-label" for="privacy-policy-content"><?= lang(
+                                        'privacy_policy_content'
+                                    ) ?></label>
                                     <textarea id="privacy-policy-content" cols="30" rows="10" class="mb-3"></textarea>
                                 </div>
                             </div>
@@ -81,9 +87,9 @@
     </div>
 </div>
 
-<?php end_section('content') ?>
+<?php end_section('content'); ?>
 
-<?php section('scripts') ?>
+<?php section('scripts'); ?>
 
 <script src="<?= asset_url('assets/js/utils/ui.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/url.js') ?>"></script>
@@ -91,4 +97,4 @@
 <script src="<?= asset_url('assets/js/pages/legal_settings.js') ?>"></script>
 
 
-<?php end_section('scripts') ?>
+<?php end_section('scripts'); ?>

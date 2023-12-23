@@ -1,6 +1,6 @@
-<?php extend('layouts/message_layout') ?>
+<?php extend('layouts/message_layout'); ?>
 
-<?php section('content') ?>
+<?php section('content'); ?>
 
 <div class="inline-flex justify-center items-center py-5">
     <img id="success-icon" src="<?= base_url('assets/img/heroicons-mini/check-badge.svg') ?>" alt="success" />
@@ -21,7 +21,7 @@
         </small>
     </p>
 
-    <a href="<?= site_url() . '?provider=' . vars('appointment')["id_users_provider"] ?>"
+    <a href="<?= site_url() . '?provider=' . vars('appointment')['id_users_provider'] ?>"
         class="btn btn-primary btn-large rounded-full inline">
         <i class="fas fa-calendar-alt me-2"></i>
         <?= lang('go_to_booking_page') ?>
@@ -34,11 +34,11 @@
     </a>
 </div>
 
-<?php section('content') ?>
+<?php section('content'); ?>
 
-<?php section('scripts') ?>
+<?php section('scripts'); ?>
 
-<?php component('google_analytics_script', ['google_analytics_code' => vars('google_analytics_code')]) ?>
-<?php component('matomo_analytics_script', ['matomo_analytics_url' => vars('matomo_analytics_url')]) ?>
+<?php component('google_analytics_script', ['google_analytics_code' => vars('google_analytics_code')]); ?>
+<?php component('matomo_analytics_script', ['matomo_analytics_url' => vars('matomo_analytics_url')]); ?>
 
-<?php section('scripts') ?>
+<?php section('scripts'); ?>

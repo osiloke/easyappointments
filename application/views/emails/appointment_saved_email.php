@@ -161,7 +161,7 @@
                             <?= e($appointment['location']) ?>
                         </td>
                     </tr>
-                <?php endif ?>
+                <?php endif; ?>
 
                 <?php if (!empty($appointment['notes'])): ?>
                     <tr>
@@ -172,7 +172,7 @@
                             <?= e($appointment['notes']) ?>
                         </td>
                     </tr>
-                <?php endif ?>
+                <?php endif; ?>
             </table>
             <div class="button-div"
                 style="display: flex; width: 100%; min-height: 40px; justify-content: center; align-items: flex-start; gap: 10px;  margin-left: auto; margin-right: auto; margin-top: 50px; margin-bottom: 20px">
@@ -215,7 +215,7 @@
                 border-top: 1px solid #EEE; background: #F0F0F0;">
             <a href="<?= e($settings['company_link']) ?>"
                 style="text-decoration: none; text-align: center; color: #9F9F9F; font-size: 16px; font-weight: 500; line-height: 24px; letter-spacing: 0.20px; word-wrap: break-word; text-decoration: none;">
-                <?= e($settings['company_name']) ?> | <?php echo date("Y"); ?>
+                <?= e($settings['company_name']) ?> | <?php echo date('Y'); ?>
             </a>
         </div>
     </div>

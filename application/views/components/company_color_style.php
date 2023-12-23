@@ -180,4 +180,4 @@
             border-color: <?= $company_color ?> !important;
         }
     </style>
-<?php endif ?>
+<?php endif; ?>

@@ -12,8 +12,11 @@
     <div class="frame-container">
         <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-5">
             <div class="w-full lg:w-5/12 flex flex-col gap-10">
-                <?php component('provider_card', ["hide_service" => (count($available_providers) == 1), "secretary" => vars('secretary')]) ?>
-                <?php component('selected_service', ['services' => $available_services, 'step' => '4']) ?>
+                <?php component('provider_card', [
+                    'hide_service' => count($available_providers) == 1,
+                    'secretary' => vars('secretary')
+                ]); ?>
+                <?php component('selected_service', ['services' => $available_services, 'step' => '4']); ?>
             </div>
             <div id="step-content">
                 <h2 class="frame-title">
@@ -43,33 +46,27 @@
                         <div class="form-check mb-3">
                             <input type="checkbox" class="required form-check-input" id="accept-to-terms-and-conditions">
                             <label class="form-check-label" for="accept-to-terms-and-conditions">
-                                <?= strtr(
-                                    lang('read_and_agree_to_terms_and_conditions'),
-                                    [
-                                        '{$link}'  => '<a href="#" data-bs-toggle="modal" data-bs-target="#terms-and-conditions-modal">',
-                                        '{/$link}' => '</a>'
-                                    ]
-                                )
-                        ?>
+                                <?= strtr(lang('read_and_agree_to_terms_and_conditions'), [
+                                    '{$link}' =>
+                                        '<a href="#" data-bs-toggle="modal" data-bs-target="#terms-and-conditions-modal">',
+                                    '{/$link}' => '</a>'
+                                ]) ?>
                             </label>
                         </div>
-                    <?php endif ?>
+                    <?php endif; ?>
 
                     <?php if ($display_privacy_policy): ?>
                         <div class="form-check mb-3">
                             <input type="checkbox" class="required form-check-input" id="accept-to-privacy-policy">
                             <label class="form-check-label" for="accept-to-privacy-policy">
-                                <?= strtr(
-                                    lang('read_and_agree_to_privacy_policy'),
-                                    [
-                                        '{$link}'  => '<a href="#" data-bs-toggle="modal" data-bs-target="#privacy-policy-modal">',
-                                        '{/$link}' => '</a>'
-                                    ]
-                                )
-                        ?>
+                                <?= strtr(lang('read_and_agree_to_privacy_policy'), [
+                                    '{$link}' =>
+                                        '<a href="#" data-bs-toggle="modal" data-bs-target="#privacy-policy-modal">',
+                                    '{/$link}' => '</a>'
+                                ]) ?>
                             </label>
                         </div>
-                    <?php endif ?>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

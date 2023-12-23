@@ -27,11 +27,11 @@ class Migration_Add_payment_fee_column_to_services_table extends CI_Migration
         if (!$this->db->field_exists('fee', 'services')) {
             $fields = [
                 'fee' => [
-                    'type'       => 'DECIMAL',
+                    'type' => 'DECIMAL',
                     'constraint' => '10,2',
-                    'null'       => TRUE,
-                    'default'    => 0
-                ],
+                    'null' => true,
+                    'default' => 0
+                ]
             ];
 
             $this->dbforge->add_column('services', $fields);

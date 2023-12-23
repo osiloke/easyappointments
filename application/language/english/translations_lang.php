@@ -14,7 +14,8 @@ $lang['Fee'] = 'Fee';
 $lang['Total Price'] = 'Total Price';
 $lang['back'] = 'Back';
 $lang['appointment_date_and_time'] = 'Choose Date & Time';
-$lang['no_available_hours'] = 'There are no available appointment hours for the selected date. Please choose another date.';
+$lang['no_available_hours'] =
+    'There are no available appointment hours for the selected date. Please choose another date.';
 $lang['appointment_hour_missing'] = 'Please select an appointment hour before continuing.';
 $lang['customer_information'] = 'Customer Information';
 $lang['first_name'] = 'First Name';
@@ -43,7 +44,8 @@ $lang['appointment_removed_from_schedule'] = 'The following appointment was remo
 $lang['appointment_details_was_sent_to_you'] = 'An email with the appointment details has been sent to you.';
 $lang['add_to_google_calendar'] = 'Add to Google Calendar';
 $lang['appointment_booked'] = 'You have a new appointment with {$provider_name}!';
-$lang['thank_you_for_appointment'] = 'Thank you for arranging an appointment with us. We are absolutely thrilled to confirm your booking and join you on an exhilarating journey of personalized service and expert guidance.';
+$lang['thank_you_for_appointment'] =
+    'Thank you for arranging an appointment with us. We are absolutely thrilled to confirm your booking and join you on an exhilarating journey of personalized service and expert guidance.';
 $lang['appointment_details_title'] = 'Appointment Details';
 $lang['customer_details_title'] = 'Customer Details';
 $lang['service'] = 'Service';
@@ -57,11 +59,13 @@ $lang['success'] = 'Success';
 $lang['appointment_added_to_google_calendar'] = 'Your appointment has been added to your Google Calendar account.';
 $lang['view_appointment_in_google_calendar'] = 'Click here to view your appointment on Google Calendar.';
 $lang['appointment_added_to_your_plan'] = 'You have a new appointment with {$customer_name}!';
-$lang['appointment_link_description'] = 'You have received a new booking for {$service_name}. See the details of the event below. You can also login to your Dashboard to manage the appointment.';
+$lang['appointment_link_description'] =
+    'You have received a new booking for {$service_name}. See the details of the event below. You can also login to your Dashboard to manage the appointment.';
 $lang['appointment_locked'] = 'Modification impossible!';
 $lang['appointment_locked_message'] = 'The appointment cannot be changed less than {$limit} hours in advance.';
 $lang['appointment_not_found'] = 'Appointment Not Found';
-$lang['appointment_does_not_exist_in_db'] = 'The appointment you requested does not exist in the system database anymore.';
+$lang['appointment_does_not_exist_in_db'] =
+    'The appointment you requested does not exist in the system database anymore.';
 $lang['display_calendar'] = 'Display Calendar';
 $lang['calendar'] = 'Calendar';
 $lang['users'] = 'Users';
@@ -109,7 +113,8 @@ $lang['pick_existing_customer_hint'] = 'Pick an existing customer.';
 $lang['new_appointment_title'] = 'New Appointment';
 $lang['edit_appointment_title'] = 'Edit Appointment';
 $lang['delete_appointment_title'] = 'Delete Appointment';
-$lang['write_appointment_removal_reason'] = 'Please take a minute to write the reason you are deleting the appointment:';
+$lang['write_appointment_removal_reason'] =
+    'Please take a minute to write the reason you are deleting the appointment:';
 $lang['appointment_saved'] = 'Appointment saved successfully.';
 $lang['new_unavailability_title'] = 'New Unavailability';
 $lang['edit_unavailability_title'] = 'Edit Unavailability';
@@ -161,7 +166,8 @@ $lang['friday'] = 'Friday';
 $lang['saturday'] = 'Saturday';
 $lang['sunday'] = 'Sunday';
 $lang['breaks'] = 'Breaks';
-$lang['add_breaks_during_each_day'] = 'Add the working breaks during each day. During breaks the provider will not accept any appointments.';
+$lang['add_breaks_during_each_day'] =
+    'Add the working breaks during each day. During breaks the provider will not accept any appointments.';
 $lang['day'] = 'Day';
 $lang['days'] = 'Days';
 $lang['actions'] = 'Actions';
@@ -169,7 +175,8 @@ $lang['reset_working_plan_hint'] = 'Reset the working plan back to the default v
 $lang['company_name'] = 'Company Name';
 $lang['company_name_hint'] = 'Company name will be displayed everywhere on the system (required).';
 $lang['company_email'] = 'Company Email';
-$lang['company_email_hint'] = 'This will be the company email address. It will be used as the sender and the reply address of the system emails (required).';
+$lang['company_email_hint'] =
+    'This will be the company email address. It will be used as the sender and the reply address of the system emails (required).';
 $lang['company_link'] = 'Company Link';
 $lang['company_link_hint'] = 'Company link should point to the official website of the company (required).';
 $lang['go_to_booking_page'] = 'Go To Booking Page';
@@ -181,22 +188,28 @@ $lang['hidden'] = 'Hidden';
 $lang['business_logic'] = 'Business Logic';
 $lang['current_user'] = 'Current User';
 $lang['about_app'] = 'About Easy!Appointments';
-$lang['edit_working_plan_hint'] = 'Mark below the days and hours that your company will accept appointments. You will be able to adjust appointments in non-working hours but the customers will not be able to book appointments by themselves in non-working periods. This working plan will be the default for every new provider record, but you will be able to change each provider\'s plan separately by editing his record. After that you can add break periods.';
+$lang['edit_working_plan_hint'] =
+    'Mark below the days and hours that your company will accept appointments. You will be able to adjust appointments in non-working hours but the customers will not be able to book appointments by themselves in non-working periods. This working plan will be the default for every new provider record, but you will be able to change each provider\'s plan separately by editing his record. After that you can add break periods.';
 $lang['edit_breaks_hint'] = 'Add the working breaks during each day. These breaks will be applied for all new spaces.';
 $lang['book_advance_timeout'] = 'Book Advance Timeout';
-$lang['book_advance_timeout_hint'] = 'Define the timeout (in minutes) before the customers can book or re-arrange appointments with the company.';
+$lang['book_advance_timeout_hint'] =
+    'Define the timeout (in minutes) before the customers can book or re-arrange appointments with the company.';
 $lang['timeout_minutes'] = 'Timeout (Minutes)';
-$lang['about_app_info'] = 'Easy!Appointments is a highly customizable web application that allows your customers to book appointments with you via the web. Moreover, it provides the ability to sync your data with Google Calendar, so you can use them with other services.';
+$lang['about_app_info'] =
+    'Easy!Appointments is a highly customizable web application that allows your customers to book appointments with you via the web. Moreover, it provides the ability to sync your data with Google Calendar, so you can use them with other services.';
 $lang['current_version'] = 'Current Version';
 $lang['support'] = 'Support';
-$lang['about_app_support'] = 'If you encounter any problems when using Easy!Appointments you can search the official Google Group for answers. You might also need to create a new issue on the Google Code page in order to help the development progress.';
+$lang['about_app_support'] =
+    'If you encounter any problems when using Easy!Appointments you can search the official Google Group for answers. You might also need to create a new issue on the Google Code page in order to help the development progress.';
 $lang['official_website'] = 'Official Website';
 $lang['google_plus_community'] = 'Google+ Community';
 $lang['support_group'] = 'Support Group';
 $lang['project_issues'] = 'Project Issues';
 $lang['license'] = 'License';
-$lang['about_app_license'] = 'Easy!Appointments is licensed under the GPLv3 license. By using the code of Easy!Appointments in any way you are agreeing to the terms described in the following url:';
-$lang['logout_success'] = 'You have been successfully logged out! Click on one of the following buttons to navigate to a different page.';
+$lang['about_app_license'] =
+    'Easy!Appointments is licensed under the GPLv3 license. By using the code of Easy!Appointments in any way you are agreeing to the terms described in the following url:';
+$lang['logout_success'] =
+    'You have been successfully logged out! Click on one of the following buttons to navigate to a different page.';
 $lang['book_appointment_title'] = 'Book Appointment';
 $lang['backend_section'] = 'Backend Section';
 $lang['you_need_to_login'] = 'Welcome! You will need to login in order to view backend pages.';
@@ -205,13 +218,15 @@ $lang['enter_password_here'] = 'Enter your password here ...';
 $lang['login'] = 'Login';
 $lang['forgot_your_password'] = 'Forgot Your Password?';
 $lang['login_failed'] = 'Login failed, please enter the correct credentials and try again.';
-$lang['type_username_and_email_for_new_password'] = 'Type your username and your email address to get your new password.';
+$lang['type_username_and_email_for_new_password'] =
+    'Type your username and your email address to get your new password.';
 $lang['enter_email_here'] = 'Enter your email here ...';
 $lang['regenerate_password'] = 'Regenerate Password';
 $lang['go_to_login'] = 'Go Back To Login Page';
 $lang['new_password_sent_with_email'] = 'Your new password has been sent to you with an email.';
 $lang['new_account_password'] = 'New Account Password';
-$lang['new_password_is'] = 'Your new account password is $password. Please store this email to be able to retrieve your password if necessary. You can also change this password with a new one in the settings page.';
+$lang['new_password_is'] =
+    'Your new account password is $password. Please store this email to be able to retrieve your password if necessary. You can also change this password with a new one in the settings page.';
 $lang['delete_record_prompt'] = 'Are you sure that you want to delete this record? This action cannot be undone.';
 $lang['delete_admin'] = 'Delete Admin';
 $lang['delete_customer'] = 'Delete Customer';
@@ -226,10 +241,12 @@ $lang['unexpected_issues'] = 'Unexpected Issues';
 $lang['unexpected_issues_message'] = 'The operation could not complete due to unexpected issues.';
 $lang['close'] = 'Close';
 $lang['page_not_found'] = 'Page Not Found';
-$lang['page_not_found_message'] = 'Unfortunately the page you requested does not exist. Please check your browser URL or head to another location using the buttons below.';
+$lang['page_not_found_message'] =
+    'Unfortunately the page you requested does not exist. Please check your browser URL or head to another location using the buttons below.';
 $lang['error'] = 'Error';
 $lang['no_privileges'] = 'No Privileges';
-$lang['no_privileges_message'] = 'You do not have the required privileges to view this page. Please navigate to a different section.';
+$lang['no_privileges_message'] =
+    'You do not have the required privileges to view this page. Please navigate to a different section.';
 $lang['backend_calendar'] = 'Backend Calendar';
 $lang['start_date_time'] = 'Start Date / Time';
 $lang['end_date_time'] = 'End Date / Time';
@@ -273,25 +290,30 @@ $lang['minute'] = 'Minute';
 $lang['google_sync_completed'] = 'Google synchronization completed successfully.';
 $lang['google_sync_failed'] = 'Google synchronization failed: Could not establish server connection.';
 $lang['select_google_calendar'] = 'Select Google Calendar';
-$lang['select_google_calendar_prompt'] = 'Select the calendar that you want to sync your appointments. If you do not want to select a specific calendar the default one will be used.';
+$lang['select_google_calendar_prompt'] =
+    'Select the calendar that you want to sync your appointments. If you do not want to select a specific calendar the default one will be used.';
 $lang['google_calendar_selected'] = 'Google calendar has been successfully selected.';
 $lang['oops_something_went_wrong'] = 'Oops! Something Went Wrong.';
 $lang['could_not_add_to_google_calendar'] = 'Your appointment could not be added to your Google Calendar account.';
 $lang['ea_update_success'] = 'Easy!Appointments has been successfully updated.';
 $lang['require_captcha'] = 'Require CAPTCHA';
-$lang['require_captcha_hint'] = 'When enabled, the customers will have to type a random generated CAPTCHA string before booking/updating an appointment.';
+$lang['require_captcha_hint'] =
+    'When enabled, the customers will have to type a random generated CAPTCHA string before booking/updating an appointment.';
 $lang['captcha_is_wrong'] = 'CAPTCHA verification failed, please try again.';
 $lang['any_provider'] = 'Any Space';
-$lang['requested_hour_is_unavailable'] = 'The requested appointment is unfortunately not available. Please select a different hour for your appointment.';
+$lang['requested_hour_is_unavailable'] =
+    'The requested appointment is unfortunately not available. Please select a different hour for your appointment.';
 $lang['customer_notifications'] = 'Customer Notifications';
-$lang['customer_notifications_hint'] = 'Defines whether the customer will receive email notifications whenever there is a schedule change on one of his appointments.';
+$lang['customer_notifications_hint'] =
+    'Defines whether the customer will receive email notifications whenever there is a schedule change on one of his appointments.';
 $lang['date_format'] = 'Date Format';
 $lang['date_format_hint'] = 'Change the date display format (D - Date, M - Month, Y - Year).';
 $lang['time_format'] = 'Time Format';
 $lang['time_format_hint'] = 'Change the time display format (H - Hours, M - Minutes).';
 $lang['first_weekday'] = 'First day of week';
 $lang['first_weekday_hint'] = 'Set the first day of the calendar week.';
-$lang['google_analytics_code_hint'] = 'Add your Google Analytics Code to enable Google Analytics tracking on the booking pages.';
+$lang['google_analytics_code_hint'] =
+    'Add your Google Analytics Code to enable Google Analytics tracking on the booking pages.';
 $lang['availabilities_type'] = 'Availabilities Type';
 $lang['flexible'] = 'Flexible';
 $lang['fixed'] = 'Fixed';
@@ -307,12 +329,14 @@ $lang['terms_and_conditions_content'] = 'Terms & Conditions Content';
 $lang['privacy_policy'] = 'Privacy Policy';
 $lang['display_privacy_policy'] = 'Display Privacy Policy';
 $lang['privacy_policy_content'] = 'Privacy Policy Content';
-$lang['website_using_cookies_to_ensure_best_experience'] = 'This website uses cookies to ensure you get the best experience on our website.';
+$lang['website_using_cookies_to_ensure_best_experience'] =
+    'This website uses cookies to ensure you get the best experience on our website.';
 $lang['read_and_agree_to_terms_and_conditions'] = 'I have read and agree to the {$link}Terms & Conditions{/$link}.';
 $lang['read_and_agree_to_privacy_policy'] = 'I have read and agree to the {$link}Privacy Policy{/$link}.';
 $lang['delete_personal_information_hint'] = 'Remove all your appointments and personal information from the system.';
 $lang['delete_personal_information'] = 'Delete Personal Information';
-$lang['delete_personal_information_prompt'] = 'Are you sure that you want to delete your personal information? This action cannot be undone.';
+$lang['delete_personal_information_prompt'] =
+    'Are you sure that you want to delete your personal information? This action cannot be undone.';
 $lang['location'] = 'Meeting Link';
 $lang['working_plan_exception'] = 'Working Plan Exception';
 $lang['working_plan_exceptions'] = 'Working Plan Exceptions';
@@ -323,15 +347,19 @@ $lang['working_plan_exception_deleted'] = 'Working plan exception deleted succes
 $lang['add_working_plan_exceptions_during_each_day'] = 'Add working plan exceptions, outside the working plan.';
 $lang['add_working_plan_exception'] = 'Add Working Plan Exception';
 $lang['require_phone_number'] = 'Require phone number';
-$lang['require_phone_number_hint'] = 'When enabled, customers and users will need to enter the customer\'s phone number when booking an appointment';
+$lang['require_phone_number_hint'] =
+    'When enabled, customers and users will need to enter the customer\'s phone number when booking an appointment';
 $lang['check_spam_folder'] = 'Please check your spam folder if the email does not arrive within a few minutes.';
-$lang['api_token_hint'] = 'Set a secret token in order to enable the token based authentication of the Easy!Appointments API.';
+$lang['api_token_hint'] =
+    'Set a secret token in order to enable the token based authentication of the Easy!Appointments API.';
 $lang['timezone'] = 'Timezone';
-$lang['overwrite_existing_working_plans'] = 'This will overwrite the existing space working plans, are you sure that you want to continue?';
+$lang['overwrite_existing_working_plans'] =
+    'This will overwrite the existing space working plans, are you sure that you want to continue?';
 $lang['working_plans_got_updated'] = 'All the working plans got updated.';
 $lang['apply_to_all_providers'] = 'Apply To All Spaces';
 $lang['display_any_provider'] = 'Display Any Space Option';
-$lang['display_any_provider_hint'] = 'The booking page will get an additional option that allows customers to book without specifying a space.';
+$lang['display_any_provider_hint'] =
+    'The booking page will get an additional option that allows customers to book without specifying a space.';
 $lang['load_more'] = 'Load More';
 $lang['list'] = 'List';
 $lang['default'] = 'Default';
@@ -342,18 +370,21 @@ $lang['booking_settings'] = 'Booking Settings';
 $lang['display'] = 'Display';
 $lang['require'] = 'Require';
 $lang['color'] = 'Color';
-$lang['matomo_analytics_url_hint'] = 'Add the URL to your own Matomo installation to enable Matomo tracking on the booking pages.';
+$lang['matomo_analytics_url_hint'] =
+    'Add the URL to your own Matomo installation to enable Matomo tracking on the booking pages.';
 $lang['invalid_phone'] = 'Invalid phone number.';
 $lang['legal'] = 'Legal';
 $lang['business'] = 'Business';
 $lang['account'] = 'Account';
 $lang['disable_booking'] = 'Disable Booking';
-$lang['disable_booking_hint'] = 'The booking page will be disabled for as long as this setting is active and customers will not be able to register new appointments.';
+$lang['disable_booking_hint'] =
+    'The booking page will be disabled for as long as this setting is active and customers will not be able to register new appointments.';
 $lang['display_message'] = 'Display Message';
 $lang['booking_is_disabled'] = 'Booking Is Disabled!';
 $lang['appearance'] = 'Appearance';
 $lang['company_logo'] = 'Company Logo';
-$lang['company_logo_hint'] = 'The company logo will be displayed in many places of the app, including the booking page and the notification emails (image file, max 2MB).';
+$lang['company_logo_hint'] =
+    'The company logo will be displayed in many places of the app, including the booking page and the notification emails (image file, max 2MB).';
 $lang['company_color'] = 'Company Color';
 $lang['company_color_hint'] = 'The company color will be applied across the app so that it the app uses your branding.';
 $lang['localization'] = 'Localization';
@@ -371,7 +402,8 @@ $lang['add_new_event'] = 'Add New Event';
 $lang['what_kind_of_event'] = 'What kind of event would you like to add?';
 $lang['theme'] = 'Theme';
 $lang['limit_customer_access'] = 'Limit Customer Access';
-$lang['limit_customer_access_hint'] = 'If enabled, spaces and owners will only be able to access customers they have an appointment with.';
+$lang['limit_customer_access_hint'] =
+    'If enabled, spaces and owners will only be able to access customers they have an appointment with.';
 $lang['url'] = 'URL';
 $lang['secret_token'] = 'Secret Token';
 $lang['verify_ssl'] = 'Verify SSL';
@@ -393,33 +425,42 @@ $lang['admin_save'] = 'Admin Save';
 $lang['admin_delete'] = 'Admin Delete';
 $lang['options'] = 'Options';
 $lang['webhooks'] = 'Webhooks';
-$lang['webhooks_info'] = 'Webhooks enable you to send HTTP notifications to external web applications in response to various application events, such as the creation of an appointment or the removal of a customer.';
-$lang['integrations_info'] = 'Integrations enable you to make third-party connections with external applications and APIs.';
+$lang['webhooks_info'] =
+    'Webhooks enable you to send HTTP notifications to external web applications in response to various application events, such as the creation of an appointment or the removal of a customer.';
+$lang['integrations_info'] =
+    'Integrations enable you to make third-party connections with external applications and APIs.';
 $lang['configure'] = 'Configure';
 $lang['google_analytics'] = 'Google Analytics';
-$lang['google_analytics_info'] = 'Google Analytics enable you to automatically add the tracking code and HTML markup to the public page and track all the public booking sessions.';
+$lang['google_analytics_info'] =
+    'Google Analytics enable you to automatically add the tracking code and HTML markup to the public page and track all the public booking sessions.';
 $lang['matomo_analytics'] = 'Matomo Analytics';
-$lang['matomo_analytics_info'] = 'Matomo Analytics enable you to automatically add the tracking code and HTML markup to the public page and track all the public booking sessions.';
+$lang['matomo_analytics_info'] =
+    'Matomo Analytics enable you to automatically add the tracking code and HTML markup to the public page and track all the public booking sessions.';
 $lang['api'] = 'API';
-$lang['api_info'] = 'API enable you to interact with all the Easy!Appointments data via the HTTP protocol and the available API endpoints and create your own integrations.';
+$lang['api_info'] =
+    'API enable you to interact with all the Easy!Appointments data via the HTTP protocol and the available API endpoints and create your own integrations.';
 $lang['google_analytics_code'] = 'Google Analytics Code';
 $lang['matomo_analytics_url'] = 'Matomo Analytics URL';
 $lang['future_booking_limit'] = 'Future Booking Limit';
 $lang['limit_days'] = 'Limit (Days)';
-$lang['future_booking_limit_hint'] = 'Set the future limit in days customers can make appointments via the public booking page.';
+$lang['future_booking_limit_hint'] =
+    'Set the future limit in days customers can make appointments via the public booking page.';
 $lang['api_token'] = 'API Token';
 $lang['allow_rescheduling_cancellation_before'] = 'Allow Rescheduling/Cancellation Before';
 $lang['at_least_one_field'] = 'At least one field must be displayed in the booking page.';
 $lang['status'] = 'Status';
 $lang['appointment_status_options'] = 'Appointment Status Options';
-$lang['appointment_status_options_info'] = 'Define a list of available appointment status options that can be used in the the calendar page (the first one will automatically become the default value).';
+$lang['appointment_status_options_info'] =
+    'Define a list of available appointment status options that can be used in the the calendar page (the first one will automatically become the default value).';
 $lang['service_payment_link'] = 'Payment link';
-$lang['service_payment_link_description'] = 'You can include the following variables: {$appointment_hash}, {$customer_email}. In order to confirm the payment use https://YOUR_SERVER/payment/confirm/{CHECKOUT_SESSION_ID} url as confirmation page in Stripe';
+$lang['service_payment_link_description'] =
+    'You can include the following variables: {$appointment_hash}, {$customer_email}. In order to confirm the payment use https://YOUR_SERVER/payment/confirm/{CHECKOUT_SESSION_ID} url as confirmation page in Stripe';
 $lang['appointment_payment_title'] = 'Payment details';
 $lang['appointment_payment_text'] = 'Click on the following link to proceed with payment';
 $lang['appointment_paymentPaid_text'] = 'Payment has been successfully completed';
 $lang['payment_intent'] = 'Stripe Payment Intent';
-$lang['service_paid_warning'] = 'It is not possible to change an already paid service. Please contact us at {$mail_link} for more information.';
+$lang['service_paid_warning'] =
+    'It is not possible to change an already paid service. Please contact us at {$mail_link} for more information.';
 $lang['is_paid'] = 'Paid';
 $lang['open_payment_process'] = 'Proceed with payment';
 $lang['sunday_short'] = 'Sun';
@@ -448,4 +489,13 @@ $lang['click_to_toggle'] = 'Click To Toggle';
 $lang['week_short'] = 'Wk';
 $lang['scroll_to_increment'] = 'Scroll To Increment';
 $lang['year'] = 'Year';
+$lang['make_non_working_day'] = 'This provider will not be available for work on the selected day.';
+$lang['no_breaks'] = 'No Breaks';
+$lang['service_categories'] = 'Service Categories';
+$lang['service_category'] = 'Service Category';
+$lang['blocked_period_saved'] = 'Blocked period saved successfully.';
+$lang['blocked_period_deleted'] = 'Blocked period deleted successfully.';
+$lang['delete_blocked_period'] = 'Delete Blocked Period';
+$lang['blocked_period'] = 'Blocked Period';
+$lang['blocked_periods'] = 'Blocked Periods';
 // End

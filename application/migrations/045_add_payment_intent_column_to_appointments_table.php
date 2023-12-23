@@ -15,23 +15,22 @@
  * @property CI_DB_query_builder $db
  * @property CI_DB_forge $dbforge
  */
-class Migration_Add_payment_intent_column_to_appointments_table extends CI_Migration {
+class Migration_Add_payment_intent_column_to_appointments_table extends CI_Migration
+{
     /**
      * Upgrade method.
      */
     public function up()
     {
-        if ( ! $this->db->field_exists('payment_intent', 'appointments'))
-        {
+        if (!$this->db->field_exists('payment_intent', 'appointments')) {
             $fields = [
                 'payment_intent' => [
                     'type' => 'TEXT',
-                    'null' => TRUE
+                    'null' => true
                 ]
             ];
 
             $this->dbforge->add_column('appointments', $fields);
-
         }
     }
 
@@ -40,8 +39,7 @@ class Migration_Add_payment_intent_column_to_appointments_table extends CI_Migra
      */
     public function down()
     {
-        if ($this->db->field_exists('payment_intent', 'appointments'))
-        {
+        if ($this->db->field_exists('payment_intent', 'appointments')) {
             $this->dbforge->drop_column('appointments', 'payment_intent');
         }
     }

@@ -18,7 +18,8 @@
  *
  * @package Controllers
  */
-class Categories extends EA_Controller {
+class Categories extends EA_Controller
+{
     /**
      * Categories constructor.
      */
@@ -46,10 +47,8 @@ class Categories extends EA_Controller {
 
         $user_id = session('user_id');
 
-        if (cannot('view', PRIV_SERVICES))
-        {
-            if ($user_id)
-            {
+        if (cannot('view', PRIV_SERVICES)) {
+            if ($user_id) {
                 abort(403, 'Forbidden');
             }
 
@@ -62,7 +61,7 @@ class Categories extends EA_Controller {
 
         script_vars([
             'user_id' => $user_id,
-            'role_slug' => $role_slug,
+            'role_slug' => $role_slug
         ]);
 
         html_vars([
@@ -70,7 +69,7 @@ class Categories extends EA_Controller {
             'active_menu' => PRIV_SERVICES,
             'user_display_name' => $this->accounts->get_user_display_name($user_id),
             'timezones' => $this->timezones->to_array(),
-            'privileges' => $this->roles_model->get_permissions_by_slug($role_slug),
+            'privileges' => $this->roles_model->get_permissions_by_slug($role_slug)
         ]);
 
         $this->load->view('pages/categories');
@@ -81,10 +80,8 @@ class Categories extends EA_Controller {
      */
     public function search()
     {
-        try
-        {
-            if (cannot('view', PRIV_SERVICES))
-            {
+        try {
+            if (cannot('view', PRIV_SERVICES)) {
                 abort(403, 'Forbidden');
             }
 
@@ -99,9 +96,7 @@ class Categories extends EA_Controller {
             $categories = $this->categories_model->search($keyword, $limit, $offset, $order_by);
 
             json_response($categories);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -111,19 +106,14 @@ class Categories extends EA_Controller {
      */
     public function create()
     {
-        try
-        {
-            if (cannot('add', PRIV_SERVICES))
-            {
+        try {
+            if (cannot('add', PRIV_SERVICES)) {
                 abort(403, 'Forbidden');
             }
 
             $category = request('category');
 
-            $this->categories_model->only($category, [
-                'name',
-                'description'
-            ]);
+            $this->categories_model->only($category, ['name', 'description']);
 
             $category_id = $this->categories_model->save($category);
 
@@ -132,12 +122,10 @@ class Categories extends EA_Controller {
             $this->webhooks_client->trigger(WEBHOOK_CATEGORY_SAVE, $category);
 
             json_response([
-                'success' => TRUE,
+                'success' => true,
                 'id' => $category_id
             ]);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -147,20 +135,14 @@ class Categories extends EA_Controller {
      */
     public function update()
     {
-        try
-        {
-            if (cannot('edit', PRIV_SERVICES))
-            {
+        try {
+            if (cannot('edit', PRIV_SERVICES)) {
                 abort(403, 'Forbidden');
             }
 
             $category = request('category');
 
-            $this->categories_model->only($category, [
-                'id',
-                'name',
-                'description'
-            ]);
+            $this->categories_model->only($category, ['id', 'name', 'description']);
 
             $category_id = $this->categories_model->save($category);
 
@@ -169,12 +151,10 @@ class Categories extends EA_Controller {
             $this->webhooks_client->trigger(WEBHOOK_CATEGORY_SAVE, $category);
 
             json_response([
-                'success' => TRUE,
+                'success' => true,
                 'id' => $category_id
             ]);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -184,10 +164,8 @@ class Categories extends EA_Controller {
      */
     public function destroy()
     {
-        try
-        {
-            if (cannot('delete', PRIV_SERVICES))
-            {
+        try {
+            if (cannot('delete', PRIV_SERVICES)) {
                 abort(403, 'Forbidden');
             }
 
@@ -200,11 +178,9 @@ class Categories extends EA_Controller {
             $this->webhooks_client->trigger(WEBHOOK_CATEGORY_DELETE, $category);
 
             json_response([
-                'success' => TRUE,
+                'success' => true
             ]);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -214,10 +190,8 @@ class Categories extends EA_Controller {
      */
     public function find()
     {
-        try
-        {
-            if (cannot('view', PRIV_SERVICES))
-            {
+        try {
+            if (cannot('view', PRIV_SERVICES)) {
                 abort(403, 'Forbidden');
             }
 
@@ -226,9 +200,7 @@ class Categories extends EA_Controller {
             $category = $this->categories_model->find($category_id);
 
             json_response($category);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }

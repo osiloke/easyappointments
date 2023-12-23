@@ -37,7 +37,7 @@ class Booking_confirmation extends EA_Controller
 
     /**
      * Display the appointment registration success page.
-     * 
+     *
      * @throws Exception
      */
     public function of()
@@ -82,17 +82,17 @@ class Booking_confirmation extends EA_Controller
         $payment_link = site_url('payment/link' . '/' . $appointment_hash);
 
         html_vars([
-            'page_title'            => lang('success'),
-            'company_color'         => setting('company_color'),
+            'page_title' => lang('success'),
+            'company_color' => setting('company_color'),
             'google_analytics_code' => setting('google_analytics_code'),
-            'matomo_analytics_url'  => setting('matomo_analytics_url'),
-            'add_to_google_url'     => $add_to_google_url,
-            'is_paid'               => $appointment['is_paid'],
-            'payment_link'          => $payment_link,
-            'service'               => $service,
-            'appointment'           => $appointment,
-            'timezone'              => $timezone,
-            'is_redirect'           => isset($_GET['r'])
+            'matomo_analytics_url' => setting('matomo_analytics_url'),
+            'add_to_google_url' => $add_to_google_url,
+            'is_paid' => $appointment['is_paid'],
+            'payment_link' => $payment_link,
+            'service' => $service,
+            'appointment' => $appointment,
+            'timezone' => $timezone,
+            'is_redirect' => isset($_GET['r'])
         ]);
 
         $this->load->view('pages/booking_confirmation');

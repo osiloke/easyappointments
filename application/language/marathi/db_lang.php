@@ -8,7 +8,7 @@
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  */
-defined('BASEPATH') OR exit('Directe toegang tot scripts is niet toegestaan');
+defined('BASEPATH') or exit('Directe toegang tot scripts is niet toegestaan');
 $lang['db_invalid_connection_str'] = 'मी कनेक्शन डेटा वापरुन डेटाबेससाठी सेटिंग्ज निर्धारित करण्यात अक्षम आहे.';
 $lang['db_unable_to_connect'] = 'मी निर्दिष्ट केलेल्या माहितीसह डेटाबेसशी कनेक्ट करण्यात अक्षम आहे.';
 $lang['db_unable_to_select'] = 'मी डेटाबेसमध्ये प्रवेश करण्यात अक्षम आहे:% s ';

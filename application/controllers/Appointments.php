@@ -21,7 +21,8 @@
  *
  * @package Controllers
  */
-class Appointments extends EA_Controller {
+class Appointments extends EA_Controller
+{
     /**
      * Appointments constructor.
      */
@@ -54,10 +55,8 @@ class Appointments extends EA_Controller {
      */
     public function search()
     {
-        try
-        {
-            if (cannot('view', PRIV_APPOINTMENTS))
-            {
+        try {
+            if (cannot('view', PRIV_APPOINTMENTS)) {
                 abort(403, 'Forbidden');
             }
 
@@ -72,9 +71,7 @@ class Appointments extends EA_Controller {
             $appointments = $this->appointments_model->search($keyword, $limit, $offset, $order_by);
 
             json_response($appointments);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -84,25 +81,23 @@ class Appointments extends EA_Controller {
      */
     public function create()
     {
-        try
-        {
-            if (cannot('add', PRIV_APPOINTMENTS))
-            {
+        try {
+            if (cannot('add', PRIV_APPOINTMENTS)) {
                 abort(403, 'Forbidden');
             }
 
-            $appointment = json_decode(request('appointment'), TRUE);
+            $appointment = json_decode(request('appointment'), true);
 
             $this->appointments_model->only($appointment, [
-                'start_datetime', 
-                'end_datetime', 
-                'location', 
-                'notes', 
-                'color', 
-                'is_unavailability', 
-                'id_users_provider', 
-                'id_users_customer', 
-                'id_services', 
+                'start_datetime',
+                'end_datetime',
+                'location',
+                'notes',
+                'color',
+                'is_unavailability',
+                'id_users_provider',
+                'id_users_customer',
+                'id_services'
             ]);
 
             $appointment_id = $this->appointments_model->save($appointment);
@@ -112,12 +107,10 @@ class Appointments extends EA_Controller {
             $this->webhooks_client->trigger(WEBHOOK_APPOINTMENT_SAVE, $appointment);
 
             json_response([
-                'success' => TRUE,
+                'success' => true,
                 'id' => $appointment_id
             ]);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -127,14 +120,12 @@ class Appointments extends EA_Controller {
      */
     public function update()
     {
-        try
-        {
-            if (cannot('edit', PRIV_APPOINTMENTS))
-            {
+        try {
+            if (cannot('edit', PRIV_APPOINTMENTS)) {
                 abort(403, 'Forbidden');
             }
 
-            $appointment = json_decode(request('appointment'), TRUE);
+            $appointment = json_decode(request('appointment'), true);
 
             $this->appointments_model->only($appointment, [
                 'id',
@@ -146,18 +137,16 @@ class Appointments extends EA_Controller {
                 'is_unavailability',
                 'id_users_provider',
                 'id_users_customer',
-                'id_services',
+                'id_services'
             ]);
 
             $appointment_id = $this->appointments_model->save($appointment);
 
             json_response([
-                'success' => TRUE,
+                'success' => true,
                 'id' => $appointment_id
             ]);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -167,27 +156,23 @@ class Appointments extends EA_Controller {
      */
     public function destroy()
     {
-        try
-        {
-            if (cannot('delete', PRIV_APPOINTMENTS))
-            {
+        try {
+            if (cannot('delete', PRIV_APPOINTMENTS)) {
                 abort(403, 'Forbidden');
             }
 
             $appointment_id = request('appointment_id');
-            
-            $appointment = $this->appointments_model->find($appointment_id); 
+
+            $appointment = $this->appointments_model->find($appointment_id);
 
             $this->appointments_model->delete($appointment_id);
 
             $this->webhooks_client->trigger(WEBHOOK_APPOINTMENT_DELETE, $appointment);
 
             json_response([
-                'success' => TRUE,
+                'success' => true
             ]);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -197,10 +182,8 @@ class Appointments extends EA_Controller {
      */
     public function find()
     {
-        try
-        {
-            if (cannot('view', PRIV_APPOINTMENTS))
-            {
+        try {
+            if (cannot('view', PRIV_APPOINTMENTS)) {
                 abort(403, 'Forbidden');
             }
 
@@ -209,9 +192,7 @@ class Appointments extends EA_Controller {
             $appointment = $this->appointments_model->find($appointment_id);
 
             json_response($appointment);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }

@@ -46,63 +46,69 @@
                                         <?php
                                         // Group services by category, only if there is at least one service
                                         // with a parent category.
-                                        $has_category = FALSE;
+                                        $has_category = false;
 
-foreach ($available_services as $service) {
-    if (!empty($service['category_id'])) {
-        $has_category = TRUE;
+                                        foreach ($available_services as $service) {
+                                            if (!empty($service['category_id'])) {
+                                                $has_category = true;
 
-        break;
-    }
-}
+                                                break;
+                                            }
+                                        }
 
-if ($has_category) {
-    $grouped_services = [];
+                                        if ($has_category) {
+                                            $grouped_services = [];
 
-    foreach ($available_services as $service) {
-        if (!empty($service['category_id'])) {
-            if (!isset($grouped_services[$service['category_name']])) {
-                $grouped_services[$service['category_name']] = [];
-            }
+                                            foreach ($available_services as $service) {
+                                                if (!empty($service['category_id'])) {
+                                                    if (!isset($grouped_services[$service['category_name']])) {
+                                                        $grouped_services[$service['category_name']] = [];
+                                                    }
 
-            $grouped_services[$service['category_name']][] = $service;
-        }
-    }
+                                                    $grouped_services[$service['category_name']][] = $service;
+                                                }
+                                            }
 
-    // We need the uncategorized services at the end of the list, so we will use
-    // another iteration only for the uncategorized services.
-    $grouped_services['uncategorized'] = [];
+                                            // We need the uncategorized services at the end of the list, so we will use
+                                            // another iteration only for the uncategorized services.
+                                            $grouped_services['uncategorized'] = [];
 
-    foreach ($available_services as $service) {
-        if ($service['category_id'] == NULL) {
-            $grouped_services['uncategorized'][] = $service;
-        }
-    }
+                                            foreach ($available_services as $service) {
+                                                if ($service['category_id'] == null) {
+                                                    $grouped_services['uncategorized'][] = $service;
+                                                }
+                                            }
 
-    foreach ($grouped_services as $key => $group) {
-        $group_label = $key !== 'uncategorized'
-            ? e($group[0]['category_name'])
-            : 'Uncategorized';
+                                            foreach ($grouped_services as $key => $group) {
+                                                $group_label =
+                                                    $key !== 'uncategorized'
+                                                        ? e($group[0]['category_name'])
+                                                        : 'Uncategorized';
 
-        if (count($group) > 0) {
-            echo '<optgroup label="' . $group_label . '">';
+                                                if (count($group) > 0) {
+                                                    echo '<optgroup label="' . $group_label . '">';
 
-            foreach ($group as $service) {
-                echo '<option value="' . $service['id'] . '">'
-                    . e($service['name']) . '</option>';
-            }
+                                                    foreach ($group as $service) {
+                                                        echo '<option value="' .
+                                                            $service['id'] .
+                                                            '">' .
+                                                            e($service['name']) .
+                                                            '</option>';
+                                                    }
 
-            echo '</optgroup>';
-        }
-    }
-}
-else {
-    foreach ($available_services as $service) {
-        echo '<option value="' . $service['id'] . '" disabled>'
-            . e($service['name']) . '</option>';
-    }
-}
-?>
+                                                    echo '</optgroup>';
+                                                }
+                                            }
+                                        } else {
+                                            foreach ($available_services as $service) {
+                                                echo '<option value="' .
+                                                    $service['id'] .
+                                                    '" disabled>' .
+                                                    e($service['name']) .
+                                                    '</option>';
+                                            }
+                                        }
+                                        ?>
                                     </select>
                                 </div>
 
@@ -115,7 +121,7 @@ else {
                                 </div>
 
                                 <div class="mb-3 hidden">
-                                    <?php component('color_selection', ['attributes' => 'id="appointment-color"']) ?>
+                                    <?php component('color_selection', ['attributes' => 'id="appointment-color"']); ?>
                                 </div>
 
                                 <div class="mb-3">
@@ -134,7 +140,7 @@ else {
                                             <option value="<?= e($appointment_status_option) ?>">
                                                 <?= e($appointment_status_option) ?>
                                             </option>
-                                        <?php endforeach ?>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
 
@@ -145,7 +151,7 @@ else {
                                         <?= lang('is_paid') ?>
                                     </label>
                                 </div> -->
-                                <?php endif ?>
+                                <?php endif; ?>
                             </div>
 
                             <div class="col-12 col-sm-6">
@@ -232,7 +238,7 @@ else {
                                         <?= lang('first_name') ?>
                                         <?php if ($require_first_name): ?>
                                             <span class="text-danger">*</span>
-                                        <?php endif ?>
+                                        <?php endif; ?>
                                     </label>
                                     <input type="text" id="first-name"
                                         class="<?= $require_first_name ? 'required' : '' ?> form-control"
@@ -244,7 +250,7 @@ else {
                                         <?= lang('last_name') ?>
                                         <?php if ($require_last_name): ?>
                                             <span class="text-danger">*</span>
-                                        <?php endif ?>
+                                        <?php endif; ?>
                                     </label>
                                     <input type="text" id="last-name"
                                         class="<?= $require_last_name ? 'required' : '' ?> form-control"
@@ -256,7 +262,7 @@ else {
                                         <?= lang('email') ?>
                                         <?php if ($require_email): ?>
                                             <span class="text-danger">*</span>
-                                        <?php endif ?>
+                                        <?php endif; ?>
                                     </label>
                                     <input type="text" id="email"
                                         class="<?= $require_email ? 'required' : '' ?> form-control" maxlength="120" />
@@ -267,7 +273,7 @@ else {
                                         <?= lang('phone_number') ?>
                                         <?php if ($require_phone_number): ?>
                                             <span class="text-danger">*</span>
-                                        <?php endif ?>
+                                        <?php endif; ?>
                                     </label>
                                     <input type="text" id="phone-number" maxlength="60"
                                         class="<?= $require_phone_number ? 'required' : '' ?> form-control" />
@@ -283,7 +289,7 @@ else {
                                             <option value="<?= $available_language ?>">
                                                 <?= ucfirst($available_language) ?>
                                             </option>
-                                        <?php endforeach ?>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
                             </div>
@@ -293,7 +299,7 @@ else {
                                         <?= lang('address') ?>
                                         <?php if ($require_address): ?>
                                             <span class="text-danger">*</span>
-                                        <?php endif ?>
+                                        <?php endif; ?>
                                     </label>
                                     <input type="text" id="address"
                                         class="<?= $require_address ? 'required' : '' ?> form-control"
@@ -305,7 +311,7 @@ else {
                                         <?= lang('city') ?>
                                         <?php if ($require_city): ?>
                                             <span class="text-danger">*</span>
-                                        <?php endif ?>
+                                        <?php endif; ?>
                                     </label>
                                     <input type="text" id="city"
                                         class="<?= $require_city ? 'required' : '' ?> form-control" maxlength="120" />
@@ -316,7 +322,7 @@ else {
                                         <?= lang('zip_code') ?>
                                         <?php if ($require_zip_code): ?>
                                             <span class="text-danger">*</span>
-                                        <?php endif ?>
+                                        <?php endif; ?>
                                     </label>
                                     <input type="text" id="zip-code"
                                         class="<?= $require_zip_code ? 'required' : '' ?> form-control"
@@ -329,9 +335,9 @@ else {
                                         <span class="text-danger" hidden>*</span>
                                     </label>
                                     <?php component('timezone_dropdown', [
-                                        'attributes'        => 'id="timezone" class="form-control required"',
+                                        'attributes' => 'id="timezone" class="form-control required"',
                                         'grouped_timezones' => vars('grouped_timezones')
-                                    ]) ?>
+                                    ]); ?>
                                 </div>
 
                                 <div class="mb-3">
@@ -339,7 +345,7 @@ else {
                                         <?= lang('notes') ?>
                                         <?php if ($require_zip_code): ?>
                                             <span class="text-danger">*</span>
-                                        <?php endif ?>
+                                        <?php endif; ?>
                                     </label>
                                     <textarea id="customer-notes" rows="2"
                                         class="<?= $require_zip_code ? 'required' : '' ?> form-control"></textarea>
@@ -363,8 +369,8 @@ else {
     </div>
 </div>
 
-<?php section('scripts') ?>
+<?php section('scripts'); ?>
 
 <script src="<?= asset_url('assets/js/components/appointments_modal.js') ?>"></script>
 
-<?php end_section('scripts') ?>
+<?php end_section('scripts'); ?>

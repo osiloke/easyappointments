@@ -30,7 +30,7 @@ class Email_messages
      */
     public function __construct()
     {
-        $this->CI =& get_instance();
+        $this->CI = &get_instance();
 
         $this->CI->load->model('admins_model');
         $this->CI->load->model('appointments_model');
@@ -73,7 +73,7 @@ class Email_messages
         string $appointment_link,
         string $recipient_email,
         string $ics_stream,
-        string $timezone = NULL
+        string $timezone = null
     ): void {
         $appointment_timezone = new DateTimeZone($provider['timezone']);
 
@@ -91,30 +91,34 @@ class Email_messages
             $appointment['end_datetime'] = $appointment_end->format('Y-m-d H:i:s');
         }
 
-        $payment_link_vars = array(
+        $payment_link_vars = [
             '{$appointment_hash}' => $appointment['hash'],
-            '{$customer_email}'   => $customer['email'],
-        );
+            '{$customer_email}' => $customer['email']
+        ];
         $payment_link = strtr($service['payment_link'], $payment_link_vars);
 
         $add_to_google_url = $this->CI->google_sync->get_add_to_google_url($appointment['id']);
 
-        $html = $this->CI->load->view('emails/appointment_saved_email', [
-            'email_title'       => $subject,
-            'email_message'     => $message,
-            'is_paid'           => $appointment['is_paid'] == 1,
-            'company_name'      => $settings['company_name'],
-            'subject'           => $subject,
-            'message'           => $message,
-            'appointment'       => $appointment,
-            'service'           => $service,
-            'provider'          => $provider,
-            'customer'          => $customer,
-            'settings'          => $settings,
-            'timezone'          => $timezone,
-            'appointment_link'  => $appointment_link,
-            'add_to_google_url' => $add_to_google_url,
-        ], TRUE);
+        $html = $this->CI->load->view(
+            'emails/appointment_saved_email',
+            [
+                'email_title' => $subject,
+                'email_message' => $message,
+                'is_paid' => $appointment['is_paid'] == 1,
+                'company_name' => $settings['company_name'],
+                'subject' => $subject,
+                'message' => $message,
+                'appointment' => $appointment,
+                'service' => $service,
+                'provider' => $provider,
+                'customer' => $customer,
+                'settings' => $settings,
+                'timezone' => $timezone,
+                'appointment_link' => $appointment_link,
+                'add_to_google_url' => $add_to_google_url
+            ],
+            true
+        );
 
         $this->CI->email->from($settings['company_email'], $settings['company_email']);
 
@@ -126,7 +130,7 @@ class Email_messages
 
         $this->CI->email->attach($ics_stream, 'attachment', 'invitation.ics', 'text/vcalendar');
 
-        if (!$this->CI->email->send(FALSE)) {
+        if (!$this->CI->email->send(false)) {
             throw new RuntimeException('Email was not sent: ' . $this->CI->email->print_debugger());
         }
     }
@@ -152,8 +156,8 @@ class Email_messages
         array $customer,
         array $settings,
         string $recipient_email,
-        string $reason = NULL,
-        string $timezone = NULL
+        string $reason = null,
+        string $timezone = null
     ): void {
         $appointment_timezone = new DateTimeZone($provider['timezone']);
 
@@ -171,16 +175,20 @@ class Email_messages
             $appointment['end_datetime'] = $appointment_end->format('Y-m-d H:i:s');
         }
 
-        $html = $this->CI->load->view('emails/appointment_deleted_email', [
-            'appointment'    => $appointment,
-            'service'        => $service,
-            'provider'       => $provider,
-            'customer'       => $customer,
-            'settings'       => $settings,
-            'timezone'       => $timezone,
-            'reason'         => $reason,
-            'payment_intent' => $appointment['payment_intent'],
-        ], TRUE);
+        $html = $this->CI->load->view(
+            'emails/appointment_deleted_email',
+            [
+                'appointment' => $appointment,
+                'service' => $service,
+                'provider' => $provider,
+                'customer' => $customer,
+                'settings' => $settings,
+                'timezone' => $timezone,
+                'reason' => $reason,
+                'payment_intent' => $appointment['payment_intent']
+            ],
+            true
+        );
 
         $this->CI->email->from($settings['company_email'], $settings['company_email']);
 
@@ -190,7 +198,7 @@ class Email_messages
 
         $this->CI->email->message($html);
 
-        if (!$this->CI->email->send(FALSE)) {
+        if (!$this->CI->email->send(false)) {
             throw new RuntimeException('Email was not sent: ' . $this->CI->email->print_debugger());
         }
     }
@@ -202,16 +210,17 @@ class Email_messages
      * @param string $recipient_email Recipient email address.
      * @param array $settings App settings.
      */
-    public function send_password(
-        string $password,
-        string $recipient_email,
-        array $settings
-    ): void {
-        $html = $this->CI->load->view('emails/account_recovery_email', [
-            'subject'  => lang('new_account_password'),
-            'message'  => str_replace('$password', '<strong>' . $password . '</strong>', lang('new_password_is')),
-            'settings' => $settings,
-        ], TRUE);
+    public function send_password(string $password, string $recipient_email, array $settings): void
+    {
+        $html = $this->CI->load->view(
+            'emails/account_recovery_email',
+            [
+                'subject' => lang('new_account_password'),
+                'message' => str_replace('$password', '<strong>' . $password . '</strong>', lang('new_password_is')),
+                'settings' => $settings
+            ],
+            true
+        );
 
         $this->CI->email->from($settings['company_email'], $settings['company_email']);
 
@@ -221,7 +230,7 @@ class Email_messages
 
         $this->CI->email->message($html);
 
-        if (!$this->CI->email->send(FALSE)) {
+        if (!$this->CI->email->send(false)) {
             throw new RuntimeException('Email was not sent: ' . $this->CI->email->print_debugger());
         }
     }

@@ -12,7 +12,7 @@
 <head>
     <title>
         <?= $subject ?> |
-        <?= vars("company_name") ?>
+        <?= vars('company_name') ?>
     </title>
 </head>
 
@@ -37,8 +37,8 @@
         <div id="footer" style="padding: 10px; text-align: center; margin-top: 10px;
                 border-top: 1px solid #EEE; background: #53B483;">
 
-            <a href="<?= site_url("/login") ?>" style="text-decoration: none;">
-                <?= vars("company_name") ?>
+            <a href="<?= site_url('/login') ?>" style="text-decoration: none;">
+                <?= vars('company_name') ?>
             </a>
             |
             <a href="<?= $settings['company_link'] ?>" style="text-decoration: none;">

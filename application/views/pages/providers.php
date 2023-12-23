@@ -1,6 +1,6 @@
-<?php extend('layouts/backend_layout') ?>
+<?php extend('layouts/backend_layout'); ?>
 
-<?php section('content') ?>
+<?php section('content'); ?>
 
 <div class="container-fluid backend-page" id="providers-page">
     <div class="row" id="providers">
@@ -67,8 +67,8 @@
             </ul>
 
             <?php
-            // This form message is outside the details view, so that it can be
-            // visible when the user has working plan view active.
+// This form message is outside the details view, so that it can be
+// visible when the user has working plan view active.
 ?>
 
             <div class="form-message alert" style="display:none;"></div>
@@ -92,7 +92,9 @@
                                            accept="image/*">
                                     <div class="form-text text-muted">
                                         <small>
-                                            The <?= lang('provider') ?>  <?= lang('image will be displayed in many places of the app, including the booking page and the notification emails (image file, max 2MB).') ?>
+                                            The <?= lang('provider') ?>  <?= lang(
+      'image will be displayed in many places of the app, including the booking page and the notification emails (image file, max 2MB).'
+  ) ?>
                                         </small>
                                     </div>
 
@@ -236,7 +238,7 @@
                                         <option value="<?= $available_language ?>">
                                             <?= ucfirst($available_language) ?>
                                         </option>
-                                    <?php endforeach ?>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
 
@@ -246,9 +248,9 @@
                                     <span class="text-danger" hidden>*</span>
                                 </label>
                                 <?php component('timezone_dropdown', [
-                                    'attributes'        => 'id="timezone" class="form-control required" disabled',
+                                    'attributes' => 'id="timezone" class="form-control required" disabled',
                                     'grouped_timezones' => vars('grouped_timezones')
-                                ]) ?>
+                                ]); ?>
                             </div>
 
                             <div>
@@ -261,54 +263,52 @@
                                     <label class="form-label" for="bank_name">
                                         <?= lang('Bank Name') ?><span class="text-danger" hidden>*</span>
                                     </label>
-                                    <?php
-                        $banks = [
-                            "Access Bank"                            => "044",
-                            "Access Bank (Diamond)"                  => "063",
-                            "ALAT by WEMA"                           => "035A",
-                            "ASO Savings and Loans"                  => "401",
-                            "Bowen Microfinance Bank"                => "50931",
-                            "CEMCS Microfinance Bank"                => "50823",
-                            "Citibank Nigeria"                       => "023",
-                            "Ecobank Nigeria"                        => "050",
-                            "Ekondo Microfinance Bank"               => "562",
-                            "Eyowo"                                  => "50126",
-                            "Fidelity Bank"                          => "070",
-                            "First Bank of Nigeria"                  => "011",
-                            "First City Monument Bank"               => "214",
-                            "FSDH Merchant Bank Limited"             => "501",
-                            "Globus Bank"                            => "00103",
-                            "Guaranty Trust Bank"                    => "058",
-                            "Hackman Microfinance Bank"              => "51251",
-                            "Hasal Microfinance Bank"                => "50383",
-                            "Heritage Bank"                          => "030",
-                            "Ibile Microfinance Bank"                => "51244",
-                            "Jaiz Bank"                              => "301",
-                            "Keystone Bank"                          => "082",
-                            "Kuda Bank"                              => "50211",
-                            "Lagos Building Investment Company Plc." => "90052",
-                            "One Finance"                            => "565",
-                            "Parallex Bank"                          => "526",
-                            "Parkway - ReadyCash"                    => "311",
-                            "Polaris Bank"                           => "076",
-                            "Providus Bank"                          => "101",
-                            "Rubies MFB"                             => "125",
-                            "Sparkle Microfinance Bank"              => "51310",
-                            "Stanbic IBTC Bank"                      => "221",
-                            "Standard Chartered Bank"                => "068",
-                            "Sterling Bank"                          => "232",
-                            "Suntrust Bank"                          => "100",
-                            "TAJ Bank"                               => "302",
-                            "TCF MFB"                                => "51211",
-                            "Titan Bank"                             => "102",
-                            "Union Bank of Nigeria"                  => "032",
-                            "United Bank For Africa"                 => "033",
-                            "Unity Bank"                             => "215",
-                            "VFD"                                    => "566",
-                            "Wema Bank"                              => "035",
-                            "Zenith Bank"                            => "057"
-                        ];
-?>
+                                    <?php $banks = [
+                                        'Access Bank' => '044',
+                                        'Access Bank (Diamond)' => '063',
+                                        'ALAT by WEMA' => '035A',
+                                        'ASO Savings and Loans' => '401',
+                                        'Bowen Microfinance Bank' => '50931',
+                                        'CEMCS Microfinance Bank' => '50823',
+                                        'Citibank Nigeria' => '023',
+                                        'Ecobank Nigeria' => '050',
+                                        'Ekondo Microfinance Bank' => '562',
+                                        'Eyowo' => '50126',
+                                        'Fidelity Bank' => '070',
+                                        'First Bank of Nigeria' => '011',
+                                        'First City Monument Bank' => '214',
+                                        'FSDH Merchant Bank Limited' => '501',
+                                        'Globus Bank' => '00103',
+                                        'Guaranty Trust Bank' => '058',
+                                        'Hackman Microfinance Bank' => '51251',
+                                        'Hasal Microfinance Bank' => '50383',
+                                        'Heritage Bank' => '030',
+                                        'Ibile Microfinance Bank' => '51244',
+                                        'Jaiz Bank' => '301',
+                                        'Keystone Bank' => '082',
+                                        'Kuda Bank' => '50211',
+                                        'Lagos Building Investment Company Plc.' => '90052',
+                                        'One Finance' => '565',
+                                        'Parallex Bank' => '526',
+                                        'Parkway - ReadyCash' => '311',
+                                        'Polaris Bank' => '076',
+                                        'Providus Bank' => '101',
+                                        'Rubies MFB' => '125',
+                                        'Sparkle Microfinance Bank' => '51310',
+                                        'Stanbic IBTC Bank' => '221',
+                                        'Standard Chartered Bank' => '068',
+                                        'Sterling Bank' => '232',
+                                        'Suntrust Bank' => '100',
+                                        'TAJ Bank' => '302',
+                                        'TCF MFB' => '51211',
+                                        'Titan Bank' => '102',
+                                        'Union Bank of Nigeria' => '032',
+                                        'United Bank For Africa' => '033',
+                                        'Unity Bank' => '215',
+                                        'VFD' => '566',
+                                        'Wema Bank' => '035',
+                                        'Zenith Bank' => '057'
+                                    ]; ?>
 
                                     <select id="bank-name" class="form-control required" maxlength="128" disabled>
                                         <option value="">Select Bank</option>
@@ -471,16 +471,16 @@
                         <tbody><!-- Dynamic Content --></tbody>
                     </table>
 
-                    <?php component('working_plan_exceptions_modal') ?>
+                    <?php component('working_plan_exceptions_modal'); ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<?php end_section('content') ?>
+<?php end_section('content'); ?>
 
-<?php section('scripts') ?>
+<?php section('scripts'); ?>
 
 <script src="<?= asset_url('assets/vendor/jquery-jeditable/jquery.jeditable.min.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/date.js') ?>"></script>
@@ -493,4 +493,4 @@
 <script src="<?= asset_url('assets/js/http/account_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/http/providers_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/pages/providers.js') ?>"></script>
-<?php end_section('scripts') ?>
+<?php end_section('scripts'); ?>

@@ -1,12 +1,12 @@
-<?php extend('layouts/backend_layout') ?>
+<?php extend('layouts/backend_layout'); ?>
 
-<?php section('content') ?>
+<?php section('content'); ?>
 
 <div id="business-logic-page" class="container backend-page">
     <div id="business-logic">
         <div class="row">
             <div class="col-sm-3 offset-sm-1">
-                <?php component('settings_nav') ?>
+                <?php component('settings_nav'); ?>
             </div>
             <div class="col-sm-6">
                 <form>
@@ -21,7 +21,7 @@
                                     <i class="fas fa-check-square me-2"></i>
                                     <?= lang('save') ?>
                                 </button>
-                            <?php endif ?>
+                            <?php endif; ?>
                         </div>
 
                         <h5 class="text-black-50 mb-3 fw-light"><?= lang('working_plan') ?></h5>
@@ -57,7 +57,7 @@
                         <div class="mt-2">
                             <button type="button" class="add-break btn btn-primary">
                                 <i class="fas fa-plus-square me-2"></i>
-                                <?= lang('add_break'); ?>
+                                <?= lang('add_break') ?>
                             </button>
                         </div>
 
@@ -75,7 +75,9 @@
                             <tbody><!-- Dynamic Content --></tbody>
                         </table>
 
-                        <h5 class="text-black-50 mb-3 fw-light"><?= lang('allow_rescheduling_cancellation_before') ?></h5>
+                        <h5 class="text-black-50 mb-3 fw-light"><?= lang(
+                            'allow_rescheduling_cancellation_before'
+                        ) ?></h5>
 
                         <div class="mb-5">
                             <label for="book-advance-timeout" class="form-label">
@@ -115,7 +117,9 @@
                             <?= lang('appointment_status_options_info') ?>
                         </p>
 
-                        <?php component('appointment_status_options', ['attributes' => 'id="appointment-status-options"']) ?>
+                        <?php component('appointment_status_options', [
+                            'attributes' => 'id="appointment-status-options"'
+                        ]); ?>
                     </fieldset>
                 </form>
             </div>
@@ -123,9 +127,9 @@
     </div>
 </div>
 
-<?php end_section('content') ?>
+<?php end_section('content'); ?>
 
-<?php section('scripts') ?>
+<?php section('scripts'); ?>
 
 <script src="<?= asset_url('assets/vendor/jquery-jeditable/jquery.jeditable.min.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/date.js') ?>"></script>
@@ -136,5 +140,5 @@
 <script src="<?= asset_url('assets/js/http/business_settings_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/pages/business_settings.js') ?>"></script>
 
-<?php end_section('scripts') ?>
+<?php end_section('scripts'); ?>
 

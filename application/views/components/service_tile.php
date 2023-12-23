@@ -9,8 +9,7 @@
  * @var string $fee
  * @var string $duration
  */
-$fmt = numfmt_create('en_NG', NumberFormatter::CURRENCY);
-?>
+$fmt = numfmt_create('en_NG', NumberFormatter::CURRENCY); ?>
 <label for="service-<?= $id ?>" class="w-full cursor-pointer m-0 relative text-sm">
     <input id="service-<?= $id ?>" name="select-service-tile" type="radio" value="<?= $id ?>" class="peer radio-primary checked:radio-primary active:radio-primary absolute 
            top-4 left-5 w-4 h-4 cursor-pointer" />
@@ -30,7 +29,7 @@ $fmt = numfmt_create('en_NG', NumberFormatter::CURRENCY);
             <div class="text-gray-400 text-xs font-bold leading-none cursor-pointer">
                 <?= numfmt_format_currency($fmt, $fee, 'NGN') ?>
             </div>
-            <?php }?> -->
+            <?php } ?> -->
             <div class="text-right text-gray-400 text-xs font-normal leading-none cursor-pointer">
                 <?= $duration ?> min
             </div>

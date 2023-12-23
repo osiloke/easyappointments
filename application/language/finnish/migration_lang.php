@@ -35,7 +35,7 @@
  * @since	Version 3.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 $lang['migration_none_found'] = 'Migraatioita ei löytynyt.';
 $lang['migration_not_found'] = 'Migraatioita ei löytynyt versiolle: %s.';

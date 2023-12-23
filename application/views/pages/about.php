@@ -1,6 +1,6 @@
-<?php extend('layouts/backend_layout') ?>
+<?php extend('layouts/backend_layout'); ?>
 
-<?php section('content') ?>
+<?php section('content'); ?>
 
 <div id="about-page" class="container backend-page">
     <div id="about" class="col-lg-8 offset-lg-2">
@@ -98,4 +98,4 @@
     </div>
 </div>
 
-<?php end_section('content') ?>
+<?php end_section('content'); ?>

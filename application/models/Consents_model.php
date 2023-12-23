@@ -18,12 +18,13 @@
  *
  * @package Models
  */
-class Consents_model extends EA_Model {
+class Consents_model extends EA_Model
+{
     /**
      * @var array
      */
     protected array $casts = [
-        'id' => 'integer',
+        'id' => 'integer'
     ];
 
     /**
@@ -39,16 +40,12 @@ class Consents_model extends EA_Model {
     {
         $this->validate($consent);
 
-        if (empty($consent['id']))
-        {
+        if (empty($consent['id'])) {
             return $this->insert($consent);
-        }
-        else
-        {
+        } else {
             return $this->update($consent);
         }
     }
-
 
     /**
      * Validate the consent data.
@@ -60,14 +57,13 @@ class Consents_model extends EA_Model {
     public function validate(array $consent)
     {
         if (
-            empty($consent['first_name'])
-            || empty($consent['last_name'])
-            || empty($consent['email'])
-            || empty($consent['ip'])
-            || empty($consent['type'])
-        )
-        {
-            throw new InvalidArgumentException('Not all required fields are provided: ' . print_r($consent, TRUE));
+            empty($consent['first_name']) ||
+            empty($consent['last_name']) ||
+            empty($consent['email']) ||
+            empty($consent['ip']) ||
+            empty($consent['type'])
+        ) {
+            throw new InvalidArgumentException('Not all required fields are provided: ' . print_r($consent, true));
         }
     }
 
@@ -85,8 +81,7 @@ class Consents_model extends EA_Model {
         $consent['create_datetime'] = date('Y-m-d H:i:s');
         $consent['update_datetime'] = date('Y-m-d H:i:s');
 
-        if ( ! $this->db->insert('consents', $consent))
-        {
+        if (!$this->db->insert('consents', $consent)) {
             throw new RuntimeException('Could not insert consent.');
         }
 
@@ -106,8 +101,7 @@ class Consents_model extends EA_Model {
     {
         $consent['update_datetime'] = date('Y-m-d H:i:s');
 
-        if ( ! $this->db->update('consents', $consent, ['id' => $consent['id']]))
-        {
+        if (!$this->db->update('consents', $consent, ['id' => $consent['id']])) {
             throw new RuntimeException('Could not update consent.');
         }
 
@@ -122,14 +116,11 @@ class Consents_model extends EA_Model {
      *
      * @throws RuntimeException
      */
-    public function delete(int $consent_id, bool $force_delete = FALSE)
+    public function delete(int $consent_id, bool $force_delete = false)
     {
-        if ($force_delete)
-        {
+        if ($force_delete) {
             $this->db->delete('consents', ['id' => $consent_id]);
-        }
-        else
-        {
+        } else {
             $this->db->update('consents', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $consent_id]);
         }
     }
@@ -142,17 +133,15 @@ class Consents_model extends EA_Model {
      *
      * @return array Returns an array with the consent data.
      */
-    public function find(int $consent_id, bool $with_trashed = FALSE): array
+    public function find(int $consent_id, bool $with_trashed = false): array
     {
-        if ( ! $with_trashed)
-        {
+        if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
         }
 
         $consent = $this->db->get_where('consents', ['id' => $consent_id])->row_array();
 
-        if ( ! $consent)
-        {
+        if (!$consent) {
             throw new InvalidArgumentException('The provided consent ID was not found in the database: ' . $consent_id);
         }
 
@@ -173,21 +162,18 @@ class Consents_model extends EA_Model {
      */
     public function value(int $consent_id, string $field): mixed
     {
-        if (empty($field))
-        {
+        if (empty($field)) {
             throw new InvalidArgumentException('The field argument is cannot be empty.');
         }
 
-        if (empty($consent_id))
-        {
+        if (empty($consent_id)) {
             throw new InvalidArgumentException('The consent ID argument cannot be empty.');
         }
 
         // Check whether the consent exists.
         $query = $this->db->get_where('consents', ['id' => $consent_id]);
 
-        if ( ! $query->num_rows())
-        {
+        if (!$query->num_rows()) {
             throw new InvalidArgumentException('The provided consent ID was not found in the database: ' . $consent_id);
         }
 
@@ -196,8 +182,7 @@ class Consents_model extends EA_Model {
 
         $this->cast($consent);
 
-        if ( ! array_key_exists($field, $consent))
-        {
+        if (!array_key_exists($field, $consent)) {
             throw new InvalidArgumentException('The requested field was not found in the consent data: ' . $field);
         }
 
@@ -215,27 +200,28 @@ class Consents_model extends EA_Model {
      *
      * @return array Returns an array of consents.
      */
-    public function get(array|string $where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
-    {
-        if ($where !== NULL)
-        {
+    public function get(
+        array|string $where = null,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+        bool $with_trashed = false
+    ): array {
+        if ($where !== null) {
             $this->db->where($where);
         }
 
-        if ($order_by !== NULL)
-        {
+        if ($order_by !== null) {
             $this->db->order_by($order_by);
         }
 
-        if ( ! $with_trashed)
-        {
+        if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
         }
 
         $consents = $this->db->get('consents', $limit, $offset)->result_array();
 
-        foreach ($consents as &$consent)
-        {
+        foreach ($consents as &$consent) {
             $this->cast($consent);
         }
 
@@ -263,15 +249,18 @@ class Consents_model extends EA_Model {
      *
      * @return array Returns an array of consents.
      */
-    public function search(string $keyword, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
-    {
-        if ( ! $with_trashed)
-        {
+    public function search(
+        string $keyword,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+        bool $with_trashed = false
+    ): array {
+        if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
         }
 
-        $consents = $this
-            ->db
+        $consents = $this->db
             ->select()
             ->from('consents')
             ->group_start()
@@ -286,8 +275,7 @@ class Consents_model extends EA_Model {
             ->get()
             ->result_array();
 
-        foreach ($consents as &$consent)
-        {
+        foreach ($consents as &$consent) {
             $this->cast($consent);
         }
 
@@ -304,6 +292,6 @@ class Consents_model extends EA_Model {
      */
     public function load(array &$consent, array $resources)
     {
-        // Consents do not currently have any related resources. 
+        // Consents do not currently have any related resources.
     }
 }

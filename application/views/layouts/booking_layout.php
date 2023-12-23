@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#F3F5F6">
     <meta name="google" content="notranslate">
 
-    <?php slot('meta') ?>
+    <?php slot('meta'); ?>
 
     <title>
         <?= lang('page_title') . ' ' . vars('provider_data')['first_name'] . ' ' . vars('provider_data')['last_name'] ?>
@@ -60,39 +60,44 @@
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/layouts/booking_layout.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/general.css') ?>">
 
-    <?php component('company_color_style', ['company_color' => vars('company_color')]) ?>
+    <?php component('company_color_style', ['company_color' => vars('company_color')]); ?>
 
-    <?php slot('styles') ?>
+    <?php slot('styles'); ?>
 </head>
 
 <body data-theme="lofi" class="bg-gray-100">
     <div id="main" class="container">
-        <?php component('navbar', ['company_color' => vars('company_color')]) ?>
+        <?php component('navbar', ['company_color' => vars('company_color')]); ?>
         <div class="row wrapper">
 
             <div id="book-appointment-wizard" class="bg-transparent shadow-none">
 
-                <?php component('booking_header', ['company_name' => vars('company_name'), 'company_logo' => vars('company_logo')]) ?>
+                <?php component('booking_header', [
+                    'company_name' => vars('company_name'),
+                    'company_logo' => vars('company_logo')
+                ]); ?>
 
-                <?php slot('content') ?>
+                <?php slot('content'); ?>
 
-                <?php component('booking_footer', ['display_login_button' => vars('display_login_button')]) ?>
+                <?php component('booking_footer', ['display_login_button' => vars('display_login_button')]); ?>
 
             </div>
         </div>
     </div>
 
     <?php if (vars('display_cookie_notice') === '1'): ?>
-        <?php component('cookie_notice_modal', ['cookie_notice_content' => vars('cookie_notice_content')]) ?>
-    <?php endif ?>
+        <?php component('cookie_notice_modal', ['cookie_notice_content' => vars('cookie_notice_content')]); ?>
+    <?php endif; ?>
 
     <?php if (vars('display_terms_and_conditions') === '1'): ?>
-        <?php component('terms_and_conditions_modal', ['terms_and_conditions_content' => vars('terms_and_conditions_content')]) ?>
-    <?php endif ?>
+        <?php component('terms_and_conditions_modal', [
+            'terms_and_conditions_content' => vars('terms_and_conditions_content')
+        ]); ?>
+    <?php endif; ?>
 
     <?php if (vars('display_privacy_policy') === '1'): ?>
-        <?php component('privacy_policy_modal', ['privacy_policy_content' => vars('privacy_policy_content')]) ?>
-    <?php endif ?>
+        <?php component('privacy_policy_modal', ['privacy_policy_content' => vars('privacy_policy_content')]); ?>
+    <?php endif; ?>
 
     <script src="<?= asset_url('assets/vendor/jquery/jquery.min.js') ?>"></script>
     <script src="<?= asset_url('assets/vendor/cookieconsent/cookieconsent.min.js') ?>"></script>
@@ -117,13 +122,13 @@
     <script src="<?= asset_url('assets/js/layouts/booking_layout.js') ?>"></script>
     <script src="<?= asset_url('assets/js/http/localization_http_client.js') ?>"></script>
 
-    <?php component('js_vars_script') ?>
-    <?php component('js_lang_script') ?>
+    <?php component('js_vars_script'); ?>
+    <?php component('js_lang_script'); ?>
 
-    <?php component('google_analytics_script', ['google_analytics_code' => vars('google_analytics_code')]) ?>
-    <?php component('matomo_analytics_script', ['matomo_analytics_url' => vars('matomo_analytics_url')]) ?>
+    <?php component('google_analytics_script', ['google_analytics_code' => vars('google_analytics_code')]); ?>
+    <?php component('matomo_analytics_script', ['matomo_analytics_url' => vars('matomo_analytics_url')]); ?>
 
-    <?php slot('scripts') ?>
+    <?php slot('scripts'); ?>
 
 </body>
 

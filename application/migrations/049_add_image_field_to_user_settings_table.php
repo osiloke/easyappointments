@@ -28,7 +28,7 @@ class Migration_Add_image_field_to_user_settings_table extends CI_Migration
             $fields = [
                 'image' => [
                     'type' => 'LONGTEXT',
-                    'null' => TRUE
+                    'null' => true
                 ]
             ];
 

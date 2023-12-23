@@ -104,7 +104,7 @@
                             <?= e($appointment['location']) ?>
                         </td>
                     </tr>
-                <?php endif ?>
+                <?php endif; ?>
 
                 <?php if (!empty($appointment['notes'])): ?>
                     <tr>
@@ -115,7 +115,7 @@
                             <?= e($appointment['notes']) ?>
                         </td>
                     </tr>
-                <?php endif ?>
+                <?php endif; ?>
             </table>
 
             <h2>

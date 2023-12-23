@@ -15,14 +15,14 @@
  * @property CI_DB_query_builder $db
  * @property CI_DB_forge $dbforge
  */
-class Migration_Add_is_paid_column_to_appointments_table extends CI_Migration {
+class Migration_Add_is_paid_column_to_appointments_table extends CI_Migration
+{
     /**
      * Upgrade method.
      */
     public function up()
     {
-        if ( ! $this->db->field_exists('is_paid', 'appointments'))
-        {
+        if (!$this->db->field_exists('is_paid', 'appointments')) {
             $fields = [
                 'is_paid' => [
                     'type' => 'TINYINT',
@@ -32,7 +32,6 @@ class Migration_Add_is_paid_column_to_appointments_table extends CI_Migration {
             ];
 
             $this->dbforge->add_column('appointments', $fields);
-
         }
     }
 
@@ -41,8 +40,7 @@ class Migration_Add_is_paid_column_to_appointments_table extends CI_Migration {
      */
     public function down()
     {
-        if ($this->db->field_exists('is_paid', 'appointments'))
-        {
+        if ($this->db->field_exists('is_paid', 'appointments')) {
             $this->dbforge->drop_column('appointments', 'is_paid');
         }
     }

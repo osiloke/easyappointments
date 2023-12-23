@@ -1,6 +1,6 @@
-<?php extend('layouts/account_layout') ?>
+<?php extend('layouts/account_layout'); ?>
 
-<?php section('content') ?>
+<?php section('content'); ?>
 
 <h2><?= lang('forgot_your_password') ?></h2>
 
@@ -41,9 +41,9 @@
     </div>
 </form>
 
-<?php end_section('content') ?>
+<?php end_section('content'); ?>
 
-<?php section('scripts') ?>
+<?php section('scripts'); ?>
 
 <script src="<?= asset_url('assets/vendor/@fortawesome-fontawesome-free/fontawesome.min.js') ?>"></script>
 <script src="<?= asset_url('assets/vendor/@fortawesome-fontawesome-free/solid.min.js') ?>"></script>
@@ -51,4 +51,4 @@
 <script src="<?= asset_url('assets/js/http/recovery_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/pages/recovery.js') ?>"></script>
 
-<?php end_section('scripts') ?>
+<?php end_section('scripts'); ?>

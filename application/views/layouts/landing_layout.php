@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#F3F5F6">
     <meta name="google" content="notranslate">
 
-    <?php slot('meta') ?>
+    <?php slot('meta'); ?>
 
     <title>
         Book with
@@ -45,21 +45,21 @@
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/general.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/layouts/landing_layout.css') ?>">
 
-    <?php component('company_color_style', ['company_color' => vars('company_color')]) ?>
+    <?php component('company_color_style', ['company_color' => vars('company_color')]); ?>
 
-    <?php slot('styles') ?>
+    <?php slot('styles'); ?>
 </head>
 
 <body data-theme="lofi" class="bg-gray-100">
-    <?php slot('content') ?>
+    <?php slot('content'); ?>
 
-    <?php component('js_vars_script') ?>
-    <?php component('js_lang_script') ?>
+    <?php component('js_vars_script'); ?>
+    <?php component('js_lang_script'); ?>
 
-    <?php component('google_analytics_script', ['google_analytics_code' => vars('google_analytics_code')]) ?>
-    <?php component('matomo_analytics_script', ['matomo_analytics_url' => vars('matomo_analytics_url')]) ?>
+    <?php component('google_analytics_script', ['google_analytics_code' => vars('google_analytics_code')]); ?>
+    <?php component('matomo_analytics_script', ['matomo_analytics_url' => vars('matomo_analytics_url')]); ?>
 
-    <?php slot('scripts') ?>
+    <?php slot('scripts'); ?>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://unpkg.com/taos@1.0.5/dist/taos.js"></script>
     <script>

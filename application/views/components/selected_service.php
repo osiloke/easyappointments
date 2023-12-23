@@ -1,5 +1,4 @@
-<?php
-?>
+
 <div class="space-y-5 display-selected-service-tile invisible">
     <div class=" text-[#888888] text-left uppercase" style="font: 700 12px/18px 'Inter', sans-serif">
         Selected Service

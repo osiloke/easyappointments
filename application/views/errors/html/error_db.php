@@ -15,7 +15,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <title>Database Error |
-        <?= vars("company_name") ?>
+        <?= vars('company_name') ?>
     </title>
     <style>
         #error-container {
@@ -78,7 +78,7 @@
         <p>
             <small>
 
-                <a href="<?= site_url() ?>"><?= vars("company_name") ?></a>
+                <a href="<?= site_url() ?>"><?= vars('company_name') ?></a>
             </small>
         </p>
     </div>

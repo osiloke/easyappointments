@@ -12,7 +12,7 @@
         <optgroup label="<?= $continent ?>">
             <?php foreach ($entries as $value => $name): ?>
                 <option value="<?= $value ?>"><?= $name ?></option>
-            <?php endforeach ?>
+            <?php endforeach; ?>
         </optgroup>
-    <?php endforeach ?>
+    <?php endforeach; ?>
 </select>

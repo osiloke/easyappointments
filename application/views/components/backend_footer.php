@@ -7,7 +7,7 @@
 ?>
 <div id="footer" class="d-lg-flex justify-content-lg-start align-items-lg-center p-2 text-center text-lg-left mt-auto">
     <div class="mb-3 me-lg-5 mb-lg-0">
-        <a href="<?= site_url('') ?>" target="_blank"><?= vars("company_name") ?></a>
+        <a href="<?= site_url('') ?>" target="_blank"><?= vars('company_name') ?></a>
     </div>
 
 
@@ -20,7 +20,7 @@
     </div>
 
     <div class="mb-3 me-lg-5 mb-lg-0">
-        <a href="<?= site_url("") ?>"">
+        <a href="<?= site_url('') ?>"">
             <?= lang('go_to_booking_page') ?>
         </a>
     </div>

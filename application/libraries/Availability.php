@@ -57,12 +57,15 @@ class Availability
      *
      * @throws Exception
      */
-    public function get_available_hours(string $date, array $service, array $provider, int $exclude_appointment_id = NULL): array
-    {
+    public function get_available_hours(
+        string $date,
+        array $service,
+        array $provider,
+        int $exclude_appointment_id = null
+    ): array {
         if ($service['attendants_number'] > 1) {
             $available_hours = $this->consider_multiple_attendants($date, $service, $provider, $exclude_appointment_id);
-        }
-        else {
+        } else {
             $available_periods = $this->get_available_periods($date, $provider, $exclude_appointment_id);
 
             $available_hours = $this->generate_available_hours($date, $service, $available_periods);
@@ -88,22 +91,31 @@ class Availability
      *
      * @throws Exception
      */
-    protected function get_available_periods(string $date, array $provider, int $exclude_appointment_id = NULL): array
+    protected function get_available_periods(string $date, array $provider, int $exclude_appointment_id = null): array
     {
         // Get the service, provider's working plan and provider appointments.
-        $working_plan = json_decode($provider['settings']['working_plan'], TRUE);
+        $working_plan = json_decode($provider['settings']['working_plan'], true);
 
         // Get the provider's working plan exceptions.
         $working_plan_exceptions_json = $provider['settings']['working_plan_exceptions'];
 
-        $working_plan_exceptions = $working_plan_exceptions_json ? json_decode($provider['settings']['working_plan_exceptions'], TRUE) : NULL;
+        $working_plan_exceptions = $working_plan_exceptions_json
+            ? json_decode($provider['settings']['working_plan_exceptions'], true)
+            : null;
 
         $escaped_provider_id = $this->CI->db->escape($provider['id']);
 
         $escaped_date = $this->CI->db->escape($date);
 
-        $where = 'id_users_provider = ' . $escaped_provider_id
-            . ' AND DATE(start_datetime) <= ' . $escaped_date . ' AND DATE(end_datetime) >= ' . $escaped_date . ' AND status = ' . '"Booked"';
+        $where =
+            'id_users_provider = ' .
+            $escaped_provider_id .
+            ' AND DATE(start_datetime) <= ' .
+            $escaped_date .
+            ' AND DATE(end_datetime) >= ' .
+            $escaped_date .
+            ' AND status = ' .
+            '"Booked"';
 
         // Sometimes it might be necessary to exclude an appointment from the calculation (e.g. when editing an
         // existing appointment).
@@ -113,17 +125,14 @@ class Availability
         }
 
         $appointments = array_values(
-            array_merge(
-                $this->CI->appointments_model->get($where),
-                $this->CI->unavailabilities_model->get($where),
-            )
+            array_merge($this->CI->appointments_model->get($where), $this->CI->unavailabilities_model->get($where))
         );
 
         // Find the empty spaces on the plan. The first split between the plan is due to a break (if any). After that
         // every reserved appointment is considered to be a taken space in the plan.
         $working_day = strtolower(date('l', strtotime($date)));
 
-        $date_working_plan = $working_plan[$working_day] ?? NULL;
+        $date_working_plan = $working_plan[$working_day] ?? null;
 
         // Search if the $date is a custom availability period added outside the normal working plan.
         if (isset($working_plan_exceptions[$date])) {
@@ -135,7 +144,7 @@ class Availability
         if (isset($date_working_plan['breaks'])) {
             $periods[] = [
                 'start' => $date_working_plan['start'],
-                'end'   => $date_working_plan['end']
+                'end' => $date_working_plan['end']
             ];
 
             $day_start = new DateTime($date_working_plan['start']);
@@ -162,28 +171,28 @@ class Availability
                     $period_start = new DateTime($period['start']);
                     $period_end = new DateTime($period['end']);
 
-                    $remove_current_period = FALSE;
+                    $remove_current_period = false;
 
                     if ($break_start > $period_start && $break_start < $period_end && $break_end > $period_start) {
                         $periods[] = [
                             'start' => $period_start->format('H:i'),
-                            'end'   => $break_start->format('H:i')
+                            'end' => $break_start->format('H:i')
                         ];
 
-                        $remove_current_period = TRUE;
+                        $remove_current_period = true;
                     }
 
                     if ($break_start < $period_end && $break_end > $period_start && $break_end < $period_end) {
                         $periods[] = [
                             'start' => $break_end->format('H:i'),
-                            'end'   => $period_end->format('H:i')
+                            'end' => $period_end->format('H:i')
                         ];
 
-                        $remove_current_period = TRUE;
+                        $remove_current_period = true;
                     }
 
                     if ($break_start == $period_start && $break_end == $period_end) {
-                        $remove_current_period = TRUE;
+                        $remove_current_period = true;
                     }
 
                     if ($remove_current_period) {
@@ -206,17 +215,23 @@ class Availability
                 $period_start = new DateTime($date . ' ' . $period['start']);
                 $period_end = new DateTime($date . ' ' . $period['end']);
 
-                if ($appointment_start <= $period_start && $appointment_end <= $period_end && $appointment_end <= $period_start) {
+                if (
+                    $appointment_start <= $period_start &&
+                    $appointment_end <= $period_end &&
+                    $appointment_end <= $period_start
+                ) {
                     // The appointment does not belong in this time period, so we  will not change anything.
                     continue;
-                }
-                else {
-                    if ($appointment_start <= $period_start && $appointment_end <= $period_end && $appointment_end >= $period_start) {
+                } else {
+                    if (
+                        $appointment_start <= $period_start &&
+                        $appointment_end <= $period_end &&
+                        $appointment_end >= $period_start
+                    ) {
                         // The appointment starts before the period and finishes somewhere inside. We will need to break
                         // this period and leave the available part.
                         $period['start'] = $appointment_end->format('H:i');
-                    }
-                    else {
+                    } else {
                         if ($appointment_start >= $period_start && $appointment_end < $period_end) {
                             // The appointment is inside the time period, so we will split the period into two new
                             // others.
@@ -224,30 +239,38 @@ class Availability
 
                             $periods[] = [
                                 'start' => $period_start->format('H:i'),
-                                'end'   => $appointment_start->format('H:i')
+                                'end' => $appointment_start->format('H:i')
                             ];
 
                             $periods[] = [
                                 'start' => $appointment_end->format('H:i'),
-                                'end'   => $period_end->format('H:i')
+                                'end' => $period_end->format('H:i')
                             ];
-                        }
-                        elseif ($appointment_start == $period_start && $appointment_end == $period_end) {
+                        } elseif ($appointment_start == $period_start && $appointment_end == $period_end) {
                             unset($periods[$index]); // The whole period is blocked so remove it from the available periods array.
-                        }
-                        else {
-                            if ($appointment_start >= $period_start && $appointment_end >= $period_start && $appointment_start <= $period_end) {
+                        } else {
+                            if (
+                                $appointment_start >= $period_start &&
+                                $appointment_end >= $period_start &&
+                                $appointment_start <= $period_end
+                            ) {
                                 // The appointment starts in the period and finishes out of it. We will need to remove
                                 // the time that is taken from the appointment.
                                 $period['end'] = $appointment_start->format('H:i');
-                            }
-                            else {
-                                if ($appointment_start >= $period_start && $appointment_end >= $period_end && $appointment_start >= $period_end) {
+                            } else {
+                                if (
+                                    $appointment_start >= $period_start &&
+                                    $appointment_end >= $period_end &&
+                                    $appointment_start >= $period_end
+                                ) {
                                     // The appointment does not belong in the period so do not change anything.
                                     continue;
-                                }
-                                else {
-                                    if ($appointment_start <= $period_start && $appointment_end >= $period_end && $appointment_start <= $period_end) {
+                                } else {
+                                    if (
+                                        $appointment_start <= $period_start &&
+                                        $appointment_end >= $period_end &&
+                                        $appointment_start <= $period_end
+                                    ) {
                                         // The appointment is bigger than the period, so this period needs to be removed.
                                         unset($periods[$index]);
                                     }
@@ -280,7 +303,7 @@ class Availability
         string $date,
         array $service,
         array $empty_periods,
-        int $duration = NULL
+        int $duration = null
     ): array {
         $available_hours = [];
 
@@ -295,7 +318,7 @@ class Availability
 
             $diff = $current_hour->diff($end_hour);
 
-            while (($diff->h * 60 + $diff->i) >= (int) $service['duration'] && $diff->invert === 0) {
+            while ($diff->h * 60 + $diff->i >= (int) $service['duration'] && $diff->invert === 0) {
                 $available_hours[] = $current_hour->format('H:i');
 
                 $current_hour->add(new DateInterval('PT' . $interval . 'M'));
@@ -325,22 +348,22 @@ class Availability
         string $date,
         array $service,
         array $provider,
-        int $exclude_appointment_id = NULL
+        int $exclude_appointment_id = null
     ): array {
         $unavailability_events = $this->CI->appointments_model->get([
-            'is_unavailability'       => TRUE,
+            'is_unavailability' => true,
             'DATE(start_datetime) <=' => $date,
-            'DATE(end_datetime) >='   => $date,
-            'id_users_provider'       => $provider['id']
+            'DATE(end_datetime) >=' => $date,
+            'id_users_provider' => $provider['id']
         ]);
 
-        $working_plan = json_decode($provider['settings']['working_plan'], TRUE);
+        $working_plan = json_decode($provider['settings']['working_plan'], true);
 
-        $working_plan_exceptions = json_decode($provider['settings']['working_plan_exceptions'], TRUE);
+        $working_plan_exceptions = json_decode($provider['settings']['working_plan_exceptions'], true);
 
         $working_day = strtolower(date('l', strtotime($date)));
 
-        $date_working_plan = $working_plan[$working_day] ?? NULL;
+        $date_working_plan = $working_plan[$working_day] ?? null;
 
         // Search if the $date is a custom availability period added outside the normal working plan.
         if (isset($working_plan_exceptions[$date])) {
@@ -354,7 +377,7 @@ class Availability
         $periods = [
             [
                 'start' => new DateTime($date . ' ' . $date_working_plan['start']),
-                'end'   => new DateTime($date . ' ' . $date_working_plan['end'])
+                'end' => new DateTime($date . ' ' . $date_working_plan['end'])
             ]
         ];
 
@@ -444,12 +467,17 @@ class Availability
                     continue;
                 }
 
-                if ($break_start >= $period_start && $break_start <= $period_end && $break_end >= $period_start && $break_end <= $period_end) {
+                if (
+                    $break_start >= $period_start &&
+                    $break_start <= $period_end &&
+                    $break_end >= $period_start &&
+                    $break_end <= $period_end
+                ) {
                     // middle
                     $period['end'] = $break_start;
                     $periods[] = [
                         'start' => $break_end,
-                        'end'   => $period_end
+                        'end' => $period_end
                     ];
 
                     continue;
@@ -494,25 +522,38 @@ class Availability
 
                 $period_end = $period['end'];
 
-                if ($unavailability_start <= $period_start && $unavailability_end >= $period_start && $unavailability_end <= $period_end) {
+                if (
+                    $unavailability_start <= $period_start &&
+                    $unavailability_end >= $period_start &&
+                    $unavailability_end <= $period_end
+                ) {
                     // Left
                     $period['start'] = $unavailability_end;
 
                     continue;
                 }
 
-                if ($unavailability_start >= $period_start && $unavailability_start <= $period_end && $unavailability_end >= $period_start && $unavailability_end <= $period_end) {
+                if (
+                    $unavailability_start >= $period_start &&
+                    $unavailability_start <= $period_end &&
+                    $unavailability_end >= $period_start &&
+                    $unavailability_end <= $period_end
+                ) {
                     // Middle
                     $period['end'] = $unavailability_start;
                     $periods[] = [
                         'start' => $unavailability_end,
-                        'end'   => $period_end
+                        'end' => $period_end
                     ];
 
                     continue;
                 }
 
-                if ($unavailability_start >= $period_start && $unavailability_start <= $period_end && $unavailability_end >= $period_end) {
+                if (
+                    $unavailability_start >= $period_start &&
+                    $unavailability_start <= $period_end &&
+                    $unavailability_end >= $period_end
+                ) {
                     // Right
                     $period['end'] = $unavailability_start;
 
@@ -578,8 +619,11 @@ class Availability
      *
      * @throws Exception
      */
-    protected function consider_future_booking_limit(string $selected_date, array $available_hours, array $provider): array
-    {
+    protected function consider_future_booking_limit(
+        string $selected_date,
+        array $available_hours,
+        array $provider
+    ): array {
         $provider_timezone = new DateTimeZone($provider['timezone']);
 
         $future_booking_limit = setting('future_booking_limit'); // in days

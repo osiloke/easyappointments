@@ -1,5 +1,5 @@
-<?php extend('layouts/landing_layout') ?>
-<?php section('content') ?>
+<?php extend('layouts/landing_layout'); ?>
+<?php section('content'); ?>
 <div class="landing">
     <div class="">
         <div class="hero">
@@ -432,7 +432,7 @@
             </div>
         </div>
     </div>
-    <?php component('navbar', ['company_color' => vars('company_color')]) ?>
+    <?php component('navbar', ['company_color' => vars('company_color')]); ?>
 
 </div>
-<?php end_section('content') ?>
+<?php end_section('content'); ?>

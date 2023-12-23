@@ -18,14 +18,15 @@
  *
  * @package Models
  */
-class Webhooks_model extends EA_Model {
+class Webhooks_model extends EA_Model
+{
     /**
      * @var array
      */
     protected array $casts = [
         'id' => 'integer',
         'is_active' => 'boolean',
-        'is_ssl_verified' => 'boolean',
+        'is_ssl_verified' => 'boolean'
     ];
 
     /**
@@ -39,9 +40,8 @@ class Webhooks_model extends EA_Model {
         'secretToken' => 'secret_token',
         'isActive' => 'is_active',
         'isSslVerified' => 'is_ssl_verified',
-        'notes' => 'notes',
+        'notes' => 'notes'
     ];
-
 
     /**
      * Save (insert or update) a webhook.
@@ -56,16 +56,12 @@ class Webhooks_model extends EA_Model {
     {
         $this->validate($webhook);
 
-        if (empty($webhook['id']))
-        {
+        if (empty($webhook['id'])) {
             return $this->insert($webhook);
-        }
-        else
-        {
+        } else {
             return $this->update($webhook);
         }
     }
-
 
     /**
      * Validate the webhook data.
@@ -76,13 +72,8 @@ class Webhooks_model extends EA_Model {
      */
     public function validate(array $webhook)
     {
-        if (
-            empty($webhook['name'])
-            || empty($webhook['url'])
-            || empty($webhook['actions'])
-        )
-        {
-            throw new InvalidArgumentException('Not all required fields are provided: ' . print_r($webhook, TRUE));
+        if (empty($webhook['name']) || empty($webhook['url']) || empty($webhook['actions'])) {
+            throw new InvalidArgumentException('Not all required fields are provided: ' . print_r($webhook, true));
         }
     }
 
@@ -100,8 +91,7 @@ class Webhooks_model extends EA_Model {
         $webhook['create_datetime'] = date('Y-m-d H:i:s');
         $webhook['update_datetime'] = date('Y-m-d H:i:s');
 
-        if ( ! $this->db->insert('webhooks', $webhook))
-        {
+        if (!$this->db->insert('webhooks', $webhook)) {
             throw new RuntimeException('Could not insert webhook.');
         }
 
@@ -121,8 +111,7 @@ class Webhooks_model extends EA_Model {
     {
         $webhook['update_datetime'] = date('Y-m-d H:i:s');
 
-        if ( ! $this->db->update('webhooks', $webhook, ['id' => $webhook['id']]))
-        {
+        if (!$this->db->update('webhooks', $webhook, ['id' => $webhook['id']])) {
             throw new RuntimeException('Could not update webhook.');
         }
 
@@ -137,14 +126,11 @@ class Webhooks_model extends EA_Model {
      *
      * @throws RuntimeException
      */
-    public function delete(int $webhook_id, bool $force_delete = FALSE)
+    public function delete(int $webhook_id, bool $force_delete = false)
     {
-        if ($force_delete)
-        {
+        if ($force_delete) {
             $this->db->delete('webhooks', ['id' => $webhook_id]);
-        }
-        else
-        {
+        } else {
             $this->db->update('webhooks', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $webhook_id]);
         }
     }
@@ -157,17 +143,15 @@ class Webhooks_model extends EA_Model {
      *
      * @return array Returns an array with the webhook data.
      */
-    public function find(int $webhook_id, bool $with_trashed = FALSE): array
+    public function find(int $webhook_id, bool $with_trashed = false): array
     {
-        if ( ! $with_trashed)
-        {
+        if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
         }
 
         $webhook = $this->db->get_where('webhooks', ['id' => $webhook_id])->row_array();
 
-        if ( ! $webhook)
-        {
+        if (!$webhook) {
             throw new InvalidArgumentException('The provided webhook ID was not found in the database: ' . $webhook_id);
         }
 
@@ -188,21 +172,18 @@ class Webhooks_model extends EA_Model {
      */
     public function value(int $webhook_id, string $field): mixed
     {
-        if (empty($field))
-        {
+        if (empty($field)) {
             throw new InvalidArgumentException('The field argument is cannot be empty.');
         }
 
-        if (empty($webhook_id))
-        {
+        if (empty($webhook_id)) {
             throw new InvalidArgumentException('The webhook ID argument cannot be empty.');
         }
 
         // Check whether the webhook exists.
         $query = $this->db->get_where('webhooks', ['id' => $webhook_id]);
 
-        if ( ! $query->num_rows())
-        {
+        if (!$query->num_rows()) {
             throw new InvalidArgumentException('The provided webhook ID was not found in the database: ' . $webhook_id);
         }
 
@@ -211,8 +192,7 @@ class Webhooks_model extends EA_Model {
 
         $this->cast($webhook);
 
-        if ( ! array_key_exists($field, $webhook))
-        {
+        if (!array_key_exists($field, $webhook)) {
             throw new InvalidArgumentException('The requested field was not found in the webhook data: ' . $field);
         }
 
@@ -230,27 +210,28 @@ class Webhooks_model extends EA_Model {
      *
      * @return array Returns an array of webhooks.
      */
-    public function get(array|string $where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
-    {
-        if ($where !== NULL)
-        {
+    public function get(
+        array|string $where = null,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+        bool $with_trashed = false
+    ): array {
+        if ($where !== null) {
             $this->db->where($where);
         }
 
-        if ($order_by !== NULL)
-        {
+        if ($order_by !== null) {
             $this->db->order_by($order_by);
         }
 
-        if ( ! $with_trashed)
-        {
+        if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
         }
 
         $webhooks = $this->db->get('webhooks', $limit, $offset)->result_array();
 
-        foreach ($webhooks as &$webhook)
-        {
+        foreach ($webhooks as &$webhook) {
             $this->cast($webhook);
         }
 
@@ -278,15 +259,18 @@ class Webhooks_model extends EA_Model {
      *
      * @return array Returns an array of webhooks.
      */
-    public function search(string $keyword, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
-    {
-        if ( ! $with_trashed)
-        {
+    public function search(
+        string $keyword,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+        bool $with_trashed = false
+    ): array {
+        if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
         }
 
-        $webhooks = $this
-            ->db
+        $webhooks = $this->db
             ->select()
             ->from('webhooks')
             ->group_start()
@@ -300,8 +284,7 @@ class Webhooks_model extends EA_Model {
             ->get()
             ->result_array();
 
-        foreach ($webhooks as &$webhook)
-        {
+        foreach ($webhooks as &$webhook) {
             $this->cast($webhook);
         }
 
@@ -318,6 +301,6 @@ class Webhooks_model extends EA_Model {
      */
     public function load(array &$webhook, array $resources)
     {
-        // Webhooks do not currently have any related resources. 
+        // Webhooks do not currently have any related resources.
     }
 }

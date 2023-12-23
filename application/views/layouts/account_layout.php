@@ -8,10 +8,10 @@
     <meta name="theme-color" content="#35A768">
     <meta name="google" content="notranslate">
 
-    <?php slot('meta') ?>
+    <?php slot('meta'); ?>
 
     <title>
-        <?= vars('page_title') ?? lang('account') ?> | <?= vars("company_name") ?>
+        <?= vars('page_title') ?? lang('account') ?> | <?= vars('company_name') ?>
     </title>
 
     <link rel="icon" type="image/x-icon" href="<?= asset_url('assets/img/favicon.ico') ?>">
@@ -22,18 +22,18 @@
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/general.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/layouts/account_layout.css') ?>">
 
-    <?php slot('styles') ?>
+    <?php slot('styles'); ?>
 </head>
 
 <body>
     <div id="login-frame" class="frame-container">
 
-        <?php slot('content') ?>
+        <?php slot('content'); ?>
 
         <div class="mt-4">
             <small>
 
-                <a href="<?= site_url() ?>"><?= vars("company_name") ?></a>
+                <a href="<?= site_url() ?>"><?= vars('company_name') ?></a>
             </small>
         </div>
     </div>
@@ -59,10 +59,10 @@
     <script src="<?= asset_url('assets/js/http/account_http_client.js') ?>"></script>
     <script src="<?= asset_url('assets/js/http/localization_http_client.js') ?>"></script>
 
-    <?php component('js_vars_script') ?>
-    <?php component('js_lang_script') ?>
+    <?php component('js_vars_script'); ?>
+    <?php component('js_lang_script'); ?>
 
-    <?php slot('scripts') ?>
+    <?php slot('scripts'); ?>
 
 </body>
 

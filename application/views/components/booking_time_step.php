@@ -31,15 +31,17 @@ function getTimeIntervals($fullday, $halfDay, $duration)
 
     return $intervals;
 }
-
 ?>
 
 <div id="wizard-frame-2" class="wizard-frame" style="display:none;">
     <div class="frame-container">
         <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-10">
             <div class="w-full lg:w-5/12 flex flex-col gap-10">
-                <?php component('provider_card', ["hide_service" => (count($available_providers) == 1), "secretary" => vars('secretary')]) ?>
-                <?php component('selected_service', ['services' => $available_services, 'step' => '2']) ?>
+                <?php component('provider_card', [
+                    'hide_service' => count($available_providers) == 1,
+                    'secretary' => vars('secretary')
+                ]); ?>
+                <?php component('selected_service', ['services' => $available_services, 'step' => '2']); ?>
             </div>
             <div id="step-content">
                 <h2 class=" frame-title">
@@ -58,7 +60,9 @@ function getTimeIntervals($fullday, $halfDay, $duration)
 
                             <option value="<?php echo $interval; ?>">
                             <?php $dur = $interval / 60; ?>
-                                <?php if ($interval == $halfDay): ?>Half day<?php elseif ($interval == $fullday):?>Full day<?php else: ?> <?= $dur ?> Hour(s) <?php endif; ?>
+                                <?php if ($interval == $halfDay): ?>Half day<?php elseif (
+                                    $interval == $fullday
+                                ): ?>Full day<?php else: ?> <?= $dur ?> Hour(s) <?php endif; ?>
                             </option>
 
                             <?php endforeach; ?>
@@ -79,9 +83,9 @@ function getTimeIntervals($fullday, $halfDay, $duration)
                                     <?= lang('timezone') ?>
                                 </label>
                                 <?php component('timezone_dropdown', [
-                                    'attributes'        => 'id="select-timezone" class="form-control" value="Africa/Lagos"',
+                                    'attributes' => 'id="select-timezone" class="form-control" value="Africa/Lagos"',
                                     'grouped_timezones' => $grouped_timezones
-                                ]) ?>
+                                ]); ?>
                             </div>
 
                             <div id="available-hours"></div>

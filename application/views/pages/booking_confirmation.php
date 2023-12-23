@@ -1,13 +1,15 @@
-<?php extend('layouts/message_layout') ?>
+<?php extend('layouts/message_layout'); ?>
 
-<?php section('content') ?>
+<?php section('content'); ?>
 <?php $fmt = numfmt_create('en_NG', NumberFormatter::CURRENCY); ?>
-<?php if (!vars('is_paid') && vars('payment_link') && vars('service')["price"] > 0): ?>
+<?php if (!vars('is_paid') && vars('payment_link') && vars('service')['price'] > 0): ?>
     <div class="mb-5 space-y-5 space-x-2">
         <div style=" flex-direction: column; justify-content: flex-start; align-items: center;
         gap: 5px; display: inline-flex">
             <div>
-                <img id="success-icon" src="<?= base_url('assets/img/heroicons-solid/credit-card.svg') ?>" alt="success" />
+                <img id="success-icon" src="<?= base_url(
+                    'assets/img/heroicons-solid/credit-card.svg'
+                ) ?>" alt="success" />
             </div>
             <div
                 style="color: #1A1D1F; font-size: 36px; font-family: Inter; font-weight: 900; line-height: 44px; word-wrap: break-word">
@@ -28,10 +30,10 @@
                         <div class="flex-col gap-2 flex">
                             <div class="text-gray-600 text-sm font-semibold leading-tight">Service</div>
                             <div class="text-zinc-900 text-base font-bold leading-normal">
-                                <?= vars('service')["name"] ?>
+                                <?= vars('service')['name'] ?>
                             </div>
                             <div class="text-zinc-900 text-base font-normal leading-normal">
-                                <?= vars('service')["description"] ?>
+                                <?= vars('service')['description'] ?>
                             </div>
                         </div>
                     </div>
@@ -40,43 +42,45 @@
                     <div class="flex-col justify-start items-start gap-2 inline-flex">
                         <div class="text-gray-600 text-sm font-semibold leading-tight">Price</div>
                         <div class="text-zinc-900 text-base font-medium leading-normal">
-                            <?= numfmt_format_currency($fmt, vars('service')["price"], 'NGN') ?>
+                            <?= numfmt_format_currency($fmt, vars('service')['price'], 'NGN') ?>
                         </div>
                     </div>
                     <div class="flex-col justify-start items-start gap-2 inline-flex">
                         <div class="text-gray-600 text-sm font-semibold leading-tight">Fee</div>
                         <div class="text-zinc-900 text-base font-medium leading-normal">
-                            <?= numfmt_format_currency($fmt, vars('service')["fee"], 'NGN') ?>
+                            <?= numfmt_format_currency($fmt, vars('service')['fee'], 'NGN') ?>
                         </div>
                     </div>
                     <div class="flex-col justify-start items-start gap-2 inline-flex">
                         <div class="text-gray-600 text-sm font-semibold leading-tight">Duration</div>
                         <div class="text-zinc-900 text-base font-medium leading-normal">
-                            <?= vars('service')["duration"] ?> min(s)
+                            <?= vars('service')['duration'] ?> min(s)
                         </div>
                     </div>
                     <div class="flex-col justify-start items-start gap-2 inline-flex">
                         <div class="text-gray-600 text-sm font-semibold leading-tight">Start</div>
                         <div class="text-zinc-900 text-base font-medium leading-normal">
-                            <?= format_date_time(vars('appointment')["start_datetime"]) ?>
+                            <?= format_date_time(vars('appointment')['start_datetime']) ?>
                             <?= vars('timezone') ?>
                         </div>
                     </div>
                     <div class="flex-col justify-start items-start gap-2 inline-flex">
                         <div class="text-gray-600 text-sm font-semibold leading-tight">End</div>
-                        <?= format_date_time(vars('appointment')["end_datetime"]) ?>
+                        <?= format_date_time(vars('appointment')['end_datetime']) ?>
                         <?= vars('timezone') ?>
                     </div>
                 </div>
             </div>
             <div class="flex flex-col lg:flex-row justify-center space-x-2">
-                <a href="<?= site_url() . '?provider=' . vars('appointment')["id_users_provider"] ?>"
+                <a href="<?= site_url() . '?provider=' . vars('appointment')['id_users_provider'] ?>"
                     class="btn rounded-full mt-4 btn-outline text-red-500">
                     <i id="payment-icon" class="fas fa-close me-2">
                     </i>
                     <?= lang('Cancel Booking') ?>
                 </a>
-                <a href="<?= vars('payment_link') ?>" id="open-payment-process" class="btn btn-primary rounded-full mt-4"
+                <a href="<?= vars(
+                    'payment_link'
+                ) ?>" id="open-payment-process" class="btn btn-primary rounded-full mt-4"
                     target="_blank">
                     <i id="payment-icon" class="fas fa-credit-card me-2">
                     </i>
@@ -102,7 +106,7 @@
             </p>
             <div class="space-x-2 space-y-2">
 
-                <a href="<?= site_url() . '?provider=' . vars('appointment')["id_users_provider"] ?>"
+                <a href="<?= site_url() . '?provider=' . vars('appointment')['id_users_provider'] ?>"
                     class="btn btn-primary btn-large rounded-full  inline">
                     <i class="fas fa-calendar-alt me-2"></i>
                     <?= lang('go_to_booking_page') ?>
@@ -115,13 +119,19 @@
                 </a>
             </div>
         </div>
-    <?php endif ?>
+    <?php endif; ?>
 
-    <?php end_section('content') ?>
+    <?php end_section('content'); ?>
 
-    <?php section('scripts') ?>
+    <?php section('scripts'); ?>
 
-    <?php component('google_analytics_script', ['google_analytics_code' => vars('google_analytics_code')]) ?>
-    <?php component('matomo_analytics_script', ['matomo_analytics_url' => vars('matomo_analytics_url')]) ?>
+    <?php component('google_analytics_script', [
+        'google_analytics_code' => vars('google_analytics_code')
+    ]); ?>
+    <?php component(
+        'matomo_analytics_script',
 
-    <?php end_section('scripts') ?>
+        ['matomo_analytics_url' => vars('matomo_analytics_url')]
+    ); ?>
+
+    <?php end_section('scripts'); ?>

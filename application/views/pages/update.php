@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
     <title>Update |
-        <?= vars("company_name") ?>
+        <?= vars('company_name') ?>
     </title>
 
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/themes/default.min.css') ?>">
@@ -18,7 +18,7 @@
     <header>
         <div class="container">
             <h1 class="page-title">
-                <?= vars("company_name") ?> Update
+                <?= vars('company_name') ?> Update
             </h1>
         </div>
     </header>
@@ -35,7 +35,7 @@
                         <hr class="my-4">
                         <p>
                             You can now use the latest
-                            <?= vars("company_name") ?> version.
+                            <?= vars('company_name') ?> version.
                         </p>
                         <a href="<?= site_url('login') ?>" class="btn btn-success btn-large">
                             <i class="fas fa-wrench me-2"></i>
@@ -72,7 +72,7 @@
     </div>
 
     <footer>
-        <a href="<?= site_url() ?>"><?= vars("company_name") ?></a>
+        <a href="<?= site_url() ?>"><?= vars('company_name') ?></a>
     </footer>
 
     <script src="<?= asset_url('assets/vendor/@fortawesome-fontawesome-free/fontawesome.min.js') ?>"></script>

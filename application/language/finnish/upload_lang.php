@@ -35,7 +35,7 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 $lang['upload_userfile_not_set'] = 'userfile POST -arvoa ei löytynyt.';
 $lang['upload_file_exceeds_limit'] = 'Ladatun tiedoston koko ylittää PHP-asetuksissa määritellyn rajan.';

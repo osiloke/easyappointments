@@ -1,6 +1,6 @@
-<?php extend('layouts/backend_layout') ?>
+<?php extend('layouts/backend_layout'); ?>
 
-<?php section('content') ?>
+<?php section('content'); ?>
 
 <div class="container-fluid backend-page" id="webhooks-page">
     <div class="row" id="webhooks">
@@ -111,7 +111,7 @@
                                 </label>
                             </div>
                         </div>
-                    <?php endforeach ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
 
@@ -141,9 +141,9 @@
     </div>
 </div>
 
-<?php end_section('content') ?>
+<?php end_section('content'); ?>
 
-<?php section('scripts') ?>
+<?php section('scripts'); ?>
 
 <script src="<?= asset_url('assets/js/utils/message.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/validation.js') ?>"></script>
@@ -151,4 +151,4 @@
 <script src="<?= asset_url('assets/js/http/webhooks_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/pages/webhooks.js') ?>"></script>
 
-<?php end_section('scripts') ?>
+<?php end_section('scripts'); ?>

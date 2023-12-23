@@ -35,7 +35,7 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('Direktaccess till skriptet är inte tillåtet');
+defined('BASEPATH') or exit('Direktaccess till skriptet är inte tillåtet');
 
 $lang['ut_test_name'] = 'Test-namn';
 $lang['ut_test_datatype'] = 'Test-datatyp';

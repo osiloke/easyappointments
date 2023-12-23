@@ -5,7 +5,7 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
     <title>Installation |
-        <?= vars("company_name") ?>
+        <?= vars('company_name') ?>
     </title>
 
     <link rel="icon" type="image/x-icon" href="<?= asset_url('assets/img/favicon.ico') ?>">
@@ -22,7 +22,7 @@
     <header>
         <div class="container">
             <h1 class="page-title">
-                <?= vars("company_name") ?> Installation
+                <?= vars('company_name') ?> Installation
             </h1>
         </div>
     </header>
@@ -30,17 +30,17 @@
     <div class="content container">
         <div class="welcome">
             <h3>Welcome to the
-                <?= vars("company_name") ?> installation page.
+                <?= vars('company_name') ?> installation page.
             </h3>
             <p>
                 This page will help you set the main settings of your
-                <?= vars("company_name") ?> installation. You will be able to
+                <?= vars('company_name') ?> installation. You will be able to
                 edit these settings and many more in the backend session of your system. Remember to use the
                 <strong class="text-primary">
                     <?= site_url('user/login') ?>
                 </strong> URL to connect to the backend section
                 of
-                <?= vars("company_name") ?>.
+                <?= vars('company_name') ?>.
 
                 If you face any problems during the usage of pride you can always check the
                 <a href="https://pride.osiloke.com/docs.html">Documentation</a> and
@@ -126,10 +126,10 @@
 
         <div class="mb-2">
             <h3>License</h3>
-            <?= vars("company_name") ?> is licensed under the <span class="badge bg-secondary">GPL-3.0 license</span>.
+            <?= vars('company_name') ?> is licensed under the <span class="badge bg-secondary">GPL-3.0 license</span>.
             By using the code
             of
-            <?= vars("company_name") ?> in any way <br> you agree with the terms described in the following url:
+            <?= vars('company_name') ?> in any way <br> you agree with the terms described in the following url:
             <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">https://www.gnu.org/licenses/gpl-3.0.en.html</a>
         </div>
 
@@ -138,16 +138,16 @@
         <button type="button" id="install" class="btn btn-primary">
             <i class="icon-white icon-ok me-2"></i>
             Install
-            <?= vars("company_name") ?>
+            <?= vars('company_name') ?>
         </button>
     </div>
 
     <footer>
-        <a href="<?= site_url() ?>"><?= vars("company_name") ?></a>
+        <a href="<?= site_url() ?>"><?= vars('company_name') ?></a>
     </footer>
 
-    <?php component('js_vars_script') ?>
-    <?php component('js_lang_script') ?>
+    <?php component('js_vars_script'); ?>
+    <?php component('js_lang_script'); ?>
 
     <script src="<?= asset_url('assets/vendor/jquery/jquery.min.js') ?>"></script>
     <script src="<?= asset_url('assets/vendor/@popperjs-core/popper.min.js') ?>"></script>

@@ -13,7 +13,7 @@
         ga("create", "<?= e($google_analytics_code) ?>", "auto");
         ga("send", "pageview");
     </script>
-<?php endif ?>
+<?php endif; ?>
 
 <?php if (substr($google_analytics_code ?? '', 0, 2) === 'G-'): ?>
     <script async src="https://www.googletagmanager.com/gtag/js?id=' . $google_analytics_code . '"></script>
@@ -23,5 +23,5 @@
         gtag("js", new Date());
         gtag("config", "<?= e($google_analytics_code) ?>");
     </script>
-<?php endif ?>
+<?php endif; ?>
 

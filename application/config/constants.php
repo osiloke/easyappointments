@@ -36,7 +36,6 @@ define('FOPEN_READ_WRITE_CREATE', 'a+b');
 define('FOPEN_WRITE_CREATE_STRICT', 'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT', 'x+b');
 
-
 /*
 |--------------------------------------------------------------------------
 | Application Data
@@ -99,7 +98,7 @@ define('DEFAULT_COMPANY_COLOR', '#ffffff');
 | Webhook Actions
 |--------------------------------------------------------------------------
 |
-| External application endpoints can subscribe to these webhook actions.  
+| External application endpoints can subscribe to these webhook actions.
 |
 */
 

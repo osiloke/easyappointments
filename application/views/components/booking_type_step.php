@@ -6,10 +6,10 @@
  * @var array $available_providers
  */
 
-$has_category = FALSE;
+$has_category = false;
 foreach ($available_services as $service) {
     if (!empty($service['category_id'])) {
-        $has_category = TRUE;
+        $has_category = true;
 
         break;
     }
@@ -31,18 +31,20 @@ foreach ($available_services as $service) {
 $grouped_services['uncategorized'] = [];
 
 foreach ($available_services as $service) {
-    if ($service['category_id'] == NULL) {
+    if ($service['category_id'] == null) {
         $grouped_services['uncategorized'][] = $service;
     }
 }
-
 ?>
 <div id="wizard-frame-1" class="wizard-frame" style="visibility: hidden;">
     <div class="frame-container">
 
         <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-10">
             <div class="w-full lg:w-5/12">
-                <?php component('provider_card', ["hide_service" => (count($available_providers) == 1), "secretary" => vars('secretary')]) ?>
+                <?php component('provider_card', [
+                    'hide_service' => count($available_providers) == 1,
+                    'secretary' => vars('secretary')
+                ]); ?>
             </div>
             <div id="step-content">
                 <h2 class="frame-title normal-case">
@@ -58,31 +60,46 @@ foreach ($available_services as $service) {
                                 </strong>
                             </label>    -->
 
-                        <div id="provider-list" class="mb-3 <?php if (count($available_providers) == 1) : ?>hidden<?php endif ?>">
+                        <div id="provider-list" class="mb-3 <?php if (
+                            count($available_providers) == 1
+                        ): ?>hidden<?php endif; ?>">
                                 <label for="select-provider hidden">
                                     <strong class="hidden">
                                         <?= lang('provider') ?>
                                     </strong>
                                 </label>
                                 <select id="select-provider" class="form-control hidden"> 
-                                    <?php if (count($available_providers) > 1) : ?><option value></option><?php endif ?>          
+                                    <?php if (
+                                        count($available_providers) > 1
+                                    ): ?><option value></option><?php endif; ?>          
                                     <?php foreach ($available_providers as $provider): ?>         
-                                    <option value="<?= $provider["id"] ?>">
-                                        <?= $provider["first_name"] . ' ' . $provider["last_name"] ?>
+                                    <option value="<?= $provider['id'] ?>">
+                                        <?= $provider['first_name'] . ' ' . $provider['last_name'] ?>
                                     </option>                          
                                     <?php endforeach; ?>  
                                     
                                 </select>  
                                 <div role="radiogroup" id="select-provider-tile">
                                     <div class="service-grid">
-                                        <?php foreach ($available_providers as $provider): ?>                                        
-                                        <?php component('provider_tile', ["id" => $provider['id'], "image" => $provider['image'], "first_name" => $provider['first_name'], "last_name" => $provider['last_name'], "description" => $provider['notes'] ?? '']); ?>
+                                        <?php foreach (
+                                            $available_providers
+                                            as $provider
+                                        ): ?>                                        
+                                        <?php component('provider_tile', [
+                                            'id' => $provider['id'],
+                                            'image' => $provider['image'],
+                                            'first_name' => $provider['first_name'],
+                                            'last_name' => $provider['last_name'],
+                                            'description' => $provider['notes'] ?? ''
+                                        ]); ?>
                                         <?php endforeach; ?>  
                                     </div>
                                 </div>
                             </div>
-                            <div id="service-list" class="<?php if (count($available_providers) > 1) : ?>hidden<?php endif ?>">
-                                <div class="pb-10 <?php if (count($available_providers) == 1) : ?>hidden<?php endif ?>">
+                            <div id="service-list" class="<?php if (
+                                count($available_providers) > 1
+                            ): ?>hidden<?php endif; ?>">
+                                <div class="pb-10 <?php if (count($available_providers) == 1): ?>hidden<?php endif; ?>">
                                     <button data-step_index="1"
                                             class="button-back-provider rounded-[100px] flex flex-col gap-2 items-start justify-center shrink-0 relative overflow-hidden">
                                             <div class="flex flex-row gap-2 items-center justify-center self-stretch shrink-0 relative">
@@ -107,7 +124,7 @@ foreach ($available_services as $service) {
 
                             <select id="select-service" class="form-control w-full lg:w-6/12 hidden"> 
                                 <option value></option>
-                            <?php foreach ($available_services as $service):?>
+                            <?php foreach ($available_services as $service): ?>
                                 <option value="<?= $service['id'] ?>"><?= e($service['name']) ?></option>
                             <?php endforeach; ?>
                             </select>
@@ -118,7 +135,14 @@ foreach ($available_services as $service) {
                                             
                                             <?php foreach ($group as $service): ?>
                                             
-                                            <?php component('service_tile', ["id" => $service['id'], "name" => $service['name'], "description" => $service['description'], "price" => $service['price'], "fee" => $service['fee'] ?? 0, "duration" => $service['duration']]); ?>
+                                            <?php component('service_tile', [
+                                                'id' => $service['id'],
+                                                'name' => $service['name'],
+                                                'description' => $service['description'],
+                                                'price' => $service['price'],
+                                                'fee' => $service['fee'] ?? 0,
+                                                'duration' => $service['duration']
+                                            ]); ?>
 
                                             <?php endforeach; ?>
 
@@ -129,18 +153,14 @@ foreach ($available_services as $service) {
                             </div>
                         <?php if ($is_paid): ?>
                             <p class="warn">
-                            <?= strtr(
-                                lang('service_paid_warning'),
-                                [
-                                    '{$mail_link}' => strtr('<a href="maiilto:{$company_email}">{$company_email}</a>', [
-                                        '{$company_email}' => $company_email
-                                    ])
-                                ]
-                            )
-                            ?>
+                            <?= strtr(lang('service_paid_warning'), [
+                                '{$mail_link}' => strtr('<a href="maiilto:{$company_email}">{$company_email}</a>', [
+                                    '{$company_email}' => $company_email
+                                ])
+                            ]) ?>
                             <?= lang('') ?>
                             </p>
-                        <?php endif ?>
+                        <?php endif; ?>
                         </div>
                     </div>
                 </div>

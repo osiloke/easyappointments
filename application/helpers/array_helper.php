@@ -22,7 +22,7 @@ if (!function_exists('is_assoc')) {
     function is_assoc(array $array): bool
     {
         if (empty($array)) {
-            return FALSE;
+            return false;
         }
 
         return array_keys($array) !== range(0, count($array) - 1);
@@ -41,15 +41,14 @@ if (!function_exists('array_find')) {
     function array_find(array $array, callable $callback): mixed
     {
         if (empty($array)) {
-            return NULL;
+            return null;
         }
 
         if (!is_callable($callback)) {
             throw new InvalidArgumentException('No filter function provided.');
         }
 
-        return array_filter($array, $callback)[0] ?? NULL;
-
+        return array_filter($array, $callback)[0] ?? null;
     }
 }
 
@@ -64,9 +63,13 @@ if (!function_exists('array_fields')) {
      */
     function array_fields(array $array, array $fields): array
     {
-        return array_filter($array, function ($field) use ($fields) {
-            return in_array($field, $fields);
-        }, ARRAY_FILTER_USE_KEY);
+        return array_filter(
+            $array,
+            function ($field) use ($fields) {
+                return in_array($field, $fields);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
     }
 }
 
@@ -76,7 +79,7 @@ if (!function_exists('array_fields')) {
  * @param array $items
  * @param array $fields
  *
- * @return array 
+ * @return array
  */
 // Define a function that takes an array of items and an array of fields and returns a new array with tags stripped from the fields
 // Define a function that takes an array of items and an array of fields and returns a new array with tags stripped from the fields
@@ -88,7 +91,7 @@ function sanitize_fields(array $items, array $fields): array
         return $items;
     }
     // Create an empty array to store the new items
-    $new_items = array();
+    $new_items = [];
     // Loop through each item in the original array
     foreach ($items as $item) {
         // Copy the item to a new variable

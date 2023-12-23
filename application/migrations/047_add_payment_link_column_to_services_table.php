@@ -15,23 +15,22 @@
  * @property CI_DB_query_builder $db
  * @property CI_DB_forge $dbforge
  */
-class Migration_Add_payment_link_column_to_services_table extends CI_Migration {
+class Migration_Add_payment_link_column_to_services_table extends CI_Migration
+{
     /**
      * Upgrade method.
      */
     public function up()
     {
-        if ( ! $this->db->field_exists('payment_link', 'services'))
-        {
+        if (!$this->db->field_exists('payment_link', 'services')) {
             $fields = [
                 'payment_link' => [
                     'type' => 'TEXT',
-                    'null' => TRUE,
+                    'null' => true
                 ]
             ];
 
             $this->dbforge->add_column('services', $fields);
-
         }
     }
 
@@ -40,8 +39,7 @@ class Migration_Add_payment_link_column_to_services_table extends CI_Migration {
      */
     public function down()
     {
-        if ($this->db->field_exists('payment_link', 'services'))
-        {
+        if ($this->db->field_exists('payment_link', 'services')) {
             $this->dbforge->drop_column('services', 'payment_link');
         }
     }

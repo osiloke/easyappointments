@@ -16,7 +16,8 @@
  *
  * @package Controllers
  */
-class Appointments_api_v1 extends EA_Controller {
+class Appointments_api_v1 extends EA_Controller
+{
     /**
      * Appointments_api_v1 constructor.
      */
@@ -44,8 +45,7 @@ class Appointments_api_v1 extends EA_Controller {
      */
     public function index()
     {
-        try
-        {
+        try {
             $keyword = $this->api->request_keyword();
 
             $limit = $this->api->request_limit();
@@ -58,14 +58,13 @@ class Appointments_api_v1 extends EA_Controller {
 
             $with = $this->api->request_with();
 
-            $where = NULL;
+            $where = null;
 
             // Date query param.
 
             $date = request('date');
 
-            if ( ! empty($date))
-            {
+            if (!empty($date)) {
                 $where['DATE(start_datetime)'] = (new DateTime($date))->format('Y-m-d');
             }
 
@@ -73,8 +72,7 @@ class Appointments_api_v1 extends EA_Controller {
 
             $from = request('from');
 
-            if ( ! empty($from))
-            {
+            if (!empty($from)) {
                 $where['DATE(start_datetime) >='] = (new DateTime($from))->format('Y-m-d');
             }
 
@@ -82,8 +80,7 @@ class Appointments_api_v1 extends EA_Controller {
 
             $till = request('till');
 
-            if ( ! empty($till))
-            {
+            if (!empty($till)) {
                 $where['DATE(end_datetime) <='] = (new DateTime($till))->format('Y-m-d');
             }
 
@@ -91,8 +88,7 @@ class Appointments_api_v1 extends EA_Controller {
 
             $service_id = request('serviceId');
 
-            if ( ! empty($service_id))
-            {
+            if (!empty($service_id)) {
                 $where['id_services'] = $service_id;
             }
 
@@ -100,8 +96,7 @@ class Appointments_api_v1 extends EA_Controller {
 
             $provider_id = request('providerId');
 
-            if ( ! empty($provider_id))
-            {
+            if (!empty($provider_id)) {
                 $where['id_users_provider'] = $provider_id;
             }
 
@@ -109,8 +104,7 @@ class Appointments_api_v1 extends EA_Controller {
 
             $customer_id = request('customerId');
 
-            if ( ! empty($customer_id))
-            {
+            if (!empty($customer_id)) {
                 $where['id_users_customer'] = $customer_id;
             }
 
@@ -118,27 +112,22 @@ class Appointments_api_v1 extends EA_Controller {
                 ? $this->appointments_model->get($where, $limit, $offset, $order_by)
                 : $this->appointments_model->search($keyword, $limit, $offset, $order_by);
 
-            foreach ($appointments as &$appointment)
-            {
+            foreach ($appointments as &$appointment) {
                 $this->appointments_model->api_encode($appointment);
 
                 $this->aggregates($appointment);
 
-                if ( ! empty($fields))
-                {
+                if (!empty($fields)) {
                     $this->appointments_model->only($appointment, $fields);
                 }
 
-                if ( ! empty($with))
-                {
+                if (!empty($with)) {
                     $this->appointments_model->load($appointment, $with);
                 }
             }
 
             json_response($appointments);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -148,10 +137,9 @@ class Appointments_api_v1 extends EA_Controller {
      *
      * @param int|null $id Appointment ID.
      */
-    public function show(int $id = NULL)
+    public function show(int $id = null)
     {
-        try
-        {
+        try {
             $fields = $this->api->request_fields();
 
             $with = $this->api->request_with();
@@ -160,27 +148,22 @@ class Appointments_api_v1 extends EA_Controller {
 
             $this->appointments_model->api_encode($appointment);
 
-            if ( ! empty($fields))
-            {
+            if (!empty($fields)) {
                 $this->appointments_model->only($appointment, $fields);
             }
 
-            if ( ! empty($with))
-            {
+            if (!empty($with)) {
                 $this->appointments_model->load($appointment, $with);
             }
 
-            if ( ! $appointment)
-            {
+            if (!$appointment) {
                 response('Not Found', 404);
 
                 return;
             }
 
             json_response($appointment);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -190,19 +173,16 @@ class Appointments_api_v1 extends EA_Controller {
      */
     public function store()
     {
-        try
-        {
+        try {
             $appointment = request();
 
             $this->appointments_model->api_decode($appointment);
 
-            if (array_key_exists('id', $appointment))
-            {
+            if (array_key_exists('id', $appointment)) {
                 unset($appointment['id']);
             }
 
-            if ( ! array_key_exists('end_datetime', $appointment))
-            {
+            if (!array_key_exists('end_datetime', $appointment)) {
                 $appointment['end_datetime'] = $this->calculate_end_datetime($appointment);
             }
 
@@ -215,9 +195,7 @@ class Appointments_api_v1 extends EA_Controller {
             $this->appointments_model->api_encode($created_appointment);
 
             json_response($created_appointment, 201);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -229,12 +207,10 @@ class Appointments_api_v1 extends EA_Controller {
      */
     public function update(int $id)
     {
-        try
-        {
+        try {
             $occurrences = $this->appointments_model->get(['id' => $id]);
 
-            if (empty($occurrences))
-            {
+            if (empty($occurrences)) {
                 response('', 404);
 
                 return;
@@ -255,9 +231,7 @@ class Appointments_api_v1 extends EA_Controller {
             $this->appointments_model->api_encode($updated_appointment);
 
             json_response($updated_appointment);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -269,12 +243,10 @@ class Appointments_api_v1 extends EA_Controller {
      */
     public function destroy(int $id)
     {
-        try
-        {
+        try {
             $occurrences = $this->appointments_model->get(['id' => $id]);
 
-            if (empty($occurrences))
-            {
+            if (empty($occurrences)) {
                 response('', 404);
 
                 return;
@@ -282,11 +254,11 @@ class Appointments_api_v1 extends EA_Controller {
 
             $deleted_appointment = $occurrences[0];
 
-            $service = $this->services_model->find($deleted_appointment['id_services'], TRUE);
+            $service = $this->services_model->find($deleted_appointment['id_services'], true);
 
-            $provider = $this->providers_model->find($deleted_appointment['id_users_provider'], TRUE);
+            $provider = $this->providers_model->find($deleted_appointment['id_users_provider'], true);
 
-            $customer = $this->customers_model->find($deleted_appointment['id_users_customer'], TRUE);
+            $customer = $this->customers_model->find($deleted_appointment['id_users_customer'], true);
 
             $settings = [
                 'company_name' => setting('company_name'),
@@ -300,12 +272,16 @@ class Appointments_api_v1 extends EA_Controller {
 
             $this->synchronization->sync_appointment_deleted($deleted_appointment, $provider);
 
-            $this->notifications->notify_appointment_deleted($deleted_appointment, $service, $provider, $customer, $settings);
+            $this->notifications->notify_appointment_deleted(
+                $deleted_appointment,
+                $service,
+                $provider,
+                $customer,
+                $settings
+            );
 
             response('', 204);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -320,11 +296,11 @@ class Appointments_api_v1 extends EA_Controller {
     {
         $manage_mode = $action === 'update';
 
-        $service = $this->services_model->find($appointment['id_services'], TRUE);
+        $service = $this->services_model->find($appointment['id_services'], true);
 
-        $provider = $this->providers_model->find($appointment['id_users_provider'], TRUE);
+        $provider = $this->providers_model->find($appointment['id_users_provider'], true);
 
-        $customer = $this->customers_model->find($appointment['id_users_customer'], TRUE);
+        $customer = $this->customers_model->find($appointment['id_users_customer'], true);
 
         $settings = [
             'company_name' => setting('company_name'),
@@ -336,7 +312,14 @@ class Appointments_api_v1 extends EA_Controller {
 
         $this->synchronization->sync_appointment_saved($appointment, $service, $provider, $customer, $settings);
 
-        $this->notifications->notify_appointment_saved($appointment, $service, $provider, $customer, $settings, $manage_mode);
+        $this->notifications->notify_appointment_saved(
+            $appointment,
+            $service,
+            $provider,
+            $customer,
+            $settings,
+            $manage_mode
+        );
     }
 
     /**
@@ -372,13 +355,21 @@ class Appointments_api_v1 extends EA_Controller {
      */
     private function aggregates(array &$appointment)
     {
-        $aggregates = request('aggregates') !== NULL;
+        $aggregates = request('aggregates') !== null;
 
-        if ($aggregates)
-        {
-            $appointment['service'] = $this->services_model->find($appointment['id_services'] ?? $appointment['serviceId'] ?? NULL, TRUE);
-            $appointment['provider'] = $this->providers_model->find($appointment['id_users_provider'] ?? $appointment['providerId'] ?? NULL, TRUE);
-            $appointment['customer'] = $this->customers_model->find($appointment['id_users_customer'] ?? $appointment['customerId'] ?? NULL, TRUE);
+        if ($aggregates) {
+            $appointment['service'] = $this->services_model->find(
+                $appointment['id_services'] ?? ($appointment['serviceId'] ?? null),
+                true
+            );
+            $appointment['provider'] = $this->providers_model->find(
+                $appointment['id_users_provider'] ?? ($appointment['providerId'] ?? null),
+                true
+            );
+            $appointment['customer'] = $this->customers_model->find(
+                $appointment['id_users_customer'] ?? ($appointment['customerId'] ?? null),
+                true
+            );
             $this->services_model->api_encode($appointment['service']);
             $this->providers_model->api_encode($appointment['provider']);
             $this->customers_model->api_encode($appointment['customer']);

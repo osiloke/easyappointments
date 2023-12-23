@@ -55,7 +55,7 @@ $route['default_controller'] = 'booking';
 
 $route['404_override'] = '';
 
-$route['translate_uri_dashes'] = FALSE;
+$route['translate_uri_dashes'] = false;
 
 /*
 | -------------------------------------------------------------------------

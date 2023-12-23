@@ -18,12 +18,13 @@
  *
  * @package Models
  */
-class Categories_model extends EA_Model {
+class Categories_model extends EA_Model
+{
     /**
      * @var array
      */
     protected array $casts = [
-        'id' => 'integer',
+        'id' => 'integer'
     ];
 
     /**
@@ -32,7 +33,7 @@ class Categories_model extends EA_Model {
     protected array $api_resource = [
         'id' => 'id',
         'name' => 'name',
-        'description' => 'description',
+        'description' => 'description'
     ];
 
     /**
@@ -48,12 +49,9 @@ class Categories_model extends EA_Model {
     {
         $this->validate($category);
 
-        if (empty($category['id']))
-        {
+        if (empty($category['id'])) {
             return $this->insert($category);
-        }
-        else
-        {
+        } else {
             return $this->update($category);
         }
     }
@@ -68,22 +66,19 @@ class Categories_model extends EA_Model {
     public function validate(array $category)
     {
         // If a category ID is provided then check whether the record really exists in the database.
-        if ( ! empty($category['id']))
-        {
+        if (!empty($category['id'])) {
             $count = $this->db->get_where('categories', ['id' => $category['id']])->num_rows();
 
-            if ( ! $count)
-            {
-                throw new InvalidArgumentException('The provided category ID does not exist in the database: ' . $category['id']);
+            if (!$count) {
+                throw new InvalidArgumentException(
+                    'The provided category ID does not exist in the database: ' . $category['id']
+                );
             }
         }
 
         // Make sure all required fields are provided.
-        if (
-            empty($category['name'])
-        )
-        {
-            throw new InvalidArgumentException('Not all required fields are provided: ' . print_r($category, TRUE));
+        if (empty($category['name'])) {
+            throw new InvalidArgumentException('Not all required fields are provided: ' . print_r($category, true));
         }
     }
 
@@ -100,9 +95,8 @@ class Categories_model extends EA_Model {
     {
         $category['create_datetime'] = date('Y-m-d H:i:s');
         $category['update_datetime'] = date('Y-m-d H:i:s');
-        
-        if ( ! $this->db->insert('categories', $category))
-        {
+
+        if (!$this->db->insert('categories', $category)) {
             throw new RuntimeException('Could not insert category.');
         }
 
@@ -121,9 +115,8 @@ class Categories_model extends EA_Model {
     protected function update(array $category): int
     {
         $category['update_datetime'] = date('Y-m-d H:i:s');
-        
-        if ( ! $this->db->update('categories', $category, ['id' => $category['id']]))
-        {
+
+        if (!$this->db->update('categories', $category, ['id' => $category['id']])) {
             throw new RuntimeException('Could not update service categories.');
         }
 
@@ -138,14 +131,11 @@ class Categories_model extends EA_Model {
      *
      * @throws RuntimeException
      */
-    public function delete(int $category_id, bool $force_delete = FALSE)
+    public function delete(int $category_id, bool $force_delete = false)
     {
-        if ($force_delete)
-        {
+        if ($force_delete) {
             $this->db->delete('categories', ['id' => $category_id]);
-        }
-        else
-        {
+        } else {
             $this->db->update('categories', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $category_id]);
         }
     }
@@ -160,18 +150,18 @@ class Categories_model extends EA_Model {
      *
      * @throws InvalidArgumentException
      */
-    public function find(int $category_id, bool $with_trashed = FALSE): array
+    public function find(int $category_id, bool $with_trashed = false): array
     {
-        if ( ! $with_trashed)
-        {
+        if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
         }
 
         $category = $this->db->get_where('categories', ['id' => $category_id])->row_array();
 
-        if ( ! $category)
-        {
-            throw new InvalidArgumentException('The provided category ID was not found in the database: ' . $category_id);
+        if (!$category) {
+            throw new InvalidArgumentException(
+                'The provided category ID was not found in the database: ' . $category_id
+            );
         }
 
         $this->cast($category);
@@ -191,22 +181,21 @@ class Categories_model extends EA_Model {
      */
     public function value(int $category_id, string $field): mixed
     {
-        if (empty($field))
-        {
+        if (empty($field)) {
             throw new InvalidArgumentException('The field argument is cannot be empty.');
         }
 
-        if (empty($category_id))
-        {
+        if (empty($category_id)) {
             throw new InvalidArgumentException('The category ID argument cannot be empty.');
         }
 
         // Check whether the service exists.
         $query = $this->db->get_where('categories', ['id' => $category_id]);
 
-        if ( ! $query->num_rows())
-        {
-            throw new InvalidArgumentException('The provided category ID was not found in the database: ' . $category_id);
+        if (!$query->num_rows()) {
+            throw new InvalidArgumentException(
+                'The provided category ID was not found in the database: ' . $category_id
+            );
         }
 
         // Check if the required field is part of the category data.
@@ -214,8 +203,7 @@ class Categories_model extends EA_Model {
 
         $this->cast($category);
 
-        if ( ! array_key_exists($field, $category))
-        {
+        if (!array_key_exists($field, $category)) {
             throw new InvalidArgumentException('The requested field was not found in the category data: ' . $field);
         }
 
@@ -233,27 +221,28 @@ class Categories_model extends EA_Model {
      *
      * @return array Returns an array of service categories.
      */
-    public function get(array|string $where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
-    {
-        if ($where !== NULL)
-        {
+    public function get(
+        array|string $where = null,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+        bool $with_trashed = false
+    ): array {
+        if ($where !== null) {
             $this->db->where($where);
         }
 
-        if ($order_by !== NULL)
-        {
+        if ($order_by !== null) {
             $this->db->order_by($order_by);
         }
 
-        if ( ! $with_trashed)
-        {
+        if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
         }
 
         $categories = $this->db->get('categories', $limit, $offset)->result_array();
 
-        foreach ($categories as &$category)
-        {
+        foreach ($categories as &$category) {
             $this->cast($category);
         }
 
@@ -281,15 +270,18 @@ class Categories_model extends EA_Model {
      *
      * @return array Returns an array of service categories.
      */
-    public function search(string $keyword, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
-    {
-        if ( ! $with_trashed)
-        {
+    public function search(
+        string $keyword,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+        bool $with_trashed = false
+    ): array {
+        if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
         }
 
-        $categories = $this
-            ->db
+        $categories = $this->db
             ->select()
             ->from('categories')
             ->group_start()
@@ -302,8 +294,7 @@ class Categories_model extends EA_Model {
             ->get()
             ->result_array();
 
-        foreach ($categories as &$category)
-        {
+        foreach ($categories as &$category) {
             $this->cast($category);
         }
 
@@ -320,7 +311,7 @@ class Categories_model extends EA_Model {
      */
     public function load(array &$category, array $resources)
     {
-        // Service categories do not currently have any related resources. 
+        // Service categories do not currently have any related resources.
     }
 
     /**
@@ -331,9 +322,9 @@ class Categories_model extends EA_Model {
     public function api_encode(array &$category)
     {
         $encoded_resource = [
-            'id' => array_key_exists('id', $category) ? (int)$category['id'] : NULL,
+            'id' => array_key_exists('id', $category) ? (int) $category['id'] : null,
             'name' => $category['name'],
-            'description' => array_key_exists('description', $category) ? $category['description'] : NULL
+            'description' => array_key_exists('description', $category) ? $category['description'] : null
         ];
 
         $category = $encoded_resource;
@@ -345,22 +336,19 @@ class Categories_model extends EA_Model {
      * @param array $category API resource.
      * @param array|null $base Base category data to be overwritten with the provided values (useful for updates).
      */
-    public function api_decode(array &$category, array $base = NULL)
+    public function api_decode(array &$category, array $base = null)
     {
         $decoded_resource = $base ?: [];
 
-        if (array_key_exists('id', $category))
-        {
+        if (array_key_exists('id', $category)) {
             $decoded_resource['id'] = $category['id'];
         }
 
-        if (array_key_exists('name', $category))
-        {
+        if (array_key_exists('name', $category)) {
             $decoded_resource['name'] = $category['name'];
         }
 
-        if (array_key_exists('description', $category))
-        {
+        if (array_key_exists('description', $category)) {
             $decoded_resource['description'] = $category['description'];
         }
 

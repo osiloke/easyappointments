@@ -7,7 +7,7 @@
  * @license	http://opensource.org/licenses/MIT	MIT License
  * @link	https://codeigniter.com
  */
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 $lang['migration_none_found'] = 'Не было найдено ни одной миграции.';
 $lang['migration_not_found'] = 'Не было найдено ни одной миграции с версией: %s.';

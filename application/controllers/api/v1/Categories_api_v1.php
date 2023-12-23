@@ -16,7 +16,8 @@
  *
  * @package Controllers
  */
-class Categories_api_v1 extends EA_Controller {
+class Categories_api_v1 extends EA_Controller
+{
     /**
      * Categories_api_v1 constructor.
      */
@@ -36,8 +37,7 @@ class Categories_api_v1 extends EA_Controller {
      */
     public function index()
     {
-        try
-        {
+        try {
             $keyword = $this->api->request_keyword();
 
             $limit = $this->api->request_limit();
@@ -47,32 +47,27 @@ class Categories_api_v1 extends EA_Controller {
             $order_by = $this->api->request_order_by();
 
             $fields = $this->api->request_fields();
-            
+
             $with = $this->api->request_with();
 
             $categories = empty($keyword)
-                ? $this->categories_model->get(NULL, $limit, $offset, $order_by)
+                ? $this->categories_model->get(null, $limit, $offset, $order_by)
                 : $this->categories_model->search($keyword, $limit, $offset, $order_by);
 
-            foreach ($categories as &$category)
-            {
+            foreach ($categories as &$category) {
                 $this->categories_model->api_encode($category);
 
-                if ( ! empty($fields))
-                {
+                if (!empty($fields)) {
                     $this->categories_model->only($category, $fields);
                 }
 
-                if ( ! empty($with))
-                {
+                if (!empty($with)) {
                     $this->categories_model->load($category, $with);
                 }
             }
 
             json_response($categories);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -82,39 +77,33 @@ class Categories_api_v1 extends EA_Controller {
      *
      * @param int|null $id Category ID.
      */
-    public function show(int $id = NULL)
+    public function show(int $id = null)
     {
-        try
-        {
+        try {
             $fields = $this->api->request_fields();
-            
+
             $with = $this->api->request_with();
 
             $category = $this->categories_model->find($id);
 
             $this->categories_model->api_encode($category);
 
-            if ( ! empty($fields))
-            {
+            if (!empty($fields)) {
                 $this->categories_model->only($category, $fields);
             }
 
-            if ( ! empty($with))
-            {
+            if (!empty($with)) {
                 $this->categories_model->load($category, $with);
             }
 
-            if ( ! $category)
-            {
+            if (!$category) {
                 response('', 404);
 
                 return;
             }
 
             json_response($category);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -124,14 +113,12 @@ class Categories_api_v1 extends EA_Controller {
      */
     public function store()
     {
-        try
-        {
+        try {
             $category = request();
 
             $this->categories_model->api_decode($category);
 
-            if (array_key_exists('id', $category))
-            {
+            if (array_key_exists('id', $category)) {
                 unset($category['id']);
             }
 
@@ -142,9 +129,7 @@ class Categories_api_v1 extends EA_Controller {
             $this->categories_model->api_encode($created_category);
 
             json_response($created_category, 201);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -156,12 +141,10 @@ class Categories_api_v1 extends EA_Controller {
      */
     public function update(int $id)
     {
-        try
-        {
+        try {
             $occurrences = $this->categories_model->get(['id' => $id]);
 
-            if (empty($occurrences))
-            {
+            if (empty($occurrences)) {
                 response('', 404);
 
                 return;
@@ -180,9 +163,7 @@ class Categories_api_v1 extends EA_Controller {
             $this->categories_model->api_encode($updated_category);
 
             json_response($updated_category);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -194,12 +175,10 @@ class Categories_api_v1 extends EA_Controller {
      */
     public function destroy(int $id)
     {
-        try
-        {
+        try {
             $occurrences = $this->categories_model->get(['id' => $id]);
 
-            if (empty($occurrences))
-            {
+            if (empty($occurrences)) {
                 response('', 404);
 
                 return;
@@ -208,9 +187,7 @@ class Categories_api_v1 extends EA_Controller {
             $this->categories_model->delete($id);
 
             response('', 204);
-        }
-        catch (Throwable $e)
-        {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }

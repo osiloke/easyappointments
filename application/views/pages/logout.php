@@ -1,6 +1,6 @@
-<?php extend('layouts/account_layout') ?>
+<?php extend('layouts/account_layout'); ?>
 
-<?php section('content') ?>
+<?php section('content'); ?>
 
 <h3><?= lang('log_out') ?></h3>
 
@@ -22,6 +22,6 @@
     </a>
 </div>
 
-<?php end_section('content') ?>
+<?php end_section('content'); ?>
 
 

@@ -35,7 +35,7 @@
  * @since	Version 1.0.0
  * @filesource
  */
-defined('BASEPATH') OR exit('Direktaccess till skriptet är inte tillåtet');
+defined('BASEPATH') or exit('Direktaccess till skriptet är inte tillåtet');
 
 $lang['cal_su'] = 'Sö';
 $lang['cal_mo'] = 'Mo';

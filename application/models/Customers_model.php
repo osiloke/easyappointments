@@ -18,13 +18,14 @@
  *
  * @package Models
  */
-class Customers_model extends EA_Model {
+class Customers_model extends EA_Model
+{
     /**
      * @var array
      */
     protected array $casts = [
         'id' => 'integer',
-        'id_roles' => 'integer',
+        'id_roles' => 'integer'
     ];
 
     /**
@@ -42,7 +43,7 @@ class Customers_model extends EA_Model {
         'zip' => 'zip_code',
         'timezone' => 'timezone',
         'language' => 'language',
-        'notes' => 'notes',
+        'notes' => 'notes'
     ];
 
     /**
@@ -58,17 +59,13 @@ class Customers_model extends EA_Model {
     {
         $this->validate($customer);
 
-        if ($this->exists($customer) && empty($customer['id']))
-        {
+        if ($this->exists($customer) && empty($customer['id'])) {
             $customer['id'] = $this->find_record_id($customer);
         }
 
-        if (empty($customer['id']))
-        {
+        if (empty($customer['id'])) {
             return $this->insert($customer);
-        }
-        else
-        {
+        } else {
             return $this->update($customer);
         }
     }
@@ -83,13 +80,13 @@ class Customers_model extends EA_Model {
     public function validate(array $customer)
     {
         // If a customer ID is provided then check whether the record really exists in the database.
-        if ( ! empty($customer['id']))
-        {
+        if (!empty($customer['id'])) {
             $count = $this->db->get_where('users', ['id' => $customer['id']])->num_rows();
 
-            if ( ! $count)
-            {
-                throw new InvalidArgumentException('The provided customer ID does not exist in the database: ' . $customer['id']);
+            if (!$count) {
+                throw new InvalidArgumentException(
+                    'The provided customer ID does not exist in the database: ' . $customer['id']
+                );
             }
         }
 
@@ -103,31 +100,27 @@ class Customers_model extends EA_Model {
         $require_zip_code = filter_var(setting('require_zip_code'), FILTER_VALIDATE_BOOLEAN);
 
         if (
-            (empty($customer['first_name']) && $require_first_name)
-            || (empty($customer['last_name']) && $require_last_name)
-            || (empty($customer['email']) && $require_email)
-            || (empty($customer['phone_number']) && $require_phone_number)
-            || (empty($customer['address']) && $require_address)
-            || (empty($customer['city']) && $require_city)
-            || (empty($customer['zip_code']) && $require_zip_code)
-        )
-        {
-            throw new InvalidArgumentException('Not all required fields are provided: ' . print_r($customer, TRUE));
+            (empty($customer['first_name']) && $require_first_name) ||
+            (empty($customer['last_name']) && $require_last_name) ||
+            (empty($customer['email']) && $require_email) ||
+            (empty($customer['phone_number']) && $require_phone_number) ||
+            (empty($customer['address']) && $require_address) ||
+            (empty($customer['city']) && $require_city) ||
+            (empty($customer['zip_code']) && $require_zip_code)
+        ) {
+            throw new InvalidArgumentException('Not all required fields are provided: ' . print_r($customer, true));
         }
 
-        if ( ! empty($customer['email']))
-        {
+        if (!empty($customer['email'])) {
             // Validate the email address.
-            if ( ! filter_var($customer['email'], FILTER_VALIDATE_EMAIL))
-            {
+            if (!filter_var($customer['email'], FILTER_VALIDATE_EMAIL)) {
                 throw new InvalidArgumentException('Invalid email address provided: ' . $customer['email']);
             }
 
             // Make sure the email address is unique.
-            $customer_id = $customer['id'] ?? NULL;
+            $customer_id = $customer['id'] ?? null;
 
-            $count = $this
-                ->db
+            $count = $this->db
                 ->select()
                 ->from('users')
                 ->join('roles', 'roles.id = users.id_roles', 'inner')
@@ -138,9 +131,10 @@ class Customers_model extends EA_Model {
                 ->get()
                 ->num_rows();
 
-            if ($count > 0)
-            {
-                throw new InvalidArgumentException('The provided email address is already in use, please use a different one.');
+            if ($count > 0) {
+                throw new InvalidArgumentException(
+                    'The provided email address is already in use, please use a different one.'
+                );
             }
         }
     }
@@ -160,8 +154,7 @@ class Customers_model extends EA_Model {
         $customer['update_datetime'] = date('Y-m-d H:i:s');
         $customer['id_roles'] = $this->get_customer_role_id();
 
-        if ( ! $this->db->insert('users', $customer))
-        {
+        if (!$this->db->insert('users', $customer)) {
             throw new RuntimeException('Could not insert customer.');
         }
 
@@ -181,8 +174,7 @@ class Customers_model extends EA_Model {
     {
         $customer['update_datetime'] = date('Y-m-d H:i:s');
 
-        if ( ! $this->db->update('users', $customer, ['id' => $customer['id']]))
-        {
+        if (!$this->db->update('users', $customer, ['id' => $customer['id']])) {
             throw new RuntimeException('Could not update customer.');
         }
 
@@ -197,16 +189,17 @@ class Customers_model extends EA_Model {
      *
      * @throws RuntimeException
      */
-    public function delete(int $customer_id, bool $force_delete = FALSE)
+    public function delete(int $customer_id, bool $force_delete = false)
     {
-        if ($force_delete)
-        {
+        if ($force_delete) {
             $this->db->delete('users', ['id' => $customer_id]);
-        }
-        else
-        {
+        } else {
             $this->db->update('users', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $customer_id]);
-            $this->db->update('appointments', ['delete_datetime' => date('Y-m-d H:i:s')], ['id_users_customer' => $customer_id, 'delete_datetime' => NULL]);
+            $this->db->update(
+                'appointments',
+                ['delete_datetime' => date('Y-m-d H:i:s')],
+                ['id_users_customer' => $customer_id, 'delete_datetime' => null]
+            );
         }
     }
 
@@ -218,18 +211,18 @@ class Customers_model extends EA_Model {
      *
      * @return array Returns an array with the customer data.
      */
-    public function find(int $customer_id, bool $with_trashed = FALSE): array
+    public function find(int $customer_id, bool $with_trashed = false): array
     {
-        if ( ! $with_trashed)
-        {
+        if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
         }
 
         $customer = $this->db->get_where('users', ['id' => $customer_id])->row_array();
 
-        if ( ! $customer)
-        {
-            throw new InvalidArgumentException('The provided customer ID was not found in the database: ' . $customer_id);
+        if (!$customer) {
+            throw new InvalidArgumentException(
+                'The provided customer ID was not found in the database: ' . $customer_id
+            );
         }
 
         $this->cast($customer);
@@ -249,22 +242,21 @@ class Customers_model extends EA_Model {
      */
     public function value(int $customer_id, string $field): mixed
     {
-        if (empty($field))
-        {
+        if (empty($field)) {
             throw new InvalidArgumentException('The field argument is cannot be empty.');
         }
 
-        if (empty($customer_id))
-        {
+        if (empty($customer_id)) {
             throw new InvalidArgumentException('The customer ID argument cannot be empty.');
         }
 
         // Check whether the customer exists.
         $query = $this->db->get_where('users', ['id' => $customer_id]);
 
-        if ( ! $query->num_rows())
-        {
-            throw new InvalidArgumentException('The provided customer ID was not found in the database: ' . $customer_id);
+        if (!$query->num_rows()) {
+            throw new InvalidArgumentException(
+                'The provided customer ID was not found in the database: ' . $customer_id
+            );
         }
 
         // Check if the required field is part of the customer data.
@@ -272,8 +264,7 @@ class Customers_model extends EA_Model {
 
         $this->cast($customer);
 
-        if ( ! array_key_exists($field, $customer))
-        {
+        if (!array_key_exists($field, $customer)) {
             throw new InvalidArgumentException('The requested field was not found in the customer data: ' . $field);
         }
 
@@ -291,29 +282,30 @@ class Customers_model extends EA_Model {
      *
      * @return array Returns an array of customers.
      */
-    public function get(array|string $where = NULL, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
-    {
+    public function get(
+        array|string $where = null,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+        bool $with_trashed = false
+    ): array {
         $role_id = $this->get_customer_role_id();
 
-        if ($where !== NULL)
-        {
+        if ($where !== null) {
             $this->db->where($where);
         }
 
-        if ($order_by !== NULL)
-        {
+        if ($order_by !== null) {
             $this->db->order_by($order_by);
         }
 
-        if ( ! $with_trashed)
-        {
+        if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
         }
 
         $customers = $this->db->get_where('users', ['id_roles' => $role_id], $limit, $offset)->result_array();
 
-        foreach ($customers as &$customer)
-        {
+        foreach ($customers as &$customer) {
             $this->cast($customer);
         }
 
@@ -329,8 +321,7 @@ class Customers_model extends EA_Model {
     {
         $role = $this->db->get_where('roles', ['slug' => DB_SLUG_CUSTOMER])->row_array();
 
-        if (empty($role))
-        {
+        if (empty($role)) {
             throw new RuntimeException('The customer role was not found in the database.');
         }
 
@@ -348,13 +339,11 @@ class Customers_model extends EA_Model {
      */
     public function exists(array $customer): bool
     {
-        if (empty($customer['email']))
-        {
-            return FALSE;
+        if (empty($customer['email'])) {
+            return false;
         }
 
-        $count = $this
-            ->db
+        $count = $this->db
             ->select()
             ->from('users')
             ->join('roles', 'roles.id = users.id_roles', 'inner')
@@ -378,13 +367,11 @@ class Customers_model extends EA_Model {
      */
     public function find_record_id(array $customer): int
     {
-        if (empty($customer['email']))
-        {
-            throw new InvalidArgumentException('The customer email was not provided: ' . print_r($customer, TRUE));
+        if (empty($customer['email'])) {
+            throw new InvalidArgumentException('The customer email was not provided: ' . print_r($customer, true));
         }
 
-        $customer = $this
-            ->db
+        $customer = $this->db
             ->select('users.id')
             ->from('users')
             ->join('roles', 'roles.id = users.id_roles', 'inner')
@@ -394,8 +381,7 @@ class Customers_model extends EA_Model {
             ->get()
             ->row_array();
 
-        if (empty($customer))
-        {
+        if (empty($customer)) {
             throw new InvalidArgumentException('Could not find customer record id.');
         }
 
@@ -425,17 +411,20 @@ class Customers_model extends EA_Model {
      *
      * @return array Returns an array of customers.
      */
-    public function search(string $keyword, int $limit = NULL, int $offset = NULL, string $order_by = NULL, bool $with_trashed = FALSE): array
-    {
+    public function search(
+        string $keyword,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+        bool $with_trashed = false
+    ): array {
         $role_id = $this->get_customer_role_id();
 
-        if ( ! $with_trashed)
-        {
+        if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
         }
 
-        $customers = $this
-            ->db
+        $customers = $this->db
             ->select()
             ->from('users')
             ->where('id_roles', $role_id)
@@ -458,8 +447,7 @@ class Customers_model extends EA_Model {
             ->get()
             ->result_array();
 
-        foreach ($customers as &$customer)
-        {
+        foreach ($customers as &$customer) {
             $this->cast($customer);
         }
 
@@ -476,7 +464,7 @@ class Customers_model extends EA_Model {
      */
     public function load(array &$customer, array $resources)
     {
-        // Customers do not currently have any related resources. 
+        // Customers do not currently have any related resources.
     }
 
     /**
@@ -487,7 +475,7 @@ class Customers_model extends EA_Model {
     public function api_encode(array &$customer)
     {
         $encoded_resource = [
-            'id' => array_key_exists('id', $customer) ? (int)$customer['id'] : NULL,
+            'id' => array_key_exists('id', $customer) ? (int) $customer['id'] : null,
             'firstName' => $customer['first_name'],
             'lastName' => $customer['last_name'],
             'email' => $customer['email'],
@@ -507,52 +495,43 @@ class Customers_model extends EA_Model {
      * @param array $customer API resource.
      * @param array|null $base Base customer data to be overwritten with the provided values (useful for updates).
      */
-    public function api_decode(array &$customer, array $base = NULL)
+    public function api_decode(array &$customer, array $base = null)
     {
         $decoded_resource = $base ?: [];
 
-        if (array_key_exists('id', $customer))
-        {
+        if (array_key_exists('id', $customer)) {
             $decoded_resource['id'] = $customer['id'];
         }
 
-        if (array_key_exists('firstName', $customer))
-        {
+        if (array_key_exists('firstName', $customer)) {
             $decoded_resource['first_name'] = $customer['firstName'];
         }
 
-        if (array_key_exists('lastName', $customer))
-        {
+        if (array_key_exists('lastName', $customer)) {
             $decoded_resource['last_name'] = $customer['lastName'];
         }
 
-        if (array_key_exists('email', $customer))
-        {
+        if (array_key_exists('email', $customer)) {
             $decoded_resource['email'] = $customer['email'];
         }
 
-        if (array_key_exists('phone', $customer))
-        {
+        if (array_key_exists('phone', $customer)) {
             $decoded_resource['phone_number'] = $customer['phone'];
         }
 
-        if (array_key_exists('address', $customer))
-        {
+        if (array_key_exists('address', $customer)) {
             $decoded_resource['address'] = $customer['address'];
         }
 
-        if (array_key_exists('city', $customer))
-        {
+        if (array_key_exists('city', $customer)) {
             $decoded_resource['city'] = $customer['city'];
         }
 
-        if (array_key_exists('zip', $customer))
-        {
+        if (array_key_exists('zip', $customer)) {
             $decoded_resource['zip_code'] = $customer['zip'];
         }
 
-        if (array_key_exists('notes', $customer))
-        {
+        if (array_key_exists('notes', $customer)) {
             $decoded_resource['notes'] = $customer['notes'];
         }
 
