@@ -35,7 +35,7 @@ class Blocked_periods_model extends EA_Model
         'name' => 'name',
         'start' => 'start_datetime',
         'end' => 'end_datetime',
-        'description' => 'description',
+        'notes' => 'notes',
     ];
 
     /**
@@ -79,10 +79,22 @@ class Blocked_periods_model extends EA_Model
         }
 
         // Make sure all required fields are provided.
-        if (empty($blocked_period['name'])) {
+        if (
+            empty($blocked_period['name']) ||
+            empty($blocked_period['start_datetime']) ||
+            empty($blocked_period['end_datetime'])
+        ) {
             throw new InvalidArgumentException(
                 'Not all required fields are provided: ' . print_r($blocked_period, true),
             );
+        }
+
+        // Make sure that the start date time is before the end.
+        $start_date_time_object = new DateTime($blocked_period['start_datetime']);
+        $end_date_time_object = new DateTime($blocked_period['end_datetime']);
+
+        if ($start_date_time_object >= $end_date_time_object) {
+            throw new InvalidArgumentException('The start must be before the end date time value.');
         }
     }
 
@@ -207,6 +219,38 @@ class Blocked_periods_model extends EA_Model
     }
 
     /**
+     * Search blocked periods by the provided keyword.
+     *
+     * @param string $keyword Search keyword.
+     * @param int|null $limit Record limit.
+     * @param int|null $offset Record offset.
+     * @param string|null $order_by Order by.
+     *
+     * @return array Returns an array of blocked periods.
+     */
+    public function search(string $keyword, int $limit = null, int $offset = null, string $order_by = null): array
+    {
+        $blocked_periods = $this->db
+            ->select()
+            ->from('blocked_periods')
+            ->group_start()
+            ->like('name', $keyword)
+            ->or_like('notes', $keyword)
+            ->group_end()
+            ->limit($limit)
+            ->offset($offset)
+            ->order_by($order_by)
+            ->get()
+            ->result_array();
+
+        foreach ($blocked_periods as &$blocked_period) {
+            $this->cast($blocked_period);
+        }
+
+        return $blocked_periods;
+    }
+
+    /**
      * Get all services that match the provided criteria.
      *
      * @param array|string|null $where Where conditions
@@ -240,48 +284,6 @@ class Blocked_periods_model extends EA_Model
     }
 
     /**
-     * Get the query builder interface, configured for use with the blocked periods table.
-     *
-     * @return CI_DB_query_builder
-     */
-    public function query(): CI_DB_query_builder
-    {
-        return $this->db->from('blocked_periods');
-    }
-
-    /**
-     * Search blocked periods by the provided keyword.
-     *
-     * @param string $keyword Search keyword.
-     * @param int|null $limit Record limit.
-     * @param int|null $offset Record offset.
-     * @param string|null $order_by Order by.
-     *
-     * @return array Returns an array of blocked periods.
-     */
-    public function search(string $keyword, int $limit = null, int $offset = null, string $order_by = null): array
-    {
-        $blocked_periods = $this->db
-            ->select()
-            ->from('blocked_periods')
-            ->group_start()
-            ->like('name', $keyword)
-            ->or_like('description', $keyword)
-            ->group_end()
-            ->limit($limit)
-            ->offset($offset)
-            ->order_by($order_by)
-            ->get()
-            ->result_array();
-
-        foreach ($blocked_periods as &$blocked_period) {
-            $this->cast($blocked_period);
-        }
-
-        return $blocked_periods;
-    }
-
-    /**
      * Load related resources to a blocked-period.
      *
      * @param array $blocked_period Associative array with the blocked-period data.
@@ -306,7 +308,7 @@ class Blocked_periods_model extends EA_Model
             'name' => $blocked_period['name'],
             'start' => array_key_exists('start_datetime', $blocked_period) ? $blocked_period['start_datetime'] : null,
             'end' => array_key_exists('end_datetime', $blocked_period) ? $blocked_period['end_datetime'] : null,
-            'description' => array_key_exists('description', $blocked_period) ? $blocked_period['description'] : null,
+            'notes' => array_key_exists('notes', $blocked_period) ? $blocked_period['notes'] : null,
         ];
 
         $blocked_period = $encoded_resource;
@@ -338,10 +340,72 @@ class Blocked_periods_model extends EA_Model
             $decoded_resource['end_datetime'] = $blocked_period['end'];
         }
 
-        if (array_key_exists('description', $blocked_period)) {
-            $decoded_resource['description'] = $blocked_period['description'];
+        if (array_key_exists('notes', $blocked_period)) {
+            $decoded_resource['notes'] = $blocked_period['notes'];
         }
 
         $blocked_period = $decoded_resource;
+    }
+
+    /**
+     * Get all the blocked periods that are within the provided period.
+     *
+     * @param string $start_date
+     * @param string $end_date
+     *
+     * @return array
+     */
+    public function get_for_period(string $start_date, string $end_date): array
+    {
+        return $this->query()
+            //
+            ->group_start()
+            ->where('DATE(start_datetime) <=', $start_date)
+            ->where('DATE(end_datetime) >=', $end_date)
+            ->group_end()
+            //
+            ->or_group_start()
+            ->where('DATE(start_datetime) >=', $start_date)
+            ->where('DATE(end_datetime) <=', $end_date)
+            ->group_end()
+            //
+            ->or_group_start()
+            ->where('DATE(end_datetime) >', $start_date)
+            ->where('DATE(end_datetime) <', $end_date)
+            ->group_end()
+            //
+            ->or_group_start()
+            ->where('DATE(start_datetime) >', $start_date)
+            ->where('DATE(start_datetime) <', $end_date)
+            ->group_end()
+            //
+            ->get()
+            ->result_array();
+    }
+
+    /**
+     * Get the query builder interface, configured for use with the blocked periods table.
+     *
+     * @return CI_DB_query_builder
+     */
+    public function query(): CI_DB_query_builder
+    {
+        return $this->db->from('blocked_periods');
+    }
+
+    /**
+     * Check if a date is blocked by a blocked period.
+     *
+     * @param string $date
+     *
+     * @return bool
+     */
+    public function is_entire_date_blocked(string $date): bool
+    {
+        return $this->query()
+            ->where('DATE(start_datetime) <=', $date)
+            ->where('DATE(end_datetime) >=', $date)
+            ->get()
+            ->num_rows() > 1;
     }
 }

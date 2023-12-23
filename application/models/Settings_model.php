@@ -124,37 +124,27 @@ class Settings_model extends EA_Model
 
     /**
      * Remove an existing setting from the database.
-     
+     *
      * @param int $setting_id Setting ID.
-     * @param bool $force_delete Override soft delete.
      *
      * @throws RuntimeException
      */
-    public function delete(int $setting_id, bool $force_delete = false)
+    public function delete(int $setting_id): void
     {
-        if ($force_delete) {
-            $this->db->delete('settings', ['id' => $setting_id]);
-        } else {
-            $this->db->update('settings', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $setting_id]);
-        }
+        $this->db->delete('settings', ['id' => $setting_id]);
     }
 
     /**
      * Get a specific setting from the database.
      *
      * @param int $setting_id The ID of the record to be returned.
-     * @param bool $with_trashed
      *
      * @return array Returns an array with the setting data.
      *
      * @throws InvalidArgumentException
      */
-    public function find(int $setting_id, bool $with_trashed = false): array
+    public function find(int $setting_id): array
     {
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
         $setting = $this->db->get_where('settings', ['id' => $setting_id])->row_array();
 
         if (!$setting) {
@@ -206,45 +196,6 @@ class Settings_model extends EA_Model
     }
 
     /**
-     * Get all settings that match the provided criteria.
-     *
-     * @param array|string|null $where Where conditions
-     * @param int|null $limit Record limit.
-     * @param int|null $offset Record offset.
-     * @param string|null $order_by Order by.
-     * @param bool $with_trashed
-     *
-     * @return array Returns an array of settings.
-     */
-    public function get(
-        array|string $where = null,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
-        if ($where !== null) {
-            $this->db->where($where);
-        }
-
-        if ($order_by !== null) {
-            $this->db->order_by($order_by);
-        }
-
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
-        $settings = $this->db->get('settings', $limit, $offset)->result_array();
-
-        foreach ($settings as &$setting) {
-            $this->cast($setting);
-        }
-
-        return $settings;
-    }
-
-    /**
      * Get the query builder interface, configured for use with the settings table.
      *
      * @return CI_DB_query_builder
@@ -261,21 +212,11 @@ class Settings_model extends EA_Model
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
-     * @param bool $with_trashed
      *
      * @return array Returns an array of settings.
      */
-    public function search(
-        string $keyword,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
+    public function search(string $keyword, int $limit = null, int $offset = null, string $order_by = null): array
+    {
         $settings = $this->db
             ->select()
             ->from('settings')
@@ -288,6 +229,39 @@ class Settings_model extends EA_Model
             ->order_by($order_by)
             ->get()
             ->result_array();
+
+        foreach ($settings as &$setting) {
+            $this->cast($setting);
+        }
+
+        return $settings;
+    }
+
+    /**
+     * Get all settings that match the provided criteria.
+     *
+     * @param array|string|null $where Where conditions
+     * @param int|null $limit Record limit.
+     * @param int|null $offset Record offset.
+     * @param string|null $order_by Order by.
+     *
+     * @return array Returns an array of settings.
+     */
+    public function get(
+        array|string $where = null,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+    ): array {
+        if ($where !== null) {
+            $this->db->where($where);
+        }
+
+        if ($order_by !== null) {
+            $this->db->order_by($order_by);
+        }
+
+        $settings = $this->db->get('settings', $limit, $offset)->result_array();
 
         foreach ($settings as &$setting) {
             $this->cast($setting);

@@ -149,7 +149,6 @@ class Admins_model extends EA_Model
             ->where('roles.slug', DB_SLUG_ADMIN)
             ->where('users.email', $admin['email'])
             ->where('users.id !=', $admin_id)
-            ->where('users.delete_datetime')
             ->get()
             ->num_rows();
 
@@ -177,9 +176,64 @@ class Admins_model extends EA_Model
         return $this->db
             ->from('users')
             ->join('user_settings', 'user_settings.id_users = users.id', 'inner')
-            ->where(['username' => $username, 'delete_datetime' => null])
+            ->where(['username' => $username])
             ->get()
             ->num_rows() === 0;
+    }
+
+    /**
+     * Get all admins that match the provided criteria.
+     *
+     * @param array|string|null $where Where conditions.
+     * @param int|null $limit Record limit.
+     * @param int|null $offset Record offset.
+     * @param string|null $order_by Order by.
+     *
+     * @return array Returns an array of admins.
+     */
+    public function get(
+        array|string $where = null,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+    ): array {
+        $role_id = $this->get_admin_role_id();
+
+        if ($where !== null) {
+            $this->db->where($where);
+        }
+
+        if ($order_by !== null) {
+            $this->db->order_by($order_by);
+        }
+
+        $admins = $this->db->get_where('users', ['id_roles' => $role_id], $limit, $offset)->result_array();
+
+        foreach ($admins as &$admin) {
+            $this->cast($admin);
+
+            $admin['settings'] = $this->db->get_where('user_settings', ['id_users' => $admin['id']])->row_array();
+
+            unset($admin['settings']['id_users'], $admin['settings']['password'], $admin['settings']['salt']);
+        }
+
+        return $admins;
+    }
+
+    /**
+     * Get the admin role ID.
+     *
+     * @return int Returns the role ID.
+     */
+    public function get_admin_role_id(): int
+    {
+        $role = $this->db->get_where('roles', ['slug' => DB_SLUG_ADMIN])->row_array();
+
+        if (empty($role)) {
+            throw new RuntimeException('The admin role was not found in the database.');
+        }
+
+        return $role['id'];
     }
 
     /**
@@ -213,6 +267,46 @@ class Admins_model extends EA_Model
         $this->save_settings($admin['id'], $settings);
 
         return $admin['id'];
+    }
+
+    /**
+     * Save the admin settings.
+     *
+     * @param int $admin_id Admin ID.
+     * @param array $settings Associative array with the settings data.
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function save_settings(int $admin_id, array $settings)
+    {
+        if (empty($settings)) {
+            throw new InvalidArgumentException('The settings argument cannot be empty.');
+        }
+
+        // Make sure the settings record exists in the database.
+        $count = $this->db->get_where('user_settings', ['id_users' => $admin_id])->num_rows();
+
+        if (!$count) {
+            $this->db->insert('user_settings', ['id_users' => $admin_id]);
+        }
+
+        foreach ($settings as $name => $value) {
+            $this->set_setting($admin_id, $name, $value);
+        }
+    }
+
+    /**
+     * Set the value of an admin setting.
+     *
+     * @param int $admin_id Admin ID.
+     * @param string $name Setting name.
+     * @param mixed|null $value Setting value.
+     */
+    public function set_setting(int $admin_id, string $name, mixed $value = null)
+    {
+        if (!$this->db->update('user_settings', [$name => $value], ['id_users' => $admin_id])) {
+            throw new RuntimeException('Could not set the new admin setting value: ' . $name);
+        }
     }
 
     /**
@@ -258,43 +352,33 @@ class Admins_model extends EA_Model
      * Remove an existing admin from the database.
      *
      * @param int $admin_id Admin ID.
-     * @param bool $force_delete Override soft delete.
      *
      * @throws RuntimeException
      */
-    public function delete(int $admin_id, bool $force_delete = false)
+    public function delete(int $admin_id): void
     {
         $role_id = $this->get_admin_role_id();
 
-        $count = $this->db->get_where('users', ['id_roles' => $role_id, 'delete_datetime' => null])->num_rows();
+        $count = $this->db->get_where('users', ['id_roles' => $role_id])->num_rows();
 
         if ($count <= 1) {
             throw new RuntimeException('Record could not be deleted as the app requires at least one admin user.');
         }
 
-        if ($force_delete) {
-            $this->db->delete('users', ['id' => $admin_id]);
-        } else {
-            $this->db->update('users', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $admin_id]);
-        }
+        $this->db->delete('users', ['id' => $admin_id]);
     }
 
     /**
      * Get a specific admin from the database.
      *
      * @param int $admin_id The ID of the record to be returned.
-     * @param bool $with_trashed
      *
      * @return array Returns an array with the admin data.
      *
      * @throws InvalidArgumentException
      */
-    public function find(int $admin_id, bool $with_trashed = false): array
+    public function find(int $admin_id): array
     {
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
         $admin = $this->db->get_where('users', ['id' => $admin_id])->row_array();
 
         if (!$admin) {
@@ -350,107 +434,6 @@ class Admins_model extends EA_Model
     }
 
     /**
-     * Get all admins that match the provided criteria.
-     *
-     * @param array|string|null $where Where conditions.
-     * @param int|null $limit Record limit.
-     * @param int|null $offset Record offset.
-     * @param string|null $order_by Order by.
-     * @param bool $with_trashed
-     *
-     * @return array Returns an array of admins.
-     */
-    public function get(
-        array|string $where = null,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
-        $role_id = $this->get_admin_role_id();
-
-        if ($where !== null) {
-            $this->db->where($where);
-        }
-
-        if ($order_by !== null) {
-            $this->db->order_by($order_by);
-        }
-
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
-        $admins = $this->db->get_where('users', ['id_roles' => $role_id], $limit, $offset)->result_array();
-
-        foreach ($admins as &$admin) {
-            $this->cast($admin);
-
-            $admin['settings'] = $this->db->get_where('user_settings', ['id_users' => $admin['id']])->row_array();
-
-            unset($admin['settings']['id_users'], $admin['settings']['password'], $admin['settings']['salt']);
-        }
-
-        return $admins;
-    }
-
-    /**
-     * Get the admin role ID.
-     *
-     * @return int Returns the role ID.
-     */
-    public function get_admin_role_id(): int
-    {
-        $role = $this->db->get_where('roles', ['slug' => DB_SLUG_ADMIN])->row_array();
-
-        if (empty($role)) {
-            throw new RuntimeException('The admin role was not found in the database.');
-        }
-
-        return $role['id'];
-    }
-
-    /**
-     * Save the admin settings.
-     *
-     * @param int $admin_id Admin ID.
-     * @param array $settings Associative array with the settings data.
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function save_settings(int $admin_id, array $settings)
-    {
-        if (empty($settings)) {
-            throw new InvalidArgumentException('The settings argument cannot be empty.');
-        }
-
-        // Make sure the settings record exists in the database.
-        $count = $this->db->get_where('user_settings', ['id_users' => $admin_id])->num_rows();
-
-        if (!$count) {
-            $this->db->insert('user_settings', ['id_users' => $admin_id]);
-        }
-
-        foreach ($settings as $name => $value) {
-            $this->set_setting($admin_id, $name, $value);
-        }
-    }
-
-    /**
-     * Set the value of an admin setting.
-     *
-     * @param int $admin_id Admin ID.
-     * @param string $name Setting name.
-     * @param mixed|null $value Setting value.
-     */
-    public function set_setting(int $admin_id, string $name, mixed $value = null)
-    {
-        if (!$this->db->update('user_settings', [$name => $value], ['id_users' => $admin_id])) {
-            throw new RuntimeException('Could not set the new admin setting value: ' . $name);
-        }
-    }
-
-    /**
      * Get the value of an admin setting.
      *
      * @param int $admin_id Admin ID.
@@ -488,22 +471,12 @@ class Admins_model extends EA_Model
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
-     * @param bool $with_trashed
      *
      * @return array Returns an array of admins.
      */
-    public function search(
-        string $keyword,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
+    public function search(string $keyword, int $limit = null, int $offset = null, string $order_by = null): array
+    {
         $role_id = $this->get_admin_role_id();
-
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
 
         $admins = $this->db
             ->select()

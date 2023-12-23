@@ -12,6 +12,7 @@
  * @var array $require_address
  * @var array $require_city
  * @var array $require_zip_code
+ * @var array $require_notes
  */
 ?>
 <div id="appointments-modal" class="modal fade">
@@ -29,9 +30,7 @@
 
                 <form>
                     <fieldset>
-                        <h5 class="text-black-50 mb-3 fw-light">
-                            <?= lang('appointment_details_title') ?>
-                        </h5>
+                        <h5 class="text-black-50 mb-3 fw-light"><?= lang('appointment_details_title') ?></h5>
 
                         <input id="appointment-id" type="hidden">
 
@@ -42,7 +41,7 @@
                                         <?= lang('service') ?>
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <select id="select-service" class="required form-control" disabled>
+                                    <select id="select-service" class="required form-control">
                                         <?php
                                         // Group services by category, only if there is at least one service
                                         // with a parent category.
@@ -51,7 +50,6 @@
                                         foreach ($available_services as $service) {
                                             if (!empty($service['category_id'])) {
                                                 $has_category = true;
-
                                                 break;
                                             }
                                         }
@@ -103,7 +101,7 @@
                                             foreach ($available_services as $service) {
                                                 echo '<option value="' .
                                                     $service['id'] .
-                                                    '" disabled>' .
+                                                    '">' .
                                                     e($service['name']) .
                                                     '</option>';
                                             }
@@ -117,7 +115,7 @@
                                         <?= lang('provider') ?>
                                         <span class="text-danger">*</span>
                                     </label>
-                                    <select id="select-provider" class="required form-control" disabled></select>
+                                    <select id="select-provider" class="required form-control"></select>
                                 </div>
 
                                 <div class="mb-3 hidden">
@@ -135,7 +133,7 @@
                                     <label for="appointment-status" class="form-label">
                                         <?= lang('status') ?>
                                     </label>
-                                    <select id="appointment-status" class="form-control" disabled>
+                                    <select id="appointment-status" class="form-control">
                                         <?php foreach ($appointment_status_options as $appointment_status_option): ?>
                                             <option value="<?= e($appointment_status_option) ?>">
                                                 <?= e($appointment_status_option) ?>
@@ -156,17 +154,14 @@
 
                             <div class="col-12 col-sm-6">
                                 <div class="mb-3">
-                                    <label for="start-datetime" class="form-label">
-                                        <?= lang('start_date_time') ?>
-                                    </label>
-                                    <input id="start-datetime" class="required form-control" disabled>
+                                    <label for="start-datetime"
+                                           class="form-label"><?= lang('start_date_time') ?></label>
+                                    <input id="start-datetime" class="required form-control">
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="end-datetime" class="form-label">
-                                        <?= lang('end_date_time') ?>
-                                    </label>
-                                    <input id="end-datetime" class="required form-control" disabled>
+                                    <label for="end-datetime" class="form-label"><?= lang('end_date_time') ?></label>
+                                    <input id="end-datetime" class="required form-control">
                                 </div>
 
                                 <div class="mb-3">
@@ -196,9 +191,7 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="appointment-notes" class="form-label">
-                                        <?= lang('notes') ?>
-                                    </label>
+                                    <label for="appointment-notes" class="form-label"><?= lang('notes') ?></label>
                                     <textarea id="appointment-notes" class="form-control" rows="3"></textarea>
                                 </div>
                             </div>
@@ -208,28 +201,29 @@
                     <br>
 
                     <fieldset>
-                        <h5 class="text-black-50 mb-3 fw-light hidden">
+                        <h5 class="text-black-50 mb-3 fw-light">
                             <?= lang('customer_details_title') ?>
                             <button id="new-customer" class="btn btn-outline-secondary btn-sm" type="button"
-                                data-tippy-content="<?= lang('clear_fields_add_existing_customer_hint') ?>">
+                                    data-tippy-content="<?= lang('clear_fields_add_existing_customer_hint') ?>">
                                 <i class="fas fa-plus-square me-2"></i>
                                 <?= lang('new') ?>
                             </button>
                             <button id="select-customer" class="btn btn-outline-secondary btn-sm" type="button"
-                                data-tippy-content="<?= lang('pick_existing_customer_hint') ?>" disabled>
+                                    data-tippy-content="<?= lang('pick_existing_customer_hint') ?>">
                                 <i class="fas fa-hand-pointer me-2"></i>
                                 <span>
                                     <?= lang('select') ?>
                                 </span>
                             </button>
 
-                            <input id="filter-existing-customers" placeholder="<?= lang('type_to_filter_customers') ?>"
-                                style="display: none;" class="input-sm form-control" disabled>
+                            <input id="filter-existing-customers"
+                                   placeholder="<?= lang('type_to_filter_customers') ?>"
+                                   style="display: none;" class="input-sm form-control">
                         </h5>
 
                         <div id="existing-customers-list" style="display: none;"></div>
 
-                        <input id="customer-id" type="hidden" disabled>
+                        <input id="customer-id" type="hidden">
 
                         <div class="row">
                             <div class="col-12 col-sm-6">
@@ -241,8 +235,8 @@
                                         <?php endif; ?>
                                     </label>
                                     <input type="text" id="first-name"
-                                        class="<?= $require_first_name ? 'required' : '' ?> form-control"
-                                        maxlength="100" />
+                                           class="<?= $require_first_name ? 'required' : '' ?> form-control"
+                                           maxlength="100"/>
                                 </div>
 
                                 <div class="mb-3">
@@ -253,8 +247,8 @@
                                         <?php endif; ?>
                                     </label>
                                     <input type="text" id="last-name"
-                                        class="<?= $require_last_name ? 'required' : '' ?> form-control"
-                                        maxlength="120" />
+                                           class="<?= $require_last_name ? 'required' : '' ?> form-control"
+                                           maxlength="120"/>
                                 </div>
 
                                 <div class="mb-3">
@@ -265,7 +259,8 @@
                                         <?php endif; ?>
                                     </label>
                                     <input type="text" id="email"
-                                        class="<?= $require_email ? 'required' : '' ?> form-control" maxlength="120" />
+                                           class="<?= $require_email ? 'required' : '' ?> form-control"
+                                           maxlength="120"/>
                                 </div>
 
                                 <div class="mb-3">
@@ -276,7 +271,7 @@
                                         <?php endif; ?>
                                     </label>
                                     <input type="text" id="phone-number" maxlength="60"
-                                        class="<?= $require_phone_number ? 'required' : '' ?> form-control" />
+                                           class="<?= $require_phone_number ? 'required' : '' ?> form-control"/>
                                 </div>
 
                                 <div class="mb-3">
@@ -302,8 +297,8 @@
                                         <?php endif; ?>
                                     </label>
                                     <input type="text" id="address"
-                                        class="<?= $require_address ? 'required' : '' ?> form-control"
-                                        maxlength="120" />
+                                           class="<?= $require_address ? 'required' : '' ?> form-control"
+                                           maxlength="120"/>
                                 </div>
 
                                 <div class="mb-3">
@@ -314,7 +309,8 @@
                                         <?php endif; ?>
                                     </label>
                                     <input type="text" id="city"
-                                        class="<?= $require_city ? 'required' : '' ?> form-control" maxlength="120" />
+                                           class="<?= $require_city ? 'required' : '' ?> form-control"
+                                           maxlength="120"/>
                                 </div>
 
                                 <div class="mb-3">
@@ -325,8 +321,8 @@
                                         <?php endif; ?>
                                     </label>
                                     <input type="text" id="zip-code"
-                                        class="<?= $require_zip_code ? 'required' : '' ?> form-control"
-                                        maxlength="120" />
+                                           class="<?= $require_zip_code ? 'required' : '' ?> form-control"
+                                           maxlength="120"/>
                                 </div>
 
                                 <div class="mb-3">
@@ -343,13 +339,17 @@
                                 <div class="mb-3">
                                     <label for="customer-notes" class="form-label">
                                         <?= lang('notes') ?>
-                                        <?php if ($require_zip_code): ?>
+                                        <?php if ($require_notes): ?>
                                             <span class="text-danger">*</span>
                                         <?php endif; ?>
                                     </label>
                                     <textarea id="customer-notes" rows="2"
-                                        class="<?= $require_zip_code ? 'required' : '' ?> form-control"></textarea>
+                                              class="<?= $require_notes ? 'required' : '' ?> form-control"></textarea>
                                 </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <?php component('custom_fields'); ?>
                             </div>
                         </div>
                     </fieldset>

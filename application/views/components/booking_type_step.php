@@ -6,10 +6,10 @@
  * @var array $available_providers
  */
 
-$has_category = false;
+$has_category = FALSE;
 foreach ($available_services as $service) {
-    if (!empty($service['category_id'])) {
-        $has_category = true;
+    if (!empty($service['service_category_id'])) {
+        $has_category = TRUE;
 
         break;
     }
@@ -18,12 +18,12 @@ foreach ($available_services as $service) {
 $grouped_services = [];
 
 foreach ($available_services as $service) {
-    if (!empty($service['category_id'])) {
-        if (!isset($grouped_services[$service['category_name']])) {
-            $grouped_services[$service['category_name']] = [];
+    if (!empty($service['service_category_id'])) {
+        if (!isset($grouped_services[$service['service_category_name']])) {
+            $grouped_services[$service['service_category_name']] = [];
         }
 
-        $grouped_services[$service['category_name']][] = $service;
+        $grouped_services[$service['service_category_name']][] = $service;
     }
 }
 
@@ -31,7 +31,7 @@ foreach ($available_services as $service) {
 $grouped_services['uncategorized'] = [];
 
 foreach ($available_services as $service) {
-    if ($service['category_id'] == null) {
+    if ($service['service_category_id'] == NULL) {
         $grouped_services['uncategorized'][] = $service;
     }
 }
@@ -43,7 +43,7 @@ foreach ($available_services as $service) {
             <div class="w-full lg:w-5/12">
                 <?php component('provider_card', [
                     'hide_service' => count($available_providers) == 1,
-                    'secretary' => vars('secretary'),
+                    'secretary'    => vars('secretary'),
                 ]); ?>
             </div>
             <div id="step-content">
@@ -86,10 +86,10 @@ foreach ($available_services as $service) {
                                             as $provider
                                         ): ?>                                        
                                         <?php component('provider_tile', [
-                                            'id' => $provider['id'],
-                                            'image' => $provider['image'],
-                                            'first_name' => $provider['first_name'],
-                                            'last_name' => $provider['last_name'],
+                                            'id'          => $provider['id'],
+                                            'image'       => $provider['image'],
+                                            'first_name'  => $provider['first_name'],
+                                            'last_name'   => $provider['last_name'],
                                             'description' => $provider['notes'] ?? '',
                                         ]); ?>
                                         <?php endforeach; ?>  
@@ -136,12 +136,12 @@ foreach ($available_services as $service) {
                                             <?php foreach ($group as $service): ?>
                                             
                                             <?php component('service_tile', [
-                                                'id' => $service['id'],
-                                                'name' => $service['name'],
+                                                'id'          => $service['id'],
+                                                'name'        => $service['name'],
                                                 'description' => $service['description'],
-                                                'price' => $service['price'],
-                                                'fee' => $service['fee'] ?? 0,
-                                                'duration' => $service['duration'],
+                                                'price'       => $service['price'],
+                                                'fee'         => $service['fee'] ?? 0,
+                                                'duration'    => $service['duration'],
                                             ]); ?>
 
                                             <?php endforeach; ?>

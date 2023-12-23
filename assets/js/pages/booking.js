@@ -57,17 +57,17 @@ App.Pages.Booking = (function () {
                     palette: {
                         popup: {
                             background: '#ffffffbd',
-                            text: '#666666'
+                            text: '#666666',
                         },
                         button: {
                             background: '#000000',
-                            text: '#ffffff'
-                        }
+                            text: '#ffffff',
+                        },
                     },
                     content: {
                         message: lang('website_using_cookies_to_ensure_best_experience'),
-                        dismiss: 'OK'
-                    }
+                        dismiss: 'OK',
+                    },
                 });
 
                 $cookieNoticeLink.replaceWith(
@@ -76,8 +76,8 @@ App.Pages.Booking = (function () {
                         'data-target': '#cookie-notice-modal',
                         'href': '#',
                         'class': 'cc-link',
-                        'text': $cookieNoticeLink.text()
-                    })
+                        'text': $cookieNoticeLink.text(),
+                    }),
                 );
             } catch (error) {}
         }
@@ -103,13 +103,13 @@ App.Pages.Booking = (function () {
                             '-' +
                             (Number(instance.monthsDropdownContainer.value) + 1) +
                             '-01',
-                        'YYYY-M-DD'
+                        'YYYY-M-DD',
                     );
 
                     App.Http.Booking.getUnavailableDates(
                         $selectProvider.val(),
                         $selectService.val(),
-                        displayedMonthMoment.format('YYYY-MM-DD')
+                        displayedMonthMoment.format('YYYY-MM-DD'),
                     );
                 }, 500);
             },
@@ -120,16 +120,16 @@ App.Pages.Booking = (function () {
                         instance.currentYearElement.value +
                             '-' +
                             (Number(instance.monthsDropdownContainer.value) + 1) +
-                            '-01'
+                            '-01',
                     );
 
                     App.Http.Booking.getUnavailableDates(
                         $selectProvider.val(),
                         $selectService.val(),
-                        displayedMonthMoment.format('YYYY-MM-DD')
+                        displayedMonthMoment.format('YYYY-MM-DD'),
                     );
                 }, 500);
-            }
+            },
         });
 
         $selectDate[0]._flatpickr.setDate(new Date());
@@ -149,7 +149,7 @@ App.Pages.Booking = (function () {
             $('#wizard-frame-1')
                 .css({
                     'visibility': 'visible',
-                    'display': 'none'
+                    'display': 'none',
                 })
                 .fadeIn();
         } else {
@@ -200,13 +200,13 @@ App.Pages.Booking = (function () {
                     .each((index, bookStepEl) =>
                         $(bookStepEl)
                             .find('strong')
-                            .text(index + 1)
+                            .text(index + 1),
                     );
             } else {
                 $('#wizard-frame-1')
                     .css({
                         'visibility': 'visible',
-                        'display': 'none'
+                        'display': 'none',
                     })
                     .fadeIn();
             }
@@ -299,7 +299,7 @@ App.Pages.Booking = (function () {
                 $('#service-list')
                     .css({
                         'visibility': 'visible',
-                        'display': 'none'
+                        'display': 'none',
                     })
                     .fadeIn();
             });
@@ -314,7 +314,7 @@ App.Pages.Booking = (function () {
             const $target = $(event.target);
             // filter list of service by available provider services
             const filtered = vars('available_providers').filter(
-                (provider) => Number(provider.id) === Number($target.val())
+                (provider) => Number(provider.id) === Number($target.val()),
             );
             if (filtered.length > 0) {
                 const provider = filtered[0];
@@ -342,7 +342,7 @@ App.Pages.Booking = (function () {
             App.Http.Booking.getUnavailableDates(
                 $target.val(),
                 $selectService.val(),
-                moment($selectDate[0]._flatpickr.selectedDates[0]).format('YYYY-MM-DD')
+                moment($selectDate[0]._flatpickr.selectedDates[0]).format('YYYY-MM-DD'),
             );
             updateConfirmFrame();
         });
@@ -387,7 +387,7 @@ App.Pages.Booking = (function () {
             App.Http.Booking.getUnavailableDates(
                 $selectProvider.val(),
                 $target.val(),
-                moment($selectDate[0]._flatpickr.selectedDates[0]).format('YYYY-MM-DD')
+                moment($selectDate[0]._flatpickr.selectedDates[0]).format('YYYY-MM-DD'),
             );
 
             updateConfirmFrame();
@@ -426,7 +426,7 @@ App.Pages.Booking = (function () {
                         $('<div/>', {
                             'id': 'select-hour-prompt',
                             'class': 'text-danger mb-4',
-                            'text': lang('appointment_hour_missing')
+                            'text': lang('appointment_hour_missing'),
                         }).prependTo('#available-hours');
                     }
                     return;
@@ -553,7 +553,7 @@ App.Pages.Booking = (function () {
                         text: lang('close'),
                         click: (event, messageModal) => {
                             messageModal.dispose();
-                        }
+                        },
                     },
                     {
                         text: lang('confirm'),
@@ -564,14 +564,14 @@ App.Pages.Booking = (function () {
                             }
                             $cancelAppointmentForm.find('#hidden-cancellation-reason').val($cancellationReason.val());
                             $cancelAppointmentForm.submit();
-                        }
-                    }
+                        },
+                    },
                 ];
 
                 App.Utils.Message.show(
                     lang('cancel_appointment_title'),
                     lang('write_appointment_removal_reason'),
-                    buttons
+                    buttons,
                 );
 
                 $cancellationReason = $('<textarea/>', {
@@ -579,8 +579,8 @@ App.Pages.Booking = (function () {
                     'id': 'cancellation-reason',
                     'rows': '3',
                     'css': {
-                        'width': '100%'
-                    }
+                        'width': '100%',
+                    },
                 }).appendTo('#message-modal .modal-body');
 
                 return false;
@@ -592,20 +592,20 @@ App.Pages.Booking = (function () {
                         text: lang('cancel'),
                         click: (event, messageModal) => {
                             messageModal.dispose();
-                        }
+                        },
                     },
                     {
                         text: lang('delete'),
                         click: () => {
                             App.Http.Booking.deletePersonalInformation(vars('customer_token'));
-                        }
-                    }
+                        },
+                    },
                 ];
 
                 App.Utils.Message.show(
                     lang('delete_personal_information'),
                     lang('delete_personal_information_prompt'),
-                    buttons
+                    buttons,
                 );
             });
         }
@@ -736,7 +736,7 @@ App.Pages.Booking = (function () {
                 const formatter = new Intl.NumberFormat('en-US', {
                     style: 'currency',
                     currency: service.currency || 'NGN',
-                    minimumFractionDigits: 0
+                    minimumFractionDigits: 0,
                 });
                 // TODO: modiy to work with any duration
                 let duration = Number(service.duration);
@@ -781,81 +781,81 @@ App.Pages.Booking = (function () {
         const formatter = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: serviceCurrency || 'NGN',
-            minimumFractionDigits: 0
+            minimumFractionDigits: 0,
         });
         $('<div/>', {
             'html': [
                 $('<h4/>', {
-                    'text': lang('appointment')
+                    'text': lang('appointment'),
                 }),
                 $('<p/>', {
                     'html': [
                         $('<span/>', {
-                            'text': lang('service')
+                            'text': lang('service'),
                         }),
                         $('<span/>', {
-                            'text': $selectService.find('option:selected').text()
+                            'text': $selectService.find('option:selected').text(),
                         }),
                         $('<span/>', {
-                            'text': lang('provider')
+                            'text': lang('provider'),
                         }),
                         $('<span/>', {
-                            'text': $selectProvider.find('option:selected').text()
+                            'text': $selectProvider.find('option:selected').text(),
                         }),
                         $('<span/>', {
-                            'text': lang('duration')
+                            'text': lang('duration'),
                         }),
                         $('<span/>', {
-                            'text': readableServiceDuration
+                            'text': readableServiceDuration,
                         }),
                         $('<span/>', {
-                            'text': lang('start')
+                            'text': lang('start'),
                         }),
                         $('<span/>', {
-                            'text': selectedDate + ' ' + $availableHours.find('.selected-hour').text()
+                            'text': selectedDate + ' ' + $availableHours.find('.selected-hour').text(),
                         }),
                         $('<span/>', {
-                            'text': lang('timezone') + ': ' + $selectTimezone.find('option:selected').text()
+                            'text': lang('timezone') + ': ' + $selectTimezone.find('option:selected').text(),
                         }),
                         $('<span/>', {
                             'text': lang('price'),
                             'prop': {
-                                'hidden': !servicePrice
-                            }
+                                'hidden': !servicePrice,
+                            },
                         }),
                         $('<span/>', {
                             'text': serviceCurrency + ' ' + servicePrice,
                             'prop': {
-                                'hidden': !servicePrice
-                            }
+                                'hidden': !servicePrice,
+                            },
                         }),
                         $('<span/>', {
                             'text': lang('Fee'),
                             'prop': {
-                                'hidden': Number(_serviceFee) == 0
-                            }
+                                'hidden': Number(_serviceFee) == 0,
+                            },
                         }),
                         $('<span/>', {
                             'text': formatter.format(Number(_serviceFee)),
                             'prop': {
-                                'hidden': Number(_serviceFee) == 0
-                            }
+                                'hidden': Number(_serviceFee) == 0,
+                            },
                         }),
                         $('<span/>', {
                             'text': lang('Total Price'),
                             'prop': {
-                                'hidden': Number(_serviceFee) == 0
-                            }
+                                'hidden': Number(_serviceFee) == 0,
+                            },
                         }),
                         $('<span/>', {
                             'text': formatter.format(Number(_serviceFee) + Number(_servicePrice)),
                             'prop': {
-                                'hidden': Number(_serviceFee) == 0
-                            }
-                        })
-                    ]
-                })
-            ]
+                                'hidden': Number(_serviceFee) == 0,
+                            },
+                        }),
+                    ],
+                }),
+            ],
         }).appendTo('#appointment-details');
 
         // Customer Details
@@ -873,73 +873,73 @@ App.Pages.Booking = (function () {
         $('<div/>', {
             'html': [
                 $('<h4/>)', {
-                    'text': lang('customer')
+                    'text': lang('customer'),
                 }),
                 $('<p/>', {
                     'html': [
                         fullName
                             ? $('<span/>', {
-                                  'text': lang('customer')
+                                  'text': lang('customer'),
                               })
                             : null,
                         fullName
                             ? $('<span/>', {
-                                  'text': fullName
+                                  'text': fullName,
                               })
                             : null,
                         phoneNumber
                             ? $('<span/>', {
-                                  'text': lang('phone_number')
+                                  'text': lang('phone_number'),
                               })
                             : null,
                         phoneNumber
                             ? $('<span/>', {
-                                  'text': phoneNumber
+                                  'text': phoneNumber,
                               })
                             : null,
                         email
                             ? $('<span/>', {
-                                  'text': lang('email')
+                                  'text': lang('email'),
                               })
                             : null,
                         email
                             ? $('<span/>', {
-                                  'text': email
+                                  'text': email,
                               })
                             : null,
                         address
                             ? $('<span/>', {
-                                  'text': lang('address')
+                                  'text': lang('address'),
                               })
                             : null,
                         address
                             ? $('<span/>', {
-                                  'text': address
+                                  'text': address,
                               })
                             : null,
                         city
                             ? $('<span/>', {
-                                  'text': lang('city')
+                                  'text': lang('city'),
                               })
                             : null,
                         city
                             ? $('<span/>', {
-                                  'text': city
+                                  'text': city,
                               })
                             : null,
                         zipCode
                             ? $('<span/>', {
-                                  'text': lang('zip_code')
+                                  'text': lang('zip_code'),
                               })
                             : null,
                         zipCode
                             ? $('<span/>', {
-                                  'text': zipCode
+                                  'text': zipCode,
                               })
-                            : null
-                    ]
-                })
-            ]
+                            : null,
+                    ],
+                }),
+            ],
         }).appendTo('#customer-details');
 
         // Update appointment form data for submission to server when the user confirms the appointment.
@@ -953,7 +953,7 @@ App.Pages.Booking = (function () {
             address: $address.val(),
             city: $city.val(),
             zip_code: $zipCode.val(),
-            timezone: $selectTimezone.val()
+            timezone: $selectTimezone.val(),
         };
 
         data.appointment = {
@@ -968,7 +968,7 @@ App.Pages.Booking = (function () {
             fee: serviceFee,
             is_unavailability: false,
             id_users_provider: $selectProvider.val(),
-            id_services: $selectService.val()
+            id_services: $selectService.val(),
         };
         if (serviceDuration == 60) {
             data.service_duration = Number($interval.val());
@@ -997,7 +997,7 @@ App.Pages.Booking = (function () {
         const serviceId = $selectService.val();
 
         const service = vars('available_services').find(
-            (availableService) => Number(availableService.id) === Number(serviceId)
+            (availableService) => Number(availableService.id) === Number(serviceId),
         );
 
         // Add the duration to the start datetime.
@@ -1074,7 +1074,7 @@ App.Pages.Booking = (function () {
         $serviceDescription.empty();
 
         const service = vars('available_services').find(
-            (availableService) => Number(availableService.id) === Number(serviceId)
+            (availableService) => Number(availableService.id) === Number(serviceId),
         );
 
         if (!service) {
@@ -1082,14 +1082,14 @@ App.Pages.Booking = (function () {
         }
 
         $('<strong/>', {
-            'text': App.Utils.String.escapeHtml(service.name)
+            'text': App.Utils.String.escapeHtml(service.name),
         }).appendTo($serviceDescription);
 
         if (service.description) {
             $('<br/>').appendTo($serviceDescription);
 
             $('<span/>', {
-                'html': App.Utils.String.escapeHtml(service.description).replaceAll('\n', '<br/>')
+                'html': App.Utils.String.escapeHtml(service.description).replaceAll('\n', '<br/>'),
             }).appendTo($serviceDescription);
         }
 
@@ -1099,25 +1099,25 @@ App.Pages.Booking = (function () {
 
         if (service.duration) {
             $('<span/>', {
-                'text': '[' + lang('duration') + ' ' + service.duration + ' ' + lang('minutes') + ']'
+                'text': '[' + lang('duration') + ' ' + service.duration + ' ' + lang('minutes') + ']',
             }).appendTo($serviceDescription);
         }
 
         if (Number(service.price) > 0) {
             $('<span/>', {
-                'text': '[' + lang('price') + ' ' + service.price + ' ' + service.currency + ']'
+                'text': '[' + lang('price') + ' ' + service.price + ' ' + service.currency + ']',
             }).appendTo($serviceDescription);
         }
 
         if (Number(service.fee) > 0) {
             $('<span/>', {
-                'text': '[' + lang('fee') + ' ' + service.fee + ' ' + service.currency + ']'
+                'text': '[' + lang('fee') + ' ' + service.fee + ' ' + service.currency + ']',
             }).appendTo($serviceDescription);
         }
 
         if (service.location) {
             $('<span/>', {
-                'text': '[' + lang('location') + ' ' + service.location + ']'
+                'text': '[' + lang('location') + ' ' + service.location + ']',
             }).appendTo($serviceDescription);
         }
     }
@@ -1165,6 +1165,6 @@ App.Pages.Booking = (function () {
     return {
         manageMode,
         initialize,
-        updateConfirmFrame
+        updateConfirmFrame,
     };
 })();

@@ -157,7 +157,7 @@ class Accounts
     {
         return $this->CI->users_model
             ->query()
-            ->where(['id' => $user_id, 'delete_datetime' => null])
+            ->where(['id' => $user_id])
             ->get()
             ->num_rows() > 0;
     }

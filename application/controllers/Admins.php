@@ -104,9 +104,9 @@ class Admins extends EA_Controller
     }
 
     /**
-     * Create an admin.
+     * Store a new admin.
      */
-    public function create()
+    public function store()
     {
         try {
             if (cannot('add', PRIV_USERS)) {
@@ -143,6 +143,26 @@ class Admins extends EA_Controller
                 'success' => true,
                 'id' => $admin_id,
             ]);
+        } catch (Throwable $e) {
+            json_exception($e);
+        }
+    }
+
+    /**
+     * Find an admin.
+     */
+    public function find()
+    {
+        try {
+            if (cannot('view', PRIV_USERS)) {
+                abort(403, 'Forbidden');
+            }
+
+            $admin_id = request('admin_id');
+
+            $admin = $this->admins_model->find($admin_id);
+
+            json_response($admin);
         } catch (Throwable $e) {
             json_exception($e);
         }
@@ -215,26 +235,6 @@ class Admins extends EA_Controller
             json_response([
                 'success' => true,
             ]);
-        } catch (Throwable $e) {
-            json_exception($e);
-        }
-    }
-
-    /**
-     * Find an admin.
-     */
-    public function find()
-    {
-        try {
-            if (cannot('view', PRIV_USERS)) {
-                abort(403, 'Forbidden');
-            }
-
-            $admin_id = request('admin_id');
-
-            $admin = $this->admins_model->find($admin_id);
-
-            json_response($admin);
         } catch (Throwable $e) {
             json_exception($e);
         }

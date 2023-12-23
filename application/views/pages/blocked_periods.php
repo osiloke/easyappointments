@@ -52,6 +52,11 @@
                         <?= lang('cancel') ?>
                     </button>
                 </div>
+
+                <a href="<?= site_url('business_settings') ?>" class="btn btn-outline-primary ms-4">
+                    <i class="fas fa-chevron-left me-2"></i>
+                    <?= lang('back') ?>
+                </a>
             </div>
 
             <h4 class="text-black-50 mb-3 fw-light">
@@ -71,26 +76,26 @@
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="start-datetime">
+                <label class="form-label" for="start-date-time">
                     <?= lang('start') ?>
                     <span class="text-danger" hidden>*</span>
                 </label>
-                <input id="start-datetime" class="form-control required" disabled>
+                <input id="start-date-time" class="form-control required" disabled>
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="end-datetime">
+                <label class="form-label" for="end-date-time">
                     <?= lang('end') ?>
                     <span class="text-danger" hidden>*</span>
                 </label>
-                <input id="end-datetime" class="form-control required" disabled>
+                <input id="end-date-time" class="form-control required" disabled>
             </div>
 
             <div class="mb-3">
-                <label class="form-label" for="description">
-                    <?= lang('description') ?>
+                <label class="form-label" for="notes">
+                    <?= lang('notes') ?>
                 </label>
-                <textarea id="description" rows="4" class="form-control" disabled></textarea>
+                <textarea id="notes" rows="4" class="form-control" disabled></textarea>
             </div>
         </div>
     </div>
@@ -104,6 +109,7 @@
 <script src="<?= asset_url('assets/js/utils/message.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/validation.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/url.js') ?>"></script>
+<script src="<?= asset_url('assets/js/utils/ui.js') ?>"></script>
 <script src="<?= asset_url('assets/js/http/blocked_periods_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/pages/blocked_periods.js') ?>"></script>
 

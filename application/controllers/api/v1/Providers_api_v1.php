@@ -109,7 +109,7 @@ class Providers_api_v1 extends EA_Controller
     }
 
     /**
-     * Create a provider.
+     * Store a new provider.
      */
     public function store()
     {

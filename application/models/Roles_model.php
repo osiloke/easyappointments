@@ -125,35 +125,25 @@ class Roles_model extends EA_Model
      * Remove an existing role from the database.
      *
      * @param int $role_id Role ID.
-     * @param bool $force_delete Override soft delete.
      *
      * @throws RuntimeException
      */
-    public function delete(int $role_id, bool $force_delete = false)
+    public function delete(int $role_id): void
     {
-        if ($force_delete) {
-            $this->db->delete('roles', ['id' => $role_id]);
-        } else {
-            $this->db->update('roles', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $role_id]);
-        }
+        $this->db->delete('roles', ['id' => $role_id]);
     }
 
     /**
      * Get a specific role from the database.
      *
      * @param int $role_id The ID of the record to be returned.
-     * @param bool $with_trashed
      *
      * @return array Returns an array with the role data.
      *
      * @throws InvalidArgumentException
      */
-    public function find(int $role_id, bool $with_trashed = false): array
+    public function find(int $role_id): array
     {
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
         $role = $this->db->get_where('roles', ['id' => $role_id])->row_array();
 
         if (!$role) {
@@ -202,45 +192,6 @@ class Roles_model extends EA_Model
         }
 
         return $role[$field];
-    }
-
-    /**
-     * Get all roles that match the provided criteria.
-     *
-     * @param array|string|null $where Where conditions
-     * @param int|null $limit Record limit.
-     * @param int|null $offset Record offset.
-     * @param string|null $order_by Order by.
-     * @param bool $with_trashed
-     *
-     * @return array Returns an array of roles.
-     */
-    public function get(
-        array|string $where = null,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
-        if ($where !== null) {
-            $this->db->where($where);
-        }
-
-        if ($order_by !== null) {
-            $this->db->order_by($order_by);
-        }
-
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
-        $roles = $this->db->get('roles', $limit, $offset)->result_array();
-
-        foreach ($roles as &$role) {
-            $this->cast($role);
-        }
-
-        return $roles;
     }
 
     /**
@@ -318,21 +269,11 @@ class Roles_model extends EA_Model
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
-     * @param bool $with_trashed
      *
      * @return array Returns an array of roles.
      */
-    public function search(
-        string $keyword,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
+    public function search(string $keyword, int $limit = null, int $offset = null, string $order_by = null): array
+    {
         $roles = $this->db
             ->select()
             ->from('roles')
@@ -345,6 +286,39 @@ class Roles_model extends EA_Model
             ->order_by($order_by)
             ->get()
             ->result_array();
+
+        foreach ($roles as &$role) {
+            $this->cast($role);
+        }
+
+        return $roles;
+    }
+
+    /**
+     * Get all roles that match the provided criteria.
+     *
+     * @param array|string|null $where Where conditions
+     * @param int|null $limit Record limit.
+     * @param int|null $offset Record offset.
+     * @param string|null $order_by Order by.
+     *
+     * @return array Returns an array of roles.
+     */
+    public function get(
+        array|string $where = null,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+    ): array {
+        if ($where !== null) {
+            $this->db->where($where);
+        }
+
+        if ($order_by !== null) {
+            $this->db->order_by($order_by);
+        }
+
+        $roles = $this->db->get('roles', $limit, $offset)->result_array();
 
         foreach ($roles as &$role) {
             $this->cast($role);

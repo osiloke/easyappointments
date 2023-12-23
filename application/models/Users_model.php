@@ -131,6 +131,46 @@ class Users_model extends EA_Model
     }
 
     /**
+     * Save the user settings.
+     *
+     * @param int $user_id User ID.
+     * @param array $settings Associative array with the settings data.
+     *
+     * @throws InvalidArgumentException
+     */
+    protected function save_settings(int $user_id, array $settings)
+    {
+        if (empty($settings)) {
+            throw new InvalidArgumentException('The settings argument cannot be empty.');
+        }
+
+        // Make sure the settings record exists in the database.
+        $count = $this->db->get_where('user_settings', ['id_users' => $user_id])->num_rows();
+
+        if (!$count) {
+            $this->db->insert('user_settings', ['id_users' => $user_id]);
+        }
+
+        foreach ($settings as $name => $value) {
+            $this->set_setting($user_id, $name, $value);
+        }
+    }
+
+    /**
+     * Set the value of a user setting.
+     *
+     * @param int $user_id User ID.
+     * @param string $name Setting name.
+     * @param string $value Setting value.
+     */
+    public function set_setting(int $user_id, string $name, string $value)
+    {
+        if (!$this->db->update('user_settings', [$name => $value], ['id_users' => $user_id])) {
+            throw new RuntimeException('Could not set the new user setting value: ' . $name);
+        }
+    }
+
+    /**
      * Update an existing user.
      *
      * @param array $user Associative array with the user data.
@@ -169,35 +209,25 @@ class Users_model extends EA_Model
      * Remove an existing user from the database.
      *
      * @param int $user_id User ID.
-     * @param bool $force_delete Override soft delete.
      *
      * @throws RuntimeException
      */
-    public function delete(int $user_id, bool $force_delete = false)
+    public function delete(int $user_id): void
     {
-        if ($force_delete) {
-            $this->db->delete('users', ['id' => $user_id]);
-        } else {
-            $this->db->update('users', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $user_id]);
-        }
+        $this->db->delete('users', ['id' => $user_id]);
     }
 
     /**
      * Get a specific user from the database.
      *
      * @param int $user_id The ID of the record to be returned.
-     * @param bool $with_trashed
      *
      * @return array Returns an array with the user data.
      *
      * @throws InvalidArgumentException
      */
-    public function find(int $user_id, bool $with_trashed = false): array
+    public function find(int $user_id): array
     {
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
         $user = $this->db->get_where('users', ['id' => $user_id])->row_array();
 
         if (!$user) {
@@ -253,89 +283,6 @@ class Users_model extends EA_Model
     }
 
     /**
-     * Get all users that match the provided criteria.
-     *
-     * @param array|string|null $where Where conditions
-     * @param int|null $limit Record limit.
-     * @param int|null $offset Record offset.
-     * @param string|null $order_by Order by.
-     * @param bool $with_trashed
-     *
-     * @return array Returns an array of users.
-     */
-    public function get(
-        array|string $where = null,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
-        if ($where !== null) {
-            $this->db->where($where);
-        }
-
-        if ($order_by !== null) {
-            $this->db->order_by($order_by);
-        }
-
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
-        $users = $this->db->get('users', $limit, $offset)->result_array();
-
-        foreach ($users as &$user) {
-            $this->cast($user);
-
-            $user['settings'] = $this->db->get_where('user_settings', ['id_users' => $user['id']])->row_array();
-
-            unset($user['settings']['id_users'], $user['settings']['password'], $user['settings']['salt']);
-        }
-
-        return $users;
-    }
-
-    /**
-     * Save the user settings.
-     *
-     * @param int $user_id User ID.
-     * @param array $settings Associative array with the settings data.
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function save_settings(int $user_id, array $settings)
-    {
-        if (empty($settings)) {
-            throw new InvalidArgumentException('The settings argument cannot be empty.');
-        }
-
-        // Make sure the settings record exists in the database.
-        $count = $this->db->get_where('user_settings', ['id_users' => $user_id])->num_rows();
-
-        if (!$count) {
-            $this->db->insert('user_settings', ['id_users' => $user_id]);
-        }
-
-        foreach ($settings as $name => $value) {
-            $this->set_setting($user_id, $name, $value);
-        }
-    }
-
-    /**
-     * Set the value of a user setting.
-     *
-     * @param int $user_id User ID.
-     * @param string $name Setting name.
-     * @param string $value Setting value.
-     */
-    public function set_setting(int $user_id, string $name, string $value)
-    {
-        if (!$this->db->update('user_settings', [$name => $value], ['id_users' => $user_id])) {
-            throw new RuntimeException('Could not set the new user setting value: ' . $name);
-        }
-    }
-
-    /**
      * Get the value of a user setting.
      *
      * @param int $user_id User ID.
@@ -371,21 +318,11 @@ class Users_model extends EA_Model
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
-     * @param bool $with_trashed
      *
      * @return array Returns an array of settings.
      */
-    public function search(
-        string $keyword,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
+    public function search(string $keyword, int $limit = null, int $offset = null, string $order_by = null): array
+    {
         $users = $this->db
             ->select()
             ->from('users')
@@ -406,6 +343,43 @@ class Users_model extends EA_Model
             ->order_by($order_by)
             ->get()
             ->result_array();
+
+        foreach ($users as &$user) {
+            $this->cast($user);
+
+            $user['settings'] = $this->db->get_where('user_settings', ['id_users' => $user['id']])->row_array();
+
+            unset($user['settings']['id_users'], $user['settings']['password'], $user['settings']['salt']);
+        }
+
+        return $users;
+    }
+
+    /**
+     * Get all users that match the provided criteria.
+     *
+     * @param array|string|null $where Where conditions
+     * @param int|null $limit Record limit.
+     * @param int|null $offset Record offset.
+     * @param string|null $order_by Order by.
+     *
+     * @return array Returns an array of users.
+     */
+    public function get(
+        array|string $where = null,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+    ): array {
+        if ($where !== null) {
+            $this->db->where($where);
+        }
+
+        if ($order_by !== null) {
+            $this->db->order_by($order_by);
+        }
+
+        $users = $this->db->get('users', $limit, $offset)->result_array();
 
         foreach ($users as &$user) {
             $this->cast($user);

@@ -161,7 +161,6 @@ class Secretaries_model extends EA_Model
             ->where('roles.slug', DB_SLUG_SECRETARY)
             ->where('users.email', $secretary['email'])
             ->where('users.id !=', $secretary_id)
-            ->where('users.delete_datetime')
             ->get()
             ->num_rows();
 
@@ -189,181 +188,9 @@ class Secretaries_model extends EA_Model
         return $this->db
             ->from('users')
             ->join('user_settings', 'user_settings.id_users = users.id', 'inner')
-            ->where(['username' => $username, 'delete_datetime' => null])
+            ->where(['username' => $username])
             ->get()
             ->num_rows() === 0;
-    }
-
-    /**
-     * Insert a new secretary into the database.
-     *
-     * @param array $secretary Associative array with the secretary data.
-     *
-     * @return int Returns the secretary ID.
-     *
-     * @throws RuntimeException|Exception
-     */
-    protected function insert(array $secretary): int
-    {
-        $secretary['create_datetime'] = date('Y-m-d H:i:s');
-        $secretary['update_datetime'] = date('Y-m-d H:i:s');
-
-        $secretary['id_roles'] = $this->get_secretary_role_id();
-
-        $provider_ids = $secretary['providers'] ?? [];
-
-        $settings = $secretary['settings'];
-
-        unset($secretary['providers'], $secretary['settings']);
-
-        if (!$this->db->insert('users', $secretary)) {
-            throw new RuntimeException('Could not insert secretary.');
-        }
-
-        $secretary['id'] = $this->db->insert_id();
-        $settings['salt'] = generate_salt();
-        $settings['password'] = hash_password($settings['salt'], $settings['password']);
-
-        $this->save_settings($secretary['id'], $settings);
-        $this->save_provider_ids($secretary['id'], $provider_ids);
-
-        return $secretary['id'];
-    }
-
-    /**
-     * Update an existing secretary.
-     *
-     * @param array $secretary Associative array with the secretary data.
-     *
-     * @return int Returns the secretary ID.
-     *
-     * @throws RuntimeException|Exception
-     */
-    protected function update(array $secretary): int
-    {
-        $secretary['update_datetime'] = date('Y-m-d H:i:s');
-
-        $provider_ids = $secretary['providers'] ?? [];
-
-        $settings = $secretary['settings'];
-
-        unset($secretary['providers'], $secretary['settings']);
-
-        if (isset($settings['password'])) {
-            $existing_settings = $this->db->get_where('user_settings', ['id_users' => $secretary['id']])->row_array();
-
-            if (empty($existing_settings)) {
-                throw new RuntimeException('No settings record found for secretary with ID: ' . $secretary['id']);
-            }
-
-            $settings['password'] = hash_password($existing_settings['salt'], $settings['password']);
-        }
-
-        if (!$this->db->update('users', $secretary, ['id' => $secretary['id']])) {
-            throw new RuntimeException('Could not update secretary.');
-        }
-
-        $this->save_settings($secretary['id'], $settings);
-        $this->save_provider_ids($secretary['id'], $provider_ids);
-
-        return (int) $secretary['id'];
-    }
-
-    /**
-     * Remove an existing secretary from the database.
-     *
-     * @param int $secretary_id Provider ID.
-     * @param bool $force_delete Override soft delete.
-     *
-     * @throws RuntimeException
-     */
-    public function delete(int $secretary_id, bool $force_delete = false)
-    {
-        if ($force_delete) {
-            $this->db->delete('users', ['id' => $secretary_id]);
-        } else {
-            $this->db->update('users', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $secretary_id]);
-        }
-    }
-
-    /**
-     * Get a specific secretary from the database.
-     *
-     * @param int $secretary_id The ID of the record to be returned.
-     * @param bool $with_trashed
-     *
-     * @return array Returns an array with the secretary data.
-     *
-     * @throws InvalidArgumentException
-     */
-    public function find(int $secretary_id, bool $with_trashed = false): array
-    {
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
-        $secretary = $this->db->get_where('users', ['id' => $secretary_id])->row_array();
-
-        if (!$secretary) {
-            throw new InvalidArgumentException(
-                'The provided secretary ID was not found in the database: ' . $secretary_id,
-            );
-        }
-
-        $secretary['settings'] = $this->db->get_where('user_settings', ['id_users' => $secretary_id])->row_array();
-
-        unset($secretary['settings']['id_users'], $secretary['settings']['password'], $secretary['settings']['salt']);
-
-        $secretary_provider_connections = $this->db
-            ->get_where('secretaries_providers', ['id_users_secretary' => $secretary_id])
-            ->result_array();
-
-        $secretary['providers'] = [];
-
-        foreach ($secretary_provider_connections as $secretary_provider_connection) {
-            $secretary['providers'][] = (int) $secretary_provider_connection['id_users_provider'];
-        }
-
-        return $secretary;
-    }
-
-    /**
-     * Get a specific field value from the database.
-     *
-     * @param int $secretary_id Secretary ID.
-     * @param string $field Name of the value to be returned.
-     *
-     * @return mixed Returns the selected secretary value from the database.
-     *
-     * @throws InvalidArgumentException
-     */
-    public function value(int $secretary_id, string $field): mixed
-    {
-        if (empty($field)) {
-            throw new InvalidArgumentException('The field argument is cannot be empty.');
-        }
-
-        if (empty($secretary_id)) {
-            throw new InvalidArgumentException('The secretary ID argument cannot be empty.');
-        }
-
-        // Check whether the secretary exists.
-        $query = $this->db->get_where('users', ['id' => $secretary_id]);
-
-        if (!$query->num_rows()) {
-            throw new InvalidArgumentException(
-                'The provided secretary ID was not found in the database: ' . $secretary_id,
-            );
-        }
-
-        // Check if the required field is part of the secretary data.
-        $secretary = $query->row_array();
-
-        if (!array_key_exists($field, $secretary)) {
-            throw new InvalidArgumentException('The requested field was not found in the secretary data: ' . $field);
-        }
-
-        return $secretary[$field];
     }
 
     /**
@@ -373,7 +200,6 @@ class Secretaries_model extends EA_Model
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
-     * @param bool $with_trashed
      *
      * @return array Returns an array of secretaries.
      */
@@ -382,7 +208,6 @@ class Secretaries_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false,
     ): array {
         $role_id = $this->get_secretary_role_id();
 
@@ -392,10 +217,6 @@ class Secretaries_model extends EA_Model
 
         if ($order_by !== null) {
             $this->db->order_by($order_by);
-        }
-
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
         }
 
         $secretaries = $this->db->get_where('users', ['id_roles' => $role_id], $limit, $offset)->result_array();
@@ -442,6 +263,42 @@ class Secretaries_model extends EA_Model
     }
 
     /**
+     * Insert a new secretary into the database.
+     *
+     * @param array $secretary Associative array with the secretary data.
+     *
+     * @return int Returns the secretary ID.
+     *
+     * @throws RuntimeException|Exception
+     */
+    protected function insert(array $secretary): int
+    {
+        $secretary['create_datetime'] = date('Y-m-d H:i:s');
+        $secretary['update_datetime'] = date('Y-m-d H:i:s');
+
+        $secretary['id_roles'] = $this->get_secretary_role_id();
+
+        $provider_ids = $secretary['providers'] ?? [];
+
+        $settings = $secretary['settings'];
+
+        unset($secretary['providers'], $secretary['settings']);
+
+        if (!$this->db->insert('users', $secretary)) {
+            throw new RuntimeException('Could not insert secretary.');
+        }
+
+        $secretary['id'] = $this->db->insert_id();
+        $settings['salt'] = generate_salt();
+        $settings['password'] = hash_password($settings['salt'], $settings['password']);
+
+        $this->save_settings($secretary['id'], $settings);
+        $this->save_provider_ids($secretary['id'], $provider_ids);
+
+        return $secretary['id'];
+    }
+
+    /**
      * Save the secretary settings.
      *
      * @param int $secretary_id Secretary ID.
@@ -482,22 +339,42 @@ class Secretaries_model extends EA_Model
     }
 
     /**
-     * Get the value of a secretary setting.
+     * Update an existing secretary.
      *
-     * @param int $secretary_id Secretary ID.
-     * @param string $name Setting name.
+     * @param array $secretary Associative array with the secretary data.
      *
-     * @return string Returns the value of the requested user setting.
+     * @return int Returns the secretary ID.
+     *
+     * @throws RuntimeException|Exception
      */
-    public function get_setting(int $secretary_id, string $name): string
+    protected function update(array $secretary): int
     {
-        $settings = $this->db->get_where('user_settings', ['id_users' => $secretary_id])->row_array();
+        $secretary['update_datetime'] = date('Y-m-d H:i:s');
 
-        if (!array_key_exists($name, $settings)) {
-            throw new RuntimeException('The requested setting value was not found: ' . $secretary_id);
+        $provider_ids = $secretary['providers'] ?? [];
+
+        $settings = $secretary['settings'];
+
+        unset($secretary['providers'], $secretary['settings']);
+
+        if (isset($settings['password'])) {
+            $existing_settings = $this->db->get_where('user_settings', ['id_users' => $secretary['id']])->row_array();
+
+            if (empty($existing_settings)) {
+                throw new RuntimeException('No settings record found for secretary with ID: ' . $secretary['id']);
+            }
+
+            $settings['password'] = hash_password($existing_settings['salt'], $settings['password']);
         }
 
-        return $settings[$name];
+        if (!$this->db->update('users', $secretary, ['id' => $secretary['id']])) {
+            throw new RuntimeException('Could not update secretary.');
+        }
+
+        $this->save_settings($secretary['id'], $settings);
+        $this->save_provider_ids($secretary['id'], $provider_ids);
+
+        return (int) $secretary['id'];
     }
 
     /**
@@ -522,6 +399,76 @@ class Secretaries_model extends EA_Model
     }
 
     /**
+     * Remove an existing secretary from the database.
+     *
+     * @param int $secretary_id Provider ID.
+     *
+     * @throws RuntimeException
+     */
+    public function delete(int $secretary_id): void
+    {
+        $this->db->delete('users', ['id' => $secretary_id]);
+    }
+
+    /**
+     * Get a specific field value from the database.
+     *
+     * @param int $secretary_id Secretary ID.
+     * @param string $field Name of the value to be returned.
+     *
+     * @return mixed Returns the selected secretary value from the database.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function value(int $secretary_id, string $field): mixed
+    {
+        if (empty($field)) {
+            throw new InvalidArgumentException('The field argument is cannot be empty.');
+        }
+
+        if (empty($secretary_id)) {
+            throw new InvalidArgumentException('The secretary ID argument cannot be empty.');
+        }
+
+        // Check whether the secretary exists.
+        $query = $this->db->get_where('users', ['id' => $secretary_id]);
+
+        if (!$query->num_rows()) {
+            throw new InvalidArgumentException(
+                'The provided secretary ID was not found in the database: ' . $secretary_id,
+            );
+        }
+
+        // Check if the required field is part of the secretary data.
+        $secretary = $query->row_array();
+
+        if (!array_key_exists($field, $secretary)) {
+            throw new InvalidArgumentException('The requested field was not found in the secretary data: ' . $field);
+        }
+
+        return $secretary[$field];
+    }
+
+    /**
+     * Get the value of a secretary setting.
+     *
+     * @param int $secretary_id Secretary ID.
+     * @param string $name Setting name.
+     *
+     * @return string Returns the value of the requested user setting.
+     */
+    public function get_setting(int $secretary_id, string $name): string
+    {
+        $settings = $this->db->get_where('user_settings', ['id_users' => $secretary_id])->row_array();
+
+        if (!array_key_exists($name, $settings)) {
+            throw new RuntimeException('The requested setting value was not found: ' . $secretary_id);
+        }
+
+        return $settings[$name];
+    }
+
+    /**
      * Get the query builder interface, configured for use with the users (secretary-filtered) table.
      *
      * @return CI_DB_query_builder
@@ -540,22 +487,12 @@ class Secretaries_model extends EA_Model
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
-     * @param bool $with_trashed
      *
      * @return array Returns an array of secretaries.
      */
-    public function search(
-        string $keyword,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
+    public function search(string $keyword, int $limit = null, int $offset = null, string $order_by = null): array
+    {
         $role_id = $this->get_secretary_role_id();
-
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
 
         $secretaries = $this->db
             ->select()
@@ -769,5 +706,41 @@ class Secretaries_model extends EA_Model
         $secretary = $this->find($secretary_id);
 
         return in_array($provider_id, $secretary['providers']);
+    }
+
+    /**
+     * Get a specific secretary from the database.
+     *
+     * @param int $secretary_id The ID of the record to be returned.
+     *
+     * @return array Returns an array with the secretary data.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function find(int $secretary_id): array
+    {
+        $secretary = $this->db->get_where('users', ['id' => $secretary_id])->row_array();
+
+        if (!$secretary) {
+            throw new InvalidArgumentException(
+                'The provided secretary ID was not found in the database: ' . $secretary_id,
+            );
+        }
+
+        $secretary['settings'] = $this->db->get_where('user_settings', ['id_users' => $secretary_id])->row_array();
+
+        unset($secretary['settings']['id_users'], $secretary['settings']['password'], $secretary['settings']['salt']);
+
+        $secretary_provider_connections = $this->db
+            ->get_where('secretaries_providers', ['id_users_secretary' => $secretary_id])
+            ->result_array();
+
+        $secretary['providers'] = [];
+
+        foreach ($secretary_provider_connections as $secretary_provider_connection) {
+            $secretary['providers'][] = (int) $secretary_provider_connection['id_users_provider'];
+        }
+
+        return $secretary;
     }
 }

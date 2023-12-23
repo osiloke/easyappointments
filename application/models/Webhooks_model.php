@@ -122,33 +122,23 @@ class Webhooks_model extends EA_Model
      * Remove an existing webhook from the database.
      *
      * @param int $webhook_id Webhook ID.
-     * @param bool $force_delete Override soft delete.
      *
      * @throws RuntimeException
      */
-    public function delete(int $webhook_id, bool $force_delete = false)
+    public function delete(int $webhook_id): void
     {
-        if ($force_delete) {
-            $this->db->delete('webhooks', ['id' => $webhook_id]);
-        } else {
-            $this->db->update('webhooks', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $webhook_id]);
-        }
+        $this->db->delete('webhooks', ['id' => $webhook_id]);
     }
 
     /**
      * Get a specific webhook from the database.
      *
      * @param int $webhook_id The ID of the record to be returned.
-     * @param bool $with_trashed
      *
      * @return array Returns an array with the webhook data.
      */
-    public function find(int $webhook_id, bool $with_trashed = false): array
+    public function find(int $webhook_id): array
     {
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
         $webhook = $this->db->get_where('webhooks', ['id' => $webhook_id])->row_array();
 
         if (!$webhook) {
@@ -200,45 +190,6 @@ class Webhooks_model extends EA_Model
     }
 
     /**
-     * Get all webhooks that match the provided criteria.
-     *
-     * @param array|string|null $where Where conditions.
-     * @param int|null $limit Record limit.
-     * @param int|null $offset Record offset.
-     * @param string|null $order_by Order by.
-     * @param bool $with_trashed
-     *
-     * @return array Returns an array of webhooks.
-     */
-    public function get(
-        array|string $where = null,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
-        if ($where !== null) {
-            $this->db->where($where);
-        }
-
-        if ($order_by !== null) {
-            $this->db->order_by($order_by);
-        }
-
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
-        $webhooks = $this->db->get('webhooks', $limit, $offset)->result_array();
-
-        foreach ($webhooks as &$webhook) {
-            $this->cast($webhook);
-        }
-
-        return $webhooks;
-    }
-
-    /**
      * Get the query builder interface, configured for use with the webhooks table.
      *
      * @return CI_DB_query_builder
@@ -255,21 +206,11 @@ class Webhooks_model extends EA_Model
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
-     * @param bool $with_trashed
      *
      * @return array Returns an array of webhooks.
      */
-    public function search(
-        string $keyword,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
+    public function search(string $keyword, int $limit = null, int $offset = null, string $order_by = null): array
+    {
         $webhooks = $this->db
             ->select()
             ->from('webhooks')
@@ -283,6 +224,39 @@ class Webhooks_model extends EA_Model
             ->order_by($order_by)
             ->get()
             ->result_array();
+
+        foreach ($webhooks as &$webhook) {
+            $this->cast($webhook);
+        }
+
+        return $webhooks;
+    }
+
+    /**
+     * Get all webhooks that match the provided criteria.
+     *
+     * @param array|string|null $where Where conditions.
+     * @param int|null $limit Record limit.
+     * @param int|null $offset Record offset.
+     * @param string|null $order_by Order by.
+     *
+     * @return array Returns an array of webhooks.
+     */
+    public function get(
+        array|string $where = null,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+    ): array {
+        if ($where !== null) {
+            $this->db->where($where);
+        }
+
+        if ($order_by !== null) {
+            $this->db->order_by($order_by);
+        }
+
+        $webhooks = $this->db->get('webhooks', $limit, $offset)->result_array();
 
         foreach ($webhooks as &$webhook) {
             $this->cast($webhook);

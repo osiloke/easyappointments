@@ -40,8 +40,8 @@ window.App.Utils.Message = (function () {
                     className: 'btn btn-outline-primary',
                     click: function (event, messageModal) {
                         messageModal.dispose();
-                    }
-                }
+                    },
+                },
             ];
         }
 
@@ -100,7 +100,7 @@ window.App.Utils.Message = (function () {
 
         messageModal = new bootstrap.Modal('#message-modal', {
             keyboard: isDismissible,
-            backdrop: 'static'
+            backdrop: 'static',
         });
 
         messageModal.show();
@@ -109,6 +109,6 @@ window.App.Utils.Message = (function () {
     }
 
     return {
-        show
+        show,
     };
 })();

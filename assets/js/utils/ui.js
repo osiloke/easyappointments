@@ -68,7 +68,7 @@ window.App.Utils.UI = (function () {
                     lang('wednesday_short'),
                     lang('thursday_short'),
                     lang('friday_short'),
-                    lang('saturday_short')
+                    lang('saturday_short'),
                 ],
                 longhand: [
                     lang('sunday'),
@@ -77,8 +77,8 @@ window.App.Utils.UI = (function () {
                     lang('wednesday'),
                     lang('thursday'),
                     lang('friday'),
-                    lang('saturday')
-                ]
+                    lang('saturday'),
+                ],
             },
             months: {
                 shorthand: [
@@ -93,7 +93,7 @@ window.App.Utils.UI = (function () {
                     lang('september_short'),
                     lang('october_short'),
                     lang('november_short'),
-                    lang('december_short')
+                    lang('december_short'),
                 ],
                 longhand: [
                     lang('january'),
@@ -107,8 +107,8 @@ window.App.Utils.UI = (function () {
                     lang('september'),
                     lang('october'),
                     lang('november'),
-                    lang('december')
-                ]
+                    lang('december'),
+                ],
             },
             daysInMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
             firstDayOfWeek: firstWeekDayNumber,
@@ -136,7 +136,7 @@ window.App.Utils.UI = (function () {
             monthAriaLabel: lang('month'),
             hourAriaLabel: lang('hour'),
             minuteAriaLabel: lang('minute'),
-            time_24hr: false
+            time_24hr: false,
         };
     }
 
@@ -156,7 +156,7 @@ window.App.Utils.UI = (function () {
             dateFormat: `${getDateFormat()} ${getTimeFormat()}`,
             time_24hr: vars('time_format') === 'military',
             locale: getFlatpickrLocale(),
-            ...params
+            ...params,
         });
     }
 
@@ -174,7 +174,7 @@ window.App.Utils.UI = (function () {
             dateFormat: getDateFormat(),
             locale: getFlatpickrLocale(),
             static: true,
-            ...params
+            ...params,
         });
     }
 
@@ -195,7 +195,7 @@ window.App.Utils.UI = (function () {
             time_24hr: vars('time_format') === 'military',
             locale: getFlatpickrLocale(),
             static: true,
-            ...params
+            ...params,
         });
     }
 
@@ -223,11 +223,42 @@ window.App.Utils.UI = (function () {
         $target.trumbowyg(params);
     }
 
+    /**
+     * Get Date, Date-Time or Time picker value.
+     *
+     * @param {jQuery} $target
+     *
+     * @return {Date}
+     */
+    function getDatetimepickerValue($target) {
+        if (!$target?.length) {
+            throw new Error('Empty $target argument provided.');
+        }
+
+        return $target[0]._flatpickr.selectedDates[0];
+    }
+
+    /**
+     * Set Date, Date-Time or Time picker value.
+     *
+     * @param {jQuery} $target
+     * @param {Date} value
+     */
+    function setDatetimepickerValue($target, value) {
+        if (!$target?.length) {
+            throw new Error('Empty $target argument provided.');
+        }
+
+        return $target[0]._flatpickr.setDate(value);
+    }
+
     return {
         initializeDatetimepicker,
         initializeDatepicker,
         initializeTimepicker,
         initializeDropdown,
-        initializeTextEditor
+        initializeTextEditor,
+        getDatetimepickerValue,
+        setDatetimepickerValue,
     };
 })();

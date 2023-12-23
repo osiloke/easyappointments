@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -167,6 +169,41 @@ class Appointments_model extends EA_Model
     }
 
     /**
+     * Get all appointments that match the provided criteria.
+     *
+     * @param array|string|null $where Where conditions.
+     * @param int|null $limit Record limit.
+     * @param int|null $offset Record offset.
+     * @param string|null $order_by Order by.
+     *
+     * @return array Returns an array of appointments.
+     */
+    public function get(
+        array|string $where = null,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+    ): array {
+        if ($where !== null) {
+            $this->db->where($where);
+        }
+
+        if ($order_by) {
+            $this->db->order_by($order_by);
+        }
+
+        $appointments = $this->db
+            ->get_where('appointments', ['is_unavailability' => false], $limit, $offset)
+            ->result_array();
+
+        foreach ($appointments as &$appointment) {
+            $this->cast($appointment);
+        }
+
+        return $appointments;
+    }
+
+    /**
      * Insert a new appointment into the database.
      *
      * @param array $appointment Associative array with the appointment data.
@@ -213,35 +250,25 @@ class Appointments_model extends EA_Model
      * Remove an existing appointment from the database.
      *
      * @param int $appointment_id Appointment ID.
-     * @param bool $force_delete Override soft delete.
      *
      * @throws RuntimeException
      */
-    public function delete(int $appointment_id, bool $force_delete = false)
+    public function delete(int $appointment_id): void
     {
-        if ($force_delete) {
-            $this->db->delete('appointments', ['id' => $appointment_id]);
-        } else {
-            $this->db->update('appointments', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $appointment_id]);
-        }
+        $this->db->delete('appointments', ['id' => $appointment_id]);
     }
 
     /**
      * Get a specific appointment from the database.
      *
      * @param int $appointment_id The ID of the record to be returned.
-     * @param bool $with_trashed
      *
      * @return array Returns an array with the appointment data.
      *
      * @throws InvalidArgumentException
      */
-    public function find(int $appointment_id, bool $with_trashed = false): array
+    public function find(int $appointment_id): array
     {
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
         $appointment = $this->db->get_where('appointments', ['id' => $appointment_id])->row_array();
 
         if (!$appointment) {
@@ -294,47 +321,6 @@ class Appointments_model extends EA_Model
         }
 
         return $appointment[$field];
-    }
-
-    /**
-     * Get all appointments that match the provided criteria.
-     *
-     * @param array|string|null $where Where conditions.
-     * @param int|null $limit Record limit.
-     * @param int|null $offset Record offset.
-     * @param string|null $order_by Order by.
-     * @param bool $with_trashed
-     *
-     * @return array Returns an array of appointments.
-     */
-    public function get(
-        array|string $where = null,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
-        if ($where !== null) {
-            $this->db->where($where);
-        }
-
-        if ($order_by) {
-            $this->db->order_by($order_by);
-        }
-
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
-        $appointments = $this->db
-            ->get_where('appointments', ['is_unavailability' => false], $limit, $offset)
-            ->result_array();
-
-        foreach ($appointments as &$appointment) {
-            $this->cast($appointment);
-        }
-
-        return $appointments;
     }
 
     /**
@@ -451,27 +437,17 @@ class Appointments_model extends EA_Model
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
-     * @param bool $with_trashed
      *
      * @return array Returns an array of appointments.
      */
-    public function search(
-        string $keyword,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
-        if (!$with_trashed) {
-            $this->db->where('appointments.delete_datetime IS NULL');
-        }
-
+    public function search(string $keyword, int $limit = null, int $offset = null, string $order_by = null): array
+    {
         $appointments = $this->db
-            ->select()
+            ->select('appointments.*')
             ->from('appointments')
             ->join('services', 'services.id = appointments.id_services', 'left')
             ->join('users AS providers', 'providers.id = appointments.id_users_provider', 'inner')
-            ->join('users AS customers', 'customers.id = appointment.id_users_customer', 'left')
+            ->join('users AS customers', 'customers.id = appointments.id_users_customer', 'left')
             ->where('is_unavailability', false)
             ->group_start()
             ->like('appointments.start_datetime', $keyword)
@@ -479,8 +455,8 @@ class Appointments_model extends EA_Model
             ->or_like('appointments.location', $keyword)
             ->or_like('appointments.hash', $keyword)
             ->or_like('appointments.notes', $keyword)
-            ->or_like('service.name', $keyword)
-            ->or_like('service.description', $keyword)
+            ->or_like('services.name', $keyword)
+            ->or_like('services.description', $keyword)
             ->or_like('providers.first_name', $keyword)
             ->or_like('providers.last_name', $keyword)
             ->or_like('providers.email', $keyword)
@@ -525,6 +501,7 @@ class Appointments_model extends EA_Model
                             'id' => $appointment['id_services'] ?? ($appointment['serviceId'] ?? null),
                         ])
                         ->row_array();
+
                     break;
 
                 case 'provider':
@@ -533,6 +510,7 @@ class Appointments_model extends EA_Model
                             'id' => $appointment['id_users_provider'] ?? ($appointment['providerId'] ?? null),
                         ])
                         ->row_array();
+
                     break;
 
                 case 'customer':
@@ -541,6 +519,7 @@ class Appointments_model extends EA_Model
                             'id' => $appointment['id_users_customer'] ?? ($appointment['customerId'] ?? null),
                         ])
                         ->row_array();
+
                     break;
 
                 default:

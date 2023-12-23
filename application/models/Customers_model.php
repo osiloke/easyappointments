@@ -43,6 +43,11 @@ class Customers_model extends EA_Model
         'zip' => 'zip_code',
         'timezone' => 'timezone',
         'language' => 'language',
+        'customField1' => 'custom_field_1',
+        'customField2' => 'custom_field_2',
+        'customField3' => 'custom_field_3',
+        'customField4' => 'custom_field_4',
+        'customField5' => 'custom_field_5',
         'notes' => 'notes',
     ];
 
@@ -124,7 +129,6 @@ class Customers_model extends EA_Model
                 ->select()
                 ->from('users')
                 ->join('roles', 'roles.id = users.id_roles', 'inner')
-                ->where('users.delete_datetime')
                 ->where('roles.slug', DB_SLUG_CUSTOMER)
                 ->where('users.email', $customer['email'])
                 ->where('users.id !=', $customer_id)
@@ -137,6 +141,115 @@ class Customers_model extends EA_Model
                 );
             }
         }
+    }
+
+    /**
+     * Get all customers that match the provided criteria.
+     *
+     * @param array|string|null $where Where conditions.
+     * @param int|null $limit Record limit.
+     * @param int|null $offset Record offset.
+     * @param string|null $order_by Order by.
+     *
+     * @return array Returns an array of customers.
+     */
+    public function get(
+        array|string $where = null,
+        int $limit = null,
+        int $offset = null,
+        string $order_by = null,
+    ): array {
+        $role_id = $this->get_customer_role_id();
+
+        if ($where !== null) {
+            $this->db->where($where);
+        }
+
+        if ($order_by !== null) {
+            $this->db->order_by($order_by);
+        }
+
+        $customers = $this->db->get_where('users', ['id_roles' => $role_id], $limit, $offset)->result_array();
+
+        foreach ($customers as &$customer) {
+            $this->cast($customer);
+        }
+
+        return $customers;
+    }
+
+    /**
+     * Get the customer role ID.
+     *
+     * @return int Returns the role ID.
+     */
+    public function get_customer_role_id(): int
+    {
+        $role = $this->db->get_where('roles', ['slug' => DB_SLUG_CUSTOMER])->row_array();
+
+        if (empty($role)) {
+            throw new RuntimeException('The customer role was not found in the database.');
+        }
+
+        return $role['id'];
+    }
+
+    /**
+     * Check if a particular customer record already exists in the database.
+     *
+     * @param array $customer Associative array with the customer data.
+     *
+     * @return bool Returns whether there is a record matching the provided one or not.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function exists(array $customer): bool
+    {
+        if (empty($customer['email'])) {
+            return false;
+        }
+
+        $count = $this->db
+            ->select()
+            ->from('users')
+            ->join('roles', 'roles.id = users.id_roles', 'inner')
+            ->where('users.email', $customer['email'])
+            ->where('roles.slug', DB_SLUG_CUSTOMER)
+            ->get()
+            ->num_rows();
+
+        return $count > 0;
+    }
+
+    /**
+     * Find the record ID of a customer.
+     *
+     * @param array $customer Associative array with the customer data.
+     *
+     * @return int Returns the ID of the record that matches the provided argument.
+     *
+     * @throws InvalidArgumentException
+     */
+    public function find_record_id(array $customer): int
+    {
+        if (empty($customer['email'])) {
+            throw new InvalidArgumentException('The customer email was not provided: ' . print_r($customer, true));
+        }
+
+        $customer = $this->db
+            ->select('users.id')
+            ->from('users')
+            ->join('roles', 'roles.id = users.id_roles', 'inner')
+            ->where('users.email', $customer['email'])
+            ->where('roles.slug', DB_SLUG_CUSTOMER)
+            ->get()
+            ->row_array();
+
+        if (empty($customer)) {
+            throw new InvalidArgumentException('Could not find customer record id.');
+        }
+
+        return (int) $customer['id'];
     }
 
     /**
@@ -185,38 +298,23 @@ class Customers_model extends EA_Model
      * Remove an existing customer from the database.
      *
      * @param int $customer_id Customer ID.
-     * @param bool $force_delete Override soft delete.
      *
      * @throws RuntimeException
      */
-    public function delete(int $customer_id, bool $force_delete = false)
+    public function delete(int $customer_id): void
     {
-        if ($force_delete) {
-            $this->db->delete('users', ['id' => $customer_id]);
-        } else {
-            $this->db->update('users', ['delete_datetime' => date('Y-m-d H:i:s')], ['id' => $customer_id]);
-            $this->db->update(
-                'appointments',
-                ['delete_datetime' => date('Y-m-d H:i:s')],
-                ['id_users_customer' => $customer_id, 'delete_datetime' => null],
-            );
-        }
+        $this->db->delete('users', ['id' => $customer_id]);
     }
 
     /**
      * Get a specific customer from the database.
      *
      * @param int $customer_id The ID of the record to be returned.
-     * @param bool $with_trashed
      *
      * @return array Returns an array with the customer data.
      */
-    public function find(int $customer_id, bool $with_trashed = false): array
+    public function find(int $customer_id): array
     {
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
         $customer = $this->db->get_where('users', ['id' => $customer_id])->row_array();
 
         if (!$customer) {
@@ -272,123 +370,6 @@ class Customers_model extends EA_Model
     }
 
     /**
-     * Get all customers that match the provided criteria.
-     *
-     * @param array|string|null $where Where conditions.
-     * @param int|null $limit Record limit.
-     * @param int|null $offset Record offset.
-     * @param string|null $order_by Order by.
-     * @param bool $with_trashed
-     *
-     * @return array Returns an array of customers.
-     */
-    public function get(
-        array|string $where = null,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
-        $role_id = $this->get_customer_role_id();
-
-        if ($where !== null) {
-            $this->db->where($where);
-        }
-
-        if ($order_by !== null) {
-            $this->db->order_by($order_by);
-        }
-
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
-
-        $customers = $this->db->get_where('users', ['id_roles' => $role_id], $limit, $offset)->result_array();
-
-        foreach ($customers as &$customer) {
-            $this->cast($customer);
-        }
-
-        return $customers;
-    }
-
-    /**
-     * Get the customer role ID.
-     *
-     * @return int Returns the role ID.
-     */
-    public function get_customer_role_id(): int
-    {
-        $role = $this->db->get_where('roles', ['slug' => DB_SLUG_CUSTOMER])->row_array();
-
-        if (empty($role)) {
-            throw new RuntimeException('The customer role was not found in the database.');
-        }
-
-        return $role['id'];
-    }
-
-    /**
-     * Check if a particular customer record already exists in the database.
-     *
-     * @param array $customer Associative array with the customer data.
-     *
-     * @return bool Returns whether there is a record matching the provided one or not.
-     *
-     * @throws InvalidArgumentException
-     */
-    public function exists(array $customer): bool
-    {
-        if (empty($customer['email'])) {
-            return false;
-        }
-
-        $count = $this->db
-            ->select()
-            ->from('users')
-            ->join('roles', 'roles.id = users.id_roles', 'inner')
-            ->where('users.email', $customer['email'])
-            ->where('users.delete_datetime')
-            ->where('roles.slug', DB_SLUG_CUSTOMER)
-            ->get()
-            ->num_rows();
-
-        return $count > 0;
-    }
-
-    /**
-     * Find the record ID of a customer.
-     *
-     * @param array $customer Associative array with the customer data.
-     *
-     * @return int Returns the ID of the record that matches the provided argument.
-     *
-     * @throws InvalidArgumentException
-     */
-    public function find_record_id(array $customer): int
-    {
-        if (empty($customer['email'])) {
-            throw new InvalidArgumentException('The customer email was not provided: ' . print_r($customer, true));
-        }
-
-        $customer = $this->db
-            ->select('users.id')
-            ->from('users')
-            ->join('roles', 'roles.id = users.id_roles', 'inner')
-            ->where('users.email', $customer['email'])
-            ->where('users.delete_datetime')
-            ->where('roles.slug', DB_SLUG_CUSTOMER)
-            ->get()
-            ->row_array();
-
-        if (empty($customer)) {
-            throw new InvalidArgumentException('Could not find customer record id.');
-        }
-
-        return $customer['id'];
-    }
-
-    /**
      * Get the query builder interface, configured for use with the users (customer-filtered) table.
      *
      * @return CI_DB_query_builder
@@ -407,22 +388,12 @@ class Customers_model extends EA_Model
      * @param int|null $limit Record limit.
      * @param int|null $offset Record offset.
      * @param string|null $order_by Order by.
-     * @param bool $with_trashed
      *
      * @return array Returns an array of customers.
      */
-    public function search(
-        string $keyword,
-        int $limit = null,
-        int $offset = null,
-        string $order_by = null,
-        bool $with_trashed = false,
-    ): array {
+    public function search(string $keyword, int $limit = null, int $offset = null, string $order_by = null): array
+    {
         $role_id = $this->get_customer_role_id();
-
-        if (!$with_trashed) {
-            $this->db->where('delete_datetime IS NULL');
-        }
 
         $customers = $this->db
             ->select()
@@ -484,6 +455,12 @@ class Customers_model extends EA_Model
             'city' => $customer['city'],
             'zip' => $customer['zip_code'],
             'notes' => $customer['notes'],
+            'timezone' => $customer['timezone'],
+            'customField1' => $customer['custom_field_1'],
+            'customField2' => $customer['custom_field_2'],
+            'customField3' => $customer['custom_field_3'],
+            'customField4' => $customer['custom_field_4'],
+            'customField5' => $customer['custom_field_5'],
         ];
 
         $customer = $encoded_resource;
@@ -529,6 +506,30 @@ class Customers_model extends EA_Model
 
         if (array_key_exists('zip', $customer)) {
             $decoded_resource['zip_code'] = $customer['zip'];
+        }
+
+        if (array_key_exists('language', $customer)) {
+            $decoded_resource['language'] = $customer['language'];
+        }
+
+        if (array_key_exists('customField1', $customer)) {
+            $decoded_resource['custom_field_1'] = $customer['customField1'];
+        }
+
+        if (array_key_exists('customField2', $customer)) {
+            $decoded_resource['custom_field_2'] = $customer['customField2'];
+        }
+
+        if (array_key_exists('customField3', $customer)) {
+            $decoded_resource['custom_field_3'] = $customer['customField3'];
+        }
+
+        if (array_key_exists('customField4', $customer)) {
+            $decoded_resource['custom_field_4'] = $customer['customField4'];
+        }
+
+        if (array_key_exists('customField5', $customer)) {
+            $decoded_resource['custom_field_5'] = $customer['customField5'];
         }
 
         if (array_key_exists('notes', $customer)) {

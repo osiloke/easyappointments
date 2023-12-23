@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -27,7 +29,7 @@ class Categories extends EA_Controller
     {
         parent::__construct();
 
-        $this->load->model('categories_model');
+        $this->load->model('service_categories_model');
         $this->load->model('roles_model');
 
         $this->load->library('accounts');
@@ -60,16 +62,16 @@ class Categories extends EA_Controller
         $role_slug = session('role_slug');
 
         script_vars([
-            'user_id' => $user_id,
+            'user_id'   => $user_id,
             'role_slug' => $role_slug,
         ]);
 
         html_vars([
-            'page_title' => lang('categories'),
-            'active_menu' => PRIV_SERVICES,
+            'page_title'        => lang('categories'),
+            'active_menu'       => PRIV_SERVICES,
             'user_display_name' => $this->accounts->get_user_display_name($user_id),
-            'timezones' => $this->timezones->to_array(),
-            'privileges' => $this->roles_model->get_permissions_by_slug($role_slug),
+            'timezones'         => $this->timezones->to_array(),
+            'privileges'        => $this->roles_model->get_permissions_by_slug($role_slug),
         ]);
 
         $this->load->view('pages/categories');
@@ -93,10 +95,11 @@ class Categories extends EA_Controller
 
             $offset = 0;
 
-            $categories = $this->categories_model->search($keyword, $limit, $offset, $order_by);
+            $categories = $this->service_categories_model->search($keyword, $limit, $offset, $order_by);
 
             json_response($categories);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -113,19 +116,20 @@ class Categories extends EA_Controller
 
             $category = request('category');
 
-            $this->categories_model->only($category, ['name', 'description']);
+            $this->service_categories_model->only($category, ['name', 'description']);
 
-            $category_id = $this->categories_model->save($category);
+            $category_id = $this->service_categories_model->save($category);
 
-            $category = $this->categories_model->find($category_id);
+            $category = $this->service_categories_model->find($category_id);
 
             $this->webhooks_client->trigger(WEBHOOK_CATEGORY_SAVE, $category);
 
             json_response([
-                'success' => true,
-                'id' => $category_id,
+                'success' => TRUE,
+                'id'      => $category_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -142,19 +146,20 @@ class Categories extends EA_Controller
 
             $category = request('category');
 
-            $this->categories_model->only($category, ['id', 'name', 'description']);
+            $this->service_categories_model->only($category, ['id', 'name', 'description']);
 
-            $category_id = $this->categories_model->save($category);
+            $category_id = $this->service_categories_model->save($category);
 
-            $category = $this->categories_model->find($category_id);
+            $category = $this->service_categories_model->find($category_id);
 
             $this->webhooks_client->trigger(WEBHOOK_CATEGORY_SAVE, $category);
 
             json_response([
-                'success' => true,
-                'id' => $category_id,
+                'success' => TRUE,
+                'id'      => $category_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -169,18 +174,19 @@ class Categories extends EA_Controller
                 abort(403, 'Forbidden');
             }
 
-            $category_id = request('category_id');
+            $category_id = request('service_category_id');
 
-            $category = $this->categories_model->find($category_id);
+            $category = $this->service_categories_model->find($category_id);
 
-            $this->categories_model->delete($category_id);
+            $this->service_categories_model->delete($category_id);
 
             $this->webhooks_client->trigger(WEBHOOK_CATEGORY_DELETE, $category);
 
             json_response([
-                'success' => true,
+                'success' => TRUE,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -195,12 +201,13 @@ class Categories extends EA_Controller
                 abort(403, 'Forbidden');
             }
 
-            $category_id = request('category_id');
+            $category_id = request('service_category_id');
 
-            $category = $this->categories_model->find($category_id);
+            $category = $this->service_categories_model->find($category_id);
 
             json_response($category);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }

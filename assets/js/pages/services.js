@@ -74,13 +74,13 @@ App.Pages.Services = (function () {
                 'target': '_blank',
                 'html': [
                     $('<i/>', {
-                        'class': 'fas fa-link me-2'
+                        'class': 'fas fa-link me-2',
                     }),
 
                     $('<span/>', {
-                        'text': lang('booking_link')
-                    })
-                ]
+                        'text': lang('booking_link'),
+                    }),
+                ],
             });
 
             $services.find('.record-details h4').find('a').remove().end().append($link);
@@ -146,7 +146,7 @@ App.Pages.Services = (function () {
                 attendants_number: $attendantsNumber.val(),
                 is_private: Number($isPrivate.prop('checked')),
                 id_categories: $category.val() || null,
-                payment_link: $paymentLink.val()
+                payment_link: $paymentLink.val(),
             };
 
             if ($id.val() !== '') {
@@ -183,15 +183,15 @@ App.Pages.Services = (function () {
                     text: lang('cancel'),
                     click: (event, messageModal) => {
                         messageModal.dispose();
-                    }
+                    },
                 },
                 {
                     text: lang('delete'),
                     click: (event, messageModal) => {
                         remove(serviceId);
                         messageModal.dispose();
-                    }
-                }
+                    },
+                },
             ];
 
             App.Utils.Message.show(lang('delete_service'), lang('delete_record_prompt'), buttons);
@@ -331,8 +331,8 @@ App.Pages.Services = (function () {
             if (response.length === 0) {
                 $filterServices.find('.results').append(
                     $('<em/>', {
-                        'text': lang('no_records_found')
-                    })
+                        'text': lang('no_records_found'),
+                    }),
                 );
             } else if (response.length === filterLimit) {
                 $('<button/>', {
@@ -342,7 +342,7 @@ App.Pages.Services = (function () {
                     'click': () => {
                         filterLimit += 20;
                         filter(keyword, selectId, show);
-                    }
+                    },
                 }).appendTo('#filter-services .results');
             }
 
@@ -371,15 +371,15 @@ App.Pages.Services = (function () {
             'data-id': service.id,
             'html': [
                 $('<strong/>', {
-                    'text': name
+                    'text': name,
                 }),
                 $('<br/>'),
                 $('<small/>', {
                     'class': 'text-muted',
-                    'text': info
+                    'text': info,
                 }),
-                $('<br/>')
-            ]
+                $('<br/>'),
+            ],
         });
     }
 
@@ -439,6 +439,6 @@ App.Pages.Services = (function () {
         remove,
         getFilterHtml,
         resetForm,
-        select
+        select,
     };
 })();

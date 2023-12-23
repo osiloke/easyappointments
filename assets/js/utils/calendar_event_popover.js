@@ -54,11 +54,11 @@ App.Utils.CalendarEventPopover = (function () {
                     'target': '_blank',
                     'html': [
                         $('<span/>', {
-                            'class': 'fas fa-map-marker-alt'
-                        })
-                    ]
-                })
-            ]
+                            'class': 'fas fa-map-marker-alt',
+                        }),
+                    ],
+                }),
+            ],
         }).html();
     }
 
@@ -83,11 +83,11 @@ App.Utils.CalendarEventPopover = (function () {
                     'target': '_blank',
                     'html': [
                         $('<span/>', {
-                            'class': 'fas fa-envelope'
-                        })
-                    ]
-                })
-            ]
+                            'class': 'fas fa-envelope',
+                        }),
+                    ],
+                }),
+            ],
         }).html();
     }
 
@@ -112,11 +112,11 @@ App.Utils.CalendarEventPopover = (function () {
                     'target': '_blank',
                     'html': [
                         $('<span/>', {
-                            'class': 'fas fa-phone-alt'
-                        })
-                    ]
-                })
-            ]
+                            'class': 'fas fa-phone-alt',
+                        }),
+                    ],
+                }),
+            ],
         }).html();
     }
 
@@ -127,20 +127,18 @@ App.Utils.CalendarEventPopover = (function () {
      */
     function getIsPaidIcon(event) {
         let payStatusIcon;
-        if(event.extendedProps && event.extendedProps.data){
-            const paid = event.extendedProps.data.is_paid
+        if (event.extendedProps && event.extendedProps.data) {
+            const paid = event.extendedProps.data.is_paid;
             payStatusIcon = $('<span/>', {
-                'class': paid ? 'fas fa-check text-success' : 'fas fa-times text-danger'
-            })
+                'class': paid ? 'fas fa-check text-success' : 'fas fa-times text-danger',
+            });
         } else {
             payStatusIcon = $('<span/>', {
-                'class': 'fas fa-triangle-exclamation text-danger'
-            })
+                'class': 'fas fa-triangle-exclamation text-danger',
+            });
         }
         return $('<div/>', {
-            'html': [
-                payStatusIcon
-            ]
+            'html': [payStatusIcon],
         }).html();
     }
 
@@ -148,6 +146,6 @@ App.Utils.CalendarEventPopover = (function () {
         renderPhoneIcon,
         renderMapIcon,
         renderMailIcon,
-        getIsPaidIcon
+        getIsPaidIcon,
     };
 })();

@@ -63,7 +63,7 @@ class Ics_calendar extends Calendar
     private $customHeaders = [];
 
     /**
-     * @var \DateTimeZone
+     * @var DateTimeZone
      */
     private $timezone;
 
@@ -92,7 +92,7 @@ class Ics_calendar extends Calendar
      */
     public function __construct()
     {
-        $this->timezone = new \DateTimeZone('America/New_York');
+        $this->timezone = new DateTimeZone('America/New_York');
         $this->events = new Ics_provider();
         $this->todos = new Ics_provider();
         $this->freeBusy = new Ics_provider();
@@ -113,10 +113,10 @@ class Ics_calendar extends Calendar
      *      //return an array of CalendarEvent objects
      *  })
      *
-     * @param \Closure $eventsProvider
-     * @return \Jsvrcek\ICS\Model\Calendar
+     * @param Closure $eventsProvider
+     * @return Calendar
      */
-    public function setEventsProvider(\Closure $eventsProvider)
+    public function setEventsProvider(Closure $eventsProvider)
     {
         $this->events = new Ics_provider($eventsProvider);
         return $this;
@@ -132,7 +132,7 @@ class Ics_calendar extends Calendar
 
     /**
      * @param string $version
-     * @return \Jsvrcek\ICS\Model\Calendar
+     * @return Calendar
      */
     public function setVersion($version)
     {

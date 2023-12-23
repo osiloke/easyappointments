@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -29,7 +31,7 @@ class Categories_api_v1 extends EA_Controller
 
         $this->api->auth();
 
-        $this->api->model('categories_model');
+        $this->api->model('service_categories_model');
     }
 
     /**
@@ -51,23 +53,24 @@ class Categories_api_v1 extends EA_Controller
             $with = $this->api->request_with();
 
             $categories = empty($keyword)
-                ? $this->categories_model->get(null, $limit, $offset, $order_by)
-                : $this->categories_model->search($keyword, $limit, $offset, $order_by);
+                ? $this->service_categories_model->get(NULL, $limit, $offset, $order_by)
+                : $this->service_categories_model->search($keyword, $limit, $offset, $order_by);
 
             foreach ($categories as &$category) {
-                $this->categories_model->api_encode($category);
+                $this->service_categories_model->api_encode($category);
 
                 if (!empty($fields)) {
-                    $this->categories_model->only($category, $fields);
+                    $this->service_categories_model->only($category, $fields);
                 }
 
                 if (!empty($with)) {
-                    $this->categories_model->load($category, $with);
+                    $this->service_categories_model->load($category, $with);
                 }
             }
 
             json_response($categories);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -77,23 +80,23 @@ class Categories_api_v1 extends EA_Controller
      *
      * @param int|null $id Category ID.
      */
-    public function show(int $id = null)
+    public function show(int $id = NULL)
     {
         try {
             $fields = $this->api->request_fields();
 
             $with = $this->api->request_with();
 
-            $category = $this->categories_model->find($id);
+            $category = $this->service_categories_model->find($id);
 
-            $this->categories_model->api_encode($category);
+            $this->service_categories_model->api_encode($category);
 
             if (!empty($fields)) {
-                $this->categories_model->only($category, $fields);
+                $this->service_categories_model->only($category, $fields);
             }
 
             if (!empty($with)) {
-                $this->categories_model->load($category, $with);
+                $this->service_categories_model->load($category, $with);
             }
 
             if (!$category) {
@@ -103,7 +106,8 @@ class Categories_api_v1 extends EA_Controller
             }
 
             json_response($category);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -116,20 +120,21 @@ class Categories_api_v1 extends EA_Controller
         try {
             $category = request();
 
-            $this->categories_model->api_decode($category);
+            $this->service_categories_model->api_decode($category);
 
             if (array_key_exists('id', $category)) {
                 unset($category['id']);
             }
 
-            $category_id = $this->categories_model->save($category);
+            $category_id = $this->service_categories_model->save($category);
 
-            $created_category = $this->categories_model->find($category_id);
+            $created_category = $this->service_categories_model->find($category_id);
 
-            $this->categories_model->api_encode($created_category);
+            $this->service_categories_model->api_encode($created_category);
 
             json_response($created_category, 201);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -142,7 +147,7 @@ class Categories_api_v1 extends EA_Controller
     public function update(int $id)
     {
         try {
-            $occurrences = $this->categories_model->get(['id' => $id]);
+            $occurrences = $this->service_categories_model->get(['id' => $id]);
 
             if (empty($occurrences)) {
                 response('', 404);
@@ -154,16 +159,17 @@ class Categories_api_v1 extends EA_Controller
 
             $category = request();
 
-            $this->categories_model->api_decode($category, $original_category);
+            $this->service_categories_model->api_decode($category, $original_category);
 
-            $category_id = $this->categories_model->save($category);
+            $category_id = $this->service_categories_model->save($category);
 
-            $updated_category = $this->categories_model->find($category_id);
+            $updated_category = $this->service_categories_model->find($category_id);
 
-            $this->categories_model->api_encode($updated_category);
+            $this->service_categories_model->api_encode($updated_category);
 
             json_response($updated_category);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -176,7 +182,7 @@ class Categories_api_v1 extends EA_Controller
     public function destroy(int $id)
     {
         try {
-            $occurrences = $this->categories_model->get(['id' => $id]);
+            $occurrences = $this->service_categories_model->get(['id' => $id]);
 
             if (empty($occurrences)) {
                 response('', 404);
@@ -184,10 +190,11 @@ class Categories_api_v1 extends EA_Controller
                 return;
             }
 
-            $this->categories_model->delete($id);
+            $this->service_categories_model->delete($id);
 
             response('', 204);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }

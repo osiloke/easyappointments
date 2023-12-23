@@ -99,15 +99,15 @@ App.Pages.Categories = (function () {
                     text: lang('cancel'),
                     click: (event, messageModal) => {
                         messageModal.dispose();
-                    }
+                    },
                 },
                 {
                     text: lang('delete'),
                     click: (event, messageModal) => {
                         remove(categoryId);
                         messageModal.dispose();
-                    }
-                }
+                    },
+                },
             ];
 
             App.Utils.Message.show(lang('delete_category'), lang('delete_record_prompt'), buttons);
@@ -119,7 +119,7 @@ App.Pages.Categories = (function () {
         $categories.on('click', '#save-category', () => {
             const category = {
                 name: $name.val(),
-                description: $description.val()
+                description: $description.val(),
             };
 
             if ($id.val() !== '') {
@@ -166,8 +166,8 @@ App.Pages.Categories = (function () {
             if (response.length === 0) {
                 $('#filter-categories .results').append(
                     $('<em/>', {
-                        'text': lang('no_records_found')
-                    })
+                        'text': lang('no_records_found'),
+                    }),
                 );
             } else if (response.length === filterLimit) {
                 $('<button/>', {
@@ -177,7 +177,7 @@ App.Pages.Categories = (function () {
                     'click': () => {
                         filterLimit += 20;
                         filter(keyword, selectId, show);
-                    }
+                    },
                 }).appendTo('#filter-categories .results');
             }
 
@@ -286,10 +286,10 @@ App.Pages.Categories = (function () {
             'data-id': category.id,
             'html': [
                 $('<strong/>', {
-                    'text': category.name
+                    'text': category.name,
                 }),
-                $('<br/>')
-            ]
+                $('<br/>'),
+            ],
         });
     }
 
@@ -332,6 +332,6 @@ App.Pages.Categories = (function () {
         remove,
         getFilterHtml,
         resetForm,
-        select
+        select,
     };
 })();

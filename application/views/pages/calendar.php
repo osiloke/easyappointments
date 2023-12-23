@@ -47,11 +47,10 @@
                             </a>
                         </li>
                         <li>
-                            <a class="dropdown-item" href="#" id="insert-working-plan-exception" <?= session(
-                                'role_slug',
-                            ) !== DB_SLUG_ADMIN
-                                ? 'hidden'
-                                : '' ?>>
+                            <a class="dropdown-item" href="#"
+                               id="insert-working-plan-exception" <?= session('role_slug') !== DB_SLUG_ADMIN
+                                   ? 'hidden'
+                                   : '' ?>>
                                 <?= lang('working_plan_exception') ?>
                             </a>
                         </li>
@@ -98,6 +97,7 @@
     'require_address' => vars('require_address'),
     'require_city' => vars('require_city'),
     'require_zip_code' => vars('require_zip_code'),
+    'require_notes' => vars('require_notes'),
 ]); ?>
 
 <?php component('unavailabilities_modal', [

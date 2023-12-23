@@ -11,6 +11,7 @@
  * @since       v1.0.0
  * ---------------------------------------------------------------------------- */
 
+use Google\Service\Calendar\Event;
 use Google\Service\Calendar\Events;
 
 /**
@@ -66,10 +67,9 @@ class Google_sync
 
         $this->client = new Google_Client();
         $this->client->setHttpClient($http);
-        $this->client->setApplicationName(config('google_application_name'));
+        $this->client->setApplicationName('Easy!Appointments');
         $this->client->setClientId(config('google_client_id'));
         $this->client->setClientSecret(config('google_client_secret'));
-        $this->client->setDeveloperKey(config('google_api_key'));
         $this->client->setRedirectUri(site_url('google/oauth_callback'));
         $this->client->setPrompt('consent');
         $this->client->setAccessType('offline');
@@ -146,7 +146,7 @@ class Google_sync
      * @param array $customer Customer data.
      * @param array $settings Required settings.
      *
-     * @return Google_Service_Calendar_Event Returns the Google_Event class object.
+     * @return Event Returns the Google_Event class object.
      *
      * @throws Exception
      */
@@ -156,7 +156,7 @@ class Google_sync
         array $service,
         array $customer,
         array $settings,
-    ): Google_Service_Calendar_Event {
+    ): Event {
         $event = new Google_Service_Calendar_Event();
         $event->setSummary(!empty($service) ? $service['name'] : 'Unavailable');
         $event->setDescription($appointment['notes']);
@@ -204,7 +204,7 @@ class Google_sync
      * @param array $customer Customer data.
      * @parma array $settings Required settings.
      *
-     * @return Google_Service_Calendar_Event Returns the Google_Service_Calendar_Event class object.
+     * @return Event Returns the Google_Service_Calendar_Event class object.
      *
      * @throws Exception
      */
@@ -214,7 +214,7 @@ class Google_sync
         array $service,
         array $customer,
         array $settings,
-    ): Google_Service_Calendar_Event {
+    ): Event {
         $event = $this->service->events->get(
             $provider['settings']['google_calendar'],
             $appointment['id_google_calendar'],
@@ -315,6 +315,7 @@ class Google_sync
             $unavailability['id_google_calendar'],
         );
 
+        $event->setSummary('Unavailable');
         $event->setDescription($unavailability['notes']);
 
         $timezone = new DateTimeZone($provider['timezone']);
@@ -351,9 +352,9 @@ class Google_sync
      * @param array $provider Provider data.
      * @param string $google_event_id Google Calendar event ID.
      *
-     * @return Google_Service_Calendar_Event Returns the Google Calendar event.
+     * @return Event Returns the Google Calendar event.
      */
-    public function get_event(array $provider, string $google_event_id): Google_Service_Calendar_Event
+    public function get_event(array $provider, string $google_event_id): Event
     {
         return $this->service->events->get($provider['settings']['google_calendar'], $google_event_id);
     }

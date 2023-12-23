@@ -12,16 +12,16 @@ module.exports = {
                     'primary': '#000000',
                     'primary-black': '#00000',
                     'primary-white': '#ffffff',
-                    'success-600': '#53b483'
-                }
-            }
-        ]
+                    'success-600': '#53b483',
+                },
+            },
+        ],
     },
     variants: {
         extend: {
             backgroundColor: ['label-checked'],
-            color: ['label-checked']
-        }
+            color: ['label-checked'],
+        },
     },
     plugins: [
         require('@tailwindcss/typography'),
@@ -36,6 +36,6 @@ module.exports = {
                     return `${yourSelector}:checked ~ .${eClassName}`; // ~ - CSS selector for siblings
                 });
             });
-        })
-    ]
+        }),
+    ],
 };

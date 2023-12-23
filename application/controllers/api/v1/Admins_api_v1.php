@@ -111,7 +111,7 @@ class Admins_api_v1 extends EA_Controller
     }
 
     /**
-     * Create an admin.
+     * Store a new admin.
      */
     public function store()
     {

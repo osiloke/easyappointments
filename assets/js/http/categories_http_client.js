@@ -38,7 +38,7 @@ App.Http.Categories = (function () {
 
         const data = {
             csrf_token: vars('csrf_token'),
-            category: category
+            category: category,
         };
 
         return $.post(url, data);
@@ -56,7 +56,7 @@ App.Http.Categories = (function () {
 
         const data = {
             csrf_token: vars('csrf_token'),
-            category: category
+            category: category,
         };
 
         return $.post(url, data);
@@ -74,7 +74,7 @@ App.Http.Categories = (function () {
 
         const data = {
             csrf_token: vars('csrf_token'),
-            category_id: categoryId
+            category_id: categoryId,
         };
 
         return $.post(url, data);
@@ -90,7 +90,7 @@ App.Http.Categories = (function () {
      *
      * @return {Object}
      */
-        function search(keyword, limit = null, offset = null, orderBy = null) {
+    function search(keyword, limit = null, offset = null, orderBy = null) {
         const url = App.Utils.Url.siteUrl('categories/search');
 
         const data = {
@@ -98,7 +98,7 @@ App.Http.Categories = (function () {
             keyword,
             limit,
             offset,
-            order_by: orderBy
+            order_by: orderBy,
         };
 
         return $.post(url, data);
@@ -116,7 +116,7 @@ App.Http.Categories = (function () {
 
         const data = {
             csrf_token: vars('csrf_token'),
-            category_id: categoryId
+            category_id: categoryId,
         };
 
         return $.post(url, data);
@@ -128,6 +128,6 @@ App.Http.Categories = (function () {
         update,
         destroy,
         search,
-        find
+        find,
     };
 })();
