@@ -25,7 +25,7 @@ class Secretaries_model extends EA_Model
      */
     protected array $casts = [
         'id' => 'integer',
-        'id_roles' => 'integer'
+        'id_roles' => 'integer',
     ];
 
     /**
@@ -45,7 +45,7 @@ class Secretaries_model extends EA_Model
         'timezone' => 'timezone',
         'language' => 'language',
         'notes' => 'notes',
-        'roleId' => 'id_roles'
+        'roleId' => 'id_roles',
     ];
 
     /**
@@ -84,7 +84,7 @@ class Secretaries_model extends EA_Model
 
             if (!$count) {
                 throw new InvalidArgumentException(
-                    'The provided secretary ID does not exist in the database: ' . $secretary['id']
+                    'The provided secretary ID does not exist in the database: ' . $secretary['id'],
                 );
             }
         }
@@ -110,7 +110,7 @@ class Secretaries_model extends EA_Model
             foreach ($secretary['providers'] as $secretary_id) {
                 if (!is_numeric($secretary_id)) {
                     throw new InvalidArgumentException(
-                        'The provided secretary providers are invalid: ' . print_r($secretary, true)
+                        'The provided secretary providers are invalid: ' . print_r($secretary, true),
                     );
                 }
             }
@@ -122,7 +122,7 @@ class Secretaries_model extends EA_Model
 
             if (!$this->validate_username($secretary['settings']['username'], $secretary_id)) {
                 throw new InvalidArgumentException(
-                    'The provided username is already in use, please use a different one.'
+                    'The provided username is already in use, please use a different one.',
                 );
             }
         }
@@ -131,7 +131,7 @@ class Secretaries_model extends EA_Model
         if (!empty($secretary['settings']['password'])) {
             if (strlen($secretary['settings']['password']) < MIN_PASSWORD_LENGTH) {
                 throw new InvalidArgumentException(
-                    'The secretary password must be at least ' . MIN_PASSWORD_LENGTH . ' characters long.'
+                    'The secretary password must be at least ' . MIN_PASSWORD_LENGTH . ' characters long.',
                 );
             }
         }
@@ -147,7 +147,7 @@ class Secretaries_model extends EA_Model
             !in_array($secretary['settings']['calendar_view'], [CALENDAR_VIEW_DEFAULT, CALENDAR_VIEW_TABLE])
         ) {
             throw new InvalidArgumentException(
-                'The provided calendar view is invalid: ' . $secretary['settings']['calendar_view']
+                'The provided calendar view is invalid: ' . $secretary['settings']['calendar_view'],
             );
         }
 
@@ -167,7 +167,7 @@ class Secretaries_model extends EA_Model
 
         if ($count > 0) {
             throw new InvalidArgumentException(
-                'The provided email address is already in use, please use a different one.'
+                'The provided email address is already in use, please use a different one.',
             );
         }
     }
@@ -306,7 +306,7 @@ class Secretaries_model extends EA_Model
 
         if (!$secretary) {
             throw new InvalidArgumentException(
-                'The provided secretary ID was not found in the database: ' . $secretary_id
+                'The provided secretary ID was not found in the database: ' . $secretary_id,
             );
         }
 
@@ -352,7 +352,7 @@ class Secretaries_model extends EA_Model
 
         if (!$query->num_rows()) {
             throw new InvalidArgumentException(
-                'The provided secretary ID was not found in the database: ' . $secretary_id
+                'The provided secretary ID was not found in the database: ' . $secretary_id,
             );
         }
 
@@ -382,7 +382,7 @@ class Secretaries_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         $role_id = $this->get_secretary_role_id();
 
@@ -408,7 +408,7 @@ class Secretaries_model extends EA_Model
             unset(
                 $secretary['settings']['id_users'],
                 $secretary['settings']['password'],
-                $secretary['settings']['salt']
+                $secretary['settings']['salt'],
             );
 
             $secretary_provider_connections = $this->db
@@ -514,7 +514,7 @@ class Secretaries_model extends EA_Model
         foreach ($provider_ids as $provider_id) {
             $secretary_provider_connection = [
                 'id_users_secretary' => $secretary_id,
-                'id_users_provider' => $provider_id
+                'id_users_provider' => $provider_id,
             ];
 
             $this->db->insert('secretaries_providers', $secretary_provider_connection);
@@ -549,7 +549,7 @@ class Secretaries_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         $role_id = $this->get_secretary_role_id();
 
@@ -588,7 +588,7 @@ class Secretaries_model extends EA_Model
             unset(
                 $secretary['settings']['id_users'],
                 $secretary['settings']['password'],
-                $secretary['settings']['salt']
+                $secretary['settings']['salt'],
             );
 
             $secretary_provider_connections = $this->db
@@ -629,8 +629,8 @@ class Secretaries_model extends EA_Model
                     ->get()
                     ->result_array(),
                 default => throw new InvalidArgumentException(
-                    'The requested secretary relation is not supported: ' . $resource
-                )
+                    'The requested secretary relation is not supported: ' . $resource,
+                ),
             };
         }
     }
@@ -659,8 +659,8 @@ class Secretaries_model extends EA_Model
             'settings' => [
                 'username' => $secretary['settings']['username'],
                 'notifications' => filter_var($secretary['settings']['notifications'], FILTER_VALIDATE_BOOLEAN),
-                'calendarView' => $secretary['settings']['calendar_view']
-            ]
+                'calendarView' => $secretary['settings']['calendar_view'],
+            ],
         ];
 
         $secretary = $encoded_resource;
@@ -744,7 +744,7 @@ class Secretaries_model extends EA_Model
             if (array_key_exists('notifications', $secretary['settings'])) {
                 $decoded_resource['settings']['notifications'] = filter_var(
                     $secretary['settings']['notifications'],
-                    FILTER_VALIDATE_BOOLEAN
+                    FILTER_VALIDATE_BOOLEAN,
                 );
             }
 

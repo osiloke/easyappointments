@@ -61,7 +61,7 @@ class Availability
         string $date,
         array $service,
         array $provider,
-        int $exclude_appointment_id = null
+        int $exclude_appointment_id = null,
     ): array {
         if ($service['attendants_number'] > 1) {
             $available_hours = $this->consider_multiple_attendants($date, $service, $provider, $exclude_appointment_id);
@@ -125,7 +125,7 @@ class Availability
         }
 
         $appointments = array_values(
-            array_merge($this->CI->appointments_model->get($where), $this->CI->unavailabilities_model->get($where))
+            array_merge($this->CI->appointments_model->get($where), $this->CI->unavailabilities_model->get($where)),
         );
 
         // Find the empty spaces on the plan. The first split between the plan is due to a break (if any). After that
@@ -144,7 +144,7 @@ class Availability
         if (isset($date_working_plan['breaks'])) {
             $periods[] = [
                 'start' => $date_working_plan['start'],
-                'end' => $date_working_plan['end']
+                'end' => $date_working_plan['end'],
             ];
 
             $day_start = new DateTime($date_working_plan['start']);
@@ -176,7 +176,7 @@ class Availability
                     if ($break_start > $period_start && $break_start < $period_end && $break_end > $period_start) {
                         $periods[] = [
                             'start' => $period_start->format('H:i'),
-                            'end' => $break_start->format('H:i')
+                            'end' => $break_start->format('H:i'),
                         ];
 
                         $remove_current_period = true;
@@ -185,7 +185,7 @@ class Availability
                     if ($break_start < $period_end && $break_end > $period_start && $break_end < $period_end) {
                         $periods[] = [
                             'start' => $break_end->format('H:i'),
-                            'end' => $period_end->format('H:i')
+                            'end' => $period_end->format('H:i'),
                         ];
 
                         $remove_current_period = true;
@@ -239,12 +239,12 @@ class Availability
 
                             $periods[] = [
                                 'start' => $period_start->format('H:i'),
-                                'end' => $appointment_start->format('H:i')
+                                'end' => $appointment_start->format('H:i'),
                             ];
 
                             $periods[] = [
                                 'start' => $appointment_end->format('H:i'),
-                                'end' => $period_end->format('H:i')
+                                'end' => $period_end->format('H:i'),
                             ];
                         } elseif ($appointment_start == $period_start && $appointment_end == $period_end) {
                             unset($periods[$index]); // The whole period is blocked so remove it from the available periods array.
@@ -303,7 +303,7 @@ class Availability
         string $date,
         array $service,
         array $empty_periods,
-        int $duration = null
+        int $duration = null,
     ): array {
         $available_hours = [];
 
@@ -348,13 +348,13 @@ class Availability
         string $date,
         array $service,
         array $provider,
-        int $exclude_appointment_id = null
+        int $exclude_appointment_id = null,
     ): array {
         $unavailability_events = $this->CI->appointments_model->get([
             'is_unavailability' => true,
             'DATE(start_datetime) <=' => $date,
             'DATE(end_datetime) >=' => $date,
-            'id_users_provider' => $provider['id']
+            'id_users_provider' => $provider['id'],
         ]);
 
         $working_plan = json_decode($provider['settings']['working_plan'], true);
@@ -377,8 +377,8 @@ class Availability
         $periods = [
             [
                 'start' => new DateTime($date . ' ' . $date_working_plan['start']),
-                'end' => new DateTime($date . ' ' . $date_working_plan['end'])
-            ]
+                'end' => new DateTime($date . ' ' . $date_working_plan['end']),
+            ],
         ];
 
         $periods = $this->remove_breaks($date, $periods, $date_working_plan['breaks']);
@@ -402,7 +402,7 @@ class Availability
                     $slot_end,
                     $service['id'],
                     $provider['id'],
-                    $exclude_appointment_id
+                    $exclude_appointment_id,
                 );
 
                 if ($other_service_attendants_number > 0) {
@@ -418,7 +418,7 @@ class Availability
                     $slot_end,
                     $service['id'],
                     $provider['id'],
-                    $exclude_appointment_id
+                    $exclude_appointment_id,
                 );
 
                 if ($appointment_attendants_number < $service['attendants_number']) {
@@ -477,7 +477,7 @@ class Availability
                     $period['end'] = $break_start;
                     $periods[] = [
                         'start' => $break_end,
-                        'end' => $period_end
+                        'end' => $period_end,
                     ];
 
                     continue;
@@ -543,7 +543,7 @@ class Availability
                     $period['end'] = $unavailability_start;
                     $periods[] = [
                         'start' => $unavailability_end,
-                        'end' => $period_end
+                        'end' => $period_end,
                     ];
 
                     continue;
@@ -622,7 +622,7 @@ class Availability
     protected function consider_future_booking_limit(
         string $selected_date,
         array $available_hours,
-        array $provider
+        array $provider,
     ): array {
         $provider_timezone = new DateTimeZone($provider['timezone']);
 

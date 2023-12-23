@@ -24,7 +24,7 @@ class Consents_model extends EA_Model
      * @var array
      */
     protected array $casts = [
-        'id' => 'integer'
+        'id' => 'integer',
     ];
 
     /**
@@ -205,7 +205,7 @@ class Consents_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         if ($where !== null) {
             $this->db->where($where);
@@ -254,7 +254,7 @@ class Consents_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');

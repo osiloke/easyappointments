@@ -26,8 +26,8 @@ class Migration_Add_payment_intent_column_to_appointments_table extends CI_Migra
             $fields = [
                 'payment_intent' => [
                     'type' => 'TEXT',
-                    'null' => true
-                ]
+                    'null' => true,
+                ],
             ];
 
             $this->dbforge->add_column('appointments', $fields);

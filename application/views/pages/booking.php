@@ -7,7 +7,7 @@
 <?php component('booking_cancellation_frame', [
     'manage_mode' => vars('manage_mode'),
     'appointment_data' => vars('appointment_data'),
-    'display_delete_personal_information' => vars('display_delete_personal_information')
+    'display_delete_personal_information' => vars('display_delete_personal_information'),
 ]); ?>
 
 <!-- Select Service & Provider -->
@@ -16,14 +16,14 @@
     'available_services' => vars('available_services'),
     'available_providers' => vars('available_providers'),
     'is_paid' => vars('is_paid'),
-    'company_email' => vars('company_email')
+    'company_email' => vars('company_email'),
 ]); ?>
 <!-- Pick An Appointment Date -->
 
 <?php component('booking_time_step', [
     'grouped_timezones' => vars('grouped_timezones'),
     'available_services' => vars('available_services'),
-    'available_providers' => vars('available_providers')
+    'available_providers' => vars('available_providers'),
 ]); ?>
 
 <!-- Enter Customer Information -->
@@ -44,7 +44,7 @@
     'display_zip_code' => vars('display_zip_code'),
     'require_zip_code' => vars('require_zip_code'),
     'display_notes' => vars('display_notes'),
-    'require_notes' => vars('require_notes')
+    'require_notes' => vars('require_notes'),
 ]); ?>
 
 <!-- Appointment Data Confirmation -->
@@ -53,7 +53,7 @@
     'manage_mode' => vars('manage_mode'),
     'is_paid' => vars('is_paid'),
     'display_terms_and_conditions' => vars('display_terms_and_conditions'),
-    'display_privacy_policy' => vars('display_privacy_policy')
+    'display_privacy_policy' => vars('display_privacy_policy'),
 ]); ?>
 
 <?php end_section('content'); ?>

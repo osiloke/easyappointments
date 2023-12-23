@@ -31,7 +31,7 @@ class Roles_model extends EA_Model
         'services' => 'integer',
         'users' => 'integer',
         'system_settings' => 'integer',
-        'user_settings' => 'integer'
+        'user_settings' => 'integer',
     ];
 
     /**
@@ -69,7 +69,7 @@ class Roles_model extends EA_Model
 
             if (!$count) {
                 throw new InvalidArgumentException(
-                    'The provided role ID does not exist in the database: ' . $role['id']
+                    'The provided role ID does not exist in the database: ' . $role['id'],
                 );
             }
         }
@@ -220,7 +220,7 @@ class Roles_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         if ($where !== null) {
             $this->db->where($where);
@@ -276,7 +276,7 @@ class Roles_model extends EA_Model
                 'view' => false,
                 'add' => false,
                 'edit' => false,
-                'delete' => false
+                'delete' => false,
             ];
 
             if ($value > 0) {
@@ -327,7 +327,7 @@ class Roles_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');

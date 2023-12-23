@@ -43,7 +43,7 @@ foreach ($available_services as $service) {
             <div class="w-full lg:w-5/12">
                 <?php component('provider_card', [
                     'hide_service' => count($available_providers) == 1,
-                    'secretary' => vars('secretary')
+                    'secretary' => vars('secretary'),
                 ]); ?>
             </div>
             <div id="step-content">
@@ -90,7 +90,7 @@ foreach ($available_services as $service) {
                                             'image' => $provider['image'],
                                             'first_name' => $provider['first_name'],
                                             'last_name' => $provider['last_name'],
-                                            'description' => $provider['notes'] ?? ''
+                                            'description' => $provider['notes'] ?? '',
                                         ]); ?>
                                         <?php endforeach; ?>  
                                     </div>
@@ -141,7 +141,7 @@ foreach ($available_services as $service) {
                                                 'description' => $service['description'],
                                                 'price' => $service['price'],
                                                 'fee' => $service['fee'] ?? 0,
-                                                'duration' => $service['duration']
+                                                'duration' => $service['duration'],
                                             ]); ?>
 
                                             <?php endforeach; ?>
@@ -155,8 +155,8 @@ foreach ($available_services as $service) {
                             <p class="warn">
                             <?= strtr(lang('service_paid_warning'), [
                                 '{$mail_link}' => strtr('<a href="maiilto:{$company_email}">{$company_email}</a>', [
-                                    '{$company_email}' => $company_email
-                                ])
+                                    '{$company_email}' => $company_email,
+                                ]),
                             ]) ?>
                             <?= lang('') ?>
                             </p>

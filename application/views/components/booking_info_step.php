@@ -27,7 +27,7 @@
             <div class="w-full lg:w-5/12 flex flex-col gap-10">                
                 <?php component('provider_card', [
                     'hide_service' => count($available_providers) == 1,
-                    'secretary' => vars('secretary')
+                    'secretary' => vars('secretary'),
                 ]); ?>
                 <?php component('selected_service', ['services' => $available_services, 'step' => '3']); ?>
             </div>

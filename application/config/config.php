@@ -115,7 +115,7 @@ $languages = [
     'sk' => 'slovak',
     'es' => 'spanish',
     'sv' => 'swedish',
-    'tr' => 'turkish'
+    'tr' => 'turkish',
 ];
 
 $config['language_codes'] = $languages;
@@ -170,7 +170,7 @@ $config['available_languages'] = [
     'slovak',
     'spanish',
     'swedish',
-    'turkish'
+    'turkish',
 ];
 
 /*

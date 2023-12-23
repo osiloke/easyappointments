@@ -26,8 +26,8 @@ class Migration_Add_payment_link_column_to_services_table extends CI_Migration
             $fields = [
                 'payment_link' => [
                     'type' => 'TEXT',
-                    'null' => true
-                ]
+                    'null' => true,
+                ],
             ];
 
             $this->dbforge->add_column('services', $fields);

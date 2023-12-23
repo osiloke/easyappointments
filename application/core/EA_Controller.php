@@ -102,7 +102,7 @@ class EA_Controller extends CI_Controller
 
             config([
                 'language' => $session_language,
-                'language_code' => array_search($session_language, $language_codes) ?: 'en'
+                'language_code' => array_search($session_language, $language_codes) ?: 'en',
             ]);
         }
 
@@ -119,7 +119,7 @@ class EA_Controller extends CI_Controller
             'index_page' => config('index_page'),
             'available_languages' => config('available_languages'),
             'language' => $this->lang->language,
-            'csrf_token' => $this->security->get_csrf_hash()
+            'csrf_token' => $this->security->get_csrf_hash(),
         ]);
     }
 
@@ -132,7 +132,7 @@ class EA_Controller extends CI_Controller
             'base_url' => config('base_url'),
             'index_page' => config('index_page'),
             'available_languages' => config('available_languages'),
-            'csrf_token' => $this->security->get_csrf_hash()
+            'csrf_token' => $this->security->get_csrf_hash(),
         ]);
     }
 

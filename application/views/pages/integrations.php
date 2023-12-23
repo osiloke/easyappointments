@@ -56,7 +56,7 @@
                         </div>
                         <div class="card-footer bg-white border-0">
                             <a href="<?= site_url(
-                                'google_analytics_settings'
+                                'google_analytics_settings',
                             ) ?>" class="btn btn-outline-primary w-100">
                                 <i class="fas fa-cogs me-2"></i>
                                 <?= lang('configure') ?>
@@ -81,7 +81,7 @@
                         </div>
                         <div class="card-footer bg-white border-0">
                             <a href="<?= site_url(
-                                'matomo_analytics_settings'
+                                'matomo_analytics_settings',
                             ) ?>" class="btn btn-outline-primary w-100">
                                 <i class="fas fa-cogs me-2"></i>
                                 <?= lang('configure') ?>

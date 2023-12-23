@@ -38,7 +38,7 @@
 
                                 <div class="mb-5">
                                     <label class="form-label" for="cookie-notice-content"><?= lang(
-                                        'cookie_notice_content'
+                                        'cookie_notice_content',
                                     ) ?></label>
                                     <textarea id="cookie-notice-content" cols="30" rows="10" class="mb-3"></textarea>
                                 </div>
@@ -55,7 +55,7 @@
                                 
                                 <div class="mb-5">
                                     <label class="form-label" for="terms-and-conditions-content"><?= lang(
-                                        'terms_and_conditions_content'
+                                        'terms_and_conditions_content',
                                     ) ?></label>
                                     <textarea id="terms-and-conditions-content" cols="30" rows="10"
                                               class="mb-3"></textarea>
@@ -73,7 +73,7 @@
 
                                 <div class="mb-3">
                                     <label class="form-label" for="privacy-policy-content"><?= lang(
-                                        'privacy_policy_content'
+                                        'privacy_policy_content',
                                     ) ?></label>
                                     <textarea id="privacy-policy-content" cols="30" rows="10" class="mb-3"></textarea>
                                 </div>

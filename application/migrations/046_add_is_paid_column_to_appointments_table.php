@@ -27,8 +27,8 @@ class Migration_Add_is_paid_column_to_appointments_table extends CI_Migration
                 'is_paid' => [
                     'type' => 'TINYINT',
                     'constraint' => '4',
-                    'default' => '0'
-                ]
+                    'default' => '0',
+                ],
             ];
 
             $this->dbforge->add_column('appointments', $fields);

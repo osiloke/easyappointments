@@ -38,7 +38,7 @@
         <li class="nav-item dropdown <?= $active . $hidden ?>">
             <details>
                 <summary data-tippy-content="<?= lang(
-                    'manage_services_hint'
+                    'manage_services_hint',
                 ) ?>"><i class="fas fa-business-time me-2"></i>
                     <?= lang('services') ?></summary>
                 <ul class="p-2 text-white">
@@ -147,7 +147,7 @@
         <li class="nav-item dropdown <?= $active . $hidden ?>">
             <details>
                 <summary data-tippy-content="<?= lang(
-                    'manage_services_hint'
+                    'manage_services_hint',
                 ) ?>"><i class="fas fa-business-time me-2"></i>
                     <?= lang('services') ?></summary>
                 <ul class="p-2 text-black">

@@ -24,7 +24,7 @@ class Categories_model extends EA_Model
      * @var array
      */
     protected array $casts = [
-        'id' => 'integer'
+        'id' => 'integer',
     ];
 
     /**
@@ -33,7 +33,7 @@ class Categories_model extends EA_Model
     protected array $api_resource = [
         'id' => 'id',
         'name' => 'name',
-        'description' => 'description'
+        'description' => 'description',
     ];
 
     /**
@@ -71,7 +71,7 @@ class Categories_model extends EA_Model
 
             if (!$count) {
                 throw new InvalidArgumentException(
-                    'The provided category ID does not exist in the database: ' . $category['id']
+                    'The provided category ID does not exist in the database: ' . $category['id'],
                 );
             }
         }
@@ -160,7 +160,7 @@ class Categories_model extends EA_Model
 
         if (!$category) {
             throw new InvalidArgumentException(
-                'The provided category ID was not found in the database: ' . $category_id
+                'The provided category ID was not found in the database: ' . $category_id,
             );
         }
 
@@ -194,7 +194,7 @@ class Categories_model extends EA_Model
 
         if (!$query->num_rows()) {
             throw new InvalidArgumentException(
-                'The provided category ID was not found in the database: ' . $category_id
+                'The provided category ID was not found in the database: ' . $category_id,
             );
         }
 
@@ -226,7 +226,7 @@ class Categories_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         if ($where !== null) {
             $this->db->where($where);
@@ -275,7 +275,7 @@ class Categories_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
@@ -324,7 +324,7 @@ class Categories_model extends EA_Model
         $encoded_resource = [
             'id' => array_key_exists('id', $category) ? (int) $category['id'] : null,
             'name' => $category['name'],
-            'description' => array_key_exists('description', $category) ? $category['description'] : null
+            'description' => array_key_exists('description', $category) ? $category['description'] : null,
         ];
 
         $category = $encoded_resource;

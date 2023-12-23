@@ -24,7 +24,7 @@ class Settings_model extends EA_Model
      * @var array
      */
     protected array $casts = [
-        'id' => 'integer'
+        'id' => 'integer',
     ];
 
     /**
@@ -32,7 +32,7 @@ class Settings_model extends EA_Model
      */
     protected array $api_resource = [
         'name' => 'name',
-        'value' => 'value'
+        'value' => 'value',
     ];
 
     /**
@@ -70,7 +70,7 @@ class Settings_model extends EA_Model
 
             if (!$count) {
                 throw new InvalidArgumentException(
-                    'The provided setting ID does not exist in the database: ' . $setting['id']
+                    'The provided setting ID does not exist in the database: ' . $setting['id'],
                 );
             }
         }
@@ -221,7 +221,7 @@ class Settings_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         if ($where !== null) {
             $this->db->where($where);
@@ -270,7 +270,7 @@ class Settings_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');
@@ -318,7 +318,7 @@ class Settings_model extends EA_Model
     {
         $encoded_resource = [
             'name' => $setting['name'],
-            'value' => $setting['value']
+            'value' => $setting['value'],
         ];
 
         $setting = $encoded_resource;

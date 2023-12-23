@@ -102,7 +102,7 @@ class Payment extends EA_Controller
                 'date_format' => $date_format,
                 'time_format' => $time_format,
                 'display_cookie_notice' => $display_cookie_notice,
-                'display_any_provider' => setting('display_any_provider')
+                'display_any_provider' => setting('display_any_provider'),
             ]);
 
             html_vars([
@@ -128,7 +128,7 @@ class Payment extends EA_Controller
                 'grouped_timezones' => $grouped_timezones,
                 'appointment' => $appointment,
                 'provider' => $provider,
-                'customer' => $customer
+                'customer' => $customer,
             ]);
 
             $this->load->view('pages/payment');
@@ -146,7 +146,7 @@ class Payment extends EA_Controller
     public function confirm(string $appointment_hash)
     {
         $client = new Client([
-            'timeout' => 15.0
+            'timeout' => 15.0,
         ]);
 
         // TODO: fetch apppintment and use reference to verify payment_intent
@@ -164,7 +164,7 @@ class Payment extends EA_Controller
 
                 html_vars([
                     'appointment' => $appointment,
-                    'add_to_google_url' => $add_to_google_url
+                    'add_to_google_url' => $add_to_google_url,
                 ]);
 
                 $this->index();
@@ -172,11 +172,11 @@ class Payment extends EA_Controller
                 $res = $client->post(config('stripe_api_url') . '/onepay/confirm', [
                     'headers' => [
                         'Content-Type' => 'application/json',
-                        'Authorization' => 'Bearer ' . config('stripe_api_key')
+                        'Authorization' => 'Bearer ' . config('stripe_api_key'),
                     ],
                     'json' => [
-                        'reason' => $appointment_hash
-                    ]
+                        'reason' => $appointment_hash,
+                    ],
                 ]);
 
                 $body = json_decode($res->getBody());
@@ -193,7 +193,7 @@ class Payment extends EA_Controller
 
                     html_vars([
                         'appointment' => $appointment,
-                        'add_to_google_url' => $add_to_google_url
+                        'add_to_google_url' => $add_to_google_url,
                     ]);
 
                     $this->index();
@@ -208,7 +208,7 @@ class Payment extends EA_Controller
                 'Webhooks Client - The webhook (' .
                     ($appointment_hash ?? null) .
                     ') request received an unexpected exception: ' .
-                    $e->getMessage()
+                    $e->getMessage(),
             );
             log_message('error', $e->getTraceAsString());
 
@@ -254,7 +254,7 @@ class Payment extends EA_Controller
                 'id_services',
                 'is_paid',
                 'status',
-                'payment_intent'
+                'payment_intent',
             ]);
             $appointment_id = $this->appointments_model->save($appointment);
             $appointment = $this->appointments_model->find($appointment_id);
@@ -268,7 +268,7 @@ class Payment extends EA_Controller
                 'time_format' => setting('time_format'),
                 'add_to_google_url' => $add_to_google_url,
                 'google_analytics_code' => setting('google_analytics_code'),
-                'matomo_analytics_url' => setting('matomo_analytics_url')
+                'matomo_analytics_url' => setting('matomo_analytics_url'),
             ];
 
             $this->synchronization->sync_appointment_saved($appointment, $service, $provider, $customer, $settings);
@@ -279,7 +279,7 @@ class Payment extends EA_Controller
                 $provider,
                 $customer,
                 $settings,
-                $manage_mode
+                $manage_mode,
             );
 
             $this->webhooks_client->trigger(WEBHOOK_APPOINTMENT_SAVE, $appointment);
@@ -299,7 +299,7 @@ class Payment extends EA_Controller
     public function link(string $appointment_hash)
     {
         $client = new Client([
-            'timeout' => 20.0
+            'timeout' => 20.0,
         ]);
 
         try {
@@ -321,14 +321,14 @@ class Payment extends EA_Controller
                     $appointment['start_datetime'],
                     $appointment['end_datetime'],
                     $service['duration'],
-                    $service['price']
+                    $service['price'],
                 );
                 $amount = $amount + (float) $service['fee'];
 
                 $res = $client->post(config('stripe_api_url') . '/onepay/charge', [
                     'headers' => [
                         'Content-Type' => 'application/json',
-                        'Authorization' => 'Bearer ' . config('stripe_api_key')
+                        'Authorization' => 'Bearer ' . config('stripe_api_key'),
                     ],
                     'json' => [
                         'amount' => $amount,
@@ -339,8 +339,8 @@ class Payment extends EA_Controller
                         'redirectURL' => $redirectURL,
                         'subaccount' => $provider['settings']['username'],
                         'bank_name' => $provider['settings']['bank_name'],
-                        'account_number' => $provider['settings']['account_number']
-                    ]
+                        'account_number' => $provider['settings']['account_number'],
+                    ],
                 ]);
                 $body = json_decode($res->getBody());
                 //TODO: store payment id as payment intent
@@ -353,7 +353,7 @@ class Payment extends EA_Controller
                 'Webhooks Client - The webhook (' .
                     ($appointment_hash ?? null) .
                     ') request received an unexpected exception: ' .
-                    $e->getMessage()
+                    $e->getMessage(),
             );
             log_message('error', $e->getTraceAsString());
 

@@ -77,7 +77,7 @@ class Providers extends EA_Controller
             'first_weekday' => setting('first_weekday'),
             'min_password_length' => MIN_PASSWORD_LENGTH,
             'timezones' => $this->timezones->to_array(),
-            'services' => $services
+            'services' => $services,
         ]);
 
         html_vars([
@@ -86,7 +86,7 @@ class Providers extends EA_Controller
             'user_display_name' => $this->accounts->get_user_display_name($user_id),
             'grouped_timezones' => $this->timezones->to_grouped_array(),
             'privileges' => $this->roles_model->get_permissions_by_slug($role_slug),
-            'services' => $this->services_model->get()
+            'services' => $this->services_model->get(),
         ]);
 
         $this->load->view('pages/providers');
@@ -146,7 +146,7 @@ class Providers extends EA_Controller
                 'is_private',
                 'id_roles',
                 'settings',
-                'services'
+                'services',
             ]);
 
             $this->providers_model->only($provider['settings'], [
@@ -158,11 +158,11 @@ class Providers extends EA_Controller
                 'working_plan_exceptions',
                 'notifications',
                 'calendar_view',
-                'image'
+                'image',
             ]);
 
             $this->providers_model->optional($provider, [
-                'services' => []
+                'services' => [],
             ]);
 
             $provider_id = $this->providers_model->save($provider);
@@ -173,7 +173,7 @@ class Providers extends EA_Controller
 
             json_response([
                 'success' => true,
-                'id' => $provider_id
+                'id' => $provider_id,
             ]);
         } catch (Throwable $e) {
             json_exception($e);
@@ -209,7 +209,7 @@ class Providers extends EA_Controller
                 'is_private',
                 'id_roles',
                 'settings',
-                'services'
+                'services',
             ]);
 
             $this->providers_model->only($provider['settings'], [
@@ -221,11 +221,11 @@ class Providers extends EA_Controller
                 'working_plan_exceptions',
                 'notifications',
                 'calendar_view',
-                'image'
+                'image',
             ]);
 
             $this->providers_model->optional($provider, [
-                'services' => []
+                'services' => [],
             ]);
 
             $provider_id = $this->providers_model->save($provider);
@@ -236,7 +236,7 @@ class Providers extends EA_Controller
 
             json_response([
                 'success' => true,
-                'id' => $provider_id
+                'id' => $provider_id,
             ]);
         } catch (Throwable $e) {
             json_exception($e);
@@ -262,7 +262,7 @@ class Providers extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_PROVIDER_DELETE, $provider);
 
             json_response([
-                'success' => true
+                'success' => true,
             ]);
         } catch (Throwable $e) {
             json_exception($e);

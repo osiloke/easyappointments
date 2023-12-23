@@ -24,7 +24,7 @@ class Blocked_periods_model extends EA_Model
      * @var array
      */
     protected array $casts = [
-        'id' => 'integer'
+        'id' => 'integer',
     ];
 
     /**
@@ -35,7 +35,7 @@ class Blocked_periods_model extends EA_Model
         'name' => 'name',
         'start' => 'start_datetime',
         'end' => 'end_datetime',
-        'description' => 'description'
+        'description' => 'description',
     ];
 
     /**
@@ -73,7 +73,7 @@ class Blocked_periods_model extends EA_Model
 
             if (!$count) {
                 throw new InvalidArgumentException(
-                    'The provided blocked-period ID does not exist in the database: ' . $blocked_period['id']
+                    'The provided blocked-period ID does not exist in the database: ' . $blocked_period['id'],
                 );
             }
         }
@@ -81,7 +81,7 @@ class Blocked_periods_model extends EA_Model
         // Make sure all required fields are provided.
         if (empty($blocked_period['name'])) {
             throw new InvalidArgumentException(
-                'Not all required fields are provided: ' . print_r($blocked_period, true)
+                'Not all required fields are provided: ' . print_r($blocked_period, true),
             );
         }
     }
@@ -154,7 +154,7 @@ class Blocked_periods_model extends EA_Model
 
         if (!$blocked_period) {
             throw new InvalidArgumentException(
-                'The provided blocked-period ID was not found in the database: ' . $blocked_period_id
+                'The provided blocked-period ID was not found in the database: ' . $blocked_period_id,
             );
         }
 
@@ -188,7 +188,7 @@ class Blocked_periods_model extends EA_Model
 
         if (!$query->num_rows()) {
             throw new InvalidArgumentException(
-                'The provided blocked-period ID was not found in the database: ' . $blocked_period_id
+                'The provided blocked-period ID was not found in the database: ' . $blocked_period_id,
             );
         }
 
@@ -199,7 +199,7 @@ class Blocked_periods_model extends EA_Model
 
         if (!array_key_exists($field, $blocked_period)) {
             throw new InvalidArgumentException(
-                'The requested field was not found in the blocked-period data: ' . $field
+                'The requested field was not found in the blocked-period data: ' . $field,
             );
         }
 
@@ -220,7 +220,7 @@ class Blocked_periods_model extends EA_Model
         array|string $where = null,
         int $limit = null,
         int $offset = null,
-        string $order_by = null
+        string $order_by = null,
     ): array {
         if ($where !== null) {
             $this->db->where($where);
@@ -306,7 +306,7 @@ class Blocked_periods_model extends EA_Model
             'name' => $blocked_period['name'],
             'start' => array_key_exists('start_datetime', $blocked_period) ? $blocked_period['start_datetime'] : null,
             'end' => array_key_exists('end_datetime', $blocked_period) ? $blocked_period['end_datetime'] : null,
-            'description' => array_key_exists('description', $blocked_period) ? $blocked_period['description'] : null
+            'description' => array_key_exists('description', $blocked_period) ? $blocked_period['description'] : null,
         ];
 
         $blocked_period = $encoded_resource;

@@ -39,7 +39,7 @@ function getTimeIntervals($fullday, $halfDay, $duration)
             <div class="w-full lg:w-5/12 flex flex-col gap-10">
                 <?php component('provider_card', [
                     'hide_service' => count($available_providers) == 1,
-                    'secretary' => vars('secretary')
+                    'secretary' => vars('secretary'),
                 ]); ?>
                 <?php component('selected_service', ['services' => $available_services, 'step' => '2']); ?>
             </div>
@@ -84,7 +84,7 @@ function getTimeIntervals($fullday, $halfDay, $duration)
                                 </label>
                                 <?php component('timezone_dropdown', [
                                     'attributes' => 'id="select-timezone" class="form-control" value="Africa/Lagos"',
-                                    'grouped_timezones' => $grouped_timezones
+                                    'grouped_timezones' => $grouped_timezones,
                                 ]); ?>
                             </div>
 

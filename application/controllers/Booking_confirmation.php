@@ -92,7 +92,7 @@ class Booking_confirmation extends EA_Controller
             'service' => $service,
             'appointment' => $appointment,
             'timezone' => $timezone,
-            'is_redirect' => isset($_GET['r'])
+            'is_redirect' => isset($_GET['r']),
         ]);
 
         $this->load->view('pages/booking_confirmation');

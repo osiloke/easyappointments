@@ -80,7 +80,7 @@ class Booking extends EA_Controller
                 'google_analytics_code' => $google_analytics_code,
                 'matomo_analytics_url' => $matomo_analytics_url,
                 'company_email' => setting('company_email'),
-                'company_name' => $company_name
+                'company_name' => $company_name,
             ]);
 
             $this->load->view('pages/landing');
@@ -105,7 +105,7 @@ class Booking extends EA_Controller
                 'google_analytics_code' => $google_analytics_code,
                 'matomo_analytics_url' => $matomo_analytics_url,
                 'company_email' => setting('company_email'),
-                'company_name' => $company_name
+                'company_name' => $company_name,
             ]);
 
             //     $this->load->view('pages/landing');
@@ -121,7 +121,7 @@ class Booking extends EA_Controller
                 'google_analytics_code' => $google_analytics_code,
                 'matomo_analytics_url' => $matomo_analytics_url,
                 'company_email' => setting('company_email'),
-                'company_name' => $company_name
+                'company_name' => $company_name,
             ]);
 
             $this->load->view('pages/landing');
@@ -139,7 +139,7 @@ class Booking extends EA_Controller
                 true,
                 '',
                 '',
-                $secretary['providers']
+                $secretary['providers'],
             );
             $available_services = $this->services_model->get_available_services(true, '', '', $secretary['providers']);
         } else {
@@ -147,12 +147,12 @@ class Booking extends EA_Controller
             $available_services = $this->services_model->get_available_services(
                 true,
                 $provider_id ?? '',
-                $provider_name
+                $provider_name,
             );
             $available_providers = $this->providers_model->get_available_providers(
                 true,
                 $provider_id ?? '',
-                $provider_name
+                $provider_name,
             );
         }
 
@@ -170,7 +170,7 @@ class Booking extends EA_Controller
                 'services',
                 'timezone',
                 'notes',
-                'image'
+                'image',
             ]);
         }
         $date_format = setting('date_format');
@@ -228,7 +228,7 @@ class Booking extends EA_Controller
                     'message_text' => lang('appointment_does_not_exist_in_db'),
                     'message_icon' => base_url('assets/img/error.png'),
                     'google_analytics_code' => $google_analytics_code,
-                    'matomo_analytics_url' => $matomo_analytics_url
+                    'matomo_analytics_url' => $matomo_analytics_url,
                 ]);
 
                 $this->load->view('pages/booking_message');
@@ -252,11 +252,11 @@ class Booking extends EA_Controller
                     'page_title' => lang('page_title') . ' ' . $company_name,
                     'message_title' => lang('appointment_locked'),
                     'message_text' => strtr(lang('appointment_locked_message'), [
-                        '{$limit}' => sprintf('%02d:%02d', $hours, $minutes)
+                        '{$limit}' => sprintf('%02d:%02d', $hours, $minutes),
                     ]),
                     'message_icon' => base_url('assets/img/error.png'),
                     'google_analytics_code' => $google_analytics_code,
-                    'matomo_analytics_url' => $matomo_analytics_url
+                    'matomo_analytics_url' => $matomo_analytics_url,
                 ]);
 
                 $this->load->view('pages/booking_message');
@@ -298,7 +298,7 @@ class Booking extends EA_Controller
             'appointment_data' => $appointment,
             'secretary_data' => $secretary,
             'provider_data' => $provider,
-            'customer_data' => $customer
+            'customer_data' => $customer,
         ]);
 
         html_vars([
@@ -347,7 +347,7 @@ class Booking extends EA_Controller
             'appointment_data' => $appointment,
             'provider_data' => $provider,
             'customer_data' => $customer,
-            'company_email' => setting('company_email')
+            'company_email' => setting('company_email'),
         ]);
 
         $this->load->view('pages/booking');
@@ -429,7 +429,7 @@ class Booking extends EA_Controller
                         $selected_date,
                         $service,
                         $provider,
-                        $exclude_appointment_id
+                        $exclude_appointment_id,
                     );
 
                     $available_hours = array_merge($available_hours, $provider_available_hours);
@@ -450,7 +450,7 @@ class Booking extends EA_Controller
                     $selected_date,
                     $service,
                     $provider,
-                    $exclude_appointment_id
+                    $exclude_appointment_id,
                 );
             }
 
@@ -568,7 +568,7 @@ class Booking extends EA_Controller
             // Validate the CAPTCHA string.
             if ($require_captcha && strtoupper($captcha_phrase) !== strtoupper($captcha)) {
                 json_response([
-                    'captcha_verification' => false
+                    'captcha_verification' => false,
                 ]);
 
                 return;
@@ -593,7 +593,7 @@ class Booking extends EA_Controller
                 'first_name' => $customer['first_name'] ?? '-',
                 'last_name' => $customer['last_name'] ?? '-',
                 'email' => $customer['email'] ?? '-',
-                'ip' => $customer_ip
+                'ip' => $customer_ip,
             ];
 
             if (setting('display_terms_and_conditions')) {
@@ -622,7 +622,7 @@ class Booking extends EA_Controller
                 'state',
                 'zip_code',
                 'timezone',
-                'language'
+                'language',
             ]);
 
             $customer_id = $this->customers_model->save($customer);
@@ -651,7 +651,7 @@ class Booking extends EA_Controller
                 'is_unavailability',
                 'id_users_provider',
                 'id_users_customer',
-                'id_services'
+                'id_services',
             ]);
 
             $appointment_id = $this->appointments_model->save($appointment);
@@ -662,7 +662,7 @@ class Booking extends EA_Controller
                 'company_link' => setting('company_link'),
                 'company_email' => setting('company_email'),
                 'date_format' => setting('date_format'),
-                'time_format' => setting('time_format')
+                'time_format' => setting('time_format'),
             ];
             if ($service['price'] == 0) {
                 $this->synchronization->sync_appointment_saved($appointment, $service, $provider, $customer, $settings);
@@ -673,7 +673,7 @@ class Booking extends EA_Controller
                     $provider,
                     $customer,
                     $settings,
-                    $manage_mode
+                    $manage_mode,
                 );
             }
 
@@ -682,7 +682,7 @@ class Booking extends EA_Controller
             $response = [
                 'appointment_id' => $appointment['id'],
                 'appointment_hash' => $appointment['hash'],
-                'payment_required' => $service['price'] > 0
+                'payment_required' => $service['price'] > 0,
             ];
 
             json_response($response);
@@ -739,7 +739,7 @@ class Booking extends EA_Controller
             $date,
             $service,
             $provider,
-            $exclude_appointment_id
+            $exclude_appointment_id,
         );
 
         $is_still_available = false;
@@ -804,7 +804,7 @@ class Booking extends EA_Controller
                         $current_date->format('Y-m-d'),
                         $service,
                         $provider,
-                        $exclude_appointment_id
+                        $exclude_appointment_id,
                     );
 
                     if (!empty($available_hours)) {
@@ -820,7 +820,7 @@ class Booking extends EA_Controller
 
             if (count($unavailable_dates) === $number_of_days_in_month) {
                 json_response([
-                    'is_month_unavailable' => true
+                    'is_month_unavailable' => true,
                 ]);
 
                 return;

@@ -30,8 +30,8 @@ class Migration_Add_payment_fee_column_to_services_table extends CI_Migration
                     'type' => 'DECIMAL',
                     'constraint' => '10,2',
                     'null' => true,
-                    'default' => 0
-                ]
+                    'default' => 0,
+                ],
             ];
 
             $this->dbforge->add_column('services', $fields);

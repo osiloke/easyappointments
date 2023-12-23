@@ -28,8 +28,8 @@ class Migration_Add_image_field_to_user_settings_table extends CI_Migration
             $fields = [
                 'image' => [
                     'type' => 'LONGTEXT',
-                    'null' => true
-                ]
+                    'null' => true,
+                ],
             ];
 
             $this->dbforge->add_column('user_settings', $fields);

@@ -25,7 +25,7 @@ class Users_model extends EA_Model
      */
     protected array $casts = [
         'id' => 'integer',
-        'id_roles' => 'integer'
+        'id_roles' => 'integer',
     ];
 
     /**
@@ -45,7 +45,7 @@ class Users_model extends EA_Model
         'timezone' => 'timezone',
         'language' => 'language',
         'notes' => 'notes',
-        'roleId' => 'id_roles'
+        'roleId' => 'id_roles',
     ];
 
     /**
@@ -84,7 +84,7 @@ class Users_model extends EA_Model
 
             if (!$count) {
                 throw new InvalidArgumentException(
-                    'The provided user ID does not exist in the database: ' . $user['id']
+                    'The provided user ID does not exist in the database: ' . $user['id'],
                 );
             }
         }
@@ -268,7 +268,7 @@ class Users_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         if ($where !== null) {
             $this->db->where($where);
@@ -380,7 +380,7 @@ class Users_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');

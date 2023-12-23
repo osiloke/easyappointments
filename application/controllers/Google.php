@@ -90,7 +90,7 @@ class Google extends EA_Controller
             $where = [
                 'start_datetime >=' => date('Y-m-d H:i:s', $start),
                 'end_datetime <=' => date('Y-m-d H:i:s', $end),
-                'id_users_provider' => $provider['id']
+                'id_users_provider' => $provider['id'],
             ];
 
             $appointments = $CI->appointments_model->get($where);
@@ -98,7 +98,7 @@ class Google extends EA_Controller
             $settings = [
                 'company_name' => setting('company_name'),
                 'company_link' => setting('company_link'),
-                'company_email' => setting('company_email')
+                'company_email' => setting('company_email'),
             ];
 
             $provider_timezone = new DateTimeZone($provider['timezone']);
@@ -120,7 +120,7 @@ class Google extends EA_Controller
                         $provider,
                         $service,
                         $customer,
-                        $settings
+                        $settings,
                     );
 
                     $appointment['id_google_calendar'] = $google_event->getId();
@@ -139,11 +139,11 @@ class Google extends EA_Controller
                         $appointment_start = strtotime($appointment['start_datetime']);
                         $appointment_end = strtotime($appointment['end_datetime']);
                         $event_start = new DateTime(
-                            $google_event->getStart()->getDateTime() ?? $google_event->getEnd()->getDate()
+                            $google_event->getStart()->getDateTime() ?? $google_event->getEnd()->getDate(),
                         );
                         $event_start->setTimezone($provider_timezone);
                         $event_end = new DateTime(
-                            $google_event->getEnd()->getDateTime() ?? $google_event->getEnd()->getDate()
+                            $google_event->getEnd()->getDateTime() ?? $google_event->getEnd()->getDate(),
                         );
                         $event_end->setTimezone($provider_timezone);
 
@@ -220,19 +220,19 @@ class Google extends EA_Controller
                     'id_users_provider' => $provider_id,
                     'id_google_calendar' => $google_event->getId(),
                     'id_users_customer' => null,
-                    'id_services' => null
+                    'id_services' => null,
                 ];
 
                 $CI->appointments_model->save($appointment);
             }
 
             json_response([
-                'success' => true
+                'success' => true,
             ]);
         } catch (Throwable $e) {
             log_message(
                 'error',
-                'Google - Sync completed with an error (provider ID "' . $provider_id . '"): ' . $e->getMessage()
+                'Google - Sync completed with an error (provider ID "' . $provider_id . '"): ' . $e->getMessage(),
             );
 
             json_exception($e);
@@ -328,7 +328,7 @@ class Google extends EA_Controller
 
             if (!$google_sync) {
                 json_response([
-                    'success' => false
+                    'success' => false,
                 ]);
 
                 return;
@@ -367,7 +367,7 @@ class Google extends EA_Controller
             $this->providers_model->set_setting($provider_id, 'google_calendar', $calendar_id);
 
             json_response([
-                'success' => true
+                'success' => true,
             ]);
         } catch (Throwable $e) {
             json_exception($e);
@@ -403,7 +403,7 @@ class Google extends EA_Controller
             $this->appointments_model->clear_google_sync_ids($provider_id);
 
             json_response([
-                'success' => true
+                'success' => true,
             ]);
         } catch (Throwable $e) {
             json_exception($e);

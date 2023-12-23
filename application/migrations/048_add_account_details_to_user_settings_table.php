@@ -26,12 +26,12 @@ class Migration_Add_account_details_to_user_settings_table extends CI_Migration
             $fields = [
                 'account_number' => [
                     'type' => 'TEXT',
-                    'null' => true
+                    'null' => true,
                 ],
                 'bank_name' => [
                     'type' => 'TEXT',
-                    'null' => true
-                ]
+                    'null' => true,
+                ],
             ];
 
             $this->dbforge->add_column('user_settings', $fields);

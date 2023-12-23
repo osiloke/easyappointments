@@ -25,7 +25,7 @@ class Customers_model extends EA_Model
      */
     protected array $casts = [
         'id' => 'integer',
-        'id_roles' => 'integer'
+        'id_roles' => 'integer',
     ];
 
     /**
@@ -43,7 +43,7 @@ class Customers_model extends EA_Model
         'zip' => 'zip_code',
         'timezone' => 'timezone',
         'language' => 'language',
-        'notes' => 'notes'
+        'notes' => 'notes',
     ];
 
     /**
@@ -85,7 +85,7 @@ class Customers_model extends EA_Model
 
             if (!$count) {
                 throw new InvalidArgumentException(
-                    'The provided customer ID does not exist in the database: ' . $customer['id']
+                    'The provided customer ID does not exist in the database: ' . $customer['id'],
                 );
             }
         }
@@ -133,7 +133,7 @@ class Customers_model extends EA_Model
 
             if ($count > 0) {
                 throw new InvalidArgumentException(
-                    'The provided email address is already in use, please use a different one.'
+                    'The provided email address is already in use, please use a different one.',
                 );
             }
         }
@@ -198,7 +198,7 @@ class Customers_model extends EA_Model
             $this->db->update(
                 'appointments',
                 ['delete_datetime' => date('Y-m-d H:i:s')],
-                ['id_users_customer' => $customer_id, 'delete_datetime' => null]
+                ['id_users_customer' => $customer_id, 'delete_datetime' => null],
             );
         }
     }
@@ -221,7 +221,7 @@ class Customers_model extends EA_Model
 
         if (!$customer) {
             throw new InvalidArgumentException(
-                'The provided customer ID was not found in the database: ' . $customer_id
+                'The provided customer ID was not found in the database: ' . $customer_id,
             );
         }
 
@@ -255,7 +255,7 @@ class Customers_model extends EA_Model
 
         if (!$query->num_rows()) {
             throw new InvalidArgumentException(
-                'The provided customer ID was not found in the database: ' . $customer_id
+                'The provided customer ID was not found in the database: ' . $customer_id,
             );
         }
 
@@ -287,7 +287,7 @@ class Customers_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         $role_id = $this->get_customer_role_id();
 
@@ -416,7 +416,7 @@ class Customers_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         $role_id = $this->get_customer_role_id();
 
@@ -483,7 +483,7 @@ class Customers_model extends EA_Model
             'address' => $customer['address'],
             'city' => $customer['city'],
             'zip' => $customer['zip_code'],
-            'notes' => $customer['notes']
+            'notes' => $customer['notes'],
         ];
 
         $customer = $encoded_resource;

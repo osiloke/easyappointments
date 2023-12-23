@@ -26,7 +26,7 @@ class Webhooks_model extends EA_Model
     protected array $casts = [
         'id' => 'integer',
         'is_active' => 'boolean',
-        'is_ssl_verified' => 'boolean'
+        'is_ssl_verified' => 'boolean',
     ];
 
     /**
@@ -40,7 +40,7 @@ class Webhooks_model extends EA_Model
         'secretToken' => 'secret_token',
         'isActive' => 'is_active',
         'isSslVerified' => 'is_ssl_verified',
-        'notes' => 'notes'
+        'notes' => 'notes',
     ];
 
     /**
@@ -215,7 +215,7 @@ class Webhooks_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         if ($where !== null) {
             $this->db->where($where);
@@ -264,7 +264,7 @@ class Webhooks_model extends EA_Model
         int $limit = null,
         int $offset = null,
         string $order_by = null,
-        bool $with_trashed = false
+        bool $with_trashed = false,
     ): array {
         if (!$with_trashed) {
             $this->db->where('delete_datetime IS NULL');

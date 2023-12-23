@@ -102,7 +102,7 @@ class Calendar extends EA_Controller
             $available_providers = array_values(
                 array_filter($available_providers, function ($available_provider) use ($user_id) {
                     return (int) $available_provider['id'] === (int) $user_id;
-                })
+                }),
             );
             $provider_id = $available_providers[0]['id'];
         }
@@ -110,7 +110,7 @@ class Calendar extends EA_Controller
             $available_providers = array_values(
                 array_filter($available_providers, function ($available_provider) use ($secretary_providers) {
                     return in_array($available_provider['id'], $secretary_providers);
-                })
+                }),
             );
             $provider_id = $available_providers[0]['id'];
         }
@@ -136,7 +136,7 @@ class Calendar extends EA_Controller
             'secretary_providers' => $secretary_providers,
             'edit_appointment' => $edit_appointment,
             'customers' => $this->customers_model->get(null, 50, null, 'update_datetime DESC'),
-            'stripe_payment_feature' => config('stripe_payment_feature')
+            'stripe_payment_feature' => config('stripe_payment_feature'),
         ]);
 
         html_vars([
@@ -159,7 +159,7 @@ class Calendar extends EA_Controller
             'require_address' => setting('require_address'),
             'require_city' => setting('require_city'),
             'require_zip_code' => setting('require_zip_code'),
-            'require_notes' => setting('require_notes')
+            'require_notes' => setting('require_notes'),
         ]);
 
         $this->load->view('pages/calendar');
@@ -208,7 +208,7 @@ class Calendar extends EA_Controller
                     'state',
                     'zip_code',
                     'timezone',
-                    'language'
+                    'language',
                 ]);
 
                 $customer['id'] = $this->customers_model->save($customer);
@@ -252,7 +252,7 @@ class Calendar extends EA_Controller
                     'is_unavailability',
                     'id_users_provider',
                     'id_users_customer',
-                    'id_services'
+                    'id_services',
                 ]);
                 $appointment['id'] = $this->appointments_model->save($appointment);
             }
@@ -271,7 +271,7 @@ class Calendar extends EA_Controller
                 'company_link' => setting('company_link'),
                 'company_email' => setting('company_email'),
                 'date_format' => setting('date_format'),
-                'time_format' => setting('time_format')
+                'time_format' => setting('time_format'),
             ];
 
             $this->synchronization->sync_appointment_saved($appointment, $service, $provider, $customer, $settings);
@@ -282,13 +282,13 @@ class Calendar extends EA_Controller
                 $provider,
                 $customer,
                 $settings,
-                $manage_mode
+                $manage_mode,
             );
 
             $this->webhooks_client->trigger(WEBHOOK_APPOINTMENT_SAVE, $appointment);
 
             json_response([
-                'success' => true
+                'success' => true,
             ]);
         } catch (Throwable $e) {
             json_exception($e);
@@ -327,7 +327,7 @@ class Calendar extends EA_Controller
                 'company_email' => setting('company_email'),
                 'company_link' => setting('company_link'),
                 'date_format' => setting('date_format'),
-                'time_format' => setting('time_format')
+                'time_format' => setting('time_format'),
             ];
 
             // Delete appointment record from the database.
@@ -339,7 +339,7 @@ class Calendar extends EA_Controller
                 $provider,
                 $customer,
                 $settings,
-                $cancellation_reason
+                $cancellation_reason,
             );
 
             $this->synchronization->sync_appointment_deleted($appointment, $provider);
@@ -347,7 +347,7 @@ class Calendar extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_APPOINTMENT_DELETE, $appointment);
 
             json_response([
-                'success' => true
+                'success' => true,
             ]);
         } catch (Throwable $e) {
             json_exception($e);
@@ -383,7 +383,7 @@ class Calendar extends EA_Controller
 
             json_response([
                 'success' => true,
-                'warnings' => $warnings ?? []
+                'warnings' => $warnings ?? [],
             ]);
         } catch (Throwable $e) {
             json_exception($e);
@@ -413,7 +413,7 @@ class Calendar extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_UNAVAILABILITY_DELETE, $unavailability);
 
             json_response([
-                'success' => true
+                'success' => true,
             ]);
         } catch (Throwable $e) {
             json_exception($e);
@@ -439,7 +439,7 @@ class Calendar extends EA_Controller
             $this->providers_model->save_working_plan_exception($provider_id, $date, $working_plan_exception);
 
             json_response([
-                'success' => true
+                'success' => true,
             ]);
         } catch (Throwable $e) {
             json_exception($e);
@@ -465,7 +465,7 @@ class Calendar extends EA_Controller
             $this->providers_model->delete_working_plan_exception($provider_id, $date);
 
             json_response([
-                'success' => true
+                'success' => true,
             ]);
         } catch (Throwable $e) {
             json_exception($e);
@@ -494,12 +494,12 @@ class Calendar extends EA_Controller
                 'appointments' => $this->appointments_model->get([
                     'status =' => 'Booked',
                     'start_datetime >=' => $start_date,
-                    'end_datetime <=' => $end_date
+                    'end_datetime <=' => $end_date,
                 ]),
                 'unavailabilities' => $this->unavailabilities_model->get([
                     'start_datetime >=' => $start_date,
-                    'end_datetime <=' => $end_date
-                ])
+                    'end_datetime <=' => $end_date,
+                ]),
             ];
 
             foreach ($response['appointments'] as &$appointment) {
@@ -580,7 +580,7 @@ class Calendar extends EA_Controller
             if (!$filter_type && $record_id !== FILTER_TYPE_ALL) {
                 json_response([
                     'appointments' => [],
-                    'unavailabilities' => []
+                    'unavailabilities' => [],
                 ]);
 
                 return;

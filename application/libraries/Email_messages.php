@@ -73,7 +73,7 @@ class Email_messages
         string $appointment_link,
         string $recipient_email,
         string $ics_stream,
-        string $timezone = null
+        string $timezone = null,
     ): void {
         $appointment_timezone = new DateTimeZone($provider['timezone']);
 
@@ -93,7 +93,7 @@ class Email_messages
 
         $payment_link_vars = [
             '{$appointment_hash}' => $appointment['hash'],
-            '{$customer_email}' => $customer['email']
+            '{$customer_email}' => $customer['email'],
         ];
         $payment_link = strtr($service['payment_link'], $payment_link_vars);
 
@@ -115,9 +115,9 @@ class Email_messages
                 'settings' => $settings,
                 'timezone' => $timezone,
                 'appointment_link' => $appointment_link,
-                'add_to_google_url' => $add_to_google_url
+                'add_to_google_url' => $add_to_google_url,
             ],
-            true
+            true,
         );
 
         $this->CI->email->from($settings['company_email'], $settings['company_email']);
@@ -157,7 +157,7 @@ class Email_messages
         array $settings,
         string $recipient_email,
         string $reason = null,
-        string $timezone = null
+        string $timezone = null,
     ): void {
         $appointment_timezone = new DateTimeZone($provider['timezone']);
 
@@ -185,9 +185,9 @@ class Email_messages
                 'settings' => $settings,
                 'timezone' => $timezone,
                 'reason' => $reason,
-                'payment_intent' => $appointment['payment_intent']
+                'payment_intent' => $appointment['payment_intent'],
             ],
-            true
+            true,
         );
 
         $this->CI->email->from($settings['company_email'], $settings['company_email']);
@@ -217,9 +217,9 @@ class Email_messages
             [
                 'subject' => lang('new_account_password'),
                 'message' => str_replace('$password', '<strong>' . $password . '</strong>', lang('new_password_is')),
-                'settings' => $settings
+                'settings' => $settings,
             ],
-            true
+            true,
         );
 
         $this->CI->email->from($settings['company_email'], $settings['company_email']);

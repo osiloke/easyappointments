@@ -14,7 +14,7 @@
             <div class="w-full lg:w-5/12 flex flex-col gap-10">
                 <?php component('provider_card', [
                     'hide_service' => count($available_providers) == 1,
-                    'secretary' => vars('secretary')
+                    'secretary' => vars('secretary'),
                 ]); ?>
                 <?php component('selected_service', ['services' => $available_services, 'step' => '4']); ?>
             </div>
@@ -49,7 +49,7 @@
                                 <?= strtr(lang('read_and_agree_to_terms_and_conditions'), [
                                     '{$link}' =>
                                         '<a href="#" data-bs-toggle="modal" data-bs-target="#terms-and-conditions-modal">',
-                                    '{/$link}' => '</a>'
+                                    '{/$link}' => '</a>',
                                 ]) ?>
                             </label>
                         </div>
@@ -62,7 +62,7 @@
                                 <?= strtr(lang('read_and_agree_to_privacy_policy'), [
                                     '{$link}' =>
                                         '<a href="#" data-bs-toggle="modal" data-bs-target="#privacy-policy-modal">',
-                                    '{/$link}' => '</a>'
+                                    '{/$link}' => '</a>',
                                 ]) ?>
                             </label>
                         </div>

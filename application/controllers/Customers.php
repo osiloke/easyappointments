@@ -86,7 +86,7 @@ class Customers extends EA_Controller
             'date_format' => $date_format,
             'time_format' => $time_format,
             'timezones' => $this->timezones->to_array(),
-            'secretary_providers' => $secretary_providers
+            'secretary_providers' => $secretary_providers,
         ]);
 
         html_vars([
@@ -103,7 +103,7 @@ class Customers extends EA_Controller
             'require_address' => $require_address,
             'require_city' => $require_city,
             'require_zip_code' => $require_zip_code,
-            'available_languages' => config('available_languages')
+            'available_languages' => config('available_languages'),
         ]);
 
         $this->load->view('pages/customers');
@@ -180,7 +180,7 @@ class Customers extends EA_Controller
                 'zip_code',
                 'notes',
                 'timezone',
-                'language'
+                'language',
             ]);
 
             $customer_id = $this->customers_model->save($customer);
@@ -191,7 +191,7 @@ class Customers extends EA_Controller
 
             json_response([
                 'success' => true,
-                'id' => $customer_id
+                'id' => $customer_id,
             ]);
         } catch (Throwable $e) {
             json_exception($e);
@@ -228,7 +228,7 @@ class Customers extends EA_Controller
                 'zip_code',
                 'notes',
                 'timezone',
-                'language'
+                'language',
             ]);
 
             $customer_id = $this->customers_model->save($customer);
@@ -239,7 +239,7 @@ class Customers extends EA_Controller
 
             json_response([
                 'success' => true,
-                'id' => $customer_id
+                'id' => $customer_id,
             ]);
         } catch (Throwable $e) {
             json_exception($e);
@@ -271,7 +271,7 @@ class Customers extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_CUSTOMER_DELETE, $customer);
 
             json_response([
-                'success' => true
+                'success' => true,
             ]);
         } catch (Throwable $e) {
             json_exception($e);

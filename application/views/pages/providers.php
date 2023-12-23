@@ -93,7 +93,7 @@
                                     <div class="form-text text-muted">
                                         <small>
                                             The <?= lang('provider') ?>  <?= lang(
-      'image will be displayed in many places of the app, including the booking page and the notification emails (image file, max 2MB).'
+      'image will be displayed in many places of the app, including the booking page and the notification emails (image file, max 2MB).',
   ) ?>
                                         </small>
                                     </div>
@@ -249,7 +249,7 @@
                                 </label>
                                 <?php component('timezone_dropdown', [
                                     'attributes' => 'id="timezone" class="form-control required" disabled',
-                                    'grouped_timezones' => vars('grouped_timezones')
+                                    'grouped_timezones' => vars('grouped_timezones'),
                                 ]); ?>
                             </div>
 
@@ -307,7 +307,7 @@
                                         'Unity Bank' => '215',
                                         'VFD' => '566',
                                         'Wema Bank' => '035',
-                                        'Zenith Bank' => '057'
+                                        'Zenith Bank' => '057',
                                     ]; ?>
 
                                     <select id="bank-name" class="form-control required" maxlength="128" disabled>

@@ -60,41 +60,41 @@ class Notifications
         array $provider,
         array $customer,
         array $settings,
-        bool $manage_mode = false
+        bool $manage_mode = false,
     ): void {
         try {
             if ($manage_mode) {
                 $customer_subject = strtr(lang('appointment_changes_saved'), [
                     '{$provider_name}' => $provider['first_name'],
-                    '{$service_name}' => $service['name']
+                    '{$service_name}' => $service['name'],
                 ]);
 
                 $customer_message = '';
 
                 $provider_subject = strtr(lang('appointment_details_changed'), [
                     '{$customer_name}' => $customer['first_name'],
-                    '{$service_name}' => $service['name']
+                    '{$service_name}' => $service['name'],
                 ]);
 
                 $provider_message = '';
             } else {
                 $customer_subject = strtr(lang('appointment_booked'), [
                     '{$provider_name}' => $provider['first_name'],
-                    '{$service_name}' => $service['name']
+                    '{$service_name}' => $service['name'],
                 ]);
 
                 $customer_message = strtr(lang('thank_you_for_appointment'), [
                     '{$provider_name}' => $provider['first_name'],
-                    '{$service_name}' => $service['name']
+                    '{$service_name}' => $service['name'],
                 ]);
 
                 $provider_subject = strtr(lang('appointment_added_to_your_plan'), [
-                    '{$customer_name}' => $customer['first_name']
+                    '{$customer_name}' => $customer['first_name'],
                 ]);
 
                 $provider_message = strtr(lang('appointment_link_description'), [
                     '{$customer_name}' => $customer['first_name'],
-                    '{$service_name}' => $service['name']
+                    '{$service_name}' => $service['name'],
                 ]);
             }
 
@@ -120,14 +120,14 @@ class Notifications
                     $customer_link,
                     $customer['email'],
                     $ics_stream,
-                    $customer['timezone']
+                    $customer['timezone'],
                 );
             }
 
             // Notify provider.
             $send_provider = filter_var(
                 $this->CI->providers_model->get_setting($provider['id'], 'notifications'),
-                FILTER_VALIDATE_BOOLEAN
+                FILTER_VALIDATE_BOOLEAN,
             );
 
             if ($send_provider === true) {
@@ -142,7 +142,7 @@ class Notifications
                     $provider_link,
                     $provider['email'],
                     $ics_stream,
-                    $provider['timezone']
+                    $provider['timezone'],
                 );
             }
 
@@ -165,7 +165,7 @@ class Notifications
                     $provider_link,
                     $admin['email'],
                     $ics_stream,
-                    $admin['timezone']
+                    $admin['timezone'],
                 );
             }
 
@@ -192,7 +192,7 @@ class Notifications
                     $provider_link,
                     $secretary['email'],
                     $ics_stream,
-                    $secretary['timezone']
+                    $secretary['timezone'],
                 );
             }
         } catch (Throwable $e) {
@@ -201,7 +201,7 @@ class Notifications
                 'Notifications - Could not email confirmation details of appointment (' .
                     ($appointment['id'] ?? '-') .
                     ') : ' .
-                    $e->getMessage()
+                    $e->getMessage(),
             );
             log_message('error', $e->getTraceAsString());
         }
@@ -222,13 +222,13 @@ class Notifications
         array $provider,
         array $customer,
         array $settings,
-        string $cancellation_reason = ''
+        string $cancellation_reason = '',
     ): void {
         try {
             // Notify provider.
             $send_provider = filter_var(
                 $this->CI->providers_model->get_setting($provider['id'], 'notifications'),
-                FILTER_VALIDATE_BOOLEAN
+                FILTER_VALIDATE_BOOLEAN,
             );
 
             if ($send_provider === true) {
@@ -240,7 +240,7 @@ class Notifications
                     $settings,
                     $provider['email'],
                     $cancellation_reason,
-                    $provider['timezone']
+                    $provider['timezone'],
                 );
             }
 
@@ -257,7 +257,7 @@ class Notifications
                     $settings,
                     $customer['email'],
                     $cancellation_reason,
-                    $customer['timezone']
+                    $customer['timezone'],
                 );
             }
 
@@ -277,7 +277,7 @@ class Notifications
                     $settings,
                     $admin['email'],
                     $cancellation_reason,
-                    $admin['timezone']
+                    $admin['timezone'],
                 );
             }
 
@@ -301,7 +301,7 @@ class Notifications
                     $settings,
                     $secretary['email'],
                     $cancellation_reason,
-                    $secretary['timezone']
+                    $secretary['timezone'],
                 );
             }
         } catch (Throwable $e) {
@@ -310,7 +310,7 @@ class Notifications
                 'Notifications - Could not email cancellation details of appointment (' .
                     ($appointment['id'] ?? '-') .
                     ') : ' .
-                    $e->getMessage()
+                    $e->getMessage(),
             );
             log_message('error', $e->getTraceAsString());
         }

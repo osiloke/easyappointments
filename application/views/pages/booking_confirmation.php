@@ -8,7 +8,7 @@
         gap: 5px; display: inline-flex">
             <div>
                 <img id="success-icon" src="<?= base_url(
-                    'assets/img/heroicons-solid/credit-card.svg'
+                    'assets/img/heroicons-solid/credit-card.svg',
                 ) ?>" alt="success" />
             </div>
             <div
@@ -79,7 +79,7 @@
                     <?= lang('Cancel Booking') ?>
                 </a>
                 <a href="<?= vars(
-                    'payment_link'
+                    'payment_link',
                 ) ?>" id="open-payment-process" class="btn btn-primary rounded-full mt-4"
                     target="_blank">
                     <i id="payment-icon" class="fas fa-credit-card me-2">
@@ -126,12 +126,8 @@
     <?php section('scripts'); ?>
 
     <?php component('google_analytics_script', [
-        'google_analytics_code' => vars('google_analytics_code')
+        'google_analytics_code' => vars('google_analytics_code'),
     ]); ?>
-    <?php component(
-        'matomo_analytics_script',
-
-        ['matomo_analytics_url' => vars('matomo_analytics_url')]
-    ); ?>
+    <?php component('matomo_analytics_script', ['matomo_analytics_url' => vars('matomo_analytics_url')]); ?>
 
     <?php end_section('scripts'); ?>
