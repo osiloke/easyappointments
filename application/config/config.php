@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 |--------------------------------------------------------------------------
@@ -192,7 +194,6 @@ $config['charset'] = 'UTF-8';
 */
 $config['enable_hooks'] = TRUE;
 
-
 /*
 |--------------------------------------------------------------------------
 | Class Extension Prefix
@@ -206,7 +207,6 @@ $config['enable_hooks'] = TRUE;
 |
 */
 $config['subclass_prefix'] = 'EA_';
-
 
 /*
 |--------------------------------------------------------------------------
@@ -226,7 +226,6 @@ $config['subclass_prefix'] = 'EA_';
 |
 */
 $config['permitted_uri_chars'] = 'a-z 0-9~%.:_\-';
-
 
 /*
 |--------------------------------------------------------------------------
@@ -422,7 +421,6 @@ $config['compress_output'] = FALSE;
 */
 $config['time_reference'] = 'local';
 
-
 /*
 |--------------------------------------------------------------------------
 | Rewrite PHP Short Tags
@@ -434,7 +432,6 @@ $config['time_reference'] = 'local';
 |
 */
 $config['rewrite_short_tags'] = FALSE;
-
 
 /*
 |--------------------------------------------------------------------------
@@ -460,7 +457,6 @@ $config['proxy_ips'] = '';
 */
 $config['rate_limiting'] = TRUE;
 
-
 /*
 |--------------------------------------------------------------------------
 | Stripe Payment Configuration
@@ -472,6 +468,7 @@ $config['rate_limiting'] = TRUE;
 
 $config['stripe_payment_feature'] = Config::STRIPE_PAYMENT_FEATURE;
 $config['stripe_api_key'] = Config::STRIPE_API_KEY;
+$config['stripe_api_url'] = Config::STRIPE_API_URL;
 
 /* End of file config.php */
 /* Location: ./application/config/config.php */

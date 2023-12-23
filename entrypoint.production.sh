@@ -122,6 +122,7 @@ class Config {
 
     const STRIPE_PAYMENT_FEATURE  = $(get_env_value "STRIPE_PAYMENT_FEATURE" "");
     const STRIPE_API_KEY  = '"$(get_env_value "STRIPE_API_KEY" "")"';
+    const STRIPE_API_URL  = '"$(get_env_value "STRIPE_API_URL" "")"';
 }
 
 /* End of file config.php */

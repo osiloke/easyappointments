@@ -171,7 +171,7 @@ class Payment extends EA_Controller
                 $this->index();
             }
             else {
-                $res = $client->post('https://api.vazapay.com/v1/onepay/confirm', [
+                $res = $client->post(config('stripe_api_url') . '/onepay/confirm', [
                     'headers' => [
                         'Content-Type'  => 'application/json',
                         'Authorization' => 'Bearer ' . config('stripe_api_key'),
@@ -313,7 +313,7 @@ class Payment extends EA_Controller
                 $amount = price_from_duration($appointment['start_datetime'], $appointment['end_datetime'], $service['duration'], $service['price']);
                 $amount = $amount + (float) $service['fee'];
 
-                $res = $client->post('https://api.vazapay.com/v1/onepay/charge', [
+                $res = $client->post(config('stripe_api_url') . '/onepay/charge', [
                     'headers' => [
                         'Content-Type'  => 'application/json',
                         'Authorization' => 'Bearer ' . config('stripe_api_key'),
