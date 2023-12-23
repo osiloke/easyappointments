@@ -150,8 +150,10 @@ class Booking extends EA_Controller
         foreach ($available_providers as &$available_provider) {
             // Only expose the required provider data.
             $available_provider['image'] = $available_provider['settings']['image'];
+            $available_provider['username'] = $available_provider['settings']['username'] ?? '';
             $this->providers_model->only($available_provider, [
                 'id',
+                'username',
                 'first_name',
                 'last_name',
                 'services',

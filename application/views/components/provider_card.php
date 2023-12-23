@@ -3,14 +3,21 @@
  * Local variables.
  *
  * @var bool $hide_service
- * @var $secretary
+ * @var object $secretary
  */
 ?>
 <div class="bg-white rounded-lg shadow border border-neutral-50 flex flex-row py-4 w-full items-start px-4 gap-4">
     <div>
         <div class="w-24 h-32 transition ease-in-out delay-150">
-            <!-- <img src="https://api.dicebear.com/6.x/avataaars/svg?seed=Molly" /> -->
+           <?php if (in_array(($secretary["settings"]["username"] ?? ''), array("niu", "niudec2023"))): ?>
+            <div class="avatar">
+                <div class="w-24 rounded-full">
+                    <img  src="<?= base_url('assets/img/niu.jpg') ?>" />
+                </div>
+            </div>
+            <?php else: ?>
             <img class="w-24 my-2" src="<?= base_url('assets/img/Avatars.png') ?>" />
+            <? endif ?>
         </div>
     </div>
     <div class="flex flex-col w-8/12">
