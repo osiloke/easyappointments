@@ -15,6 +15,12 @@
                     <img  src="<?= base_url('assets/img/niu.jpg') ?>" />
                 </div>
             </div>
+           <?php elseif (in_array(($secretary["settings"]["username"] ?? ''), array("ijeworks"))): ?>
+            <div class="avatar">
+                <div class="w-24 rounded-full">
+                    <img  src="<?= base_url('assets/img/Ijeoma1.jpg') ?>" />
+                </div>
+            </div> 
             <?php else: ?>
             <img class="w-24 my-2" src="<?= base_url('assets/img/Avatars.png') ?>" />
             <? endif ?>

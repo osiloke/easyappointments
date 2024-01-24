@@ -142,6 +142,7 @@ foreach ($available_services as $service) {
                                                 'price'       => $service['price'],
                                                 'fee'         => $service['fee'] ?? 0,
                                                 'duration'    => $service['duration'],
+                                                'image'       => $service['image'],
                                             ]); ?>
 
                                             <?php endforeach; ?>

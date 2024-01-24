@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -29,8 +31,8 @@ class Migration_Add_custom_fields_columns_to_users_table extends EA_Migration
             if (!$this->db->field_exists($field_name, 'users')) {
                 $fields = [
                     $field_name => [
-                        'type' => 'TEXT',
-                        'null' => true,
+                        'type'  => 'TEXT',
+                        'null'  => TRUE,
                         'after' => 'language',
                     ],
                 ];

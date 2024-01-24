@@ -45,68 +45,70 @@
                                         <?php
                                         // Group services by category, only if there is at least one service
                                         // with a parent category.
-                                        $has_category = false;
+                                        $has_category = FALSE;
 
-                                        foreach ($available_services as $service) {
-                                            if (!empty($service['category_id'])) {
-                                                $has_category = true;
-                                                break;
-                                            }
-                                        }
+foreach ($available_services as $service) {
+    if (!empty($service['category_id'])) {
+        $has_category = TRUE;
 
-                                        if ($has_category) {
-                                            $grouped_services = [];
+        break;
+    }
+}
 
-                                            foreach ($available_services as $service) {
-                                                if (!empty($service['category_id'])) {
-                                                    if (!isset($grouped_services[$service['category_name']])) {
-                                                        $grouped_services[$service['category_name']] = [];
-                                                    }
+if ($has_category) {
+    $grouped_services = [];
 
-                                                    $grouped_services[$service['category_name']][] = $service;
-                                                }
-                                            }
+    foreach ($available_services as $service) {
+        if (!empty($service['category_id'])) {
+            if (!isset($grouped_services[$service['category_name']])) {
+                $grouped_services[$service['category_name']] = [];
+            }
 
-                                            // We need the uncategorized services at the end of the list, so we will use
-                                            // another iteration only for the uncategorized services.
-                                            $grouped_services['uncategorized'] = [];
+            $grouped_services[$service['category_name']][] = $service;
+        }
+    }
 
-                                            foreach ($available_services as $service) {
-                                                if ($service['category_id'] == null) {
-                                                    $grouped_services['uncategorized'][] = $service;
-                                                }
-                                            }
+    // We need the uncategorized services at the end of the list, so we will use
+    // another iteration only for the uncategorized services.
+    $grouped_services['uncategorized'] = [];
 
-                                            foreach ($grouped_services as $key => $group) {
-                                                $group_label =
-                                                    $key !== 'uncategorized'
-                                                        ? e($group[0]['category_name'])
-                                                        : 'Uncategorized';
+    foreach ($available_services as $service) {
+        if ($service['category_id'] == NULL) {
+            $grouped_services['uncategorized'][] = $service;
+        }
+    }
 
-                                                if (count($group) > 0) {
-                                                    echo '<optgroup label="' . $group_label . '">';
+    foreach ($grouped_services as $key => $group) {
+        $group_label =
+            $key !== 'uncategorized'
+                ? e($group[0]['category_name'])
+                : 'Uncategorized';
 
-                                                    foreach ($group as $service) {
-                                                        echo '<option value="' .
-                                                            $service['id'] .
-                                                            '">' .
-                                                            e($service['name']) .
-                                                            '</option>';
-                                                    }
+        if (count($group) > 0) {
+            echo '<optgroup label="' . $group_label . '">';
 
-                                                    echo '</optgroup>';
-                                                }
-                                            }
-                                        } else {
-                                            foreach ($available_services as $service) {
-                                                echo '<option value="' .
-                                                    $service['id'] .
-                                                    '">' .
-                                                    e($service['name']) .
-                                                    '</option>';
-                                            }
-                                        }
-                                        ?>
+            foreach ($group as $service) {
+                echo '<option value="' .
+                    $service['id'] .
+                    '">' .
+                    e($service['name']) .
+                    '</option>';
+            }
+
+            echo '</optgroup>';
+        }
+    }
+}
+else {
+    foreach ($available_services as $service) {
+        echo '<option value="' .
+            $service['id'] .
+            '">' .
+            e($service['name']) .
+            '</option>';
+    }
+}
+?>
                                     </select>
                                 </div>
 
@@ -208,13 +210,13 @@
                                 <i class="fas fa-plus-square me-2"></i>
                                 <?= lang('new') ?>
                             </button>
-                            <button id="select-customer" class="btn btn-outline-secondary btn-sm" type="button"
+                            <!-- <button id="select-customer" class="btn btn-outline-secondary btn-sm" type="button"
                                     data-tippy-content="<?= lang('pick_existing_customer_hint') ?>">
                                 <i class="fas fa-hand-pointer me-2"></i>
                                 <span>
                                     <?= lang('select') ?>
                                 </span>
-                            </button>
+                            </button> -->
 
                             <input id="filter-existing-customers"
                                    placeholder="<?= lang('type_to_filter_customers') ?>"
@@ -331,7 +333,7 @@
                                         <span class="text-danger" hidden>*</span>
                                     </label>
                                     <?php component('timezone_dropdown', [
-                                        'attributes' => 'id="timezone" class="form-control required"',
+                                        'attributes'        => 'id="timezone" class="form-control required"',
                                         'grouped_timezones' => vars('grouped_timezones'),
                                     ]); ?>
                                 </div>

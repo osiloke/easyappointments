@@ -51,6 +51,7 @@ class Services_model extends EA_Model
         'attendantsNumber'   => 'attendants_number',
         'isPrivate'          => 'is_private',
         'serviceCategoryId'  => 'id_service_categories',
+        'image'              => 'image',
     ];
 
     /**
@@ -101,7 +102,7 @@ class Services_model extends EA_Model
 
         // If a category was provided then make sure it really exists in the database.
         if (!empty($service['id_service_categories'])) {
-            $count = $this->db->get_where('categories', ['id' => $service['id_service_categories']])->num_rows();
+            $count = $this->db->get_where('service_categories', ['id' => $service['id_service_categories']])->num_rows();
 
             if (!$count) {
                 throw new InvalidArgumentException(
@@ -411,7 +412,7 @@ class Services_model extends EA_Model
         foreach ($resources as $resource) {
             $service['category'] = match ($resource) {
                 'category' => $this->db
-                    ->get_where('categories', [
+                    ->get_where('service_categories', [
                         'id' => $service['id_service_categories'] ?? ($service['serviceCategoryId'] ?? NULL),
                     ])
                     ->row_array(),
@@ -442,6 +443,7 @@ class Services_model extends EA_Model
             'attendantsNumber'   => (int) $service['attendants_number'],
             'serviceCategoryId'  => $service['id_service_categories'] !== NULL ? (int) $service['id_service_categories'] : NULL,
             'paymentLink'        => $service['payment_link'],
+            'image'              => $service['image'],
         ];
 
         $service = $encoded_resource;
@@ -503,6 +505,10 @@ class Services_model extends EA_Model
 
         if (array_key_exists('serviceCategoryId', $service)) {
             $decoded_resource['id_service_categories'] = $service['serviceCategoryId'];
+        }
+
+        if (array_key_exists('image', $service)) {
+            $decoded_resource['image'] = $service['image'];
         }
 
         $service = $decoded_resource;

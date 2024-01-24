@@ -31,6 +31,10 @@ App.Pages.Services = (function () {
     const $filterServices = $('#filter-services');
     const $color = $('#color');
     const $paymentLink = $('#payment-link');
+    const $serviceImage = $('#service-image');
+    const $serviceImagePreview = $('#service-image-preview');
+    const $removeServiceImage = $('#remove-service-image');
+    let serviceImageBase64 = '';
     let filterResults = {};
     let filterLimit = 20;
 
@@ -145,8 +149,9 @@ App.Pages.Services = (function () {
                 availabilities_type: $availabilitiesType.val(),
                 attendants_number: $attendantsNumber.val(),
                 is_private: Number($isPrivate.prop('checked')),
-                id_categories: $category.val() || null,
+                id_service_categories: $category.val() || null,
                 payment_link: $paymentLink.val(),
+                image: serviceImageBase64,
             };
 
             if ($id.val() !== '') {
@@ -196,6 +201,9 @@ App.Pages.Services = (function () {
 
             App.Utils.Message.show(lang('delete_service'), lang('delete_record_prompt'), buttons);
         });
+
+        $serviceImage.on('change', onServiceImageChange);
+        $removeServiceImage.on('click', onRemoveServiceImageClick);
     }
 
     /**
@@ -306,8 +314,15 @@ App.Pages.Services = (function () {
         App.Components.ColorSelection.setColor($color, service.color);
         $paymentLink.val(service.payment_link);
 
-        const categoryId = service.id_categories !== null ? service.id_categories : '';
+        const categoryId = service.id_service_categories !== null ? service.id_service_categories : '';
         $category.val(categoryId);
+
+        if (service.image) {
+            serviceImageBase64 = service.image;
+            $serviceImagePreview.attr('src', service.image);
+            $serviceImagePreview.prop('hidden', false);
+            $removeServiceImage.prop('hidden', false);
+        }
     }
 
     /**
@@ -419,6 +434,35 @@ App.Pages.Services = (function () {
 
             $category.append(new Option('', '')).val('');
         });
+    }
+
+    /**
+     * Convert the selected image to a base64 encoded string.
+     */
+    function onServiceImageChange() {
+        const file = $serviceImage[0].files[0];
+
+        if (!file) {
+            $removeServiceImage.trigger('click');
+            return;
+        }
+
+        App.Utils.File.toBase64(file).then((base64) => {
+            serviceImageBase64 = base64;
+            $serviceImagePreview.attr('src', base64);
+            $serviceImagePreview.prop('hidden', false);
+            $removeServiceImage.prop('hidden', false);
+        });
+    }
+    /**
+     * Remove the provider image data.
+     */
+    function onRemoveServiceImageClick() {
+        serviceImageBase64 = '';
+        $serviceImage.val('');
+        $serviceImagePreview.attr('src', '#');
+        $serviceImagePreview.prop('hidden', true);
+        $removeServiceImage.prop('hidden', true);
     }
 
     /**

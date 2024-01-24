@@ -62,17 +62,17 @@ class Services extends EA_Controller
         $role_slug = session('role_slug');
 
         script_vars([
-            'user_id' => $user_id,
-            'role_slug' => $role_slug,
+            'user_id'                => $user_id,
+            'role_slug'              => $role_slug,
             'event_minimum_duration' => EVENT_MINIMUM_DURATION,
         ]);
 
         html_vars([
-            'page_title' => lang('services'),
-            'active_menu' => PRIV_SERVICES,
+            'page_title'        => lang('services'),
+            'active_menu'       => PRIV_SERVICES,
             'user_display_name' => $this->accounts->get_user_display_name($user_id),
-            'timezones' => $this->timezones->to_array(),
-            'privileges' => $this->roles_model->get_permissions_by_slug($role_slug),
+            'timezones'         => $this->timezones->to_array(),
+            'privileges'        => $this->roles_model->get_permissions_by_slug($role_slug),
         ]);
 
         $this->load->view('pages/services');
@@ -99,7 +99,8 @@ class Services extends EA_Controller
             $services = $this->services_model->search($keyword, $limit, $offset, $order_by);
 
             json_response($services);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -127,12 +128,13 @@ class Services extends EA_Controller
                 'availabilities_type',
                 'attendants_number',
                 'is_private',
-                'id_categories',
+                'id_service_categories',
                 'payment_link',
+                'image'
             ]);
 
             $this->services_model->optional($service, [
-                'id_categories' => null,
+                'id_service_categories' => NULL,
             ]);
 
             $service_id = $this->services_model->save($service);
@@ -142,10 +144,11 @@ class Services extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_SERVICE_SAVE, $service);
 
             json_response([
-                'success' => true,
-                'id' => $service_id,
+                'success' => TRUE,
+                'id'      => $service_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -175,12 +178,13 @@ class Services extends EA_Controller
                 'availabilities_type',
                 'attendants_number',
                 'is_private',
-                'id_categories',
+                'id_service_categories',
                 'payment_link',
+                'image'
             ]);
 
             $this->services_model->optional($service, [
-                'id_categories' => null,
+                'id_service_categories' => NULL,
             ]);
 
             $service_id = $this->services_model->save($service);
@@ -190,10 +194,11 @@ class Services extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_SERVICE_SAVE, $service);
 
             json_response([
-                'success' => true,
-                'id' => $service_id,
+                'success' => TRUE,
+                'id'      => $service_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -217,9 +222,10 @@ class Services extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_SERVICE_DELETE, $service);
 
             json_response([
-                'success' => true,
+                'success' => TRUE,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -239,7 +245,8 @@ class Services extends EA_Controller
             $service = $this->services_model->find($service_id);
 
             json_response($service);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }

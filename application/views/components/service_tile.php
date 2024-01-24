@@ -8,6 +8,7 @@
  * @var string $price
  * @var string $fee
  * @var string $duration
+ * @var string $image
  */
 $fmt = numfmt_create('en_NG', NumberFormatter::CURRENCY); ?>
 <label for="service-<?= $id ?>" class="w-full cursor-pointer m-0 relative text-sm">
@@ -15,6 +16,10 @@ $fmt = numfmt_create('en_NG', NumberFormatter::CURRENCY); ?>
            top-4 left-5 w-4 h-4 cursor-pointer" />
     <div
         class="flex flex-col justify-between items-start gap-2.5 h-full bg-neutral-100 text-sm rounded-lg shadow border border-neutral-50 w-full min-h-[5rem] px-4 pb-4 pt-10 cursor-pointer peer-checked:bg-black peer-checked:text-white">
+        <?php if ($image != NULL): ?>
+        <figure class="transition-all pt-3"><img class="rounded-md bg-cover object-cover" src="<?= $image ?>" alt="image" />
+        </figure>
+        <?php endif; ?>
         <div class="w-8/12text-center text-base font-bold leading-normal cursor-pointer">
             <?= $name ?>
         </div>

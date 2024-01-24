@@ -61,6 +61,33 @@
             <input type="hidden" id="id">
 
             <div class="mb-3">
+                <label class="form-label" for="service-image">
+                    <?= lang('Image') ?>
+                </label>
+                <input type="file" id="service-image" data-field="avatar" class="form-control"
+                        accept="image/*">
+                <div class="form-text text-muted">
+                    <small>
+                        The <?= lang('service') ?>  <?= lang(
+                            'image will be displayed in many places of the app, including the booking page and the notification emails (image file, max 2MB).',
+                        ) ?>
+                    </small>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <img src="#" alt="Image Preview" id="service-image-preview"
+                            class="img-thumbnail my-3" hidden>
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn btn-danger btn-sm mb-3"
+                            id="remove-service-image" hidden>
+                        <i class="fas fa-trash me-2"></i>
+                        <?= lang('remove') ?>
+                    </button>
+                </div>
+            </div>
+            <div class="mb-3">
                 <label class="form-label" for="name">
                     <?= lang('name') ?>
                     <span class="text-danger" hidden>*</span>
