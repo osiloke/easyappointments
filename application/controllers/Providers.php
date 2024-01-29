@@ -69,24 +69,24 @@ class Providers extends EA_Controller
         }
 
         script_vars([
-            'user_id' => $user_id,
-            'role_slug' => $role_slug,
+            'user_id'              => $user_id,
+            'role_slug'            => $role_slug,
             'company_working_plan' => setting('company_working_plan'),
-            'date_format' => setting('date_format'),
-            'time_format' => setting('time_format'),
-            'first_weekday' => setting('first_weekday'),
-            'min_password_length' => MIN_PASSWORD_LENGTH,
-            'timezones' => $this->timezones->to_array(),
-            'services' => $services,
+            'date_format'          => setting('date_format'),
+            'time_format'          => setting('time_format'),
+            'first_weekday'        => setting('first_weekday'),
+            'min_password_length'  => MIN_PASSWORD_LENGTH,
+            'timezones'            => $this->timezones->to_array(),
+            'services'             => $services,
         ]);
 
         html_vars([
-            'page_title' => lang('providers'),
-            'active_menu' => PRIV_USERS,
+            'page_title'        => lang('providers'),
+            'active_menu'       => PRIV_USERS,
             'user_display_name' => $this->accounts->get_user_display_name($user_id),
             'grouped_timezones' => $this->timezones->to_grouped_array(),
-            'privileges' => $this->roles_model->get_permissions_by_slug($role_slug),
-            'services' => $this->services_model->get(),
+            'privileges'        => $this->roles_model->get_permissions_by_slug($role_slug),
+            'services'          => $this->services_model->get(),
         ]);
 
         $this->load->view('pages/providers');
@@ -113,15 +113,16 @@ class Providers extends EA_Controller
             $providers = $this->providers_model->search($keyword, $limit, $offset, $order_by);
 
             json_response($providers);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
 
     /**
-     * Create a provider.
+     * Store a provider.
      */
-    public function create()
+    public function store()
     {
         try {
             if (cannot('add', PRIV_USERS)) {
@@ -172,10 +173,11 @@ class Providers extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_PROVIDER_SAVE, $provider);
 
             json_response([
-                'success' => true,
-                'id' => $provider_id,
+                'success' => TRUE,
+                'id'      => $provider_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -235,10 +237,11 @@ class Providers extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_PROVIDER_SAVE, $provider);
 
             json_response([
-                'success' => true,
-                'id' => $provider_id,
+                'success' => TRUE,
+                'id'      => $provider_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -262,9 +265,10 @@ class Providers extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_PROVIDER_DELETE, $provider);
 
             json_response([
-                'success' => true,
+                'success' => TRUE,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -284,7 +288,8 @@ class Providers extends EA_Controller
             $provider = $this->providers_model->find($provider_id);
 
             json_response($provider);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }

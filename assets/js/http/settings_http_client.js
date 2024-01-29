@@ -34,7 +34,7 @@ App.Http.Settings = (function () {
      * @return {Object}
      */
     function create(setting) {
-        const url = App.Utils.Url.siteUrl('settings/create');
+        const url = App.Utils.Url.siteUrl('settings/store');
 
         const data = {
             csrf_token: vars('csrf_token'),

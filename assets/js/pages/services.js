@@ -322,6 +322,11 @@ App.Pages.Services = (function () {
             $serviceImagePreview.attr('src', service.image);
             $serviceImagePreview.prop('hidden', false);
             $removeServiceImage.prop('hidden', false);
+        } else {
+            serviceImageBase64 = '';
+            $serviceImagePreview.attr('src', '#');
+            $serviceImagePreview.prop('hidden', true);
+            $removeServiceImage.prop('hidden', true);
         }
     }
 

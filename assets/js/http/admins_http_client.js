@@ -34,7 +34,7 @@ App.Http.Admins = (function () {
      * @return {Object}
      */
     function create(admin) {
-        const url = App.Utils.Url.siteUrl('admins/create');
+        const url = App.Utils.Url.siteUrl('admins/store');
 
         const data = {
             csrf_token: vars('csrf_token'),

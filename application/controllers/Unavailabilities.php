@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -56,15 +58,16 @@ class Unavailabilities extends EA_Controller
             $unavailabilities = $this->unavailabilities_model->search($keyword, $limit, $offset, $order_by);
 
             json_response($unavailabilities);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
 
     /**
-     * Create a unavailability.
+     * Store a unavailability.
      */
-    public function create()
+    public function store()
     {
         try {
             if (cannot('add', PRIV_APPOINTMENTS)) {
@@ -98,10 +101,11 @@ class Unavailabilities extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_UNAVAILABILITY_SAVE, $unavailability);
 
             json_response([
-                'success' => true,
-                'id' => $unavailability_id,
+                'success' => TRUE,
+                'id'      => $unavailability_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -129,10 +133,11 @@ class Unavailabilities extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_UNAVAILABILITY_SAVE, $unavailability);
 
             json_response([
-                'success' => true,
-                'id' => $unavailability_id,
+                'success' => TRUE,
+                'id'      => $unavailability_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -156,9 +161,10 @@ class Unavailabilities extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_UNAVAILABILITY_DELETE, $unavailability);
 
             json_response([
-                'success' => true,
+                'success' => TRUE,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -178,7 +184,8 @@ class Unavailabilities extends EA_Controller
             $unavailability = $this->unavailabilities_model->find($unavailability_id);
 
             json_response($unavailability);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }

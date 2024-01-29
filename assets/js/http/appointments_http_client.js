@@ -34,7 +34,7 @@ App.Http.Appointments = (function () {
      * @return {Object}
      */
     function create(appointment) {
-        const url = App.Utils.Url.siteUrl('appointments/create');
+        const url = App.Utils.Url.siteUrl('appointments/store');
 
         const data = {
             csrf_token: vars('csrf_token'),

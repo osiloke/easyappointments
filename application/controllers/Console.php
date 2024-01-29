@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -100,7 +102,7 @@ class Console extends EA_Controller
     }
 
     /**
-     * Create a database backup file.
+     * Store a database backup file.
      *
      * Use this method to back up your Easy!Appointments data.
      *

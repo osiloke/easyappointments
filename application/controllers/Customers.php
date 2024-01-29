@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -81,29 +83,29 @@ class Customers extends EA_Controller
         }
 
         script_vars([
-            'user_id' => $user_id,
-            'role_slug' => $role_slug,
-            'date_format' => $date_format,
-            'time_format' => $time_format,
-            'timezones' => $this->timezones->to_array(),
+            'user_id'             => $user_id,
+            'role_slug'           => $role_slug,
+            'date_format'         => $date_format,
+            'time_format'         => $time_format,
+            'timezones'           => $this->timezones->to_array(),
             'secretary_providers' => $secretary_providers,
         ]);
 
         html_vars([
-            'page_title' => lang('customers'),
-            'active_menu' => PRIV_CUSTOMERS,
-            'user_display_name' => $this->accounts->get_user_display_name($user_id),
-            'timezones' => $this->timezones->to_array(),
-            'grouped_timezones' => $this->timezones->to_grouped_array(),
-            'privileges' => $this->roles_model->get_permissions_by_slug($role_slug),
-            'require_first_name' => $require_first_name,
-            'require_last_name' => $require_last_name,
-            'require_email' => $require_email,
+            'page_title'           => lang('customers'),
+            'active_menu'          => PRIV_CUSTOMERS,
+            'user_display_name'    => $this->accounts->get_user_display_name($user_id),
+            'timezones'            => $this->timezones->to_array(),
+            'grouped_timezones'    => $this->timezones->to_grouped_array(),
+            'privileges'           => $this->roles_model->get_permissions_by_slug($role_slug),
+            'require_first_name'   => $require_first_name,
+            'require_last_name'    => $require_last_name,
+            'require_email'        => $require_email,
             'require_phone_number' => $require_phone_number,
-            'require_address' => $require_address,
-            'require_city' => $require_city,
-            'require_zip_code' => $require_zip_code,
-            'available_languages' => config('available_languages'),
+            'require_address'      => $require_address,
+            'require_city'         => $require_city,
+            'require_zip_code'     => $require_zip_code,
+            'available_languages'  => config('available_languages'),
         ]);
 
         $this->load->view('pages/customers');
@@ -148,15 +150,16 @@ class Customers extends EA_Controller
             }
 
             json_response(array_values($customers));
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
 
     /**
-     * Create a customer.
+     * Store a customer.
      */
-    public function create()
+    public function store()
     {
         try {
             if (cannot('add', PRIV_CUSTOMERS)) {
@@ -190,10 +193,11 @@ class Customers extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_CUSTOMER_SAVE, $customer);
 
             json_response([
-                'success' => true,
-                'id' => $customer_id,
+                'success' => TRUE,
+                'id'      => $customer_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -238,10 +242,11 @@ class Customers extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_CUSTOMER_SAVE, $customer);
 
             json_response([
-                'success' => true,
-                'id' => $customer_id,
+                'success' => TRUE,
+                'id'      => $customer_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -271,9 +276,10 @@ class Customers extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_CUSTOMER_DELETE, $customer);
 
             json_response([
-                'success' => true,
+                'success' => TRUE,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -299,7 +305,8 @@ class Customers extends EA_Controller
             $customer = $this->customers_model->find($customer_id);
 
             json_response($customer);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }

@@ -34,7 +34,7 @@ App.Http.Secretaries = (function () {
      * @return {Object}
      */
     function create(secretary) {
-        const url = App.Utils.Url.siteUrl('secretaries/create');
+        const url = App.Utils.Url.siteUrl('secretaries/store');
 
         const data = {
             csrf_token: vars('csrf_token'),

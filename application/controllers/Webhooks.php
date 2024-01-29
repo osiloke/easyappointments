@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -59,16 +61,16 @@ class Webhooks extends EA_Controller
         $role_slug = session('role_slug');
 
         script_vars([
-            'user_id' => $user_id,
+            'user_id'   => $user_id,
             'role_slug' => $role_slug,
         ]);
 
         html_vars([
-            'page_title' => lang('webhooks'),
-            'active_menu' => PRIV_SYSTEM_SETTINGS,
+            'page_title'        => lang('webhooks'),
+            'active_menu'       => PRIV_SYSTEM_SETTINGS,
             'user_display_name' => $this->accounts->get_user_display_name($user_id),
-            'timezones' => $this->timezones->to_array(),
-            'privileges' => $this->roles_model->get_permissions_by_slug($role_slug),
+            'timezones'         => $this->timezones->to_array(),
+            'privileges'        => $this->roles_model->get_permissions_by_slug($role_slug),
             'available_actions' => [
                 WEBHOOK_APPOINTMENT_SAVE,
                 WEBHOOK_APPOINTMENT_DELETE,
@@ -113,15 +115,16 @@ class Webhooks extends EA_Controller
             $webhooks = $this->webhooks_model->search($keyword, $limit, $offset, $order_by);
 
             json_response($webhooks);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
 
     /**
-     * Create a webhook.
+     * Store a webhook.
      */
-    public function create()
+    public function store()
     {
         try {
             if (cannot('add', PRIV_WEBHOOKS)) {
@@ -142,10 +145,11 @@ class Webhooks extends EA_Controller
             $webhook_id = $this->webhooks_model->save($webhook);
 
             json_response([
-                'success' => true,
-                'id' => $webhook_id,
+                'success' => TRUE,
+                'id'      => $webhook_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -175,10 +179,11 @@ class Webhooks extends EA_Controller
             $webhook_id = $this->webhooks_model->save($webhook);
 
             json_response([
-                'success' => true,
-                'id' => $webhook_id,
+                'success' => TRUE,
+                'id'      => $webhook_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -198,9 +203,10 @@ class Webhooks extends EA_Controller
             $this->webhooks_model->delete($webhook_id);
 
             json_response([
-                'success' => true,
+                'success' => TRUE,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -220,7 +226,8 @@ class Webhooks extends EA_Controller
             $webhook = $this->webhooks_model->find($webhook_id);
 
             json_response($webhook);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }

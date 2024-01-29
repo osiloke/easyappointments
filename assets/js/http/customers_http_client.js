@@ -34,7 +34,7 @@ App.Http.Customers = (function () {
      * @return {Object}
      */
     function create(customer) {
-        const url = App.Utils.Url.siteUrl('customers/create');
+        const url = App.Utils.Url.siteUrl('customers/store');
 
         const data = {
             csrf_token: vars('csrf_token'),

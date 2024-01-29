@@ -105,9 +105,9 @@ class Categories extends EA_Controller
     }
 
     /**
-     * Create a category.
+     * Store a category.
      */
-    public function create()
+    public function store()
     {
         try {
             if (cannot('add', PRIV_SERVICES)) {

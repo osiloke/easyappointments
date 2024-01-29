@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -67,20 +69,20 @@ class Secretaries extends EA_Controller
         }
 
         script_vars([
-            'user_id' => $user_id,
-            'role_slug' => $role_slug,
-            'timezones' => $this->timezones->to_array(),
+            'user_id'             => $user_id,
+            'role_slug'           => $role_slug,
+            'timezones'           => $this->timezones->to_array(),
             'min_password_length' => MIN_PASSWORD_LENGTH,
-            'providers' => $providers,
+            'providers'           => $providers,
         ]);
 
         html_vars([
-            'page_title' => lang('secretaries'),
-            'active_menu' => PRIV_USERS,
+            'page_title'        => lang('secretaries'),
+            'active_menu'       => PRIV_USERS,
             'user_display_name' => $this->accounts->get_user_display_name($user_id),
             'grouped_timezones' => $this->timezones->to_grouped_array(),
-            'privileges' => $this->roles_model->get_permissions_by_slug($role_slug),
-            'providers' => $this->providers_model->get(),
+            'privileges'        => $this->roles_model->get_permissions_by_slug($role_slug),
+            'providers'         => $this->providers_model->get(),
         ]);
 
         $this->load->view('pages/secretaries');
@@ -107,15 +109,16 @@ class Secretaries extends EA_Controller
             $secretaries = $this->secretaries_model->search($keyword, $limit, $offset, $order_by);
 
             json_response($secretaries);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
 
     /**
-     * Create a secretary.
+     * Store a secretary.
      */
-    public function create()
+    public function store()
     {
         try {
             if (cannot('add', PRIV_USERS)) {
@@ -161,10 +164,11 @@ class Secretaries extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_SECRETARY_SAVE, $secretary);
 
             json_response([
-                'success' => true,
-                'id' => $secretary_id,
+                'success' => TRUE,
+                'id'      => $secretary_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -219,10 +223,11 @@ class Secretaries extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_SECRETARY_SAVE, $secretary);
 
             json_response([
-                'success' => true,
-                'id' => $secretary_id,
+                'success' => TRUE,
+                'id'      => $secretary_id,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -246,9 +251,10 @@ class Secretaries extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_SECRETARY_DELETE, $secretary);
 
             json_response([
-                'success' => true,
+                'success' => TRUE,
             ]);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -268,7 +274,8 @@ class Secretaries extends EA_Controller
             $secretary = $this->secretaries_model->find($secretary_id);
 
             json_response($secretary);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }

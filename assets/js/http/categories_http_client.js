@@ -34,7 +34,7 @@ App.Http.Categories = (function () {
      * @return {Object}
      */
     function create(category) {
-        const url = App.Utils.Url.siteUrl('categories/create');
+        const url = App.Utils.Url.siteUrl('categories/store');
 
         const data = {
             csrf_token: vars('csrf_token'),

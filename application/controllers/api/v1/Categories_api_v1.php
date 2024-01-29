@@ -113,7 +113,7 @@ class Categories_api_v1 extends EA_Controller
     }
 
     /**
-     * Create a category.
+     * Store a category.
      */
     public function store()
     {

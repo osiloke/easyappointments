@@ -34,7 +34,7 @@ App.Http.Providers = (function () {
      * @return {Object}
      */
     function create(provider) {
-        const url = App.Utils.Url.siteUrl('providers/create');
+        const url = App.Utils.Url.siteUrl('providers/store');
 
         const data = {
             csrf_token: vars('csrf_token'),
