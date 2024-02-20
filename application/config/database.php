@@ -66,7 +66,7 @@ $db['default']['char_set'] = 'utf8mb4';
 $db['default']['dbcollat'] = 'utf8mb4_unicode_ci';
 $db['default']['swap_pre'] = '';
 $db['default']['autoinit'] = TRUE;
-$db['default']['stricton'] = FALSE;
+// $db['default']['stricton'] = FALSE;
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */
