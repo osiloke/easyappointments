@@ -1,5 +1,4 @@
 FROM richarvey/nginx-php-fpm:latest  
-
 # Set environment variables with default values
 
 # SMTP Configuration
@@ -27,6 +26,18 @@ ENV STRIPE_PAYMENT_FEATURE="FALSE"
 ENV STRIPE_API_URL=https://vaza-api.web.app/v1
 
 ENV SKIP_UNZIP="TRUE"
+
+
+ENV NODE_PACKAGE_URL  https://unofficial-builds.nodejs.org/download/release/v18.16.0/node-v18.16.0-linux-x64-musl.tar.gz
+RUN apk add libstdc++
+
+RUN wget $NODE_PACKAGE_URL
+RUN mkdir -p /opt/nodejs
+RUN tar -zxvf *.tar.gz --directory /opt/nodejs --strip-components=1
+RUN rm *.tar.gz
+RUN ln -s /opt/nodejs/bin/node /usr/local/bin/node
+RUN ln -s /opt/nodejs/bin/npm /usr/local/bin/npm
+RUN npm install -g npm  
 
 COPY . . 
 

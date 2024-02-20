@@ -10,43 +10,11 @@ get_env_value() {
     fi
 }
 
-LAST_DOWNLOAD_URL=".DOWNLOAD_URL"
-echo "DOWNLOAD URL = $DOWNLOAD_URL"
+echo "➜ Install NPM Dependencies"
+npm install
 
-if [[ -n "$DOWNLOAD_URL" ]]; then
-    # Function to perform the download and unzip
-    perform_download() {
-        curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip
-        unzip -o /tmp/html.zip -d /var/www/html
-
-        # Save the current URL to the file
-        echo "$DOWNLOAD_URL" >"$LAST_DOWNLOAD_URL"
-
-        chown -R www-data:www-data /var/www/html &&
-            chmod -R 755 /var/www/html
-    }
-
-    # Check if the current URL matches the stored URL
-    if [[ -f "$LAST_DOWNLOAD_URL" ]]; then
-        CURRENT_URL=$(cat "$LAST_DOWNLOAD_URL")
-        if [[ "$CURRENT_URL" == "$DOWNLOAD_URL" ]]; then
-            echo "Already up to date. Skipping download."
-        else
-            perform_download
-        fi
-    else
-        perform_download
-    fi
-fi
-
-# echo "➜ Install Composer Dependencies"
-# composer install
-
-# echo "➜ Install NPM Dependencies"
-# npm install
-
-# echo "➜ Build Project Assets"
-# gulp build
+echo "➜ Build Project Assets"
+gulp build
 
 # Database Configuration
 if [[ -n "$DATABASE_URL" ]]; then
@@ -143,8 +111,75 @@ class Config {
     const STRIPE_API_URL  = '"$(get_env_value "STRIPE_API_URL" "")"';
 }
 
+
 /* End of file config.php */
-/* Location: ./config.php */" >/var/www/html/config.php
-echo "➜ Listen To Incoming Requests"
+/* Location: ./config.php */" >./config.php
+
+echo "<?php
+/* ----------------------------------------------------------------------------
+ * Easy!Appointments - Open Source Web Scheduler
+ *
+ * @package     EasyAppointments
+ * @author      A.Tselegidis <alextselegidis@gmail.com>
+ * @copyright   Copyright (c) 2013 - 2020, Alex Tselegidis
+ * @license     http://opensource.org/licenses/GPL-3.0 - GPLv3
+ * @link        http://easyappointments.org
+ * @since       v1.0.0
+ * ---------------------------------------------------------------------------- */
+
+/**
+ * Easy!Appointments Configuration File
+ *
+ * Set your installation BASE_URL * without the trailing slash * and the database
+ * credentials in order to connect to the database. You can enable the DEBUG_MODE
+ * while developing the application.
+ *
+ * Set the default language by changing the LANGUAGE constant. For a full list of
+ * available languages look at the /application/config/config.php file.
+ *
+ * IMPORTANT:
+ * If you are updating from version 1.0 you will have to create a new \"config.php\"
+ * file because the old \"configuration.php\" is not used anymore.
+ */
+class Config {
+
+    // ------------------------------------------------------------------------
+    // GENERAL SETTINGS
+    // ------------------------------------------------------------------------
+
+    const BASE_URL      = '"$(get_env_value "BASE_URL" "http://localhost:8000")"';
+    const INDEX_PAGE    = '';
+    const LANGUAGE      = '"$(get_env_value "LANGUAGE" "english")"';
+    const DEBUG_MODE    = $(get_env_value "DEBUG_MODE" "FALSE");
+
+    // ------------------------------------------------------------------------
+    // DATABASE SETTINGS
+    // ------------------------------------------------------------------------
+    const DB_HOST       = '$DB_HOST';
+    const DB_NAME       = '$DB_NAME';
+    const DB_PASSWORD   = '$DB_PASSWORD';
+    const DB_PORT       = '$DB_PORT';
+    const DB_USERNAME   = '$DB_USERNAME';
+
+    // ------------------------------------------------------------------------
+    // GOOGLE CALENDAR SYNC
+    // ------------------------------------------------------------------------
+
+    const GOOGLE_SYNC_FEATURE     = $(get_env_value "GOOGLE_SYNC_FEATURE" "FALSE");
+    const GOOGLE_PRODUCT_NAME     = '"$(get_env_value "GOOGLE_PRODUCT_NAME" "")"';
+    const GOOGLE_CLIENT_ID        = '"$(get_env_value "GOOGLE_CLIENT_ID" "")"';
+    const GOOGLE_CLIENT_SECRET    = '"$(get_env_value "GOOGLE_CLIENT_SECRET" "")"';
+    const GOOGLE_API_KEY          = '"$(get_env_value "GOOGLE_API_KEY" "")"';
+
+    // ------------------------------------------------------------------------
+    // STRIPE PAYMENT INTEGRATION
+    // ------------------------------------------------------------------------
+
+    const STRIPE_PAYMENT_FEATURE  = $(get_env_value "STRIPE_PAYMENT_FEATURE" "");
+    const STRIPE_API_KEY  = '"$(get_env_value "STRIPE_API_KEY" "")"';
+    const STRIPE_API_URL  = '"$(get_env_value "STRIPE_API_URL" "")"';
+}
+"
+echo "➜ Created config.php"
 
 /start.sh
