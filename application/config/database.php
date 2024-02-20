@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /*
 | -------------------------------------------------------------------
@@ -18,7 +20,7 @@
 |	['password'] The password used to connect to the database
 |	['database'] The name of the database you want to connect to
 |	['dbdriver'] The database type. ie: mysql.  Currently supported:
-				 mysql, mysqli, postgre, odbc, mssql, sqlite, oci8
+                 mysql, mysqli, postgre, odbc, mssql, sqlite, oci8
 |	['dbprefix'] You can add an optional prefix, which will be added
 |				 to the table name when using the  Active Record class
 |	['pconnect'] TRUE/FALSE - Whether to use a persistent connection
@@ -47,23 +49,24 @@
 */
 
 $active_group = 'default';
-$query_builder = true;
+$query_builder = TRUE;
 
 $db['default']['hostname'] = Config::DB_HOST;
+$db['default']['port'] = Config::DB_PORT;
 $db['default']['username'] = Config::DB_USERNAME;
 $db['default']['password'] = Config::DB_PASSWORD;
 $db['default']['database'] = Config::DB_NAME;
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = 'ea_';
-$db['default']['pconnect'] = true;
-$db['default']['db_debug'] = true;
-$db['default']['cache_on'] = false;
+$db['default']['pconnect'] = TRUE;
+$db['default']['db_debug'] = TRUE;
+$db['default']['cache_on'] = FALSE;
 $db['default']['cachedir'] = '';
 $db['default']['char_set'] = 'utf8mb4';
 $db['default']['dbcollat'] = 'utf8mb4_unicode_ci';
 $db['default']['swap_pre'] = '';
-$db['default']['autoinit'] = true;
-$db['default']['stricton'] = false;
+$db['default']['autoinit'] = TRUE;
+$db['default']['stricton'] = FALSE;
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */
