@@ -38,6 +38,7 @@ RUN rm *.tar.gz
 RUN ln -s /opt/nodejs/bin/node /usr/local/bin/node
 RUN ln -s /opt/nodejs/bin/npm /usr/local/bin/npm
 RUN npm install -g npm  
+RUN npm install -g gulp-cli  
 
 COPY . . 
 
