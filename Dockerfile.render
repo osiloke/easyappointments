@@ -1,7 +1,5 @@
 FROM richarvey/nginx-php-fpm:latest  
 
-ARG DEBIAN_FRONTEND=noninteractive
-
 # Set environment variables with default values
 
 # SMTP Configuration
@@ -36,5 +34,7 @@ COPY . .
 COPY entrypoint.render.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+EXPOSE 443 80
+
 # Set the entry point
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["/usr/local/bin/entrypoint.sh"]
