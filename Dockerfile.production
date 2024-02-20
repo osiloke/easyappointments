@@ -1,4 +1,4 @@
-FROM php:8.0-fpm
+FROM php:8.2-fpm
 
 WORKDIR "/var/www/html"
 
@@ -49,7 +49,7 @@ RUN apt-get update \
     && echo "mailhub=mailpit:1025" >> /etc/ssmtp/ssmtp.conf \
     && echo "sendmail_path=/usr/sbin/ssmtp -t" >> /usr/local/etc/php/conf.d/php-sendmail.ini \
     && echo "alias ll=\"ls -al\"" >> /root/.bashrc \
-    && echo "export XDEBUG_TRIGGER=1" >> /root/.bashrc \
+    && echo "export XDEBUG_TRIGGER=0" >> /root/.bashrc \
     && echo "export PHP_IDE_CONFIG=\"serverName=host.docker.internal\"" >> /root/.bashrc \
     && apt-get -y autoremove \
     && apt-get clean \
@@ -57,6 +57,7 @@ RUN apt-get update \
 
 # Copy entry point file
 COPY entrypoint.production.sh /usr/local/bin/entrypoint.sh
+COPY docker/php-fpm/php-ini-overrides.ini /usr/local/etc/php/conf.d/99-overrides.ini
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Set the entry point
