@@ -10,11 +10,42 @@ get_env_value() {
     fi
 }
 
-echo "➜ Install NPM Dependencies"
-npm install
+LAST_DOWNLOAD_URL=".DOWNLOAD_URL"
+echo "DOWNLOAD URL = $DOWNLOAD_URL"
 
-echo "➜ Build Project Assets"
-gulp build
+if [[ -n "$DOWNLOAD_URL" ]]; then
+    # Function to perform the download and unzip
+    perform_download() {
+        curl -sSL "$DOWNLOAD_URL" -o /tmp/html.zip
+        unzip -o /tmp/html.zip -d /var/www/html
+
+        # Save the current URL to the file
+        echo "$DOWNLOAD_URL" >"$LAST_DOWNLOAD_URL"
+
+        chown -R www-data:www-data /var/www/html &&
+            chmod -R 755 /var/www/html
+    }
+
+    # Check if the current URL matches the stored URL
+    if [[ -f "$LAST_DOWNLOAD_URL" ]]; then
+        CURRENT_URL=$(cat "$LAST_DOWNLOAD_URL")
+        if [[ "$CURRENT_URL" == "$DOWNLOAD_URL" ]]; then
+            echo "Already up to date. Skipping download."
+        else
+            perform_download
+        fi
+    else
+        perform_download
+    fi
+else
+
+    echo "➜ Install NPM Dependencies"
+    yarn install
+
+    echo "➜ Build Project Assets"
+    gulp build
+
+fi
 
 # Database Configuration
 if [[ -n "$DATABASE_URL" ]]; then
