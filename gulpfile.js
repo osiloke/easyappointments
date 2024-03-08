@@ -30,9 +30,9 @@ const sass = require('gulp-sass')(require('sass'));
 const zip = require('zip-dir');
 
 // const debug = require('gulp-debug');
-
+const packageVersion = require('./package.json').version;
 function archive(done) {
-    const filename = 'easyappointments-0.0.0.zip';
+    const filename = `easyappointments-${packageVersion}.zip`;
 
     fs.removeSync('build');
     fs.removeSync(filename);

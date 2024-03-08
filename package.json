@@ -1,4 +1,5 @@
 {
+  "version": "0.0.1",
   "name": "easyappointments",
   "description": "Open Source Web Scheduler",
   "homepage": "https://easyappointments.org",
@@ -77,8 +78,8 @@
   "scripts": {
     "start": "npx gulp",
     "build": "npx gulp build",
-    "upload": "gsutil cp easyappointments-0.0.0.zip gs://dostow-backup.appspot.com/apps/pride/easyappointments-0.0.0.zip",
-    "set-url": "URL=`gcloud storage sign-url gs://dostow-backup.appspot.com/apps/pride/easyappointments-0.0.0.zip` dokku config:set DOWNLOAD_URL=\"`$URL`\"",
+    "upload": "gsutil cp easyappointments-${npm_package_version}.zip gs://dostow-backup.appspot.com/apps/pride/easyappointments-${npm_package_version}.zip",
+    "get-url": "gsutil signurl gs://dostow-backup.appspot.com/apps/pride/easyappointments-${npm_package_version}.zip",
     "docs": "npx gulp docs"
   }
 }
