@@ -1,4 +1,6 @@
-<?php defined('BASEPATH') or exit('No direct script access allowed');
+<?php
+
+defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
  * Easy!Appointments - Online Appointment Scheduler
@@ -73,7 +75,7 @@ class Email_messages
         string $appointment_link,
         string $recipient_email,
         string $ics_stream,
-        string $timezone = null,
+        string $timezone = NULL,
     ): void {
         $appointment_timezone = new DateTimeZone($provider['timezone']);
 
@@ -93,31 +95,31 @@ class Email_messages
 
         $payment_link_vars = [
             '{$appointment_hash}' => $appointment['hash'],
-            '{$customer_email}' => $customer['email'],
+            '{$customer_email}'   => $customer['email'],
         ];
-        $payment_link = strtr($service['payment_link'], $payment_link_vars);
+        // $payment_link = strtr($service['payment_link'], $payment_link_vars);
 
         $add_to_google_url = $this->CI->google_sync->get_add_to_google_url($appointment['id']);
 
         $html = $this->CI->load->view(
             'emails/appointment_saved_email',
             [
-                'email_title' => $subject,
-                'email_message' => $message,
-                'is_paid' => $appointment['is_paid'] == 1,
-                'company_name' => $settings['company_name'],
-                'subject' => $subject,
-                'message' => $message,
-                'appointment' => $appointment,
-                'service' => $service,
-                'provider' => $provider,
-                'customer' => $customer,
-                'settings' => $settings,
-                'timezone' => $timezone,
-                'appointment_link' => $appointment_link,
+                'email_title'       => $subject,
+                'email_message'     => $message,
+                'is_paid'           => $appointment['is_paid'] == 1,
+                'company_name'      => $settings['company_name'],
+                'subject'           => $subject,
+                'message'           => $message,
+                'appointment'       => $appointment,
+                'service'           => $service,
+                'provider'          => $provider,
+                'customer'          => $customer,
+                'settings'          => $settings,
+                'timezone'          => $timezone,
+                'appointment_link'  => $appointment_link,
                 'add_to_google_url' => $add_to_google_url,
             ],
-            true,
+            TRUE,
         );
 
         $this->CI->email->from($settings['company_email'], $settings['company_email']);
@@ -130,7 +132,7 @@ class Email_messages
 
         $this->CI->email->attach($ics_stream, 'attachment', 'invitation.ics', 'text/vcalendar');
 
-        if (!$this->CI->email->send(false)) {
+        if (!$this->CI->email->send(FALSE)) {
             throw new RuntimeException('Email was not sent: ' . $this->CI->email->print_debugger());
         }
     }
@@ -156,8 +158,8 @@ class Email_messages
         array $customer,
         array $settings,
         string $recipient_email,
-        string $reason = null,
-        string $timezone = null,
+        string $reason = NULL,
+        string $timezone = NULL,
     ): void {
         $appointment_timezone = new DateTimeZone($provider['timezone']);
 
@@ -178,16 +180,16 @@ class Email_messages
         $html = $this->CI->load->view(
             'emails/appointment_deleted_email',
             [
-                'appointment' => $appointment,
-                'service' => $service,
-                'provider' => $provider,
-                'customer' => $customer,
-                'settings' => $settings,
-                'timezone' => $timezone,
-                'reason' => $reason,
+                'appointment'    => $appointment,
+                'service'        => $service,
+                'provider'       => $provider,
+                'customer'       => $customer,
+                'settings'       => $settings,
+                'timezone'       => $timezone,
+                'reason'         => $reason,
                 'payment_intent' => $appointment['payment_intent'],
             ],
-            true,
+            TRUE,
         );
 
         $this->CI->email->from($settings['company_email'], $settings['company_email']);
@@ -198,7 +200,7 @@ class Email_messages
 
         $this->CI->email->message($html);
 
-        if (!$this->CI->email->send(false)) {
+        if (!$this->CI->email->send(FALSE)) {
             throw new RuntimeException('Email was not sent: ' . $this->CI->email->print_debugger());
         }
     }
@@ -215,11 +217,11 @@ class Email_messages
         $html = $this->CI->load->view(
             'emails/account_recovery_email',
             [
-                'subject' => lang('new_account_password'),
-                'message' => str_replace('$password', '<strong>' . $password . '</strong>', lang('new_password_is')),
+                'subject'  => lang('new_account_password'),
+                'message'  => str_replace('$password', '<strong>' . $password . '</strong>', lang('new_password_is')),
                 'settings' => $settings,
             ],
-            true,
+            TRUE,
         );
 
         $this->CI->email->from($settings['company_email'], $settings['company_email']);
@@ -230,7 +232,7 @@ class Email_messages
 
         $this->CI->email->message($html);
 
-        if (!$this->CI->email->send(false)) {
+        if (!$this->CI->email->send(FALSE)) {
             throw new RuntimeException('Email was not sent: ' . $this->CI->email->print_debugger());
         }
     }

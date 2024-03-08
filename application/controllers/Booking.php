@@ -72,15 +72,15 @@ class Booking extends EA_Controller
 
         if ($disable_booking) {
             html_vars([
-                'show_message' => true,
-                'page_title' => $company_name,
-                'message_title' => lang('booking_is_disabled'),
-                'message_text' => 'provider does not exist',
-                'message_icon' => base_url('assets/img/error.png'),
+                'show_message'          => TRUE,
+                'page_title'            => $company_name,
+                'message_title'         => lang('booking_is_disabled'),
+                'message_text'          => 'provider does not exist',
+                'message_icon'          => base_url('assets/img/error.png'),
                 'google_analytics_code' => $google_analytics_code,
-                'matomo_analytics_url' => $matomo_analytics_url,
-                'company_email' => setting('company_email'),
-                'company_name' => $company_name,
+                'matomo_analytics_url'  => $matomo_analytics_url,
+                'company_email'         => setting('company_email'),
+                'company_name'          => $company_name,
             ]);
 
             $this->load->view('pages/landing');
@@ -97,31 +97,32 @@ class Booking extends EA_Controller
             // } else {
 
             html_vars([
-                'show_message' => true,
-                'page_title' => $company_name,
-                'message_title' => lang('booking_is_disabled'),
-                'message_text' => 'provider does not exist',
-                'message_icon' => base_url('assets/img/error.png'),
+                'show_message'          => TRUE,
+                'page_title'            => $company_name,
+                'message_title'         => lang('booking_is_disabled'),
+                'message_text'          => 'provider does not exist',
+                'message_icon'          => base_url('assets/img/error.png'),
                 'google_analytics_code' => $google_analytics_code,
-                'matomo_analytics_url' => $matomo_analytics_url,
-                'company_email' => setting('company_email'),
-                'company_name' => $company_name,
+                'matomo_analytics_url'  => $matomo_analytics_url,
+                'company_email'         => setting('company_email'),
+                'company_name'          => $company_name,
             ]);
 
             //     $this->load->view('pages/landing');
             //     return;
             // }
-        } elseif (empty($provider_name) && empty($provider_id)) {
+        }
+        elseif (empty($provider_name) && empty($provider_id)) {
             html_vars([
-                'show_message' => true,
-                'page_title' => $company_name,
-                'message_title' => lang('booking_is_disabled'),
-                'message_text' => 'provider does not exist',
-                'message_icon' => base_url('assets/img/error.png'),
+                'show_message'          => TRUE,
+                'page_title'            => $company_name,
+                'message_title'         => lang('booking_is_disabled'),
+                'message_text'          => 'provider does not exist',
+                'message_icon'          => base_url('assets/img/error.png'),
                 'google_analytics_code' => $google_analytics_code,
-                'matomo_analytics_url' => $matomo_analytics_url,
-                'company_email' => setting('company_email'),
-                'company_name' => $company_name,
+                'matomo_analytics_url'  => $matomo_analytics_url,
+                'company_email'         => setting('company_email'),
+                'company_name'          => $company_name,
             ]);
 
             $this->load->view('pages/landing');
@@ -136,21 +137,22 @@ class Booking extends EA_Controller
         }
         if (!empty($secretary) && !empty($secretary['providers'])) {
             $available_providers = $this->providers_model->get_available_providers(
-                true,
+                TRUE,
                 '',
                 '',
                 $secretary['providers'],
             );
-            $available_services = $this->services_model->get_available_services(true, '', '', $secretary['providers']);
-        } else {
+            $available_services = $this->services_model->get_available_services(TRUE, '', '', $secretary['providers']);
+        }
+        else {
             // TODO: if secretary found, fetch services providers for secretrary
             $available_services = $this->services_model->get_available_services(
-                true,
+                TRUE,
                 $provider_id ?? '',
                 $provider_name,
             );
             $available_providers = $this->providers_model->get_available_providers(
-                true,
+                TRUE,
                 $provider_id ?? '',
                 $provider_name,
             );
@@ -216,19 +218,19 @@ class Booking extends EA_Controller
         if (!empty($appointment_hash)) {
             // Load the appointments data and enable the manage mode of the booking page.
 
-            $manage_mode = true;
+            $manage_mode = TRUE;
 
             $results = $this->appointments_model->get(['hash' => $appointment_hash]);
 
             if (empty($results)) {
                 html_vars([
-                    'show_message' => true,
-                    'page_title' => lang('page_title') . ' ' . $company_name,
-                    'message_title' => lang('appointment_not_found'),
-                    'message_text' => lang('appointment_does_not_exist_in_db'),
-                    'message_icon' => base_url('assets/img/error.png'),
+                    'show_message'          => TRUE,
+                    'page_title'            => lang('page_title') . ' ' . $company_name,
+                    'message_title'         => lang('appointment_not_found'),
+                    'message_text'          => lang('appointment_does_not_exist_in_db'),
+                    'message_icon'          => base_url('assets/img/error.png'),
                     'google_analytics_code' => $google_analytics_code,
-                    'matomo_analytics_url' => $matomo_analytics_url,
+                    'matomo_analytics_url'  => $matomo_analytics_url,
                 ]);
 
                 $this->load->view('pages/booking_message');
@@ -248,15 +250,15 @@ class Booking extends EA_Controller
                 $minutes = $book_advance_timeout % 60;
 
                 html_vars([
-                    'show_message' => true,
-                    'page_title' => lang('page_title') . ' ' . $company_name,
+                    'show_message'  => TRUE,
+                    'page_title'    => lang('page_title') . ' ' . $company_name,
                     'message_title' => lang('appointment_locked'),
-                    'message_text' => strtr(lang('appointment_locked_message'), [
+                    'message_text'  => strtr(lang('appointment_locked_message'), [
                         '{$limit}' => sprintf('%02d:%02d', $hours, $minutes),
                     ]),
-                    'message_icon' => base_url('assets/img/error.png'),
+                    'message_icon'          => base_url('assets/img/error.png'),
                     'google_analytics_code' => $google_analytics_code,
-                    'matomo_analytics_url' => $matomo_analytics_url,
+                    'matomo_analytics_url'  => $matomo_analytics_url,
                 ]);
 
                 $this->load->view('pages/booking_message');
@@ -267,87 +269,89 @@ class Booking extends EA_Controller
             $appointment = $results[0];
             $provider = $this->providers_model->find($appointment['id_users_provider']);
             $customer = $this->customers_model->find($appointment['id_users_customer']);
-            $customer_token = md5(uniqid(mt_rand(), true));
+            $customer_token = md5(uniqid(mt_rand(), TRUE));
             $is_paid = $appointment['is_paid'];
 
             // Cache the token for 10 minutes.
             $this->cache->save('customer-token-' . $customer_token, $customer['id'], 600);
-        } elseif (sizeof($available_services) == 0 && sizeof($available_providers) == 0) {
+        }
+        elseif (sizeof($available_services) == 0 && sizeof($available_providers) == 0) {
             show_404();
 
             return;
-        } else {
-            $manage_mode = false;
-            $customer_token = false;
-            $appointment = null;
+        }
+        else {
+            $manage_mode = FALSE;
+            $customer_token = FALSE;
+            $appointment = NULL;
             $provider = $available_providers[0];
-            $customer = null;
+            $customer = NULL;
             $is_paid = 0;
         }
 
         script_vars([
-            'manage_mode' => $manage_mode,
-            'available_services' => $available_services,
-            'available_providers' => $available_providers,
-            'date_format' => $date_format,
-            'time_format' => $time_format,
-            'first_weekday' => $first_weekday,
+            'manage_mode'           => $manage_mode,
+            'available_services'    => $available_services,
+            'available_providers'   => $available_providers,
+            'date_format'           => $date_format,
+            'time_format'           => $time_format,
+            'first_weekday'         => $first_weekday,
             'display_cookie_notice' => $display_cookie_notice,
-            'display_any_provider' => setting('display_any_provider'),
-            'future_booking_limit' => setting('future_booking_limit'),
-            'appointment_data' => $appointment,
-            'secretary_data' => $secretary,
-            'provider_data' => $provider,
-            'customer_data' => $customer,
+            'display_any_provider'  => setting('display_any_provider'),
+            'future_booking_limit'  => setting('future_booking_limit'),
+            'appointment_data'      => $appointment,
+            'secretary_data'        => $secretary,
+            'provider_data'         => $provider,
+            'customer_data'         => $customer,
         ]);
 
         html_vars([
-            'secretary' => $secretary,
-            'available_services' => $available_services,
-            'available_providers' => $available_providers,
-            'theme' => $theme,
-            'company_name' => $company_name,
-            'company_logo' => $company_logo,
-            'company_color' => $company_color === '#ffffff' ? '' : $company_color,
-            'date_format' => $date_format,
-            'time_format' => $time_format,
-            'first_weekday' => $first_weekday,
-            'display_first_name' => $display_first_name,
-            'require_first_name' => $require_first_name,
-            'display_last_name' => $display_last_name,
-            'require_last_name' => $require_last_name,
-            'display_email' => $display_email,
-            'require_email' => $require_email,
-            'display_phone_number' => $display_phone_number,
-            'require_phone_number' => $require_phone_number,
-            'display_address' => $display_address,
-            'require_address' => $require_address,
-            'display_city' => $display_city,
-            'require_city' => $require_city,
-            'display_zip_code' => $display_zip_code,
-            'require_zip_code' => $require_zip_code,
-            'display_notes' => $display_notes,
-            'require_notes' => $require_notes,
-            'display_cookie_notice' => $display_cookie_notice,
-            'cookie_notice_content' => $cookie_notice_content,
-            'display_terms_and_conditions' => $display_terms_and_conditions,
-            'terms_and_conditions_content' => $terms_and_conditions_content,
-            'display_privacy_policy' => $display_privacy_policy,
-            'privacy_policy_content' => $privacy_policy_content,
-            'display_any_provider' => $display_any_provider,
-            'display_login_button' => $display_login_button,
+            'secretary'                           => $secretary,
+            'available_services'                  => $available_services,
+            'available_providers'                 => $available_providers,
+            'theme'                               => $theme,
+            'company_name'                        => $company_name,
+            'company_logo'                        => $company_logo,
+            'company_color'                       => $company_color === '#ffffff' ? '' : $company_color,
+            'date_format'                         => $date_format,
+            'time_format'                         => $time_format,
+            'first_weekday'                       => $first_weekday,
+            'display_first_name'                  => $display_first_name,
+            'require_first_name'                  => $require_first_name,
+            'display_last_name'                   => $display_last_name,
+            'require_last_name'                   => $require_last_name,
+            'display_email'                       => $display_email,
+            'require_email'                       => $require_email,
+            'display_phone_number'                => $display_phone_number,
+            'require_phone_number'                => $require_phone_number,
+            'display_address'                     => $display_address,
+            'require_address'                     => $require_address,
+            'display_city'                        => $display_city,
+            'require_city'                        => $require_city,
+            'display_zip_code'                    => $display_zip_code,
+            'require_zip_code'                    => $require_zip_code,
+            'display_notes'                       => $display_notes,
+            'require_notes'                       => $require_notes,
+            'display_cookie_notice'               => $display_cookie_notice,
+            'cookie_notice_content'               => $cookie_notice_content,
+            'display_terms_and_conditions'        => $display_terms_and_conditions,
+            'terms_and_conditions_content'        => $terms_and_conditions_content,
+            'display_privacy_policy'              => $display_privacy_policy,
+            'privacy_policy_content'              => $privacy_policy_content,
+            'display_any_provider'                => $display_any_provider,
+            'display_login_button'                => $display_login_button,
             'display_delete_personal_information' => $display_delete_personal_information,
-            'google_analytics_code' => $google_analytics_code,
-            'matomo_analytics_url' => $matomo_analytics_url,
-            'timezones' => $timezones,
-            'grouped_timezones' => $grouped_timezones,
-            'manage_mode' => $manage_mode,
-            'customer_token' => $customer_token,
-            'is_paid' => $is_paid,
-            'appointment_data' => $appointment,
-            'provider_data' => $provider,
-            'customer_data' => $customer,
-            'company_email' => setting('company_email'),
+            'google_analytics_code'               => $google_analytics_code,
+            'matomo_analytics_url'                => $matomo_analytics_url,
+            'timezones'                           => $timezones,
+            'grouped_timezones'                   => $grouped_timezones,
+            'manage_mode'                         => $manage_mode,
+            'customer_token'                      => $customer_token,
+            'is_paid'                             => $is_paid,
+            'appointment_data'                    => $appointment,
+            'provider_data'                       => $provider,
+            'customer_data'                       => $customer,
+            'company_email'                       => setting('company_email'),
         ]);
 
         $this->load->view('pages/booking');
@@ -393,7 +397,7 @@ class Booking extends EA_Controller
             $provider_id = request('provider_id');
             $service_id = request('service_id');
             $selected_date = request('selected_date');
-            $service_duration = request('service_duration') ?? null;
+            $service_duration = request('service_duration') ?? NULL;
 
             // Do not continue if there was no provider selected (more likely there is no provider in the system).
 
@@ -406,12 +410,13 @@ class Booking extends EA_Controller
             // If manage mode is TRUE then the following we should not consider the selected appointment when
             // calculating the available time periods of the provider.
 
-            $exclude_appointment_id = request('manage_mode') ? request('appointment_id') : null;
+            $exclude_appointment_id = request('manage_mode') ? request('appointment_id') : NULL;
 
             // If the user has selected the "any-provider" option then we will need to search for an available provider
             // that will provide the requested service.
 
             $service = $this->services_model->find($service_id);
+            $service['original_duration'] = $service['duration'];
 
             if ($provider_id === ANY_PROVIDER) {
                 $providers = $this->providers_model->get();
@@ -440,7 +445,8 @@ class Booking extends EA_Controller
                 sort($available_hours);
 
                 $response = $available_hours;
-            } else {
+            }
+            else {
                 $provider = $this->providers_model->find($provider_id);
 
                 if (isset($service_duration)) {
@@ -455,7 +461,8 @@ class Booking extends EA_Controller
             }
 
             json_response($response);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -473,13 +480,13 @@ class Booking extends EA_Controller
      *
      * @throws Exception
      */
-    protected function search_any_provider(int $service_id, string $date, string $hour = null): ?int
+    protected function search_any_provider(int $service_id, string $date, string $hour = NULL): ?int
     {
-        $available_providers = $this->providers_model->get_available_providers(true);
+        $available_providers = $this->providers_model->get_available_providers(TRUE);
 
         $service = $this->services_model->find($service_id);
 
-        $provider_id = null;
+        $provider_id = NULL;
 
         $max_hours_count = 0;
 
@@ -514,7 +521,7 @@ class Booking extends EA_Controller
             $captcha = request('captcha');
             $appointment = $post_data['appointment'];
             $customer = $post_data['customer'];
-            $service_duration = $post_data['service_duration'] ?? null;
+            $service_duration = $post_data['service_duration'] ?? NULL;
             $manage_mode = filter_var($post_data['manage_mode'], FILTER_VALIDATE_BOOLEAN);
 
             if (!array_key_exists('address', $customer)) {
@@ -568,7 +575,7 @@ class Booking extends EA_Controller
             // Validate the CAPTCHA string.
             if ($require_captcha && strtoupper($captcha_phrase) !== strtoupper($captcha)) {
                 json_response([
-                    'captcha_verification' => false,
+                    'captcha_verification' => FALSE,
                 ]);
 
                 return;
@@ -591,9 +598,9 @@ class Booking extends EA_Controller
             // Create the consents (if needed).
             $consent = [
                 'first_name' => $customer['first_name'] ?? '-',
-                'last_name' => $customer['last_name'] ?? '-',
-                'email' => $customer['email'] ?? '-',
-                'ip' => $customer_ip,
+                'last_name'  => $customer['last_name'] ?? '-',
+                'email'      => $customer['email'] ?? '-',
+                'ip'         => $customer_ip,
             ];
 
             if (setting('display_terms_and_conditions')) {
@@ -629,12 +636,12 @@ class Booking extends EA_Controller
             $customer = $this->customers_model->find($customer_id);
 
             $appointment['id_users_customer'] = $customer_id;
-            $appointment['is_unavailability'] = false;
+            $appointment['is_unavailability'] = FALSE;
             $appointment['color'] = $service['color'];
 
             $appointment_status_options_json = setting('appointment_status_options', '[]');
-            $appointment_status_options = json_decode($appointment_status_options_json, true) ?? [];
-            $appointment['status'] = $appointment_status_options[0] ?? null;
+            $appointment_status_options = json_decode($appointment_status_options_json, TRUE) ?? [];
+            $appointment['status'] = $appointment_status_options[0] ?? NULL;
             if ($service['price'] > 0) {
                 $appointment['status'] = 'Pending';
                 // also calculat new price using duration
@@ -658,11 +665,11 @@ class Booking extends EA_Controller
             $appointment = $this->appointments_model->find($appointment_id);
 
             $settings = [
-                'company_name' => setting('company_name'),
-                'company_link' => setting('company_link'),
+                'company_name'  => setting('company_name'),
+                'company_link'  => setting('company_link'),
                 'company_email' => setting('company_email'),
-                'date_format' => setting('date_format'),
-                'time_format' => setting('time_format'),
+                'date_format'   => setting('date_format'),
+                'time_format'   => setting('time_format'),
             ];
             if ($service['price'] == 0) {
                 $this->synchronization->sync_appointment_saved($appointment, $service, $provider, $customer, $settings);
@@ -680,13 +687,14 @@ class Booking extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_APPOINTMENT_SAVE, $appointment);
 
             $response = [
-                'appointment_id' => $appointment['id'],
+                'appointment_id'   => $appointment['id'],
                 'appointment_hash' => $appointment['hash'],
                 'payment_required' => $service['price'] > 0,
             ];
 
             json_response($response);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -709,7 +717,7 @@ class Booking extends EA_Controller
     {
         $post_data = request('post_data');
 
-        $service_duration = $post_data['service_duration'] ?? null;
+        $service_duration = $post_data['service_duration'] ?? NULL;
 
         $appointment = $post_data['appointment'];
 
@@ -727,11 +735,13 @@ class Booking extends EA_Controller
 
         $service = $this->services_model->find($appointment['id_services']);
 
+        $service['original_duration'] = $service['duration'];
         if (isset($service_duration)) {
             $service['duration'] = $service_duration;
+            $service['original_duration'] = $service_duration;
         }
 
-        $exclude_appointment_id = $appointment['id'] ?? null;
+        $exclude_appointment_id = $appointment['id'] ?? NULL;
 
         $provider = $this->providers_model->find($appointment['id_users_provider']);
 
@@ -742,19 +752,19 @@ class Booking extends EA_Controller
             $exclude_appointment_id,
         );
 
-        $is_still_available = false;
+        $is_still_available = FALSE;
 
         $appointment_hour = date('H:i', strtotime($appointment['start_datetime']));
 
         foreach ($available_hours as $available_hour) {
             if ($appointment_hour === $available_hour) {
-                $is_still_available = true;
+                $is_still_available = TRUE;
 
                 break;
             }
         }
 
-        return $is_still_available ? $appointment['id_users_provider'] : null;
+        return $is_still_available ? $appointment['id_users_provider'] : NULL;
     }
 
     /**
@@ -781,10 +791,11 @@ class Booking extends EA_Controller
             $provider_ids =
                 $provider_id === ANY_PROVIDER ? $this->search_providers_by_service($service_id) : [$provider_id];
 
-            $exclude_appointment_id = $manage_mode ? $appointment_id : null;
+            $exclude_appointment_id = $manage_mode ? $appointment_id : NULL;
 
             // Get the service record.
             $service = $this->services_model->find($service_id);
+            $service["original_duration"] = $service["duration"];
 
             for ($i = 1; $i <= $number_of_days_in_month; $i++) {
                 $current_date = new DateTime($selected_date->format('Y-m') . '-' . $i);
@@ -820,14 +831,15 @@ class Booking extends EA_Controller
 
             if (count($unavailable_dates) === $number_of_days_in_month) {
                 json_response([
-                    'is_month_unavailable' => true,
+                    'is_month_unavailable' => TRUE,
                 ]);
 
                 return;
             }
 
             json_response($unavailable_dates);
-        } catch (Throwable $e) {
+        }
+        catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -843,7 +855,7 @@ class Booking extends EA_Controller
      */
     protected function search_providers_by_service(int $service_id): array
     {
-        $available_providers = $this->providers_model->get_available_providers(true);
+        $available_providers = $this->providers_model->get_available_providers(TRUE);
         $provider_list = [];
 
         foreach ($available_providers as $provider) {

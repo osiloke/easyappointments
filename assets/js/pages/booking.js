@@ -755,7 +755,7 @@ App.Pages.Booking = (function () {
                 serviceDescription = service.description;
                 serviceDuration = interval;
                 readableServiceDuration = App.Utils.Date.toHumanReadableTime(interval);
-                if (service.availabilities_type == 'fixed' && duration == 60) {
+                if (duration == 60) {
                     $(document).find('.duration-selector').removeClass('hidden');
                 } else {
                     $(document).find('.duration-selector').addClass('hidden');

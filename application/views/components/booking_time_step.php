@@ -35,11 +35,11 @@ function getTimeIntervals($fullday, $halfDay, $duration)
 
 <div id="wizard-frame-2" class="wizard-frame" style="display:none;">
     <div class="frame-container">
-        <div class="flex flex-col lg:flex-row w-full justify-between space-x-0 gap-10">
-            <div class="w-full lg:w-5/12 flex flex-col gap-10">
+        <div class="flex flex-col justify-between w-full gap-10 space-x-0 lg:flex-row">
+            <div class="flex flex-col w-full gap-10 lg:w-5/12">
                 <?php component('provider_card', [
                     'hide_service' => count($available_providers) == 1,
-                    'secretary' => vars('secretary'),
+                    'secretary'    => vars('secretary'),
                 ]); ?>
                 <?php component('selected_service', ['services' => $available_services, 'step' => '2']); ?>
             </div>
@@ -47,14 +47,14 @@ function getTimeIntervals($fullday, $halfDay, $duration)
                 <h2 class=" frame-title">
                     <?= lang('appointment_date_and_time') ?>
                 </h2>
-                <div class="duration-selector hidden">
-                    <div class="justify-start items-center gap-10 flex flex-col md:flex-row">
-                        <div class="flex-col justify-center items-start w-full">
-                            <div class="text-black text-lg font-medium leading-7">How long will you like this session to last for?</div>
+                <div class="hidden duration-selector">
+                    <div class="flex flex-col items-center justify-start gap-10 md:flex-row">
+                        <div class="flex-col items-start justify-center w-full">
+                            <div class="text-lg font-medium leading-7 text-black">How long will you like this session to last for?</div>
                             <div class="text-sm font-normal leading-tight">Note: This will affect the cost of your booking</div>
                         </div>
                         <div class="w-4/12 lg:w-4/12">
-                            <select name="interval" class="select select-bordered w-full">
+                            <select name="interval" class="w-full select select-bordered">
 
                             <?php foreach ($intervals as $interval): ?>
 
@@ -72,7 +72,7 @@ function getTimeIntervals($fullday, $halfDay, $duration)
                     </div>
                     <div class="h-10"></div>                                
                 </div>
-                <div class="flex flex-col lg:flex-row gap-5 lg:gap-10">
+                <div class="flex flex-col gap-5 lg:flex-row lg:gap-10">
                     <div class="w-full lg:w-6/12">
                         <div id="select-date" class="p-0 py-0"></div>
                     </div>
@@ -83,7 +83,7 @@ function getTimeIntervals($fullday, $halfDay, $duration)
                                     <?= lang('timezone') ?>
                                 </label>
                                 <?php component('timezone_dropdown', [
-                                    'attributes' => 'id="select-timezone" class="form-control" value="Africa/Lagos"',
+                                    'attributes'        => 'id="select-timezone" class="form-control" value="Africa/Lagos"',
                                     'grouped_timezones' => $grouped_timezones,
                                 ]); ?>
                             </div>
