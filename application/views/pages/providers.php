@@ -82,7 +82,7 @@
                     <input type="hidden" id="id" class="record-id">
 
                     <div class="row">
-                        <div class="details col-12 col-md-6"> 
+                        <div class="details col-12 col-md-6">
                             <div class="mb-3">
                                 <label class="form-label" for="provider-image">
                                     <?= lang('Image') ?>
@@ -288,7 +288,7 @@
                                                                                 'Kuda Bank'                              => '50211',
                                                                                 'Lagos Building Investment Company Plc.' => '90052',
                                                                                 'One Finance'                            => '565',
-                                                                                'Parallex Bank'                          => '526',
+                                                                                'Parallex Bank'                          => 'parallex-bank',
                                                                                 'Parkway - ReadyCash'                    => '311',
                                                                                 'Polaris Bank'                           => '076',
                                                                                 'Providus Bank'                          => '101',
