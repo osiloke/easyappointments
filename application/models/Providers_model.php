@@ -62,14 +62,13 @@ class Providers_model extends EA_Model
      * @throws InvalidArgumentException
      * @throws Exception
      */
-    public function save(array $provider): int
+    public function save(array $provider, $skipPasswordGen = false): int
     {
         $this->validate($provider);
 
         if (empty($provider['id'])) {
-            return $this->insert($provider);
-        }
-        else {
+            return $this->insert($provider, $skipPasswordGen);
+        } else {
             return $this->update($provider);
         }
     }
@@ -272,7 +271,7 @@ class Providers_model extends EA_Model
      *
      * @throws RuntimeException|Exception
      */
-    protected function insert(array $provider): int
+    protected function insert(array $provider, bool $skipPasswordGen = false): int
     {
         $provider['create_datetime'] = date('Y-m-d H:i:s');
         $provider['update_datetime'] = date('Y-m-d H:i:s');
@@ -289,8 +288,10 @@ class Providers_model extends EA_Model
         }
 
         $provider['id'] = $this->db->insert_id();
-        $settings['salt'] = generate_salt();
-        $settings['password'] = hash_password($settings['salt'], $settings['password']);
+        if (!$skipPasswordGen) {
+            $settings['salt'] = generate_salt();
+            $settings['password'] = hash_password($settings['salt'], $settings['password']);
+        }
 
         $this->save_settings($provider['id'], $settings);
         $this->save_service_ids($provider['id'], $service_ids);

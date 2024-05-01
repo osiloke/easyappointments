@@ -61,13 +61,13 @@ $route['translate_uri_dashes'] = false;
 | -------------------------------------------------------------------------
 | FRAME OPTIONS HEADERS
 | -------------------------------------------------------------------------
-| Set the appropriate headers so that iframe control and permissions are 
+| Set the appropriate headers so that iframe control and permissions are
 | properly configured.
 |
 | Options:
 |
-|   - DENY 
-|   - SAMEORIGIN 
+|   - DENY
+|   - SAMEORIGIN
 |
 */
 
@@ -77,8 +77,8 @@ header('X-Frame-Options: SAMEORIGIN');
 | -------------------------------------------------------------------------
 | CORS HEADERS
 | -------------------------------------------------------------------------
-| Set the appropriate headers so that CORS requirements are met and any 
-| incoming preflight options request succeeds. 
+| Set the appropriate headers so that CORS requirements are met and any
+| incoming preflight options request succeeds.
 |
 */
 
@@ -101,9 +101,9 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS
 | -------------------------------------------------------------------------
 | REST API ROUTING
 | -------------------------------------------------------------------------
-| Define the API resource routes using the routing helper function. By 
-| default, each resource will have by default the following actions: 
-| 
+| Define the API resource routes using the routing helper function. By
+| default, each resource will have by default the following actions:
+|
 |   - index [GET]
 |
 |   - show/:id [GET]
@@ -114,8 +114,8 @@ if (isset($_SERVER['REQUEST_METHOD']) && $_SERVER['REQUEST_METHOD'] === 'OPTIONS
 |
 |   - destroy [DELETE]
 |
-| Some resources like the availabilities and the settings do not follow this 
-| pattern and are explicitly defined. 
+| Some resources like the availabilities and the settings do not follow this
+| pattern and are explicitly defined.
 |
 */
 
@@ -150,7 +150,7 @@ $route['api/v1/availabilities']['get'] = 'api/v1/availabilities_api_v1/get';
 | CUSTOM ROUTING
 | -------------------------------------------------------------------------
 | You can add custom routes to the following section to define URL patterns
-| that are later mapped to the available controllers in the filesystem. 
+| that are later mapped to the available controllers in the filesystem.
 |
 */
 
@@ -169,6 +169,7 @@ $route['providers'] = 'providers';
 $route['recovery'] = 'recovery';
 $route['secretaries'] = 'secretaries';
 $route['services'] = 'services';
+$route['packages'] = 'packages';
 $route['categories'] = 'categories';
 $route['settings'] = 'settings';
 $route['booking/view/:appointment_hash'] = 'booking/reschedule';
