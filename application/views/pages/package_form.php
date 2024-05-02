@@ -38,10 +38,10 @@
                       time = '18:00'
                       break;
                     case 'break_start_time':
-                      time = '12:00'
+                      time = null
                       break;
                     case 'break_time_stop_time':
-                      time = '13:00'
+                      time = null
                       break;
 
                     default:
@@ -50,7 +50,7 @@
 
                   let items = {}
                   ffield.items.forEach(item => {
-                    if (item.inputType == 'time') {
+                    if (item.inputType == 'time' && time != null) {
                       items[item.name] = time
                     }
                   })
@@ -61,31 +61,23 @@
             }
           })
         });
-        console.log(initialData)
         const survey = new Survey.Model({
           completedHtml: `<div class="alert alert-success bg-green-50 border border-green-300 text-green-800 px-4 py-3 rounded relative" role="alert">
   <strong class="font-bold">Success!</strong>
   <span class="block sm:inline">New package created successfully.</span>
 </div>`,
           showCompletedPage: true,
-          navigateToUrl: "/",
+          navigateToUrl: "/calendar",
           ...data,
         });
         survey.data = initialData;
         survey.onComplete.add((sender, options) => {
-          console.log(sender.data, options);
           options.showSaveInProgress();
-          try {
-            App.Http.Packages.save(sender.data).then((response) => {
-              App.Layouts.Backend.displayNotification(lang('Package created'));
-              window.history.go(-1);
-              // resetForm();
-              // $('#filter-providers .key').val('');
-              // filter('', response.id, true);
-            });
-          } catch (error) {
-            options.showSaveError();
-          }
+          App.Http.Packages.save(sender.data).then((response) => {
+            App.Layouts.Backend.displayNotification(lang('Package created'));
+            window.history.go(-1);
+          }).catch(() =>
+            options.showSaveError());
         });
         $("#surveyContainer").Survey({
           model: survey

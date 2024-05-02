@@ -191,6 +191,52 @@ class Packages_model extends EA_Model
             $provider["settings"]['image'] = $package["package_image"][0]["content"];
         }
 
+        $working_plans = [];
+        foreach ($package["working_plan"] as $wp) {
+            foreach ($wp["working_plan_start_time"] as $day => $time) {
+                $name = "";
+                $end_time = $wp["working_plan_stop_time"][$day];
+                switch ($day) {
+                    case 'text1':
+                        $name = "monday";
+                        break;
+                    case 'text2':
+                        $name = "tuesday";
+                        break;
+                    case 'text3':
+                        $name = "wednesday";
+                        break;
+                    case 'text4':
+                        $name = "thursday";
+                        break;
+                    case 'text5':
+                        $name = "friday";
+                        break;
+                    case 'text6':
+                        $name = "saturday";
+                        break;
+                    case 'text7':
+                        $name = "sunday";
+                        break;
+                    default:
+                        break;
+                }
+                $breaks = [];
+                foreach ($package["breaks"] as $wpb) {
+                    array_push($breaks, array(
+                        "start" => $wpb["break_start_time"][$day],
+                        "end" => $wpb["break_time_stop_time"][$day]
+                    ));
+                };
+                $working_plans[$name] = array(
+                    "start" => $time,
+                    "end" =>  $end_time,
+                    "breaks" => $breaks,
+                );
+            }
+        }
+        $provider['settings']["working_plan"] = json_encode($working_plans);
+
         $this->providers_model->only($provider, [
             'first_name',
             'last_name',
@@ -243,7 +289,7 @@ class Packages_model extends EA_Model
             $service_id = $this->services_model->save($service);
             array_push($services, $service_id);
         }
-
+        $provider["services"] = $services;
         $this->providers_model->optional($provider, [
             'services' => [],
         ]);
