@@ -274,23 +274,33 @@ class Packages_model extends EA_Model
         $services = [];
         $image = NULL;
         if (array_key_exists("services", $package)) {
-            foreach ($package["services"] as $service) {
-                if (array_key_exists("service_image", $service) && is_array($service["service_image"])) {
-                    $image = $service["service_image"][0]["content"];
+            foreach ($package["services"] as $ss) {
+                if (array_key_exists("service_details", $ss) && is_array($ss["service_details"])) {
+                    if (array_key_exists("service_image", $ss) && is_array($ss["service_image"])) {
+                        $image = $ss["service_image"][0]["content"];
+                    }
+                    $service = [
+                        'name'               => $provider["first_name"] . $provider["last_name"] . ' | ' . $ss["service_details"]["service_name"],
+                        'duration'           => array_key_exists("duration", $ss["service_details"]) ? $ss["service_details"]["duration"] : 60,
+                        'price'              => array_key_exists("price", $ss["service_details"]) ? $ss["service_details"]["price"] : 0,
+                        'currency'           => 'NGN',
+                        'attendants_number'   => array_key_exists("attendants_number", $ss["service_details"]) ? $ss["service_details"]["attendants_number"] : 1,
+                        'description'        => array_key_exists("service_description", $ss["service_details"]) ? $ss["service_details"]['service_description'] : "",
+                        'location'           => array_key_exists("event_location", $ss["service_details"]) ? $ss["service_details"]['event_location'] : "",
+                        'image'              => $image,
+                    ];
+                    if (array_key_exists("service_category", $ss)) {
+                        $service["id_service_categories"] = $ss["service_category"];
+                    }
+
+                    $service['availabilities_type'] = AVAILABILITIES_TYPE_FLEXIBLE;
+                    try {
+                        $service_id = $this->services_model->save($service);
+                    } catch (Exception $e) {
+                        throw $e;
+                    }
+                    array_push($services, $service_id);
                 }
-                $service = [
-                    'name'               => $provider["first_name"] . $provider["last_name"] . ' | ' . $service["service_details"]["service_name"],
-                    'duration'           => $service["service_details"]["duration"],
-                    'price'              => $service["service_details"]["price"],
-                    'currency'           => 'NGN',
-                    'attendants_number'   => 1,
-                    'description'        => $service["service_details"]['service_description'],
-                    'location'           => $service["service_details"]['event_location'],
-                    'id_service_categories'  => $service["service_details"]['service_category'],
-                    'image'              => $image,
-                ];
-                $service_id = $this->services_model->save($service);
-                array_push($services, $service_id);
             }
         }
         $provider["services"] = $services;

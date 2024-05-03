@@ -619,7 +619,7 @@ class Providers_model extends EA_Model
             $provider_id = $provider_from_username->id_users;
         }
         if (strlen($provider_id) > 0) {
-            $this->db->where('users.id', $provider_id);
+            $this->db->where('users.id', intval($provider_id));
         }
         if (!empty($provider_ids)) {
             $this->db->where_in('users.id', $provider_ids);

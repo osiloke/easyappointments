@@ -68,11 +68,22 @@ class Packages extends EA_Controller
         $role_slug = session('role_slug');
         $privileges = $this->roles_model->get_permissions_by_slug($role_slug);
 
+        $keyword = request('keyword', '');
+
+        $order_by = 'update_datetime DESC';
+
+        $limit = request('limit', 1000);
+
+        $offset = 0;
+
+        $categories = $this->service_categories_model->search($keyword, $limit, $offset, $order_by);
+
         script_vars([
             'user_id'             => $user_id,
             'role_slug'           => $role_slug,
             'services'           => array(),
             'privileges' => $privileges,
+            "categories" => $categories,
         ]);
 
         html_vars([

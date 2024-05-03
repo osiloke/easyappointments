@@ -111,8 +111,7 @@ class Booking extends EA_Controller
             //     $this->load->view('pages/landing');
             //     return;
             // }
-        }
-        elseif (empty($provider_name) && empty($provider_id)) {
+        } elseif (empty($provider_name) && empty($provider_id)) {
             html_vars([
                 'show_message'          => TRUE,
                 'page_title'            => $company_name,
@@ -143,25 +142,58 @@ class Booking extends EA_Controller
                 $secretary['providers'],
             );
             $available_services = $this->services_model->get_available_services(TRUE, '', '', $secretary['providers']);
-        }
-        else {
-            // TODO: if secretary found, fetch services providers for secretrary
-            $available_services = $this->services_model->get_available_services(
-                TRUE,
-                $provider_id ?? '',
-                $provider_name,
-            );
+        } else {
             $available_providers = $this->providers_model->get_available_providers(
                 TRUE,
                 $provider_id ?? '',
                 $provider_name,
             );
+            if (count($available_providers) > 0) {
+                $secretary = $available_providers[0];
+                if (str_contains($secretary['last_name'], '|')) {
+                    $parts = explode("|", $secretary['first_name']);
+                    $name = end($parts);
+                    $secretary['first_name'] = "";
+
+                    $parts = explode("|", $secretary['last_name']);
+                    $name = end($parts);
+                    $secretary['last_name'] = $name;
+                }
+                // TODO: if secretary found, fetch services providers for secretrary
+                $available_services = $this->services_model->get_available_services(
+                    TRUE,
+                    $provider_id ?? '',
+                    $provider_name,
+                );
+            } else {
+
+                show_404();
+
+                return;
+            }
         }
 
         $available_services = sanitize_fields($available_services, ['description', 'name', 'duration', 'price']);
+        foreach ($available_services as &$available_service) {
+            // Only expose the required provider data.
+            $parts = explode("|", $available_service['name']);
+            $name = end($parts);
+
+            $available_service['name'] = $name;
+        }
 
         foreach ($available_providers as &$available_provider) {
             // Only expose the required provider data.
+            if (str_contains($available_provider['last_name'], '|')) {
+                $parts = explode("|", $available_provider['first_name']);
+                $name = end($parts);
+                $available_provider['first_name'] = "";
+
+                $parts = explode("|", $available_provider['last_name']);
+                $name = end($parts);
+                $available_provider['last_name'] = $name;
+            }
+
             $available_provider['image'] = $available_provider['settings']['image'];
             $available_provider['username'] = $available_provider['settings']['username'] ?? '';
             $this->providers_model->only($available_provider, [
@@ -274,13 +306,11 @@ class Booking extends EA_Controller
 
             // Cache the token for 10 minutes.
             $this->cache->save('customer-token-' . $customer_token, $customer['id'], 600);
-        }
-        elseif (sizeof($available_services) == 0 && sizeof($available_providers) == 0) {
+        } elseif (sizeof($available_services) == 0 && sizeof($available_providers) == 0) {
             show_404();
 
             return;
-        }
-        else {
+        } else {
             $manage_mode = FALSE;
             $customer_token = FALSE;
             $appointment = NULL;
@@ -415,7 +445,7 @@ class Booking extends EA_Controller
             // If the user has selected the "any-provider" option then we will need to search for an available provider
             // that will provide the requested service.
 
-            $service = $this->services_model->find($service_id);
+            $service = $this->services_model->find(intval($service_id));
             $service['original_duration'] = $service['duration'];
 
             if ($provider_id === ANY_PROVIDER) {
@@ -445,8 +475,7 @@ class Booking extends EA_Controller
                 sort($available_hours);
 
                 $response = $available_hours;
-            }
-            else {
+            } else {
                 $provider = $this->providers_model->find($provider_id);
 
                 if (isset($service_duration)) {
@@ -461,8 +490,7 @@ class Booking extends EA_Controller
             }
 
             json_response($response);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -674,6 +702,20 @@ class Booking extends EA_Controller
             if ($service['price'] == 0) {
                 $this->synchronization->sync_appointment_saved($appointment, $service, $provider, $customer, $settings);
 
+                if (str_contains($provider['last_name'], '|')) {
+                    $parts = explode("|", $provider['first_name']);
+                    $name = end($parts);
+                    $provider['first_name'] = "";
+
+                    $parts = explode("|", $provider['last_name']);
+                    $name = end($parts);
+                    $provider['last_name'] = $name;
+                }
+                // Only expose the required provider data.
+                $parts = explode("|", $service['name']);
+                $name = end($parts);
+
+                $service['name'] = $name;
                 $this->notifications->notify_appointment_saved(
                     $appointment,
                     $service,
@@ -693,8 +735,7 @@ class Booking extends EA_Controller
             ];
 
             json_response($response);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -838,8 +879,7 @@ class Booking extends EA_Controller
             }
 
             json_response($unavailable_dates);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }

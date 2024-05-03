@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Local variables.
  *
@@ -56,21 +57,21 @@ function getTimeIntervals($fullday, $halfDay, $duration)
                         <div class="w-4/12 lg:w-4/12">
                             <select name="interval" class="w-full select select-bordered">
 
-                            <?php foreach ($intervals as $interval): ?>
+                                <?php foreach ($intervals as $interval) : ?>
 
-                            <option value="<?php echo $interval; ?>">
-                            <?php $dur = $interval / 60; ?>
-                                <?php if ($interval == $halfDay): ?>Half day<?php elseif (
-                                    $interval == $fullday
-                                ): ?>Full day<?php else: ?> <?= $dur ?> Hour(s) <?php endif; ?>
-                            </option>
+                                    <option value="<?php echo $interval; ?>">
+                                        <?php $dur = $interval / 60; ?>
+                                        <?php if ($interval == $halfDay) : ?>Half day<?php elseif (
+                                                                                        $interval == $fullday
+                                                                                    ) : ?>Full day<?php else : ?> <?= $dur ?> Hour(s) <?php endif; ?>
+                                    </option>
 
-                            <?php endforeach; ?>
+                                <?php endforeach; ?>
 
                             </select>
                         </div>
                     </div>
-                    <div class="h-10"></div>                                
+                    <div class="h-10"></div>
                 </div>
                 <div class="flex flex-col gap-5 lg:flex-row lg:gap-10">
                     <div class="w-full lg:w-6/12">

@@ -15,6 +15,7 @@
 <script src="<?= asset_url('assets/js/utils/validation.js') ?>"></script>
 <script src="<?= asset_url('assets/js/utils/url.js') ?>"></script>
 <script src="<?= asset_url('assets/js/http/packages_http_client.js') ?>"></script>
+<script src="<?= asset_url('assets/js/http/categories_http_client.js') ?>"></script>
 <script type="text/javascript" src="https://unpkg.com/survey-jquery/survey.jquery.min.js"></script>
 
 <script>
@@ -56,6 +57,14 @@
                     }
                   })
                   panels[ffield.name] = items;
+                } else if (ffield.name == 'service_category') {
+                  ffield.choices = vars("categories").map(({
+                    name,
+                    id
+                  }) => ({
+                    value: id,
+                    text: name
+                  }))
                 }
               })
               initialData[field.name].push(panels)
@@ -69,7 +78,6 @@
           // </div>`,
           completedHtml: '',
           showCompletedPage: true,
-          navigateToUrl: "/calendar",
           ...data,
         });
         survey.data = initialData;
@@ -82,7 +90,7 @@
             } else {
               options.showSaveSuccess();
               App.Layouts.Backend.displayNotification(lang('Package created'));
-              window.location.href = App.Utils.Url.siteUrl('/calendar');
+              window.location.href = App.Utils.Url.siteUrl('calendar');
             }
           }).catch((e) => {
             // options.showSaveError();
