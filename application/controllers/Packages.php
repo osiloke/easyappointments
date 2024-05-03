@@ -66,21 +66,20 @@ class Packages extends EA_Controller
         }
 
         $role_slug = session('role_slug');
+        $privileges = $this->roles_model->get_permissions_by_slug($role_slug);
 
         script_vars([
             'user_id'             => $user_id,
             'role_slug'           => $role_slug,
-            'timezones'           => $this->timezones->to_array(),
-            'min_password_length' => MIN_PASSWORD_LENGTH,
             'services'           => array(),
+            'privileges' => $privileges,
         ]);
 
         html_vars([
             'page_title'        => lang('Package'),
-            'active_menu'       => PRIV_USERS,
+            'active_menu'       => PRIV_CUSTOMERS,
             'user_display_name' => $this->accounts->get_user_display_name($user_id),
-            'grouped_timezones' => $this->timezones->to_grouped_array(),
-            'privileges'        => $this->roles_model->get_permissions_by_slug($role_slug),
+            'privileges'        => $privileges,
         ]);
 
         $this->load->view('pages/package_form');
@@ -114,16 +113,16 @@ class Packages extends EA_Controller
 
             $provider = $this->providers_model->find($provider_id);
 
+            $this->db->trans_complete();
             $this->webhooks_client->trigger(WEBHOOK_PROVIDER_SAVE, $provider);
 
-            $this->db->trans_complete();
             json_response([
                 'success' => TRUE,
                 'id'      => $provider_id,
             ]);
         } catch (Throwable $e) {
+            $this->db->trans_rollback();
             json_exception($e);
-            $this->db->trans_complete();
         }
     }
 }

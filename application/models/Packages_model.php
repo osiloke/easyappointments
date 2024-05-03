@@ -61,7 +61,7 @@ class Packages_model extends EA_Model
     public function save($user_id, array $package): int
     {
 
-        if (empty($secretary['id'])) {
+        if (empty($package['id'])) {
             return $this->insert($user_id, $package);
         } else {
             return $this->update($package);
@@ -187,7 +187,7 @@ class Packages_model extends EA_Model
         $provider["email"] = insert_after_char($account["email"], '+' . $username, "@");
         $provider['settings']["username"] = $account["settings"]["username"] . '_' . $username;
 
-        if (is_array($package["package_image"])) {
+        if (array_key_exists("package_image", $package)) {
             $provider["settings"]['image'] = $package["package_image"][0]["content"];
         }
 
@@ -222,12 +222,14 @@ class Packages_model extends EA_Model
                         break;
                 }
                 $breaks = [];
-                foreach ($package["breaks"] as $wpb) {
-                    array_push($breaks, array(
-                        "start" => $wpb["break_start_time"][$day],
-                        "end" => $wpb["break_time_stop_time"][$day]
-                    ));
-                };
+                if (array_key_exists("breaks", $package)) {
+                    foreach ($package["breaks"] as $wpb) {
+                        array_push($breaks, array(
+                            "start" => $wpb["break_start_time"][$day],
+                            "end" => $wpb["break_time_stop_time"][$day]
+                        ));
+                    };
+                }
                 $working_plans[$name] = array(
                     "start" => $time,
                     "end" =>  $end_time,
@@ -271,31 +273,44 @@ class Packages_model extends EA_Model
 
         $services = [];
         $image = NULL;
-        foreach ($package["services"] as $service) {
-            if (is_array($service["service_image"])) {
-                $image = $service["service_image"][0]["content"];
+        if (array_key_exists("services", $package)) {
+            foreach ($package["services"] as $service) {
+                if (array_key_exists("service_image", $service) && is_array($service["service_image"])) {
+                    $image = $service["service_image"][0]["content"];
+                }
+                $service = [
+                    'name'               => $provider["first_name"] . $provider["last_name"] . ' | ' . $service["service_details"]["service_name"],
+                    'duration'           => $service["service_details"]["duration"],
+                    'price'              => $service["service_details"]["price"],
+                    'currency'           => 'NGN',
+                    'attendants_number'   => 1,
+                    'description'        => $service["service_details"]['service_description'],
+                    'location'           => $service["service_details"]['event_location'],
+                    'id_service_categories'  => $service["service_details"]['service_category'],
+                    'image'              => $image,
+                ];
+                $service_id = $this->services_model->save($service);
+                array_push($services, $service_id);
             }
-            $service = [
-                'name'               => $provider["first_name"] . $provider["last_name"] . ' | ' . $service["service_details"]["service_name"],
-                'duration'           => $service["service_details"]["duration"],
-                'price'              => $service["service_details"]["price"],
-                'currency'           => 'NGN',
-                'attendants_number'   => 1,
-                'description'        => $service["service_details"]['service_description'],
-                'location'           => $service["service_details"]['event_location'],
-                'id_service_categories'  => $service["service_details"]['service_category'],
-                'image'              => $image,
-            ];
-            $service_id = $this->services_model->save($service);
-            array_push($services, $service_id);
         }
         $provider["services"] = $services;
         $this->providers_model->optional($provider, [
             'services' => [],
         ]);
-        $provider_id = $this->providers_model->save($provider, true);
+        $this->providers_model->optional($provider["settings"], [
+            'bank_name' => '',
+            'account_number' => '',
+            'working_plan_exceptions' => '{}'
+        ]);
+        try {
+            $provider_id = $this->providers_model->save($provider, true);
+        } catch (InvalidArgumentException $e) {
+            if (str_contains($e->getMessage(), "username is already in use")) {
+                throw new InvalidArgumentException('A package with the same name already exists');
+            }
+            throw $e;
+        }
         $this->save_provider_ids($user_id,  array_merge($secretary['providers'], [$provider_id]));
-
         return $provider_id;
     }
 
@@ -322,7 +337,9 @@ class Packages_model extends EA_Model
     protected function save_provider_ids(int $secretary_id, array $provider_ids)
     {
         // Re-insert the secretary-provider connections.
-        $this->db->delete('secretaries_providers', ['id_users_secretary' => $secretary_id]);
+        if (!$this->db->delete('secretaries_providers', ['id_users_secretary' => $secretary_id])) {
+            throw new RuntimeException('Could not update provider ids');
+        }
 
         foreach ($provider_ids as $provider_id) {
             $secretary_provider_connection = [
@@ -330,7 +347,9 @@ class Packages_model extends EA_Model
                 'id_users_provider' => $provider_id,
             ];
 
-            $this->db->insert('secretaries_providers', $secretary_provider_connection);
+            if (!$this->db->insert('secretaries_providers', $secretary_provider_connection)) {
+                throw new RuntimeException('Could not update provider ids');
+            }
         }
     }
 }

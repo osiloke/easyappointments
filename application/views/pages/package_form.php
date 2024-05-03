@@ -3,6 +3,7 @@
 <?php section('content'); ?>
 <div id="surveyContainer"></div>
 <?php end_section('content'); ?>
+
 <?php section('styles'); ?>
 <!-- Default V2 theme -->
 <link href="https://unpkg.com/survey-jquery/defaultV2.min.css" type="text/css" rel="stylesheet"><!-- Apply the Bootstrap theme -->
@@ -61,11 +62,12 @@
             }
           })
         });
+
         const survey = new Survey.Model({
-          completedHtml: `<div class="alert alert-success bg-green-50 border border-green-300 text-green-800 px-4 py-3 rounded relative" role="alert">
-  <strong class="font-bold">Success!</strong>
-  <span class="block sm:inline">New package created successfully.</span>
-</div>`,
+          // completedHtml: `<div class="alert alert-success bg-green-50 border border-green-300 text-green-800 px-4 py-3 rounded relative" role="alert">
+          //   <strong class="font-bold">Creating your package</strong>
+          // </div>`,
+          completedHtml: '',
           showCompletedPage: true,
           navigateToUrl: "/calendar",
           ...data,
@@ -73,11 +75,19 @@
         survey.data = initialData;
         survey.onComplete.add((sender, options) => {
           options.showSaveInProgress();
-          App.Http.Packages.save(sender.data).then((response) => {
-            App.Layouts.Backend.displayNotification(lang('Package created'));
-            window.history.go(-1);
-          }).catch(() =>
-            options.showSaveError());
+          App.Http.Packages.save(sender.data).done((response) => {
+            if (!response.success) {
+              App.Layouts.Backend.displayNotification(lang('Package creation failed'));
+              survey.clear(false, false);
+            } else {
+              options.showSaveSuccess();
+              App.Layouts.Backend.displayNotification(lang('Package created'));
+              window.location.href = App.Utils.Url.siteUrl('/calendar');
+            }
+          }).catch((e) => {
+            // options.showSaveError();
+            survey.clear(false, false);
+          });
         });
         $("#surveyContainer").Survey({
           model: survey
