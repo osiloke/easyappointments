@@ -685,33 +685,58 @@ class Providers_model extends EA_Model
      *
      * @return array Returns an array of providers.
      */
-    public function search(string $keyword, int $limit = NULL, int $offset = NULL, string $order_by = NULL): array
+    public function search(string $keyword, int $limit = NULL, int $offset = NULL, string $order_by = NULL, int $secretary_id = NULL): array
     {
         $role_id = $this->get_provider_role_id();
-
-        $providers = $this->db
-            ->select()
-            ->from('users')
-            ->where('id_roles', $role_id)
-            ->group_start()
-            ->like('first_name', $keyword)
-            ->or_like('last_name', $keyword)
-            ->or_like('CONCAT_WS(" ", first_name, last_name)', $keyword)
-            ->or_like('email', $keyword)
-            ->or_like('phone_number', $keyword)
-            ->or_like('mobile_number', $keyword)
-            ->or_like('address', $keyword)
-            ->or_like('city', $keyword)
-            ->or_like('state', $keyword)
-            ->or_like('zip_code', $keyword)
-            ->or_like('notes', $keyword)
-            ->group_end()
-            ->limit($limit)
-            ->offset($offset)
-            ->order_by($order_by)
-            ->get()
-            ->result_array();
-
+        if ($secretary_id != NULL) {
+            $providers = $this->db
+                ->select()
+                ->from('secretaries_providers')
+                ->where('id_users_secretary', $secretary_id)
+                ->join('users', 'users.id = secretaries_providers.id_users_provider', 'inner')
+                ->where('id_roles', $role_id)
+                ->group_start()
+                ->like('first_name', $keyword)
+                ->or_like('last_name', $keyword)
+                ->or_like('CONCAT_WS(" ", first_name, last_name)', $keyword)
+                ->or_like('email', $keyword)
+                ->or_like('phone_number', $keyword)
+                ->or_like('mobile_number', $keyword)
+                ->or_like('address', $keyword)
+                ->or_like('city', $keyword)
+                ->or_like('state', $keyword)
+                ->or_like('zip_code', $keyword)
+                ->or_like('notes', $keyword)
+                ->group_end()
+                ->limit($limit)
+                ->offset($offset)
+                ->order_by($order_by)
+                ->get()
+                ->result_array();
+        } else {
+            $providers = $this->db
+                ->select()
+                ->from('users')
+                ->where('id_roles', $role_id)
+                ->group_start()
+                ->like('first_name', $keyword)
+                ->or_like('last_name', $keyword)
+                ->or_like('CONCAT_WS(" ", first_name, last_name)', $keyword)
+                ->or_like('email', $keyword)
+                ->or_like('phone_number', $keyword)
+                ->or_like('mobile_number', $keyword)
+                ->or_like('address', $keyword)
+                ->or_like('city', $keyword)
+                ->or_like('state', $keyword)
+                ->or_like('zip_code', $keyword)
+                ->or_like('notes', $keyword)
+                ->group_end()
+                ->limit($limit)
+                ->offset($offset)
+                ->order_by($order_by)
+                ->get()
+                ->result_array();
+        }
         foreach ($providers as &$provider) {
             $this->cast($provider);
 

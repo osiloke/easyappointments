@@ -247,6 +247,18 @@ class Secretaries_model extends EA_Model
     }
 
     /**
+     * Save the secretary provider IDs.
+     *
+     * @param int $secretary_id Secretary ID.
+     * @param array $provider_ids Provider IDs.
+     */
+    public function has_provider(int $secretary_id, int $provider_id): bool
+    {
+        $count = $this->db->get_where('secretaries_providers', ['id_users_secretary' => $secretary_id, 'id_users_provider' => $provider_id])->num_rows();
+
+        return $count == 1;
+    }
+    /**
      * Get the secretary role ID.
      *
      * @return int Returns the role ID.

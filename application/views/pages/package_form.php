@@ -24,54 +24,75 @@
       url: "<?= asset_url('assets/forms/service-creation.json') ?>",
       dataType: "json",
       success: function(data) {
-        let initialData = {};
-        data.pages.forEach(element => {
-          element.elements.forEach(field => {
-            if (field.type == 'paneldynamic') {
-              initialData[field.name] = []
-              let panels = {}
-              field.templateElements.forEach(ffield => {
-                if (ffield.type == 'multipletext') {
-                  let time = '09:00'
-                  switch (ffield.name) {
-                    case 'working_plan_start_time':
-                      break;
-                    case 'working_plan_stop_time':
-                      time = '18:00'
-                      break;
-                    case 'break_start_time':
-                      time = null
-                      break;
-                    case 'break_time_stop_time':
-                      time = null
-                      break;
+        var package = vars("package");
+        let initialData = package ?? {};
+        if (!package) {
+          data.pages.forEach(element => {
+            element.elements.forEach(field => {
+              if (field.type == 'paneldynamic') {
+                initialData[field.name] = []
+                let panels = {}
+                field.templateElements.forEach(ffield => {
+                  if (ffield.type == 'multipletext') {
+                    let time = '09:00'
+                    switch (ffield.name) {
+                      case 'working_plan_start_time':
+                        break;
+                      case 'working_plan_stop_time':
+                        time = '18:00'
+                        break;
+                      case 'break_start_time':
+                        time = null
+                        break;
+                      case 'break_time_stop_time':
+                        time = null
+                        break;
 
-                    default:
-                      break;
-                  }
-
-                  let items = {}
-                  ffield.items.forEach(item => {
-                    if (item.inputType == 'time' && time != null) {
-                      items[item.name] = time
+                      default:
+                        break;
                     }
-                  })
-                  panels[ffield.name] = items;
-                } else if (ffield.name == 'service_category') {
-                  ffield.choices = vars("categories").map(({
-                    name,
-                    id
-                  }) => ({
-                    value: id,
-                    text: name
-                  }))
-                }
-              })
-              initialData[field.name].push(panels)
-            }
-          })
-        });
 
+                    let items = {}
+                    ffield.items.forEach(item => {
+                      if (item.inputType == 'time' && time != null) {
+                        items[item.name] = time
+                      }
+                    })
+                    panels[ffield.name] = items;
+                  } else if (ffield.name == 'service_category') {
+                    ffield.choices = vars("categories").map(({
+                      name,
+                      id
+                    }) => ({
+                      value: id,
+                      text: name
+                    }))
+                  }
+                })
+                initialData[field.name].push(panels)
+              }
+            })
+          });
+        } else {
+          data.pages.forEach(element => {
+            element.elements.forEach(field => {
+              if (field.type == 'paneldynamic') {
+                let panels = {}
+                field.templateElements.forEach(ffield => {
+                  if (ffield.name == 'service_category') {
+                    ffield.choices = vars("categories").map(({
+                      name,
+                      id
+                    }) => ({
+                      value: id,
+                      text: name
+                    }))
+                  }
+                })
+              }
+            })
+          });
+        }
         const survey = new Survey.Model({
           // completedHtml: `<div class="alert alert-success bg-green-50 border border-green-300 text-green-800 px-4 py-3 rounded relative" role="alert">
           //   <strong class="font-bold">Creating your package</strong>
