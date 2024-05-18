@@ -70,8 +70,7 @@ class Availability
 
         if ($service['attendants_number'] > 1) {
             $available_hours = $this->consider_multiple_attendants($date, $service, $provider, $exclude_appointment_id);
-        }
-        else {
+        } else {
             $available_periods = $this->get_available_periods($date, $provider, $exclude_appointment_id);
 
             $available_hours = $this->generate_available_hours($date, $service, $available_periods);
@@ -357,7 +356,9 @@ class Availability
         $escaped_date = $this->CI->db->escape($date);
 
         $where =
-            'id_users_provider = ' .
+            'status = ' .
+            $this->CI->db->escape("Booked") .
+            ' AND id_users_provider = ' .
             $escaped_provider_id .
             ' AND DATE(start_datetime) <= ' .
             $escaped_date .
@@ -477,8 +478,7 @@ class Availability
                 ) {
                     // The appointment does not belong in this time period, so we  will not change anything.
                     continue;
-                }
-                else {
+                } else {
                     if (
                         $appointment_start <= $period_start &&
                         $appointment_end <= $period_end &&
@@ -487,8 +487,7 @@ class Availability
                         // The appointment starts before the period and finishes somewhere inside. We will need to break
                         // this period and leave the available part.
                         $period['start'] = $appointment_end->format('H:i');
-                    }
-                    else {
+                    } else {
                         if ($appointment_start >= $period_start && $appointment_end < $period_end) {
                             // The appointment is inside the time period, so we will split the period into two new
                             // others.
@@ -503,11 +502,9 @@ class Availability
                                 'start' => $appointment_end->format('H:i'),
                                 'end'   => $period_end->format('H:i'),
                             ];
-                        }
-                        elseif ($appointment_start == $period_start && $appointment_end == $period_end) {
+                        } elseif ($appointment_start == $period_start && $appointment_end == $period_end) {
                             unset($periods[$index]); // The whole period is blocked so remove it from the available periods array.
-                        }
-                        else {
+                        } else {
                             if (
                                 $appointment_start >= $period_start &&
                                 $appointment_end >= $period_start &&
@@ -516,8 +513,7 @@ class Availability
                                 // The appointment starts in the period and finishes out of it. We will need to remove
                                 // the time that is taken from the appointment.
                                 $period['end'] = $appointment_start->format('H:i');
-                            }
-                            else {
+                            } else {
                                 if (
                                     $appointment_start >= $period_start &&
                                     $appointment_end >= $period_end &&
@@ -525,8 +521,7 @@ class Availability
                                 ) {
                                     // The appointment does not belong in the period so do not change anything.
                                     continue;
-                                }
-                                else {
+                                } else {
                                     if (
                                         $appointment_start <= $period_start &&
                                         $appointment_end >= $period_end &&
