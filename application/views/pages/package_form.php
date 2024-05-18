@@ -7,7 +7,35 @@
 <?php section('styles'); ?>
 <!-- Default V2 theme -->
 <link href="https://unpkg.com/survey-jquery/defaultV2.min.css" type="text/css" rel="stylesheet"><!-- Apply the Bootstrap theme -->
+<style>
+  body {
+    /* --primary: #1ab7fa; */
+    --primary: #1F1F1F;
+    /* --primary-light: rgba(26, 183, 250, 0.1); */
+    --primary-light: #0000003D;
+    --foreground: #ededed;
+    --primary-foreground: #ffffff;
+    /* --secondary: #1ab7fa; */
+    --secondary: #141414;
+    --success: #629369;
+    /* --background: #555555;*/
+    /* --background-dim: #4d4d4d;
+    --background-dim-light: #4d4d4d; */
+  }
 
+  .sd-navigation__complete-btn,
+  .sd-navigation__complete-btn:hover {
+    background-color: var(--success);
+  }
+
+  /* .sv-list__item--selected {
+    background-color: var(--primary-foreground)
+  } */
+
+  .sv-string-viewer {
+    color: black
+  }
+</style>
 <?php end_section('styles'); ?>
 
 <?php section('scripts'); ?>
@@ -106,12 +134,12 @@
           options.showSaveInProgress();
           App.Http.Packages.save(sender.data).done((response) => {
             if (!response.success) {
-              App.Layouts.Backend.displayNotification(lang('Package creation failed'));
+              App.Layouts.Backend.displayNotification(lang('Failed, try again'));
               survey.clear(false, false);
             } else {
               options.showSaveSuccess();
-              App.Layouts.Backend.displayNotification(lang('Package created'));
-              window.location.href = App.Utils.Url.siteUrl('calendar');
+              App.Layouts.Backend.displayNotification(lang('Success'));
+              window.location.href = App.Utils.Url.siteUrl('packages');
             }
           }).catch((e) => {
             // options.showSaveError();

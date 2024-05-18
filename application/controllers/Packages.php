@@ -1,5 +1,7 @@
 <?php
 
+use function PHPUnit\Framework\stringContains;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
@@ -84,8 +86,16 @@ class Packages extends EA_Controller
         if (cannot('view', PRIV_USERS)) {
             $providers = $this->providers_model->search($keyword, $limit, $offset, $order_by, $user_id);
         } else {
-
             $providers = $this->providers_model->search($keyword, $limit, $offset, $order_by);
+        }
+
+        foreach ($providers as &$provider) {
+            if (str_contains($provider["last_name"], "|")) {
+                $parts = explode("|", $provider['last_name']);
+                $name = end($parts);
+                $provider['first_name'] = '';
+                $provider["last_name"] = $name;
+            }
         }
 
         script_vars([
@@ -211,7 +221,7 @@ class Packages extends EA_Controller
 
         // convert provider format to survey form
         $package = array();
-        $parts = explode("|", $provider['first_name']);
+        $parts = explode("|", $provider['last_name']);
         $name = end($parts);
         $package["package_name"] = $name;
         $package["package_description"] = $provider["notes"];
@@ -261,12 +271,14 @@ class Packages extends EA_Controller
         $service_details = [];
         foreach ($provider["services"] as $service) {
             $srv = array();
-            $srv["service_name"] = $service["name"];
+            $parts = explode("|", $service['name']);
+            $name = end($parts);
+            $srv["service_name"] = $name;
             $srv["duration"] = (int)$service["duration"];
             $srv["price"] = (int)$service["price"];
             $srv["fee"] =  (int)$service["fee"];
             $srv["currency"] = $service["currency"];
-            $srv["attendants_number"] = (int)$service["attendants_number"];
+            $srv["attendants"] = (int)$service["attendants_number"];
             $srv["service_description"] = $service["description"];
             $srv["event_location"] = $service["location"];
             $srv["service_image"] = [array("content" => $service["image"])];
@@ -276,6 +288,7 @@ class Packages extends EA_Controller
                 "id" => $service["id"],
                 "service_details" => $srv,
                 "service_image" => $srv["service_image"],
+                "availabilities_type" => $srv["availabilities_type"],
                 "service_category" => $srv["service_category"]
             ));
         }
@@ -306,6 +319,7 @@ class Packages extends EA_Controller
      */
     public function store()
     {
+        $this->db->trans_begin();
         try {
 
             $user_id = session('user_id');
@@ -319,18 +333,10 @@ class Packages extends EA_Controller
 
                 return;
             }
-            $this->db->trans_begin();
 
             $package = request('package');
 
 
-            // TODO: move to package model
-            if (cannot('view', PRIV_USERS)) {
-                // check if secretary owns provider
-                if (!$this->secretaries_model->has_provider($user_id, $package["id"])) {
-                    abort(403, 'Forbidden');
-                }
-            }
 
             $provider_id = $this->packages_model->save($user_id, $package);
 
@@ -353,6 +359,7 @@ class Packages extends EA_Controller
      */
     public function update()
     {
+        $this->db->trans_begin();
         try {
 
             $user_id = session('user_id');
@@ -367,10 +374,15 @@ class Packages extends EA_Controller
                 return;
             }
 
-            $this->db->trans_begin();
-
             $package = request('package');
 
+            // TODO: move to package model
+            if (cannot('view', PRIV_USERS)) {
+                // check if secretary owns provider
+                if (!$this->secretaries_model->has_provider($user_id, (int)$package["id"])) {
+                    abort(403, 'Forbidden');
+                }
+            }
             $provider_id = $this->packages_model->save($user_id, $package);
 
             $provider = $this->providers_model->find($provider_id);

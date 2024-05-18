@@ -29,17 +29,17 @@
                     <?php $hidden = can('view', PRIV_CUSTOMERS) ? '' : 'd-none'; ?>
                     <?php $active = $active_menu == PRIV_CUSTOMERS ? 'active' : ''; ?>
                     <li class="nav-item <?= $active . $hidden ?>">
-                        <a href="<?= site_url('packages') ?>" class="nav-link" data-tippy-content="<?= lang('View all packages') ?>">
+                        <a href="<?= site_url('packages') ?>" class="nav-link" data-tippy-content="View all<?= lang('listings') ?>">
                             <i class="fas fa-plus me-2"></i>
-                            <?= lang('Packagess') ?>
+                            <?= lang('Listings') ?>
                         </a>
                     </li>
                     <?php $hidden = can('view', PRIV_CUSTOMERS) ? '' : 'd-none'; ?>
                     <?php $active = $active_menu == PRIV_CUSTOMERS ? 'active' : ''; ?>
                     <li class="nav-item <?= $active . $hidden ?>">
-                        <a href="<?= site_url('packages/new') ?>" class="nav-link" data-tippy-content="<?= lang('New package') ?>">
+                        <a href="<?= site_url('packages/new') ?>" class="nav-link" data-tippy-content="New <?= lang('listing') ?>">
                             <i class="fas fa-plus me-2"></i>
-                            <?= lang('New package') ?>
+                            New <?= lang('listing') ?>
                         </a>
                     </li>
                     <?php $hidden = can('view', PRIV_SERVICES) ? '' : 'd-none'; ?>
@@ -67,7 +67,6 @@
 
                     <?php $hidden = can('view', PRIV_USERS) ? '' : 'd-none'; ?>
                     <?php $active = $active_menu == PRIV_USERS ? 'active' : ''; ?>
-
                     <li class="nav-item dropdown <?= $active . $hidden ?>">
                         <details>
                             <summary data-tippy-content="<?= lang('manage_users_hint') ?>">
@@ -152,8 +151,8 @@
                 <?php $hidden = can('view', PRIV_CUSTOMERS) ? '' : 'd-none'; ?>
                 <?php $active = $active_menu == PRIV_CUSTOMERS ? 'active' : ''; ?>
                 <li class="nav-item <?= $active . $hidden ?>">
-                    <a href="<?= site_url('packages') ?>" class="nav-link" data-tippy-content="<?= lang('View all packages') ?>">
-                        <?= lang('Packages') ?>
+                    <a href="<?= site_url('packages') ?>" class="nav-link" data-tippy-content="View all<?= lang('listings') ?>">
+                        <?= lang('Listings') ?>
                     </a>
                 </li>
                 <?php $hidden = can('view', PRIV_SERVICES) ? '' : 'd-none'; ?>
@@ -207,12 +206,12 @@
                 </li>
                 <?php $hidden = can('view', PRIV_CUSTOMERS) ? '' : 'd-none'; ?>
                 <?php $active = $active_menu == PRIV_CUSTOMERS ? 'active' : ''; ?>
-                <li class="nav-item <?= $active . $hidden ?>">
-                    <a href="<?= site_url('packages/new') ?>" class="nav-link" data-tippy-content="<?= lang('New package') ?>">
+                <!-- <li class="nav-item <?= $active . $hidden ?>">
+                    <a href="<?= site_url('packages/new') ?>" class="nav-link" data-tippy-content="New <?= lang('listing') ?>">
                         <i class="fas fa-plus me-2"></i>
-                        <?= lang('New package') ?>
+                        New <?= lang('listing') ?>
                     </a>
-                </li>
+                </li> -->
                 <?php $hidden = can('view', PRIV_SYSTEM_SETTINGS) || can('view', PRIV_USER_SETTINGS) ? '' : 'd-none'; ?>
                 <?php $active = $active_menu == PRIV_SYSTEM_SETTINGS ? 'active' : ''; ?>
 

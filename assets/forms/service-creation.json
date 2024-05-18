@@ -1,12 +1,15 @@
 {
+    "title": "List Your Services",
+    "description": "Create Listing your services to start receiving bookings and managing your appointments on SchedlMe.",
+    "loadingHtml": "<h3>Loading form...</h3>",
     "pages": [
         {
-            "name": "page1",
+            "name": "listing_details",
             "elements": [
                 {
                     "type": "text",
                     "name": "package_name",
-                    "title": "Enter a package name",
+                    "title": "Enter a listing name",
                     "isRequired": true,
                     "validators": [
                         {
@@ -18,24 +21,25 @@
                 {
                     "type": "comment",
                     "name": "package_description",
-                    "title": "Package Description",
+                    "title": "Listing Description",
                     "isRequired": true,
-                    "maxLength": 125
+                    "maxLength": 250,
+                    "autoGrow": true
                 },
                 {
                     "type": "file",
                     "name": "package_image",
-                    "title": "Select Package Image",
+                    "title": "Select Listing Image",
                     "waitForUpload": true,
                     "maxSize": 2000000,
                     "filePlaceholder": "Drag and drop a file here or click the button below to select a file to upload. (Max size 2MB)"
                 }
             ],
-            "title": "Package Details",
-            "description": "Packages segment the various services that you offer and so that they can be viewed as a group and booked by your customers."
+            "title": "Listing Details",
+            "description": "Listings segment the various services that you offer and so that they can be viewed as a groups where necessary and booked by your customers."
         },
         {
-            "name": "page2",
+            "name": "availability",
             "elements": [
                 {
                     "type": "paneldynamic",
@@ -47,8 +51,14 @@
                             "type": "multipletext",
                             "name": "working_plan_start_time",
                             "state": "collapsed",
-                            "maxWidth": "50%",
                             "title": "Start Time",
+                            "defaultValue": {
+                                "text1": "09:00",
+                                "text2": "09:00",
+                                "text3": "09:00",
+                                "text4": "09:00",
+                                "text5": "09:00"
+                            },
                             "isRequired": true,
                             "items": [
                                 {
@@ -92,8 +102,14 @@
                             "type": "multipletext",
                             "name": "working_plan_stop_time",
                             "state": "collapsed",
-                            "maxWidth": "50%",
                             "title": "Stop Time",
+                            "defaultValue": {
+                                "text1": "18:00",
+                                "text2": "18:00",
+                                "text3": "18:00",
+                                "text4": "18:00",
+                                "text5": "18:00"
+                            },
                             "isRequired": true,
                             "validators": [
                                 {
@@ -150,7 +166,6 @@
                     "name": "breaks",
                     "title": "Breaks",
                     "description": "Add the working breaks during each day. During breaks the slots your calendar will not accept any appointments.",
-                    "showCommentArea": true,
                     "templateElements": [
                         {
                             "type": "multipletext",
@@ -248,20 +263,34 @@
                 }
             ],
             "title": "Availability",
-            "description": "When are services in this package available for bookings?"
+            "description": "When are services in this Listing available for bookings?"
         },
         {
-            "name": "page3",
+            "name": "listing_services",
             "elements": [
                 {
                     "type": "paneldynamic",
                     "name": "services",
+                    "width": "100%",
                     "title": "Service(s)",
                     "templateElements": [
                         {
                             "type": "multipletext",
                             "name": "service_details",
                             "title": "Service Details",
+                            "defaultValue": {
+                                "attendants": 1,
+                                "duration": 60,
+                                "price": 0
+                            },
+                            "isRequired": true,
+                            "validators": [
+                                {
+                                    "type": "expression",
+                                    "text": "The service duration cannot be less than 5 minutes",
+                                    "expression": "{services[0].service_details.duration} > 5"
+                                }
+                            ],
                             "items": [
                                 {
                                     "name": "service_name",
@@ -269,21 +298,36 @@
                                 },
                                 {
                                     "name": "service_description",
-                                    "title": "Service Description"
+                                    "placeholder": "Tell us about this service",
+                                    "title": "Description"
                                 },
                                 {
                                     "name": "duration",
+                                    "placeholder": "Ex. 2hrs = 120",
                                     "inputType": "number",
-                                    "title": "Duration (Minutes)"
+                                    "title": "Duration (Mins)",
+                                    "minValueExpression": "5",
+                                    "maxValueExpression": "1440"
                                 },
                                 {
                                     "name": "price",
+                                    "placeholder": "Cost per duration",
                                     "inputType": "number",
-                                    "title": "Price"
+                                    "title": "Price",
+                                    "minValueExpression": "0",
+                                    "maxValueExpression": "250000"
                                 },
                                 {
                                     "name": "event_location",
-                                    "title": "Event Location/Meeting Link"
+                                    "placeholder": "Meeting location or virtual call link",
+                                    "title": "Venue"
+                                },
+                                {
+                                    "name": "attendants",
+                                    "placeholder": "No. of times service can be booked per slot",
+                                    "inputType": "number",
+                                    "title": "Attendants",
+                                    "minValueExpression": "1"
                                 }
                             ]
                         },
@@ -321,6 +365,24 @@
                             "otherPlaceholder": "Add New Category"
                         },
                         {
+                            "type": "dropdown",
+                            "name": "availabilities_type",
+                            "title": "Availabilities Type",
+                            "description": "This determines how your time slots will appear. Fixed makes sure the duration of a booking is elapsed before the time slot is opened up, while Flexible defaults to a 15min interval.",
+                            "defaultValue": "fixed",
+                            "choices": [
+                                {
+                                    "value": "flexible",
+                                    "text": "Flexible"
+                                },
+                                {
+                                    "value": "fixed",
+                                    "text": "Fixed (Recommended)"
+                                }
+                            ],
+                            "otherPlaceholder": "Add New Category"
+                        },
+                        {
                             "type": "file",
                             "name": "service_image",
                             "title": "Select Service Image",
@@ -333,29 +395,12 @@
             ],
             "title": "Services",
             "description": "What are the services in this package available for bookings?"
-        },
-        {
-            "name": "page4",
-            "elements": [
-                {
-                    "type": "boolean",
-                    "name": "new_package",
-                    "title": "Would you like to add another Package?",
-                    "validators": [
-                        {
-                            "type": "expression"
-                        }
-                    ]
-                }
-            ],
-            "title": "Finish"
         }
     ],
-    "triggers": [
-        {
-            "type": "complete",
-            "expression": "{new_package} = false"
-        }
-    ],
-    "showTOC": true
+    "showNavigationButtons": "both",
+    "questionErrorLocation": "bottom",
+    "showTOC": true,
+    "checkErrorsMode": "onValueChanged",
+    "autoGrowComment": true,
+    "completeText": "Submit"
 }
