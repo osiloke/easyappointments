@@ -446,6 +446,7 @@ class Booking extends EA_Controller
             // that will provide the requested service.
 
             $service = $this->services_model->find(intval($service_id));
+            $service['service_duration'] = $service['duration'];
             $service['original_duration'] = $service['duration'];
 
             if ($provider_id === ANY_PROVIDER) {
@@ -777,6 +778,7 @@ class Booking extends EA_Controller
         $service = $this->services_model->find($appointment['id_services']);
 
         $service['original_duration'] = $service['duration'];
+        $service['service_duration'] = $service['duration'];
         if (isset($service_duration)) {
             $service['duration'] = $service_duration;
             $service['original_duration'] = $service_duration;
@@ -836,6 +838,7 @@ class Booking extends EA_Controller
 
             // Get the service record.
             $service = $this->services_model->find($service_id);
+            $service["service_duration"] = $service["duration"];
             $service["original_duration"] = $service["duration"];
 
             for ($i = 1; $i <= $number_of_days_in_month; $i++) {

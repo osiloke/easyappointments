@@ -566,7 +566,7 @@ class Availability
 
             $serviceDuration = (int) $service['duration'];
 
-            $interval = $service['availabilities_type'] === AVAILABILITIES_TYPE_FIXED ? $serviceDuration : (int) $service['original_duration'];
+            $interval = $service['availabilities_type'] === AVAILABILITIES_TYPE_FIXED ? $serviceDuration : (int) $service['service_duration'];
 
             $current_hour = $start_hour;
 
