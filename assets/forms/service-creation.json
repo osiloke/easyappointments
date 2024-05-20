@@ -1,0 +1,406 @@
+{
+    "title": "List Your Services",
+    "description": "Create Listing your services to start receiving bookings and managing your appointments on SchedlMe.",
+    "loadingHtml": "<h3>Loading form...</h3>",
+    "pages": [
+        {
+            "name": "listing_details",
+            "elements": [
+                {
+                    "type": "text",
+                    "name": "package_name",
+                    "title": "Enter a listing name",
+                    "isRequired": true,
+                    "validators": [
+                        {
+                            "type": "expression"
+                        }
+                    ],
+                    "placeholder": "Ex: One-on-One Consultation "
+                },
+                {
+                    "type": "comment",
+                    "name": "package_description",
+                    "title": "Listing Description",
+                    "isRequired": true,
+                    "maxLength": 250,
+                    "autoGrow": true
+                },
+                {
+                    "type": "file",
+                    "name": "package_image",
+                    "title": "Select Listing Image",
+                    "waitForUpload": true,
+                    "maxSize": 2000000,
+                    "filePlaceholder": "Drag and drop a file here or click the button below to select a file to upload. (Max size 2MB)"
+                }
+            ],
+            "title": "Listing Details",
+            "description": "Listings segment the various services that you offer and so that they can be viewed as a groups where necessary and booked by your customers."
+        },
+        {
+            "name": "availability",
+            "elements": [
+                {
+                    "type": "paneldynamic",
+                    "name": "working_plan",
+                    "title": "Working Plan",
+                    "description": "This is your default availability schedule.",
+                    "templateElements": [
+                        {
+                            "type": "multipletext",
+                            "name": "working_plan_start_time",
+                            "state": "collapsed",
+                            "title": "Start Time",
+                            "defaultValue": {
+                                "text1": "09:00",
+                                "text2": "09:00",
+                                "text3": "09:00",
+                                "text4": "09:00",
+                                "text5": "09:00"
+                            },
+                            "isRequired": true,
+                            "items": [
+                                {
+                                    "name": "text1",
+                                    "inputType": "time",
+                                    "title": "Monday"
+                                },
+                                {
+                                    "name": "text2",
+                                    "inputType": "time",
+                                    "title": "Tuesday"
+                                },
+                                {
+                                    "name": "text3",
+                                    "inputType": "time",
+                                    "title": "Wednesday"
+                                },
+                                {
+                                    "name": "text4",
+                                    "inputType": "time",
+                                    "title": "Thursday"
+                                },
+                                {
+                                    "name": "text5",
+                                    "inputType": "time",
+                                    "title": "Friday"
+                                },
+                                {
+                                    "name": "text6",
+                                    "inputType": "time",
+                                    "title": "Saturday"
+                                },
+                                {
+                                    "name": "text7",
+                                    "inputType": "time",
+                                    "title": "Sunday"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "multipletext",
+                            "name": "working_plan_stop_time",
+                            "state": "collapsed",
+                            "title": "Stop Time",
+                            "defaultValue": {
+                                "text1": "18:00",
+                                "text2": "18:00",
+                                "text3": "18:00",
+                                "text4": "18:00",
+                                "text5": "18:00"
+                            },
+                            "isRequired": true,
+                            "validators": [
+                                {
+                                    "type": "expression"
+                                }
+                            ],
+                            "items": [
+                                {
+                                    "name": "text1",
+                                    "inputType": "time",
+                                    "title": "Monday"
+                                },
+                                {
+                                    "name": "text2",
+                                    "inputType": "time",
+                                    "title": "Tuesday"
+                                },
+                                {
+                                    "name": "text3",
+                                    "inputType": "time",
+                                    "title": "Wednesday"
+                                },
+                                {
+                                    "name": "text4",
+                                    "inputType": "time",
+                                    "title": "Thursday"
+                                },
+                                {
+                                    "name": "text5",
+                                    "inputType": "time",
+                                    "title": "Friday"
+                                },
+                                {
+                                    "name": "text6",
+                                    "inputType": "time",
+                                    "title": "Saturday"
+                                },
+                                {
+                                    "name": "text7",
+                                    "inputType": "time",
+                                    "title": "Sunday"
+                                }
+                            ]
+                        }
+                    ],
+                    "allowAddPanel": false,
+                    "allowRemovePanel": false,
+                    "panelCount": 1,
+                    "minPanelCount": 1,
+                    "panelsState": "collapsed"
+                },
+                {
+                    "type": "paneldynamic",
+                    "name": "breaks",
+                    "title": "Breaks",
+                    "description": "Add the working breaks during each day. During breaks the slots your calendar will not accept any appointments.",
+                    "templateElements": [
+                        {
+                            "type": "multipletext",
+                            "name": "break_start_time",
+                            "state": "collapsed",
+                            "title": "Start Time",
+                            "items": [
+                                {
+                                    "name": "text1",
+                                    "inputType": "time",
+                                    "title": "Monday"
+                                },
+                                {
+                                    "name": "text2",
+                                    "inputType": "time",
+                                    "title": "Tuesday"
+                                },
+                                {
+                                    "name": "text3",
+                                    "inputType": "time",
+                                    "title": "Wednesday"
+                                },
+                                {
+                                    "name": "text4",
+                                    "inputType": "time",
+                                    "title": "Thursday"
+                                },
+                                {
+                                    "name": "text5",
+                                    "inputType": "time",
+                                    "title": "Friday"
+                                },
+                                {
+                                    "name": "text6",
+                                    "inputType": "time",
+                                    "title": "Saturday"
+                                },
+                                {
+                                    "name": "text7",
+                                    "inputType": "time",
+                                    "title": "Sunday"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "multipletext",
+                            "name": "break_time_stop_time",
+                            "state": "collapsed",
+                            "title": "Stop Time",
+                            "items": [
+                                {
+                                    "name": "text1",
+                                    "inputType": "time",
+                                    "title": "Monday"
+                                },
+                                {
+                                    "name": "text2",
+                                    "inputType": "time",
+                                    "title": "Tuesday"
+                                },
+                                {
+                                    "name": "text3",
+                                    "inputType": "time",
+                                    "title": "Wednesday"
+                                },
+                                {
+                                    "name": "text4",
+                                    "inputType": "time",
+                                    "title": "Thursday"
+                                },
+                                {
+                                    "name": "text5",
+                                    "inputType": "time",
+                                    "title": "Friday"
+                                },
+                                {
+                                    "name": "text6",
+                                    "inputType": "time",
+                                    "title": "Saturday"
+                                },
+                                {
+                                    "name": "text7",
+                                    "inputType": "time",
+                                    "title": "Sunday"
+                                }
+                            ]
+                        }
+                    ],
+                    "noEntriesText": "",
+                    "allowAddPanel": false,
+                    "allowRemovePanel": false,
+                    "panelCount": 1,
+                    "minPanelCount": 1,
+                    "panelsState": "collapsed"
+                }
+            ],
+            "title": "Availability",
+            "description": "When are services in this Listing available for bookings?"
+        },
+        {
+            "name": "listing_services",
+            "elements": [
+                {
+                    "type": "paneldynamic",
+                    "name": "services",
+                    "width": "100%",
+                    "title": "Service(s)",
+                    "templateElements": [
+                        {
+                            "type": "multipletext",
+                            "name": "service_details",
+                            "title": "Service Details",
+                            "defaultValue": {
+                                "attendants": 1,
+                                "duration": 60,
+                                "price": 0
+                            },
+                            "isRequired": true,
+                            "validators": [
+                                {
+                                    "type": "expression",
+                                    "text": "The service duration cannot be less than 5 minutes",
+                                    "expression": "{services[0].service_details.duration} > 5"
+                                }
+                            ],
+                            "items": [
+                                {
+                                    "name": "service_name",
+                                    "title": "Service Name"
+                                },
+                                {
+                                    "name": "service_description",
+                                    "placeholder": "Tell us about this service",
+                                    "title": "Description"
+                                },
+                                {
+                                    "name": "duration",
+                                    "placeholder": "Ex. 2hrs = 120",
+                                    "inputType": "number",
+                                    "title": "Duration (Mins)",
+                                    "minValueExpression": "5",
+                                    "maxValueExpression": "1440"
+                                },
+                                {
+                                    "name": "price",
+                                    "placeholder": "Cost per duration",
+                                    "inputType": "number",
+                                    "title": "Price",
+                                    "minValueExpression": "0",
+                                    "maxValueExpression": "250000"
+                                },
+                                {
+                                    "name": "event_location",
+                                    "placeholder": "Meeting location or virtual call link",
+                                    "title": "Venue"
+                                },
+                                {
+                                    "name": "attendants",
+                                    "placeholder": "No. of times service can be booked per slot",
+                                    "inputType": "number",
+                                    "title": "Attendants",
+                                    "minValueExpression": "1"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "dropdown",
+                            "name": "service_category",
+                            "title": "Service Category",
+                            "choices": [
+                                {
+                                    "value": "professional_coaching",
+                                    "text": "Professional Coaching"
+                                },
+                                {
+                                    "value": "personal_coaching",
+                                    "text": "Personal Coaching"
+                                },
+                                {
+                                    "value": "photography_sessions",
+                                    "text": "Photography Sessions"
+                                },
+                                {
+                                    "value": "space_rental",
+                                    "text": "Space Rental"
+                                },
+                                {
+                                    "value": "medical_consultation",
+                                    "text": "Medical Consultation"
+                                },
+                                {
+                                    "value": "skincare_consultation",
+                                    "text": "Skincare Consultation"
+                                }
+                            ],
+                            "showOtherItem": true,
+                            "otherPlaceholder": "Add New Category"
+                        },
+                        {
+                            "type": "dropdown",
+                            "name": "availabilities_type",
+                            "title": "Availabilities Type",
+                            "description": "This determines how your time slots will appear. Fixed makes sure the duration of a booking is elapsed before the time slot is opened up, while Flexible defaults to a 15min interval.",
+                            "defaultValue": "fixed",
+                            "choices": [
+                                {
+                                    "value": "flexible",
+                                    "text": "Flexible"
+                                },
+                                {
+                                    "value": "fixed",
+                                    "text": "Fixed (Recommended)"
+                                }
+                            ],
+                            "otherPlaceholder": "Add New Category"
+                        },
+                        {
+                            "type": "file",
+                            "name": "service_image",
+                            "title": "Select Service Image",
+                            "waitForUpload": true,
+                            "maxSize": 2000000,
+                            "filePlaceholder": "Drag and drop a file here or click the button below to select a file to upload. (Max size 2MB)"
+                        }
+                    ]
+                }
+            ],
+            "title": "Services",
+            "description": "What are the services in this package available for bookings?"
+        }
+    ],
+    "showNavigationButtons": "both",
+    "questionErrorLocation": "bottom",
+    "showTOC": true,
+    "checkErrorsMode": "onValueChanged",
+    "autoGrowComment": true,
+    "completeText": "Submit"
+}

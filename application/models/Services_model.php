@@ -69,8 +69,7 @@ class Services_model extends EA_Model
 
         if (empty($service['id'])) {
             return $this->insert($service);
-        }
-        else {
+        } else {
             return $this->update($service);
         }
     }
@@ -320,6 +319,43 @@ class Services_model extends EA_Model
         return $services;
     }
 
+    /**
+     * Get all the service records that are assigned to at least one provider.
+     *
+     * @param bool $without_private Only include the public services.
+     *
+     * @return array Returns an array of services.
+     */
+    public function get_secretary_services(
+        bool $without_private = FALSE,
+        string $secretary_id = ''
+    ): array {
+        if (strlen($secretary_id) > 0) {
+            $this->db->where('ea_secretaries_providers.id_users_secretary', intval($secretary_id));
+        }
+        if ($without_private) {
+            $this->db->where('services.is_private', FALSE);
+        }
+
+        $services = $this->db
+            ->distinct()
+            ->select(
+                'services.*, service_categories.name AS service_category_name, service_categories.id AS service_category_id',
+            )
+            ->from('secretaries_providers')
+            ->join('services_providers', 'services_providers.id_users = secretaries_providers.id_users_provider', 'inner')
+            ->join('services', 'services.id = services_providers.id_services', 'inner')
+            ->join('service_categories', 'service_categories.id = services.id_service_categories', 'left')
+            ->order_by('name ASC')
+            ->get()
+            ->result_array();
+
+        foreach ($services as &$service) {
+            $this->cast($service);
+        }
+
+        return $services;
+    }
     /**
      * Get all services that match the provided criteria.
      *

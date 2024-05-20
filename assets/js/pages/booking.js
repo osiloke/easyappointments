@@ -79,7 +79,7 @@ App.Pages.Booking = (function () {
                         'text': $cookieNoticeLink.text(),
                     }),
                 );
-            } catch (error) {}
+            } catch (error) { }
         }
 
         manageMode = vars('manage_mode');
@@ -89,7 +89,7 @@ App.Pages.Booking = (function () {
 
         App.Utils.UI.initializeDatepicker($selectDate, {
             inline: true,
-            minDate: moment().subtract(1, 'day').set({hours: 23, minutes: 59, seconds: 59}).toDate(),
+            minDate: moment().subtract(1, 'day').set({ hours: 23, minutes: 59, seconds: 59 }).toDate(),
             maxDate: moment().add(vars('future_booking_limit'), 'days').toDate(),
             onChange: (selectedDates) => {
                 App.Http.Booking.getAvailableHours(moment(selectedDates[0]).format('YYYY-MM-DD'));
@@ -100,9 +100,9 @@ App.Pages.Booking = (function () {
                 setTimeout(() => {
                     const displayedMonthMoment = moment(
                         instance.currentYearElement.value +
-                            '-' +
-                            (Number(instance.monthsDropdownContainer.value) + 1) +
-                            '-01',
+                        '-' +
+                        (Number(instance.monthsDropdownContainer.value) + 1) +
+                        '-01',
                         'YYYY-M-DD',
                     );
 
@@ -118,9 +118,9 @@ App.Pages.Booking = (function () {
                 setTimeout(() => {
                     const displayedMonthMoment = moment(
                         instance.currentYearElement.value +
-                            '-' +
-                            (Number(instance.monthsDropdownContainer.value) + 1) +
-                            '-01',
+                        '-' +
+                        (Number(instance.monthsDropdownContainer.value) + 1) +
+                        '-01',
                     );
 
                     App.Http.Booking.getUnavailableDates(
@@ -170,7 +170,7 @@ App.Pages.Booking = (function () {
                 for (const index in vars('available_providers')) {
                     const provider = vars('available_providers')[index];
 
-                    if (provider.id === selectedProviderId && provider.services.length > 0) {
+                    if (provider.id === Number(selectedProviderId) && provider.services.length > 0) {
                         $selectService.val(provider.services[0]).trigger('change');
                     }
                 }
@@ -178,6 +178,13 @@ App.Pages.Booking = (function () {
 
             if (selectedProviderId && $selectProvider.find('option[value="' + selectedProviderId + '"]').length > 0) {
                 $selectProvider.val(selectedProviderId).trigger('change');
+                for (const index in vars('available_providers')) {
+                    const provider = vars('available_providers')[index];
+
+                    if (provider.id === Number(selectedProviderId) && provider.services.length === 1) {
+                        $selectService.val(provider.services[0]).trigger('change');
+                    }
+                }
             }
 
             if (
@@ -335,9 +342,9 @@ App.Pages.Booking = (function () {
                         $parentLabel.hide();
                     }
                 });
-                // if (!hasSelected) {
-                $selectService.val('').trigger('change');
-                // }
+                if (!hasSelected) {
+                    $selectService.val('').trigger('change');
+                }
             }
             App.Http.Booking.getUnavailableDates(
                 $target.val(),
@@ -879,63 +886,63 @@ App.Pages.Booking = (function () {
                     'html': [
                         fullName
                             ? $('<span/>', {
-                                  'text': lang('customer'),
-                              })
+                                'text': lang('customer'),
+                            })
                             : null,
                         fullName
                             ? $('<span/>', {
-                                  'text': fullName,
-                              })
+                                'text': fullName,
+                            })
                             : null,
                         phoneNumber
                             ? $('<span/>', {
-                                  'text': lang('phone_number'),
-                              })
+                                'text': lang('phone_number'),
+                            })
                             : null,
                         phoneNumber
                             ? $('<span/>', {
-                                  'text': phoneNumber,
-                              })
+                                'text': phoneNumber,
+                            })
                             : null,
                         email
                             ? $('<span/>', {
-                                  'text': lang('email'),
-                              })
+                                'text': lang('email'),
+                            })
                             : null,
                         email
                             ? $('<span/>', {
-                                  'text': email,
-                              })
+                                'text': email,
+                            })
                             : null,
                         address
                             ? $('<span/>', {
-                                  'text': lang('address'),
-                              })
+                                'text': lang('address'),
+                            })
                             : null,
                         address
                             ? $('<span/>', {
-                                  'text': address,
-                              })
+                                'text': address,
+                            })
                             : null,
                         city
                             ? $('<span/>', {
-                                  'text': lang('city'),
-                              })
+                                'text': lang('city'),
+                            })
                             : null,
                         city
                             ? $('<span/>', {
-                                  'text': city,
-                              })
+                                'text': city,
+                            })
                             : null,
                         zipCode
                             ? $('<span/>', {
-                                  'text': lang('zip_code'),
-                              })
+                                'text': lang('zip_code'),
+                            })
                             : null,
                         zipCode
                             ? $('<span/>', {
-                                  'text': zipCode,
-                              })
+                                'text': zipCode,
+                            })
                             : null,
                     ],
                 }),
@@ -1010,7 +1017,7 @@ App.Pages.Booking = (function () {
         let endMoment;
 
         if (service.duration && startMoment) {
-            endMoment = startMoment.clone().add({'minutes': parseInt(service.duration)});
+            endMoment = startMoment.clone().add({ 'minutes': parseInt(service.duration) });
         } else {
             endMoment = moment();
         }

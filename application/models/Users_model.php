@@ -226,7 +226,7 @@ class Users_model extends EA_Model
      *
      * @throws InvalidArgumentException
      */
-    public function find(int $user_id): array
+    public function find(int $user_id, bool $skipUnset = false): array
     {
         $user = $this->db->get_where('users', ['id' => $user_id])->row_array();
 
@@ -238,10 +238,13 @@ class Users_model extends EA_Model
 
         $user['settings'] = $this->db->get_where('user_settings', ['id_users' => $user_id])->row_array();
 
-        unset($user['settings']['id_users'], $user['settings']['password'], $user['settings']['salt']);
+        if (!$skipUnset) {
+            unset($user['settings']['id_users'], $user['settings']['password'], $user['settings']['salt']);
+        }
 
         return $user;
     }
+
 
     /**
      * Get a specific field value from the database.

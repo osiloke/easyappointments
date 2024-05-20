@@ -107,7 +107,7 @@ class Calendar extends EA_Controller
         $privileges = $this->roles_model->get_permissions_by_slug($role_slug);
 
         $available_providers = $this->providers_model->get_available_providers();
-        $provider_id = '';
+        $provider_ids = [];
 
         if ($role_slug === DB_SLUG_PROVIDER) {
             $available_providers = array_values(
@@ -115,7 +115,7 @@ class Calendar extends EA_Controller
                     return (int) $available_provider['id'] === (int) $user_id;
                 }),
             );
-            $provider_id = $available_providers[0]['id'];
+            $provider_ids = $available_providers;
         }
         if ($role_slug === DB_SLUG_SECRETARY) {
             $available_providers = array_values(
@@ -123,10 +123,17 @@ class Calendar extends EA_Controller
                     return in_array($available_provider['id'], $secretary_providers);
                 }),
             );
-            $provider_id = $available_providers[0]['id'];
+            $provider_ids = $available_providers;
         }
 
-        $available_services = $this->services_model->get_available_services(false, $provider_id);
+        $available_services = [];
+        if (count($provider_ids) > 0) {
+            foreach ($provider_ids as $provider) {
+                $available_services = array_merge($available_services, $this->services_model->get_available_services(false, $provider["id"]));
+            }
+        } else {
+            $available_services = array_merge($available_services, $this->services_model->get_available_services(false, ''));
+        }
 
         $calendar_view = request('view', $user['settings']['calendar_view']);
 
@@ -644,22 +651,22 @@ class Calendar extends EA_Controller
                 '
                 AND (status = ' .
                 ' "Booked"' .
-                ') 
+                ')
                 AND ((start_datetime > ' .
                 $start_date .
                 ' AND start_datetime < ' .
                 $end_date .
-                ') 
+                ')
                 or (end_datetime > ' .
                 $start_date .
                 ' AND end_datetime < ' .
                 $end_date .
-                ') 
+                ')
                 or (start_datetime <= ' .
                 $start_date .
                 ' AND end_datetime >= ' .
                 $end_date .
-                ')) 
+                '))
                 AND is_unavailability = 0
             ';
 
@@ -684,17 +691,17 @@ class Calendar extends EA_Controller
                     $start_date .
                     ' AND start_datetime < ' .
                     $end_date .
-                    ') 
+                    ')
                     or (end_datetime > ' .
                     $start_date .
                     ' AND end_datetime < ' .
                     $end_date .
-                    ') 
+                    ')
                     or (start_datetime <= ' .
                     $start_date .
                     ' AND end_datetime >= ' .
                     $end_date .
-                    ')) 
+                    '))
                     AND is_unavailability = 1
                 ';
 

@@ -62,14 +62,13 @@ class Providers_model extends EA_Model
      * @throws InvalidArgumentException
      * @throws Exception
      */
-    public function save(array $provider): int
+    public function save(array $provider, $skipPasswordGen = false): int
     {
         $this->validate($provider);
 
         if (empty($provider['id'])) {
-            return $this->insert($provider);
-        }
-        else {
+            return $this->insert($provider, $skipPasswordGen);
+        } else {
             return $this->update($provider);
         }
     }
@@ -272,7 +271,7 @@ class Providers_model extends EA_Model
      *
      * @throws RuntimeException|Exception
      */
-    protected function insert(array $provider): int
+    protected function insert(array $provider, bool $skipPasswordGen = false): int
     {
         $provider['create_datetime'] = date('Y-m-d H:i:s');
         $provider['update_datetime'] = date('Y-m-d H:i:s');
@@ -289,8 +288,10 @@ class Providers_model extends EA_Model
         }
 
         $provider['id'] = $this->db->insert_id();
-        $settings['salt'] = generate_salt();
-        $settings['password'] = hash_password($settings['salt'], $settings['password']);
+        if (!$skipPasswordGen) {
+            $settings['salt'] = generate_salt();
+            $settings['password'] = hash_password($settings['salt'], $settings['password']);
+        }
 
         $this->save_settings($provider['id'], $settings);
         $this->save_service_ids($provider['id'], $service_ids);
@@ -618,7 +619,7 @@ class Providers_model extends EA_Model
             $provider_id = $provider_from_username->id_users;
         }
         if (strlen($provider_id) > 0) {
-            $this->db->where('users.id', $provider_id);
+            $this->db->where('users.id', intval($provider_id));
         }
         if (!empty($provider_ids)) {
             $this->db->where_in('users.id', $provider_ids);
@@ -684,33 +685,58 @@ class Providers_model extends EA_Model
      *
      * @return array Returns an array of providers.
      */
-    public function search(string $keyword, int $limit = NULL, int $offset = NULL, string $order_by = NULL): array
+    public function search(string $keyword, int $limit = NULL, int $offset = NULL, string $order_by = NULL, int $secretary_id = NULL): array
     {
         $role_id = $this->get_provider_role_id();
-
-        $providers = $this->db
-            ->select()
-            ->from('users')
-            ->where('id_roles', $role_id)
-            ->group_start()
-            ->like('first_name', $keyword)
-            ->or_like('last_name', $keyword)
-            ->or_like('CONCAT_WS(" ", first_name, last_name)', $keyword)
-            ->or_like('email', $keyword)
-            ->or_like('phone_number', $keyword)
-            ->or_like('mobile_number', $keyword)
-            ->or_like('address', $keyword)
-            ->or_like('city', $keyword)
-            ->or_like('state', $keyword)
-            ->or_like('zip_code', $keyword)
-            ->or_like('notes', $keyword)
-            ->group_end()
-            ->limit($limit)
-            ->offset($offset)
-            ->order_by($order_by)
-            ->get()
-            ->result_array();
-
+        if ($secretary_id != NULL) {
+            $providers = $this->db
+                ->select()
+                ->from('secretaries_providers')
+                ->where('id_users_secretary', $secretary_id)
+                ->join('users', 'users.id = secretaries_providers.id_users_provider', 'inner')
+                ->where('id_roles', $role_id)
+                ->group_start()
+                ->like('first_name', $keyword)
+                ->or_like('last_name', $keyword)
+                ->or_like('CONCAT_WS(" ", first_name, last_name)', $keyword)
+                ->or_like('email', $keyword)
+                ->or_like('phone_number', $keyword)
+                ->or_like('mobile_number', $keyword)
+                ->or_like('address', $keyword)
+                ->or_like('city', $keyword)
+                ->or_like('state', $keyword)
+                ->or_like('zip_code', $keyword)
+                ->or_like('notes', $keyword)
+                ->group_end()
+                ->limit($limit)
+                ->offset($offset)
+                ->order_by($order_by)
+                ->get()
+                ->result_array();
+        } else {
+            $providers = $this->db
+                ->select()
+                ->from('users')
+                ->where('id_roles', $role_id)
+                ->group_start()
+                ->like('first_name', $keyword)
+                ->or_like('last_name', $keyword)
+                ->or_like('CONCAT_WS(" ", first_name, last_name)', $keyword)
+                ->or_like('email', $keyword)
+                ->or_like('phone_number', $keyword)
+                ->or_like('mobile_number', $keyword)
+                ->or_like('address', $keyword)
+                ->or_like('city', $keyword)
+                ->or_like('state', $keyword)
+                ->or_like('zip_code', $keyword)
+                ->or_like('notes', $keyword)
+                ->group_end()
+                ->limit($limit)
+                ->offset($offset)
+                ->order_by($order_by)
+                ->get()
+                ->result_array();
+        }
         foreach ($providers as &$provider) {
             $this->cast($provider);
 
