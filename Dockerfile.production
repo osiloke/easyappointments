@@ -7,7 +7,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Set environment variables with default values
 
 # SMTP Configuration
-ENV USE_SMTP="No" 
+ENV USE_SMTP="No"
 ENV SMTP_SERVER="mail.example.com"
 ENV SMTP_PORT="587"
 ENV SMTP_USE_TLS="Yes"
@@ -42,6 +42,8 @@ RUN apt-get update \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && curl -sLS https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
+    && apt-get install -y libcurl4-openssl-dev \
+    && docker-php-ext-install curl \
     && npm install -g npm \
     && apt-get install -q -y ssmtp mailutils \
     && echo "hostname=localhost.localdomain" > /etc/ssmtp/ssmtp.conf \

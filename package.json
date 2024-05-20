@@ -1,5 +1,5 @@
 {
-  "version": "0.0.10",
+  "version": "0.0.12",
   "name": "easyappointments",
   "description": "Open Source Web Scheduler",
   "homepage": "https://easyappointments.org",
@@ -34,6 +34,7 @@
     "fullcalendar": "^6.1.6",
     "jquery": "^3.6.4",
     "jquery-jeditable": "^2.0.19",
+    "mathjs": "^12.4.2",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
     "select2": "^4.1.0-rc.0",

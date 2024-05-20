@@ -9,8 +9,7 @@
                 <div class="input-group">
                     <input type="text" class="key form-control">
 
-                    <button class="filter btn btn-outline-secondary" type="submit"
-                        data-tippy-content="<?= lang('filter') ?>">
+                    <button class="filter btn btn-outline-secondary" type="submit" data-tippy-content="<?= lang('filter') ?>">
                         <i class="fas fa-search"></i>
                     </button>
                 </div>
@@ -64,24 +63,21 @@
                 <label class="form-label" for="service-image">
                     <?= lang('Image') ?>
                 </label>
-                <input type="file" id="service-image" data-field="avatar" class="form-control"
-                        accept="image/*">
+                <input type="file" id="service-image" data-field="avatar" class="form-control" accept="image/*">
                 <div class="form-text text-muted">
                     <small>
-                        The <?= lang('service') ?>  <?= lang(
-                            'image will be displayed in many places of the app, including the booking page and the notification emails (image file, max 2MB).',
-                        ) ?>
+                        The <?= lang('service') ?> <?= lang(
+                                                        'image will be displayed in many places of the app, including the booking page and the notification emails (image file, max 2MB).',
+                                                    ) ?>
                     </small>
                 </div>
 
                 <div class="d-flex justify-content-center">
-                    <img src="#" alt="Image Preview" id="service-image-preview"
-                            class="img-thumbnail my-3" hidden>
+                    <img src="#" alt="Image Preview" id="service-image-preview" class="img-thumbnail my-3" hidden>
                 </div>
 
                 <div class="d-flex justify-content-center">
-                    <button type="button" class="btn btn-danger btn-sm mb-3"
-                            id="remove-service-image" hidden>
+                    <button type="button" class="btn btn-danger btn-sm mb-3" id="remove-service-image" hidden>
                         <i class="fas fa-trash me-2"></i>
                         <?= lang('remove') ?>
                     </button>
@@ -100,8 +96,7 @@
                     <?= lang('duration_minutes') ?>
                     <span class="text-danger" hidden>*</span>
                 </label>
-                <input id="duration" class="form-control required" type="number" min="<?= EVENT_MINIMUM_DURATION ?>"
-                    disabled>
+                <input id="duration" class="form-control required" type="number" min="<?= EVENT_MINIMUM_DURATION ?>" disabled>
             </div>
 
             <div class="mb-3">
@@ -113,8 +108,18 @@
             </div>
 
             <div class="mb-3">
+                <label class="form-label" for="fee_bearer">
+                    <?= lang('Who bears fees?') ?>
+                </label>
+                <select id="fee_bearer" class="form-control required" required disabled>
+                    <option value="default">Business</option>
+                    <option value="customer">Customer</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
                 <label class="form-label" for="fee">
-                    <?= lang('fee') ?> 
+                    <?= lang('fee') ?>
                 </label>
                 <input id="fee" class="form-control" disabled>
             </div>
@@ -190,7 +195,7 @@
                 </div>
             </div>
 
-            <?php if (config('stripe_payment_feature')): ?>
+            <?php if (config('stripe_payment_feature')) : ?>
             <?php endif; ?>
 
             <div class="mb-3">

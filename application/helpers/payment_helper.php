@@ -8,8 +8,6 @@ if (!function_exists('price_from_duration')) {
      *
      * Example:
      *
-     * $logs_path = storage_path('logs'); // Returns "/path/to/installation/dir/storage/logs"
-     *
      * @param string $start
      * @param string $end
      * @param int $duration
@@ -17,7 +15,7 @@ if (!function_exists('price_from_duration')) {
      *
      * @return int
      */
-    function price_from_duration(string $start, string $end, int $service_duration, int $price): int
+    function price_from_duration(string $start, string $end, int $service_duration, float $price): int
     {
         $start = new DateTime($start);
         $end = new DateTime($end);
@@ -31,6 +29,34 @@ if (!function_exists('price_from_duration')) {
         // Divide by service duration
         $result = $duration / $service_duration;
         $amount = $result * $price;
+
+        return $amount;
+    }
+    /**
+     * Calculate fee from duration.
+     *
+     *
+     * @param string $start
+     * @param string $end
+     * @param int $duration
+     * @param int $price
+     *
+     * @return int
+     */
+    function fee_from_duration(string $start, string $end, int $service_duration, float $fee): float
+    {
+        $start = new DateTime($start);
+        $end = new DateTime($end);
+
+        // Calculate duration between start and end
+        $interval = $end->diff($start);
+        $duration = $interval->days * 24 * 60;
+        $duration += $interval->h * 60;
+        $duration += $interval->i;
+
+        // Divide by service duration
+        $result = $duration / $service_duration;
+        $amount = $result * $fee;
 
         return $amount;
     }

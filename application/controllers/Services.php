@@ -99,8 +99,7 @@ class Services extends EA_Controller
             $services = $this->services_model->search($keyword, $limit, $offset, $order_by);
 
             json_response($services);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -124,6 +123,8 @@ class Services extends EA_Controller
                 'currency',
                 'description',
                 'color',
+                'fee',
+                'fee_bearer',
                 'location',
                 'availabilities_type',
                 'attendants_number',
@@ -147,8 +148,7 @@ class Services extends EA_Controller
                 'success' => TRUE,
                 'id'      => $service_id,
             ]);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -171,6 +171,7 @@ class Services extends EA_Controller
                 'duration',
                 'price',
                 'fee',
+                'fee_bearer',
                 'currency',
                 'description',
                 'color',
@@ -197,8 +198,7 @@ class Services extends EA_Controller
                 'success' => TRUE,
                 'id'      => $service_id,
             ]);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -224,8 +224,7 @@ class Services extends EA_Controller
             json_response([
                 'success' => TRUE,
             ]);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -245,10 +244,8 @@ class Services extends EA_Controller
             $service = $this->services_model->find($service_id);
 
             json_response($service);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
-
 }

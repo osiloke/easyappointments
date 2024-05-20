@@ -1,20 +1,22 @@
-version: "3.1"
 services:
     mailpit:
         image: 'axllent/mailpit:v1.7'
         ports:
             - '8025:8025'
             - '1025:1025'
+        volumes:
+            - './mailpit.conf:/tmp/mailpit.conf'
+        env_file:
+            - .env
     mysql:
-        image: mysql:5.7
+        image: mariadb:10.10
         container_name: easyappointments-database
         volumes:
             - mysql:/var/lib/mysql
-        environment:
-            - MYSQL_ROOT_PASSWORD=root
-            - MYSQL_DATABASE=easyappointments
         ports:
-            - "8001:3306"
+            - '8001:3306'
+        env_file:
+            - .env
     php-fpm:
         build:
             dockerfile: Dockerfile.production
@@ -22,12 +24,20 @@ services:
         volumes:
             - '.:/var/www/html'
             - './docker/php-fpm/php-ini-overrides.ini:/usr/local/etc/php/conf.d/99-overrides.ini'
-        environment:
-            - DEBUG_MODE=TRUE
-            - SKIP_UNZIP=TRUE
-            - GOOGLE_SYNC_FEATURE=TRUE
-            - STRIPE_API_KEY=b3657af6-bdaf-4b45-b645-e03a474d39c3
+        env_file:
+            - .env
+        extra_hosts:
+            - host.docker.internal:host-gateway
 
+    swagger-ui:
+        platform: linux/amd64
+        image: swaggerapi/swagger-ui:v5.10.5
+        ports:
+            - "8004:8080"
+        volumes:
+            - ./openapi.yml:/usr/share/nginx/html/openapi.yml
+        environment:
+            API_URL: openapi.yml
     nginx:
         image: 'nginx:1.23.3-alpine'
         working_dir: /var/www/html
@@ -43,6 +53,9 @@ services:
             - '8002:80'
         environment:
             - 'PMA_HOST=mysql'
+            - 'UPLOAD_LIMIT=204800K'
+        env_file:
+            - .env
 networks:
     internal:
         driver: bridge

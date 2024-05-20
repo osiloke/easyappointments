@@ -29,6 +29,7 @@ class Services_model extends EA_Model
         'id'                    => 'integer',
         'price'                 => 'float',
         'fee'                   => 'float',
+        'fee_bearer'            => 'string',
         'attendants_number'     => 'integer',
         'is_private'            => 'boolean',
         'id_service_categories' => 'integer',
@@ -43,6 +44,7 @@ class Services_model extends EA_Model
         'duration'           => 'duration',
         'price'              => 'price',
         'fee'                => 'fee',
+        'fee_bearer'         => 'fee_bearer',
         'currency'           => 'currency',
         'description'        => 'description',
         'location'           => 'location',
@@ -472,6 +474,7 @@ class Services_model extends EA_Model
             'duration'           => (int) $service['duration'],
             'price'              => (float) $service['price'],
             'fee'                => (float) $service['fee'],
+            'fee_bearer'         => $service['fee_bearer'],
             'currency'           => $service['currency'],
             'description'        => $service['description'],
             'location'           => $service['location'],
@@ -513,6 +516,10 @@ class Services_model extends EA_Model
 
         if (array_key_exists('fee', $service)) {
             $decoded_resource['fee'] = $service['fee'];
+        }
+
+        if (array_key_exists('fee_bearer', $service)) {
+            $decoded_resource['fee_bearer'] = $service['fee_bearer'];
         }
 
         if (array_key_exists('currency', $service)) {

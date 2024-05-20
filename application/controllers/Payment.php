@@ -67,8 +67,7 @@ class Payment extends EA_Controller
 
         if (empty($appointment)) {
             abort(404, 'Forbidden');
-        }
-        else {
+        } else {
             $manage_mode = TRUE;
             $company_name = setting('company_name');
             $company_logo = setting('company_logo');
@@ -147,7 +146,7 @@ class Payment extends EA_Controller
     public function confirm(string $appointment_hash)
     {
         $client = new Client([
-            'timeout' => 15.0,
+            'timeout' => 25.0,
         ]);
 
         // TODO: fetch apppintment and use reference to verify payment_intent
@@ -169,10 +168,10 @@ class Payment extends EA_Controller
                 ]);
 
                 $this->index();
-            }
-            else {
+            } else {
                 $res = $client->post(config('stripe_api_url') . '/onepay/confirm', [
                     'headers' => [
+                        'Connection' => 'close',
                         'Content-Type'  => 'application/json',
                         'Authorization' => 'Bearer ' . config('stripe_api_key'),
                     ],
@@ -199,13 +198,11 @@ class Payment extends EA_Controller
                     ]);
 
                     $this->index();
-                }
-                else {
+                } else {
                     response($message);
                 }
             }
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             error_log($e);
             log_message(
                 'error',
@@ -289,8 +286,7 @@ class Payment extends EA_Controller
             $this->webhooks_client->trigger(WEBHOOK_APPOINTMENT_SAVE, $appointment);
 
             return $appointment;
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             error_log($e);
             abort(500, 'Internal server error');
         }
@@ -304,7 +300,7 @@ class Payment extends EA_Controller
     public function link(string $appointment_hash)
     {
         $client = new Client([
-            'timeout' => 20.0,
+            'timeout' => 25.0,
         ]);
 
         try {
@@ -316,8 +312,7 @@ class Payment extends EA_Controller
             $appointment = $occurrences[0];
             if ($appointment['is_paid'] == 1) {
                 redirect(site_url('booking_confirmation/of/' . $appointment_hash));
-            }
-            else {
+            } else {
                 $provider = $this->providers_model->find($appointment['id_users_provider']);
                 $service = $this->services_model->find($appointment['id_services']);
                 $customer = $this->customers_model->find($appointment['id_users_customer']);
@@ -327,34 +322,41 @@ class Payment extends EA_Controller
                     $appointment['start_datetime'],
                     $appointment['end_datetime'],
                     $service['duration'],
-                    $service['price'],
+                    (float) $service['price'],
                 );
-                $amount = $amount + (float) $service['fee'];
-
+                $body = [
+                    'amount'         => $amount,
+                    'reason'         => $appointment_hash,
+                    'currency'       => $service['currency'],
+                    'email'          => $customer['email'],
+                    'name'           => $customer['first_name'],
+                    'redirectURL'    => $redirectURL,
+                    'subaccount'     => $provider['settings']['username'],
+                    'bank_name'      => $provider['settings']['bank_name'],
+                    'account_number' => $provider['settings']['account_number'],
+                ];
+                if (!empty($service["fee_bearer"])) {
+                    if ($service["fee_bearer"] == 'default') {
+                        $body["amount"] = $amount + (float) $service['fee'];
+                    }
+                    $body["fee_bearer"] = $service["fee_bearer"];
+                } else {
+                    $body["amount"] = $amount + (float) $service['fee'];
+                }
                 $res = $client->post(config('stripe_api_url') . '/onepay/charge', [
                     'headers' => [
                         'Content-Type'  => 'application/json',
                         'Authorization' => 'Bearer ' . config('stripe_api_key'),
                     ],
-                    'json' => [
-                        'amount'         => $amount,
-                        'reason'         => $appointment_hash,
-                        'currency'       => $service['currency'],
-                        'email'          => $customer['email'],
-                        'name'           => $customer['first_name'],
-                        'redirectURL'    => $redirectURL,
-                        'subaccount'     => $provider['settings']['username'],
-                        'bank_name'      => $provider['settings']['bank_name'],
-                        'account_number' => $provider['settings']['account_number'],
-                    ],
+                    'json' => $body,
                 ]);
                 $body = json_decode($res->getBody());
+                // TODO: update fee in appointment
                 //TODO: store payment id as payment intent
                 $url = $body->url;
                 redirect($url);
             }
-        }
-        catch (\GuzzleHttp\Exception\RequestException $e) {
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
             log_message(
                 'error',
                 'Webhooks Client - The webhook (' .
@@ -370,8 +372,7 @@ class Payment extends EA_Controller
                 $exception = (string) $response->getBody();
                 $exception = json_decode($exception);
                 show_error((string) $exception->error, $response->getStatusCode(), 'Payment could not be completed');
-            }
-            else {
+            } else {
                 show_error($e->getMessage());
             }
         }
