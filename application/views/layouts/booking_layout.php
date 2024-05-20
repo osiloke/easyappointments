@@ -13,23 +13,20 @@
     <title>
         <?= lang('page_title') . ' ' . vars('provider_data')['first_name'] . ' ' . vars('provider_data')['last_name'] ?>
     </title>
-    <meta name="description"
-        content="A scheduling automation platform for consultation & appointment bookings that allows Nigerian service providers to receive payments.(Basically, something as simple as cal.com but focusing on payment integration features to accommodate PayStack, Flutterwave, and other API-friendly payment providers)" />
+    <meta name="description" content="A scheduling automation platform for consultation & appointment bookings that allows Nigerian service providers to receive payments.(Basically, something as simple as cal.com but focusing on payment integration features to accommodate PayStack, Flutterwave, and other API-friendly payment providers)" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="<?= current_url() ?>" />
     <meta property="og:title" content="Schedl.me" />
-    <meta property="og:description"
-        content="A scheduling automation platform for consultation & appointment bookings that allows Nigerian service providers to receive payments.(Basically, something as simple as cal.com but focusing on payment integration features to accommodate PayStack, Flutterwave, and other API-friendly payment providers)" />
+    <meta property="og:description" content="A scheduling automation platform for consultation & appointment bookings that allows Nigerian service providers to receive payments.(Basically, something as simple as cal.com but focusing on payment integration features to accommodate PayStack, Flutterwave, and other API-friendly payment providers)" />
     <meta property="og:image" content="<?= asset_url('assets/img/landing/screenshot.jpg') ?>" />
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="<?= current_url() ?>" />
     <meta property="twitter:title" content="Schedl.me" />
-    <meta property="twitter:description"
-        content="A scheduling automation platform for consultation & appointment bookings that allows Nigerian service providers to receive payments.(Basically, something as simple as cal.com but focusing on payment integration features to accommodate PayStack, Flutterwave, and other API-friendly payment providers)" />
+    <meta property="twitter:description" content="A scheduling automation platform for consultation & appointment bookings that allows Nigerian service providers to receive payments.(Basically, something as simple as cal.com but focusing on payment integration features to accommodate PayStack, Flutterwave, and other API-friendly payment providers)" />
     <meta property="twitter:image" content="<?= asset_url('assets/img/landing/screenshot.jpg') ?>" />
 
     <!-- Meta Tags Generated with https://metatags.io -->
@@ -37,10 +34,8 @@
     <link rel="apple-icon" type="image/png" sizes="60x60" href="<?= asset_url('assets/img/apple-icon-60x60.png') ?>">
     <link rel="apple-icon" type="image/png" sizes="72x72" href="<?= asset_url('assets/img/apple-icon-72x72.png') ?>">
     <link rel="apple-icon" type="image/png" sizes="76x76" href="<?= asset_url('assets/img/apple-icon-76x76.png') ?>">
-    <link rel="apple-icon" type="image/png" sizes="120x120"
-        href="<?= asset_url('assets/img/apple-icon-120x120.png') ?>">
-    <link rel="apple-icon" type="image/png" sizes="152x152"
-        href="<?= asset_url('assets/img/apple-icon-152x152.png') ?>">
+    <link rel="apple-icon" type="image/png" sizes="120x120" href="<?= asset_url('assets/img/apple-icon-120x120.png') ?>">
+    <link rel="apple-icon" type="image/png" sizes="152x152" href="<?= asset_url('assets/img/apple-icon-152x152.png') ?>">
     <link rel="apple-icon" sizes="180x180" href="<?= asset_url('assets/img/apple-icon-180x180.png') ?>">
     <link rel="apple-icon" sizes="192x192" href="<?= asset_url('assets/img/apple-icon-192x192.png') ?>">
     <link rel="manifest" href="<?= asset_url('assets/img/site.webmanifest') ?>">
@@ -85,17 +80,17 @@
         </div>
     </div>
 
-    <?php if (vars('display_cookie_notice') === '1'): ?>
+    <?php if (vars('display_cookie_notice') === '1') : ?>
         <?php component('cookie_notice_modal', ['cookie_notice_content' => vars('cookie_notice_content')]); ?>
     <?php endif; ?>
 
-    <?php if (vars('display_terms_and_conditions') === '1'): ?>
+    <?php if (vars('display_terms_and_conditions') === '1') : ?>
         <?php component('terms_and_conditions_modal', [
             'terms_and_conditions_content' => vars('terms_and_conditions_content'),
         ]); ?>
     <?php endif; ?>
 
-    <?php if (vars('display_privacy_policy') === '1'): ?>
+    <?php if (vars('display_privacy_policy') === '1') : ?>
         <?php component('privacy_policy_modal', ['privacy_policy_content' => vars('privacy_policy_content')]); ?>
     <?php endif; ?>
 
@@ -121,7 +116,30 @@
     <script src="<?= asset_url('assets/js/utils/validation.js') ?>"></script>
     <script src="<?= asset_url('assets/js/layouts/booking_layout.js') ?>"></script>
     <script src="<?= asset_url('assets/js/http/localization_http_client.js') ?>"></script>
-
+    <script>
+        ! function(t, e) {
+            var o, n, p, r;
+            e.__SV || (window.posthog = e, e._i = [], e.init = function(i, s, a) {
+                function g(t, e) {
+                    var o = e.split(".");
+                    2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function() {
+                        t.push([e].concat(Array.prototype.slice.call(arguments, 0)))
+                    }
+                }(p = t.createElement("script")).type = "text/javascript", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r);
+                var u = e;
+                for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function(t) {
+                        var e = "posthog";
+                        return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e
+                    }, u.people.toString = function() {
+                        return u.toString(1) + ".people (stub)"
+                    }, o = "capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys onSessionId".split(" "), n = 0; n < o.length; n++) g(u, o[n]);
+                e._i.push([i, s, a])
+            }, e.__SV = 1)
+        }(document, window.posthog || []);
+        posthog.init('phc_hUwZZvTaWHhmQi6TmmzgqwxC9QpOyhF1WinHRdk5MyO', {
+            api_host: 'https://us.i.posthog.com'
+        })
+    </script>
     <?php component('js_vars_script'); ?>
     <?php component('js_lang_script'); ?>
 
