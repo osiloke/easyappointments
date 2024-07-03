@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "08007142403ac0b333fe87f990d269c9",
+    "content-hash": "f75cebbaaaf012c15ed7c85f9dbdc3b6",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -676,16 +676,16 @@
         },
         {
             "name": "michalsn/codeigniter-htmx",
-            "version": "v1.4.0",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/michalsn/codeigniter-htmx.git",
-                "reference": "ec8c6d881828703a0e53c3bc6b90e6c930eeb99e"
+                "reference": "3022615db9cd1488f1c3544c783d90d39c45acfb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/michalsn/codeigniter-htmx/zipball/ec8c6d881828703a0e53c3bc6b90e6c930eeb99e",
-                "reference": "ec8c6d881828703a0e53c3bc6b90e6c930eeb99e",
+                "url": "https://api.github.com/repos/michalsn/codeigniter-htmx/zipball/3022615db9cd1488f1c3544c783d90d39c45acfb",
+                "reference": "3022615db9cd1488f1c3544c783d90d39c45acfb",
                 "shasum": ""
             },
             "require": {
@@ -693,7 +693,7 @@
             },
             "require-dev": {
                 "codeigniter4/devkit": "^1.0",
-                "codeigniter4/framework": "^4.1"
+                "codeigniter4/framework": "^4.3"
             },
             "type": "library",
             "autoload": {
@@ -724,9 +724,9 @@
             ],
             "support": {
                 "issues": "https://github.com/michalsn/codeigniter-htmx/issues",
-                "source": "https://github.com/michalsn/codeigniter-htmx/tree/v1.4.0"
+                "source": "https://github.com/michalsn/codeigniter-htmx/tree/v1.5.0"
             },
-            "time": "2023-11-23T16:42:15+00:00"
+            "time": "2024-06-10T15:57:40+00:00"
         },
         {
             "name": "monolog/monolog",

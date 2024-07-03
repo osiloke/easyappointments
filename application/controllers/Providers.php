@@ -1,5 +1,7 @@
 <?php
 
+use GuzzleHttp\Client;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 /* ----------------------------------------------------------------------------
@@ -113,8 +115,7 @@ class Providers extends EA_Controller
             $providers = $this->providers_model->search($keyword, $limit, $offset, $order_by);
 
             json_response($providers);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -176,8 +177,7 @@ class Providers extends EA_Controller
                 'success' => TRUE,
                 'id'      => $provider_id,
             ]);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -240,8 +240,7 @@ class Providers extends EA_Controller
                 'success' => TRUE,
                 'id'      => $provider_id,
             ]);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -267,8 +266,7 @@ class Providers extends EA_Controller
             json_response([
                 'success' => TRUE,
             ]);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
         }
     }
@@ -288,9 +286,49 @@ class Providers extends EA_Controller
             $provider = $this->providers_model->find($provider_id);
 
             json_response($provider);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             json_exception($e);
+        }
+    }
+    /**
+     * Available banks.
+     * TODO: move to banks component
+     */
+    public function banks()
+    {
+        $client = new Client([
+            'timeout' => 25.0,
+        ]);
+
+        try {
+            $res = $client->get(config('stripe_api_url') . '/onepay/banks', [
+                'headers' => [
+                    'Content-Type'  => 'application/json',
+                    'Authorization' => 'Bearer ' . config('stripe_api_key'),
+                ]
+            ]);
+            $body = json_decode($res->getBody());
+            html_vars([
+                'banks' => $body
+            ]);
+            $this->load->view('components/banks');
+        } catch (\GuzzleHttp\Exception\RequestException $e) {
+            log_message(
+                'error',
+                'Failed fetching banks: request received an unexpected exception: ' .
+                    $e->getMessage(),
+            );
+            log_message('error', $e->getTraceAsString());
+
+            error_log($e);
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+                $exception = (string) $response->getBody();
+                $exception = json_decode($exception);
+                show_error((string) $exception->error, $response->getStatusCode(), 'Banks could not be retrieved');
+            } else {
+                show_error($e->getMessage());
+            }
         }
     }
 }

@@ -18,10 +18,8 @@
     <link rel="apple-icon" type="image/png" sizes="60x60" href="<?= asset_url('assets/img/apple-icon-60x60.png') ?>">
     <link rel="apple-icon" type="image/png" sizes="72x72" href="<?= asset_url('assets/img/apple-icon-72x72.png') ?>">
     <link rel="apple-icon" type="image/png" sizes="76x76" href="<?= asset_url('assets/img/apple-icon-76x76.png') ?>">
-    <link rel="apple-icon" type="image/png" sizes="120x120"
-        href="<?= asset_url('assets/img/apple-icon-120x120.png') ?>">
-    <link rel="apple-icon" type="image/png" sizes="152x152"
-        href="<?= asset_url('assets/img/apple-icon-152x152.png') ?>">
+    <link rel="apple-icon" type="image/png" sizes="120x120" href="<?= asset_url('assets/img/apple-icon-120x120.png') ?>">
+    <link rel="apple-icon" type="image/png" sizes="152x152" href="<?= asset_url('assets/img/apple-icon-152x152.png') ?>">
     <link rel="apple-icon" sizes="180x180" href="<?= asset_url('assets/img/apple-icon-180x180.png') ?>">
     <link rel="apple-icon" sizes="192x192" href="<?= asset_url('assets/img/apple-icon-192x192.png') ?>">
     <link rel="manifest" href="<?= asset_url('assets/img/site.webmanifest') ?>">
@@ -38,17 +36,30 @@
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/select2/select2.min.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/flatpickr/flatpickr.min.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/vendor/flatpickr/material_green.min.css') ?>">
-    <link rel="stylesheet" type="text/css"
-        href="<?= asset_url('assets/css/themes/' . setting('theme', 'default') . '.css') ?>">
+    <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/themes/' . setting('theme', 'default') . '.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/general.css') ?>">
     <link rel="stylesheet" type="text/css" href="<?= asset_url('assets/css/layouts/backend_layout.css') ?>">
 
     <?php component('company_color_style', ['company_color' => setting('company_color')]); ?>
 
     <?php slot('styles'); ?>
+    <style>
+        .htmx-indicator {
+            opacity: 0;
+            transition: opacity 500ms ease-in;
+        }
+
+        .htmx-request .htmx-indicator {
+            opacity: 1
+        }
+
+        .htmx-request.htmx-indicator {
+            opacity: 1
+        }
+    </style>
 </head>
 
-<body class="d-flex flex-column h-100">
+<body class="d-flex flex-column h-100" hx-ext="morph" hx-ext="debug">
 
     <main class="flex-shrink-0">
 
@@ -88,7 +99,16 @@
     <?php component('js_lang_script'); ?>
 
     <?php slot('scripts'); ?>
+    <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/hyperscript.org@0.9.8"></script>
+    <script src="https://unpkg.com/idiomorph/dist/idiomorph-ext.min.js" crossorigin="anonymous"></script>
 
+    <script>
+        // general config
+        htmx.config.useTemplateFragments = true;
+
+        htmx.onLoad(function(content) {});
+    </script>
 </body>
 
 </html>
