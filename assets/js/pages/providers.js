@@ -643,7 +643,12 @@ App.Pages.Providers = (function () {
         $removeProviderImage.prop('hidden', true);
     }
 
-    document.addEventListener('DOMContentLoaded', initialize);
+    // document.addEventListener('DOMContentLoaded', initialize);
+    document.addEventListener('DOMContentLoaded', function () {
+        htmx.onLoad(function (content) {
+            initialize();
+        });
+    });
 
     return {
         filter,

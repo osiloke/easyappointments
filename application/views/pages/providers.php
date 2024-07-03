@@ -256,7 +256,7 @@
                                     <label class="form-label" for="bank_name">
                                         <?= lang('Bank Name') ?><span class="text-danger" hidden>*</span>
                                     </label>
-                                    <select id="bank-name" class="form-control required" maxlength="128" disabled hx-get="<?= site_url('providers/banks') ?>" hx-trigger="load" hx-swap="outerHTML">
+                                    <select id="bank-name" class="form-control required" maxlength="128" disabled hx-get="<?= site_url('providers/banks') ?>" hx-trigger="load" hx-swap="innerHTML" hx-ext="morph">
                                         <option value="">Loading...</option>
 
                                     </select>

@@ -59,7 +59,7 @@
     </style>
 </head>
 
-<body class="d-flex flex-column h-100" hx-ext="morph" hx-ext="debug">
+<body class="d-flex flex-column h-100">
 
     <main class="flex-shrink-0">
 
@@ -97,11 +97,11 @@
 
     <?php component('js_vars_script'); ?>
     <?php component('js_lang_script'); ?>
-
-    <?php slot('scripts'); ?>
     <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/hyperscript.org@0.9.8"></script>
     <script src="https://unpkg.com/idiomorph/dist/idiomorph-ext.min.js" crossorigin="anonymous"></script>
+
+    <?php slot('scripts'); ?>
 
     <script>
         // general config
