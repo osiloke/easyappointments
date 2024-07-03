@@ -644,13 +644,9 @@ App.Pages.Providers = (function () {
     }
 
     // document.addEventListener('DOMContentLoaded', initialize);
-    document.addEventListener('DOMContentLoaded', function () {
-        htmx.onLoad(function (content) {
-            initialize();
-        });
-    });
 
     return {
+        initialize,
         filter,
         save,
         remove,

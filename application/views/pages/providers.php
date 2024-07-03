@@ -436,4 +436,12 @@
 <script src="<?= asset_url('assets/js/http/account_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/http/providers_http_client.js') ?>"></script>
 <script src="<?= asset_url('assets/js/pages/providers.js') ?>"></script>
+<script>
+    (function() {
+        document.addEventListener('DOMContentLoaded', function() {
+            htmx.onLoad(function(content) {});
+            App.Pages.Providers.initialize();
+        });
+    })()
+</script>
 <?php end_section('scripts'); ?>
