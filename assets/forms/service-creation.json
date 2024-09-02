@@ -310,6 +310,14 @@
                                     "maxValueExpression": "1440"
                                 },
                                 {
+                                    "name": "minimum_duration",
+                                    "placeholder": "Ex. 2hrs = 120",
+                                    "inputType": "number",
+                                    "title": "Minimum Duration (Mins)",
+                                    "minValueExpression": "60",
+                                    "maxValueExpression": "1440"
+                                },
+                                {
                                     "name": "price",
                                     "placeholder": "Cost per duration",
                                     "inputType": "number",

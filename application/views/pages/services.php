@@ -100,6 +100,13 @@
             </div>
 
             <div class="mb-3">
+                <label class="form-label" for="minimum_duration">
+                    <?= lang('minimum_duration_minutes') ?>
+                </label>
+                <input id="minimum_duration" class="form-control" type="number" min="<?= EVENT_MINIMUM_DURATION ?>" disabled>
+            </div>
+
+            <div class="mb-3">
                 <label class="form-label" for="price">
                     <?= lang('price') ?>
                     <span class="text-danger" hidden>*</span>

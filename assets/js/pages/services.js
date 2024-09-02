@@ -19,6 +19,7 @@ App.Pages.Services = (function () {
     const $id = $('#id');
     const $name = $('#name');
     const $duration = $('#duration');
+    const $minimum_duration = $('#minimum_duration');
     const $price = $('#price');
     const $fee = $('#fee');
     const $fee_bearer = $('#fee_bearer');
@@ -142,6 +143,7 @@ App.Pages.Services = (function () {
             const service = {
                 name: $name.val(),
                 duration: $duration.val(),
+                minimum_duration: $minimum_duration.val(),
                 price: $price.val(),
                 fee: $fee.val() ?? 0,
                 fee_bearer: $fee_bearer.val() ?? 'default',
@@ -266,6 +268,11 @@ App.Pages.Services = (function () {
                 $duration.addClass('is-invalid');
                 throw new Error(lang('invalid_duration'));
             }
+            // Validate the minimum duration.
+            if (Number($minimum_duration.val()) < vars('event_minimum_duration')) {
+                $minimum_duration.addClass('is-invalid');
+                throw new Error(lang('invalid_minimum_duration'));
+            }
 
             return true;
         } catch (error) {
@@ -306,6 +313,7 @@ App.Pages.Services = (function () {
         $id.val(service.id);
         $name.val(service.name);
         $duration.val(service.duration);
+        $minimum_duration.val(service.minimum_duration);
         $price.val(service.price);
         $fee.val(service.fee ?? 0);
         $fee_bearer.val(service.fee_bearer ?? "default");

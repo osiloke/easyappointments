@@ -1087,6 +1087,9 @@ App.Pages.Booking = (function () {
         if (!service) {
             return;
         }
+        const fullday = 540; // 9 hours
+        const halfDay = 240;
+        generateIntervalOptions(fullday, halfDay, Number(service.duration), Number(service.minimum_duration));
 
         $('<strong/>', {
             'text': App.Utils.String.escapeHtml(service.name),
@@ -1130,19 +1133,11 @@ App.Pages.Booking = (function () {
     }
 
     // TODO: execute this whenever service changes
-    function generateIntervalOptions(fullday, halfDay, duration) {
+    function generateIntervalOptions(fullday, halfDay, duration, minimum_duration) {
         let intervals = [];
 
-        for (let i = duration; i <= fullday; i += duration) {
+        for (let i = Math.max(duration, minimum_duration); i <= fullday; i += duration) {
             intervals.push(i);
-
-            if (i >= duration && !intervals.includes(duration)) {
-                intervals.push(duration);
-            }
-
-            if (i >= halfDay && !intervals.includes(halfDay)) {
-                intervals.push(halfDay);
-            }
         }
         const $select = $('select[name=interval]');
         $select.empty();
@@ -1152,9 +1147,9 @@ App.Pages.Booking = (function () {
             const $option = $('<option>').val(interval);
 
             // Set option text
-            if (interval === 4) {
+            if (interval === halfDay) {
                 $option.text('Half day');
-            } else if (interval === 9) {
+            } else if (interval === fullday) {
                 $option.text('Full day');
             } else {
                 const dur = interval / 60;

@@ -42,6 +42,7 @@ class Services_model extends EA_Model
         'id'                 => 'id',
         'name'               => 'name',
         'duration'           => 'duration',
+        'minimum_duration'           => 'minimum_duration',
         'price'              => 'price',
         'fee'                => 'fee',
         'fee_bearer'         => 'fee_bearer',
@@ -119,6 +120,13 @@ class Services_model extends EA_Model
                     'The service duration cannot be less than ' . EVENT_MINIMUM_DURATION . ' minutes long.',
                 );
             }
+        }
+
+        // Check if minimum_duration is less than EVENT_MINIMUM_DURATION
+        if (!empty($service['minimum_duration']) && (int) $service['minimum_duration'] < EVENT_MINIMUM_DURATION) {
+            throw new InvalidArgumentException(
+                'The service minimum duration cannot be less than ' . EVENT_MINIMUM_DURATION . ' minutes long.',
+            );
         }
 
         // Availabilities type must have the correct value.
@@ -472,6 +480,7 @@ class Services_model extends EA_Model
             'id'                 => array_key_exists('id', $service) ? (int) $service['id'] : NULL,
             'name'               => $service['name'],
             'duration'           => (int) $service['duration'],
+            'minimum_duration'   => (int) $service['duration'],
             'price'              => (float) $service['price'],
             'fee'                => (float) $service['fee'],
             'fee_bearer'         => $service['fee_bearer'],
@@ -508,6 +517,10 @@ class Services_model extends EA_Model
 
         if (array_key_exists('duration', $service)) {
             $decoded_resource['duration'] = $service['duration'];
+        }
+
+        if (array_key_exists('minimum_duration', $service)) {
+            $decoded_resource['minimum_duration'] = $service['minimum_duration'];
         }
 
         if (array_key_exists('price', $service)) {

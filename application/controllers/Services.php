@@ -119,6 +119,7 @@ class Services extends EA_Controller
             $this->services_model->only($service, [
                 'name',
                 'duration',
+                'minimum_duration',
                 'price',
                 'currency',
                 'description',
@@ -169,6 +170,7 @@ class Services extends EA_Controller
                 'id',
                 'name',
                 'duration',
+                'minimum_duration',
                 'price',
                 'fee',
                 'fee_bearer',

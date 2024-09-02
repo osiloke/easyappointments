@@ -260,8 +260,11 @@ class Packages extends EA_Controller
                 default:
                     break;
             }
-            $working_plan_start_time[$name] = $time->start;
-            $working_plan_stop_time[$name] = $time->end;
+
+            if ($time !== null) {
+                $working_plan_start_time[$name] = $time->start;
+                $working_plan_stop_time[$name] = $time->end;
+            }
         }
         $package["working_plan"] = [array(
             "working_plan_start_time" => $working_plan_start_time,
@@ -275,6 +278,9 @@ class Packages extends EA_Controller
             $name = end($parts);
             $srv["service_name"] = $name;
             $srv["duration"] = (int)$service["duration"];
+            if (isset($service["minimum_duration"])) {
+                $srv["minimum_duration"] = (int)$service["minimum_duration"];
+            }
             $srv["price"] = (int)$service["price"];
             $srv["fee"] =  (int)$service["fee"];
             $srv["currency"] = $service["currency"];

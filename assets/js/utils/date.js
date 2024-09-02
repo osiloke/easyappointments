@@ -210,11 +210,33 @@ window.App.Utils.Date = (function () {
         return humanReadableTime;
     }
 
+    function getTimeIntervals(duration, minimum_duration) {
+        const fullday = 540; // 9 hours
+        const halfDay = 240;
+        const intervals = [];
+
+        for (let i = Math.max(duration, minimum_duration); i <= fullday; i += duration) {
+            intervals.push(i);
+
+            if (i >= duration && !intervals.includes(duration) && duration >= minimum_duration) {
+                intervals.push(duration);
+            }
+
+            if (i >= halfDay && !intervals.includes(halfDay) && halfDay >= minimum_duration) {
+                intervals.push(halfDay);
+            }
+        }
+
+        return intervals.sort((a, b) => a - b);
+    }
+
+
     return {
         format,
         getWeekdayId,
         sortWeekDictionary,
         getWeekdayName,
         toHumanReadableTime,
+        getTimeIntervals,
     };
 })();

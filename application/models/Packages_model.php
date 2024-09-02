@@ -290,6 +290,7 @@ class Packages_model extends EA_Model
                     }
                     $service = [
                         'duration'           => array_key_exists("duration", $ss["service_details"]) ? $ss["service_details"]["duration"] : 60,
+                        'minimum_duration'           => array_key_exists("minimum_duration", $ss["service_details"]) ? $ss["service_details"]["minimum_duration"] : EVENT_MINIMUM_DURATION,
                         'price'              => array_key_exists("price", $ss["service_details"]) ? $ss["service_details"]["price"] : 0,
                         'currency'           => 'NGN',
                         'attendants_number'   => $attendants_number,
@@ -479,6 +480,7 @@ class Packages_model extends EA_Model
                     $service = [
                         'name'               => $provider["first_name"] . $provider["last_name"] . ' | ' . trim($ss["service_details"]["service_name"]),
                         'duration'           => array_key_exists("duration", $ss["service_details"]) ? $ss["service_details"]["duration"] : 60,
+                        'minimum_duration'           => array_key_exists("minimum_duration", $ss["service_details"]) ? $ss["service_details"]["minimum_duration"] : EVENT_MINIMUM_DURATION,
                         'price'              => array_key_exists("price", $ss["service_details"]) ? $ss["service_details"]["price"] : 0,
                         'currency'           => 'NGN',
                         'attendants_number'   => $attendants_number,

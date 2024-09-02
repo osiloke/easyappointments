@@ -120,9 +120,12 @@ class Appointments_model extends EA_Model
         // Make the appointment lasts longer than the minimum duration (in minutes).
         $diff = (strtotime($appointment['end_datetime']) - strtotime($appointment['start_datetime'])) / 60;
 
-        if ($diff < EVENT_MINIMUM_DURATION) {
+        $service = $this->db->get_where('services', ['id' => $appointment['id_services']])->row_array();
+        $minimum_duration = isset($service['minimum_duration']) ? $service['minimum_duration'] : EVENT_MINIMUM_DURATION;
+
+        if ($diff < $minimum_duration) {
             throw new InvalidArgumentException(
-                'The appointment duration cannot be less than ' . EVENT_MINIMUM_DURATION . ' minutes.',
+                'The appointment duration cannot be less than ' . $minimum_duration . ' minutes.',
             );
         }
 
@@ -551,7 +554,7 @@ class Appointments_model extends EA_Model
             'providerId' => $appointment['id_users_provider'] !== null ? (int) $appointment['id_users_provider'] : null,
             'serviceId' => $appointment['id_services'] !== null ? (int) $appointment['id_services'] : null,
             'googleCalendarId' =>
-                $appointment['id_google_calendar'] !== null ? (int) $appointment['id_google_calendar'] : null,
+            $appointment['id_google_calendar'] !== null ? (int) $appointment['id_google_calendar'] : null,
             'isPaid' => $appointment['is_paid'],
             'paymentIntent' => $appointment['payment_intent'],
         ];

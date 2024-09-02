@@ -61,9 +61,10 @@ function getTimeIntervals($fullday, $halfDay, $duration)
 
                                     <option value="<?php echo $interval; ?>">
                                         <?php $dur = $interval / 60; ?>
-                                        <?php if ($interval == $halfDay) : ?>Half day<?php elseif (
-                                                                                        $interval == $fullday
-                                                                                    ) : ?>Full day<?php else : ?> <?= $dur ?> Hour(s) <?php endif; ?>
+                                        <?php if ($interval == $halfDay) : ?>Half day
+                                        <?php elseif (
+                                            $interval == $fullday
+                                        ) : ?>Full day<?php else : ?> <?= $dur ?> Hour(s) <?php endif; ?>
                                     </option>
 
                                 <?php endforeach; ?>
